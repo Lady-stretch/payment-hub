@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Платежный Хаб | Абонементы</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="neumorphic-card payment-hub">
+    <h2>🔥 ВНИМАНИЕ! ТОЛЬКО СЕГОДНЯ: Скидка до 45%!</h2>
+    <p>⚡️ Выберите свой идеальный пакет и удобный способ оплаты:</p>
+
+    <div class="packages">
+        <div class="package-item neumorphic-card" data-price="34320" data-name="Королевский">
+            <h3>Королевский пакет (96 занятий)</h3>
+            <p class="old-price">43 680 ₽</p>
+            <p class="new-price">**34 320 ₽**</p>
+            <p class="limit">Осталось 10 мест!</p>
+            
+            <button class="neumorphic-button select-package">Выбрать и оплатить</button>
+        </div>
+        </div>
+
+    <div id="payment-options" style="display:none; margin-top: 30px;">
+        <h3>✅ Выбран пакет: <span id="selected-package-name"></span> (<span id="selected-package-price"></span> ₽)</h3>
+        
+        <h4>Выберите способ оплаты:</h4>
+
+        <button class="neumorphic-button payment-button installment-button" onclick="window.location.href='[ССЫЛКА_НА_ВАШУ_БАНКОВСКУЮ_РАССРОЧКУ]' ">
+            💳 Банковская Рассрочка (до 10 мес.)
+        </button>
+
+        <button class="neumorphic-button payment-button sbp-button" onclick="window.location.href='[ССЫЛКА_НА_ВАШЕГО_АГРЕГАТОРА_С_ФОРМОЙ]' ">
+            🚀 Оплатить Картой / СБП (онлайн)
+        </button>
+
+        <div class="qr-section neumorphic-card">
+            <h4>ИЛИ оплата по QR-коду (Мгновенно)</h4>
+            <img src="assets/qr_code.png" alt="QR-код для оплаты" width="200">
+            <p>Наведите камеру или откройте приложение банка.</p>
+        </div>
+
+    </div>
+
+    <p class="ps-note">P.S. Цены вырастут после 14 декабря. Успейте!</p>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
