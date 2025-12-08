@@ -14,7 +14,6 @@
     <p class="subtitle">⚡️ Выберите свой идеальный пакет и удобный способ оплаты:</p>
 
     <div class="packages-grid">
-
         <div class="package-item neumorphic-card" 
             data-price="34320" 
             data-name="Королевский" 
@@ -92,14 +91,16 @@
             <p class="info">Отличный старт для новичков</p>
             <button class="neumorphic-button select-package">Выбрать и оплатить</button>
         </div>
-
     </div>
     
     <div id="payment-options" style="display:none; margin-top: 50px;">
         
-        <div class="price-display-box">
-            Сумма к оплате: **<span id="selected-package-price"></span> ₽**
-        </div>
+        <a id="price-button-link" 
+           href="https://qr.nspk.ru/AS2A006F0RCJU7V991SBLV4AACJGFT2P?type=01&bank=100000000004&crc=A93E" 
+           target="_blank" 
+           class="price-display-box neumorphic-button">
+            Сумма к оплате: **<span id="selected-package-price"></span> ₽** (Нажмите для оплаты СБП)
+        </a>
         
         <h4 class="method-title">Выберите удобный способ оплаты:</h4>
 
@@ -122,14 +123,16 @@
     </div>
 
     <div class="footer-note">
-        <p>⏰ **Важно:** Количество мест ограничено! После 14 декабря цены вырастут.</p>
+        <p class="important-warning">
+            **Важно:** Количество мест ограничено! С 16 декабря цены **ВЫРАСТУТ!**
+        </p>
         <h4 class="contact-title">Написать администратору:</h4>
         <div class="contact-buttons-wrapper">
             <a href="https://clck.ru/3QjknT" target="_blank" class="neumorphic-button contact-button whatsapp-button">
                 <i class="fab fa-whatsapp"></i> WhatsApp Администратор
             </a>
             <a href="https://clck.ru/3QjkoU" target="_blank" class="neumorphic-button contact-button whatsapp-button">
-                <i class="fab fa-whatsapp"></i> WhatsApp Макс
+                <i class="fab fa-whatsapp"></i> Max Администратор
             </a>
         </div>
     </div>
