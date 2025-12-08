@@ -5,38 +5,85 @@
   --shadow-dark: rgba(163,177,198, 0.6);
   --shadow-inset-light: rgba(255,255,255, 1);
   --shadow-inset-dark: rgba(163,177,198, 0.8);
-  --border-color: #333; /* Цвет рамки для окошка суммы */
 }
 
-/* ... (предыдущие стили body, neumorphic-card, packages-grid остаются) ... */
+body {
+  background-color: var(--light-color);
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
 
-/* --- Стиль для выбранного пакета --- */
+/* --- Главная карточка --- */
+.neumorphic-card {
+  padding: 30px;
+  border-radius: 20px;
+  background: var(--light-color);
+  /* Выдавленный эффект (OUTER shadow) */
+  box-shadow: 
+    10px 10px 20px var(--shadow-dark), 
+    -10px -10px 20px var(--shadow-light);
+  margin-bottom: 25px;
+}
+.payment-hub {
+    max-width: 900px;
+    margin: 40px auto;
+    text-align: center;
+}
+
+/* --- Стиль для выбранного пакета (ВДАВЛЕННЫЙ) --- */
 .package-item.selected {
+    /* Эффект "нажатия" */
     box-shadow: 
         inset 6px 6px 12px var(--shadow-inset-dark), 
         inset -6px -6px 12px var(--shadow-inset-light);
-    border: 1px solid var(--primary-color);
+    border: none; /* Убираем рамку, чтобы быть чище */
 }
-/* ... (стили .package-title, .lessons, .old-price, .new-price остаются) ... */
 
-
-/* --- Окошко для суммы (НОВЫЙ СТИЛЬ) --- */
+/* --- Окошко для суммы (НОВЫЙ ЧИСТЫЙ НЕОМОРФИЗМ) --- */
 .price-display-box {
     margin: 20px auto;
     padding: 15px 30px;
     font-size: 1.3em;
     font-weight: bold;
-    color: var(--primary-color);
-    /* Черное обрамление с округленными краями */
-    border: 2px solid var(--border-color);
+    color: #333;
+    
+    /* Делаем его "выдавленным" из фона, а не с черной рамкой */
     border-radius: 10px;
+    background: var(--light-color);
+    box-shadow: 
+        5px 5px 10px var(--shadow-dark), 
+        -5px -5px 10px var(--shadow-light);
     max-width: 400px;
-    background-color: white; /* Делаем его заметным на светлом фоне */
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.2); /* Добавляем легкую тень */
 }
 
 
-/* --- Кнопки оплаты --- */
+/* --- Кнопки (Общие) --- */
+.neumorphic-button {
+  padding: 15px 25px;
+  border-radius: 12px;
+  background: var(--light-color);
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  color: #333;
+  /* Выдавленная кнопка */
+  box-shadow: 
+    6px 6px 12px var(--shadow-dark), 
+    -6px -6px 12px var(--shadow-light);
+  width: 100%;
+  max-width: 300px;
+}
+
+/* Эффект "Нажатия" (ВДАВЛЕННАЯ кнопка) */
+.neumorphic-button:active {
+  box-shadow: 
+    inset 4px 4px 8px var(--shadow-inset-dark), 
+    inset -4px -4px 8px var(--shadow-inset-light);
+}
+
+/* --- Стиль для кнопок оплаты --- */
 .payment-button {
     margin: 10px;
     font-size: 1.1em;
@@ -45,41 +92,35 @@
 
 .installment-button {
     color: var(--primary-color);
-    border: 1px solid var(--primary-color);
-    /* Выдавленная кнопка, как и все */
-    box-shadow: 
-        6px 6px 12px var(--shadow-dark), 
-        -6px -6px 12px var(--shadow-light);
+    /* Здесь можно добавить легкий оттенок, но сохраняем неоморфизм */
 }
 
-/* Измененная кнопка Оплатить Картой / СБП */
+/* Кнопка Оплатить Картой / СБП (Возвращаем ее в неоморфизм) */
 .sbp-card-button {
     color: #333;
-    border: 1px solid #c0c0c0; /* Светлая рамка */
-    background: var(--light-color); /* Светлый цвет, как у остальных */
-    /* Вставляем иконку СБП (квадратный логотип СБП) */
+    /* Полностью опираемся на тени */
+    background: var(--light-color); 
     position: relative;
     padding-left: 50px; 
 }
 .sbp-icon {
     content: '';
     display: inline-block;
-    width: 30px;
-    height: 30px;
-    background-color: #f7a900; /* Цвет лого СБП */
+    width: 25px;
+    height: 25px;
+    /* Вместо сплошного цвета, используем легкий внутренний "вдавленный" эффект */
+    background: var(--light-color); 
     border-radius: 5px;
     position: absolute;
-    left: 10px;
+    left: 15px;
     top: 50%;
     transform: translateY(-50%);
-    box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    box-shadow: 
+        inset 2px 2px 4px rgba(0,0,0,0.2), 
+        inset -2px -2px 4px rgba(255,255,255,0.7);
 }
 
 /* --- Кнопки связи (WhatsApp) --- */
-.contact-title {
-    margin-top: 40px;
-    margin-bottom: 15px;
-}
 .contact-buttons-wrapper {
     display: flex;
     justify-content: center;
@@ -88,10 +129,11 @@
 }
 .contact-button {
     max-width: 300px;
-    color: #25D366; /* Зеленый для WhatsApp */
-    border: 1px solid #25D366;
+    color: #333; /* Убираем яркий зеленый, чтобы не нарушать цветовую палитру неоморфизма */
+    /* Выдавленный стиль, как и у всех */
 }
 .contact-button i {
+    color: #25D366; /* Сохраняем цвет самой иконки WhatsApp для узнаваемости */
     margin-right: 8px;
 }
-/* ... (остальные стили qr-section, footer-note остаются) ... */
+/* ... (остальные стили qr-section, footer-note, packages-grid остаются) ... */
