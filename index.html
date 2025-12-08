@@ -14,6 +14,7 @@
     <p class="subtitle">⚡️ Выберите свой идеальный пакет и удобный способ оплаты:</p>
 
     <div class="packages-grid">
+
         <div class="package-item neumorphic-card" 
             data-price="34320" 
             data-name="Королевский" 
@@ -22,7 +23,7 @@
             <h3 class="package-title">👑 Королевский пакет</h3>
             <p class="lessons">96 занятий</p>
             <p class="old-price">~~43 680 ₽~~</p>
-            <p class="new-price">**34 320 ₽**</p>
+            <p class="new-price">34 320 ₽</p>
             <p class="info limit">Доступна банковская беспроцентная рассрочка до 10 месяцев</p>
             <button class="neumorphic-button select-package">Выбрать и оплатить</button>
         </div>
@@ -35,7 +36,7 @@
             <h3 class="package-title">✨ Премиум-пакет</h3>
             <p class="lessons">64 занятия</p>
             <p class="old-price">~~33 280 ₽~~</p>
-            <p class="new-price">**27 040 ₽**</p>
+            <p class="new-price">27 040 ₽</p>
             <p class="info">Доступна банковская беспроцентная рассрочка до 10 месяцев</p>
             <button class="neumorphic-button select-package">Выбрать и оплатить</button>
         </div>
@@ -48,7 +49,7 @@
             <h3 class="package-title">✅ Оптимальный выбор</h3>
             <p class="lessons">48 занятий</p>
             <p class="old-price">~~24 960 ₽~~</p>
-            <p class="new-price">**20 280 ₽**</p>
+            <p class="new-price">20 280 ₽</p>
             <p class="info">Доступна банковская беспроцентная рассрочка на 6 месяцев</p>
             <button class="neumorphic-button select-package">Выбрать и оплатить</button>
         </div>
@@ -61,7 +62,7 @@
             <h3 class="package-title">🏃 Активный старт</h3>
             <p class="lessons">32 занятия</p>
             <p class="old-price">~~18 720 ₽~~</p>
-            <p class="new-price">**15 600 ₽**</p>
+            <p class="new-price">15 600 ₽</p>
             <p class="info">Идеально для регулярных занятий</p>
             <button class="neumorphic-button select-package">Выбрать и оплатить</button>
         </div>
@@ -74,7 +75,7 @@
             <h3 class="package-title">💪 Интенсив</h3>
             <p class="lessons">24 занятия</p>
             <p class="old-price">~~15 600 ₽~~</p>
-            <p class="new-price">**13 280 ₽**</p>
+            <p class="new-price">13 280 ₽</p>
             <p class="info">Быстрый результат без переплат</p>
             <button class="neumorphic-button select-package">Выбрать и оплатить</button>
         </div>
@@ -87,10 +88,11 @@
             <h3 class="package-title">🌟 Пробный курс</h3>
             <p class="lessons">16 занятий</p>
             <p class="old-price">~~10 400 ₽~~</p>
-            <p class="new-price">**8 840 ₽**</p>
+            <p class="new-price">8 840 ₽</p>
             <p class="info">Отличный старт для новичков</p>
             <button class="neumorphic-button select-package">Выбрать и оплатить</button>
         </div>
+
     </div>
     
     <div id="payment-options" style="display:none; margin-top: 50px;">
@@ -99,17 +101,17 @@
            href="https://qr.nspk.ru/AS2A006F0RCJU7V991SBLV4AACJGFT2P?type=01&bank=100000000004&crc=A93E" 
            target="_blank" 
            class="price-display-box neumorphic-button">
-            Сумма к оплате: **<span id="selected-package-price"></span> ₽** (Нажмите для оплаты СБП)
+            Сумма к оплате: <strong><span id="selected-package-price"></span> ₽</strong> (Нажмите для оплаты СБП)
         </a>
         
         <h4 class="method-title">Выберите удобный способ оплаты:</h4>
 
         <button id="installment-btn" class="neumorphic-button payment-button installment-button" onclick="openInstallmentLink()" style="display:none;">
-            💳 Оформить **Рассрочку** (<span id="installment-months"></span>)
+            💳 Оформить <strong>Рассрочку</strong> (<span id="installment-months"></span>)
         </button>
 
         <button class="neumorphic-button payment-button sbp-card-button" onclick="window.open('https://checkout.tochka.com/f1ba70a9-318b-4849-bd4c-cee3ce0c541e', '_blank') ">
-            <span class="sbp-icon"></span> Оплатить **Картой / СБП** (резервный магазин)
+            <span class="sbp-icon"></span> Оплатить <strong>Картой / СБП</strong> (резервный магазин)
         </button>
 
         <div class="qr-section neumorphic-card">
@@ -124,7 +126,7 @@
 
     <div class="footer-note">
         <p class="important-warning">
-            **Важно:** Количество мест ограничено! С 16 декабря цены **ВЫРАСТУТ!**
+            <span class="bold">Важно: Количество мест ограничено! С 16 декабря цены <span class="uppercase">ВЫРАСТУТ!</span></span>
         </p>
         <h4 class="contact-title">Написать администратору:</h4>
         <div class="contact-buttons-wrapper">
