@@ -6,6 +6,7 @@
   --shadow-inset-light: rgba(255,255,255, 1);
   --shadow-inset-dark: rgba(163,177,198, 0.8);
   --text-color: #333;
+  --red-alert: #cc0000; /* Красный цвет для предупреждения */
 }
 
 body {
@@ -13,13 +14,13 @@ body {
   padding: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: var(--text-color);
+  line-height: 1.5;
 }
 
 .neumorphic-card {
   padding: 30px;
   border-radius: 20px;
   background: var(--light-color);
-  /* Выдавленный эффект (OUTER shadow) */
   box-shadow: 
     10px 10px 20px var(--shadow-dark), 
     -10px -10px 20px var(--shadow-light);
@@ -30,34 +31,63 @@ body {
     margin: 40px auto;
     text-align: center;
 }
-/* ... (стили заголовков и сетки пакетов) ... */
-
-/* --- Стиль для выбранного пакета (ВДАВЛЕННЫЙ) --- */
+.packages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+.package-item {
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    border-radius: 15px;
+}
 .package-item.selected {
     box-shadow: 
         inset 6px 6px 12px var(--shadow-inset-dark), 
         inset -6px -6px 12px var(--shadow-inset-light);
-    border: none;
+    border: none; 
 }
 
-/* --- Окошко для суммы (Прямоугольное, но в Неоморфизме) --- */
-.price-display-box {
+/* Старая цена зачеркнута */
+.old-price { 
+    text-decoration: line-through; 
+    color: #999; 
+    font-size: 0.9em; 
+}
+.new-price { font-size: 1.6em; font-weight: 800; color: #e44d26; margin-bottom: 15px;}
+.package-title { font-size: 1.4em; color: var(--primary-color); margin-bottom: 5px; }
+.info { min-height: 40px; font-size: 0.85em; }
+
+/* --- Активная кнопка СУММА К ОПЛАТЕ (СБП) --- */
+a.price-display-box {
+    display: block; 
+    text-decoration: none;
+    cursor: pointer;
+    
     margin: 20px auto;
     padding: 15px 30px;
     font-size: 1.3em;
     font-weight: bold;
-    color: var(--text-color);
+    color: var(--primary-color); 
     
-    /* Добавляем "рамку" через тени, а не border */
     border-radius: 10px;
     background: var(--light-color);
     box-shadow: 
-        5px 5px 10px var(--shadow-dark), /* Внешняя тень */
-        -5px -5px 10px var(--shadow-light), /* Светлая тень */
-        inset 0 0 0 2px var(--shadow-dark); /* Имитация черного обрамления через сильную внутреннюю тень */
+        5px 5px 10px var(--shadow-dark), 
+        -5px -5px 10px var(--shadow-light), 
+        inset 0 0 0 2px var(--shadow-dark); 
     max-width: 400px;
+    width: 100%;
+    box-sizing: border-box;
 }
-
+a.price-display-box:active {
+  box-shadow: 
+    inset 4px 4px 8px var(--shadow-inset-dark), 
+    inset -4px -4px 8px var(--shadow-inset-light);
+}
 
 /* --- Кнопки (Общие) --- */
 .neumorphic-button {
@@ -80,15 +110,13 @@ body {
     inset 4px 4px 8px var(--shadow-inset-dark), 
     inset -4px -4px 8px var(--shadow-inset-light);
 }
-
-/* --- Стиль для кнопок оплаты --- */
 .payment-button {
     margin: 10px;
     font-size: 1.1em;
     max-width: 400px;
 }
 
-/* Кнопка Оплатить Картой / СБП (Светлая, как просили) */
+/* --- Кнопка Оплатить Картой / СБП --- */
 .sbp-card-button {
     color: var(--text-color);
     background: var(--light-color); 
@@ -100,7 +128,6 @@ body {
     display: inline-block;
     width: 25px;
     height: 25px;
-    /* Иконка СБП в стиле неоморфизма */
     background: var(--light-color); 
     border-radius: 5px;
     position: absolute;
@@ -112,7 +139,36 @@ body {
         inset -2px -2px 4px rgba(255,255,255,0.7);
 }
 
-/* --- Кнопки связи (WhatsApp) --- */
+/* --- Стилизация важного предупреждения (Красный и Жирный) --- */
+.important-warning {
+    margin-bottom: 25px;
+    color: var(--red-alert);
+}
+.important-warning .bold {
+    font-weight: 700;
+}
+.important-warning .uppercase {
+    text-transform: uppercase;
+}
+
+/* --- QR Секция и Кнопки связи --- */
+.qr-section {
+    margin-top: 30px;
+    padding: 20px;
+    max-width: 350px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 15px;
+}
+.qr-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+    box-shadow: 
+        4px 4px 8px var(--shadow-dark), 
+        -4px -4px 8px var(--shadow-light);
+    margin: 10px 0;
+}
 .contact-buttons-wrapper {
     display: flex;
     justify-content: center;
@@ -121,11 +177,9 @@ body {
 }
 .contact-button {
     max-width: 300px;
-    /* Обязательно в стиле неоморфизма */
     color: var(--text-color);
 }
 .contact-button i {
-    color: #25D366; /* Сохраняем цвет иконки WhatsApp */
+    color: #25D366; 
     margin-right: 8px;
 }
-/* ... (остальные стили остаются) ... */
