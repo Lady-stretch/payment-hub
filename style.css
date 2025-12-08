@@ -5,16 +5,16 @@
   --shadow-dark: rgba(163,177,198, 0.6);
   --shadow-inset-light: rgba(255,255,255, 1);
   --shadow-inset-dark: rgba(163,177,198, 0.8);
+  --text-color: #333;
 }
 
 body {
   background-color: var(--light-color);
   padding: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #333;
+  color: var(--text-color);
 }
 
-/* --- Главная карточка --- */
 .neumorphic-card {
   padding: 30px;
   border-radius: 20px;
@@ -30,30 +30,31 @@ body {
     margin: 40px auto;
     text-align: center;
 }
+/* ... (стили заголовков и сетки пакетов) ... */
 
 /* --- Стиль для выбранного пакета (ВДАВЛЕННЫЙ) --- */
 .package-item.selected {
-    /* Эффект "нажатия" */
     box-shadow: 
         inset 6px 6px 12px var(--shadow-inset-dark), 
         inset -6px -6px 12px var(--shadow-inset-light);
-    border: none; /* Убираем рамку, чтобы быть чище */
+    border: none;
 }
 
-/* --- Окошко для суммы (НОВЫЙ ЧИСТЫЙ НЕОМОРФИЗМ) --- */
+/* --- Окошко для суммы (Прямоугольное, но в Неоморфизме) --- */
 .price-display-box {
     margin: 20px auto;
     padding: 15px 30px;
     font-size: 1.3em;
     font-weight: bold;
-    color: #333;
+    color: var(--text-color);
     
-    /* Делаем его "выдавленным" из фона, а не с черной рамкой */
+    /* Добавляем "рамку" через тени, а не border */
     border-radius: 10px;
     background: var(--light-color);
     box-shadow: 
-        5px 5px 10px var(--shadow-dark), 
-        -5px -5px 10px var(--shadow-light);
+        5px 5px 10px var(--shadow-dark), /* Внешняя тень */
+        -5px -5px 10px var(--shadow-light), /* Светлая тень */
+        inset 0 0 0 2px var(--shadow-dark); /* Имитация черного обрамления через сильную внутреннюю тень */
     max-width: 400px;
 }
 
@@ -67,16 +68,13 @@ body {
   cursor: pointer;
   font-weight: bold;
   transition: all 0.2s ease;
-  color: #333;
-  /* Выдавленная кнопка */
+  color: var(--text-color);
   box-shadow: 
     6px 6px 12px var(--shadow-dark), 
     -6px -6px 12px var(--shadow-light);
   width: 100%;
   max-width: 300px;
 }
-
-/* Эффект "Нажатия" (ВДАВЛЕННАЯ кнопка) */
 .neumorphic-button:active {
   box-shadow: 
     inset 4px 4px 8px var(--shadow-inset-dark), 
@@ -90,15 +88,9 @@ body {
     max-width: 400px;
 }
 
-.installment-button {
-    color: var(--primary-color);
-    /* Здесь можно добавить легкий оттенок, но сохраняем неоморфизм */
-}
-
-/* Кнопка Оплатить Картой / СБП (Возвращаем ее в неоморфизм) */
+/* Кнопка Оплатить Картой / СБП (Светлая, как просили) */
 .sbp-card-button {
-    color: #333;
-    /* Полностью опираемся на тени */
+    color: var(--text-color);
     background: var(--light-color); 
     position: relative;
     padding-left: 50px; 
@@ -108,7 +100,7 @@ body {
     display: inline-block;
     width: 25px;
     height: 25px;
-    /* Вместо сплошного цвета, используем легкий внутренний "вдавленный" эффект */
+    /* Иконка СБП в стиле неоморфизма */
     background: var(--light-color); 
     border-radius: 5px;
     position: absolute;
@@ -129,11 +121,11 @@ body {
 }
 .contact-button {
     max-width: 300px;
-    color: #333; /* Убираем яркий зеленый, чтобы не нарушать цветовую палитру неоморфизма */
-    /* Выдавленный стиль, как и у всех */
+    /* Обязательно в стиле неоморфизма */
+    color: var(--text-color);
 }
 .contact-button i {
-    color: #25D366; /* Сохраняем цвет самой иконки WhatsApp для узнаваемости */
+    color: #25D366; /* Сохраняем цвет иконки WhatsApp */
     margin-right: 8px;
 }
-/* ... (остальные стили qr-section, footer-note, packages-grid остаются) ... */
+/* ... (остальные стили остаются) ... */
