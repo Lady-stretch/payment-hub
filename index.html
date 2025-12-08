@@ -3,48 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Платежный Хаб | Абонементы</title>
+    <title>Lady Stretch | Платежный Хаб</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="neumorphic-card payment-hub">
-    <h2>🔥 ВНИМАНИЕ! ТОЛЬКО СЕГОДНЯ: Скидка до 45%!</h2>
-    <p>⚡️ Выберите свой идеальный пакет и удобный способ оплаты:</p>
+    <h2 class="title">🔥 ВНИМАНИЕ! ТОЛЬКО СЕГОДНЯ: Скидка до 45%! 🔥</h2>
+    <p class="subtitle">⚡️ Выберите свой идеальный пакет и удобный способ оплаты:</p>
 
-    <div class="packages">
-        <div class="package-item neumorphic-card" data-price="34320" data-name="Королевский">
-            <h3>Королевский пакет (96 занятий)</h3>
-            <p class="old-price">43 680 ₽</p>
+    <div class="packages-grid">
+
+        <div class="package-item neumorphic-card" data-price="34320" data-name="Королевский" data-installments="Нет">
+            <h3 class="package-title">👑 Королевский пакет</h3>
+            <p class="lessons">96 занятий</p>
+            <p class="old-price">~~43 680 ₽~~</p>
             <p class="new-price">**34 320 ₽**</p>
-            <p class="limit">Осталось 10 мест!</p>
-            
+            <p class="info limit">Осталось 10 мест по этой цене!</p>
             <button class="neumorphic-button select-package">Выбрать и оплатить</button>
         </div>
+
+        <div class="package-item neumorphic-card" data-price="27040" data-name="Премиум" data-installments="10">
+            <h3 class="package-title">✨ Премиум-пакет</h3>
+            <p class="lessons">64 занятия</p>
+            <p class="old-price">~~33 280 ₽~~</p>
+            <p class="new-price">**27 040 ₽**</p>
+            <p class="info">Доступна банковская рассрочка до **10 месяцев**</p>
+            <button class="neumorphic-button select-package">Выбрать и оплатить</button>
         </div>
 
-    <div id="payment-options" style="display:none; margin-top: 30px;">
-        <h3>✅ Выбран пакет: <span id="selected-package-name"></span> (<span id="selected-package-price"></span> ₽)</h3>
-        
-        <h4>Выберите способ оплаты:</h4>
+        <div class="package-item neumorphic-card" data-price="20280" data-name="Оптимальный" data-installments="3">
+            <h3 class="package-title">✅ Оптимальный выбор</h3>
+            <p class="lessons">48 занятий</p>
+            <p class="old-price">~~24 960 ₽~~</p>
+            <p class="new-price">**20 280 ₽**</p>
+            <p class="info">Рассрочка до **3 месяцев**</p>
+            <button class="neumorphic-button select-package">Выбрать и оплатить</button>
+        </div>
 
-        <button class="neumorphic-button payment-button installment-button" onclick="window.location.href='[ССЫЛКА_НА_ВАШУ_БАНКОВСКУЮ_РАССРОЧКУ]' ">
-            💳 Банковская Рассрочка (до 10 мес.)
+        <div class="package-item neumorphic-card" data-price="15600" data-name="Активный старт" data-installments="Нет">
+            <h3 class="package-title">🏃 Активный старт</h3>
+            <p class="lessons">32 занятия</p>
+            <p class="old-price">~~18 720 ₽~~</p>
+            <p class="new-price">**15 600 ₽**</p>
+            <p class="info">Идеально для регулярных занятий</p>
+            <button class="neumorphic-button select-package">Выбрать и оплатить</button>
+        </div>
+
+        <div class="package-item neumorphic-card" data-price="13280" data-name="Интенсив" data-installments="Нет">
+            <h3 class="package-title">💪 Интенсив</h3>
+            <p class="lessons">24 занятия</p>
+            <p class="old-price">~~15 600 ₽~~</p>
+            <p class="new-price">**13 280 ₽**</p>
+            <p class="info">Быстрый результат без переплат</p>
+            <button class="neumorphic-button select-package">Выбрать и оплатить</button>
+        </div>
+
+        <div class="package-item neumorphic-card" data-price="8840" data-name="Пробный курс" data-installments="Нет">
+            <h3 class="package-title">🌟 Пробный курс</h3>
+            <p class="lessons">16 занятий</p>
+            <p class="old-price">~~10 400 ₽~~</p>
+            <p class="new-price">**8 840 ₽**</p>
+            <p class="info">Отличный старт для новичков</p>
+            <button class="neumorphic-button select-package">Выбрать и оплатить</button>
+        </div>
+
+    </div>
+    
+    <div id="payment-options" style="display:none; margin-top: 50px;">
+        <h3 class="payment-title">🎉 Ваш заказ: <span id="selected-package-name"></span></h3>
+        <p class="payment-summary">Сумма к оплате: **<span id="selected-package-price"></span> ₽**</p>
+        
+        <h4 class="method-title">Выберите удобный способ:</h4>
+
+        <button id="installment-btn" class="neumorphic-button payment-button installment-button" onclick="window.open('[ССЫЛКА_НА_ВАШУ_БАНКОВСКУЮ_РАССРОЧКУ]', '_blank') ">
+            💳 Оформить **Рассрочку** (<span id="installment-months">до 10 мес.</span>)
         </button>
 
-        <button class="neumorphic-button payment-button sbp-button" onclick="window.location.href='[ССЫЛКА_НА_ВАШЕГО_АГРЕГАТОРА_С_ФОРМОЙ]' ">
+        <button class="neumorphic-button payment-button sbp-button" onclick="window.open('[ССЫЛКА_НА_ВАШЕГО_АГРЕГАТОРА_С_ФОРМОЙ]', '_blank') ">
             🚀 Оплатить Картой / СБП (онлайн)
         </button>
 
         <div class="qr-section neumorphic-card">
-            <h4>ИЛИ оплата по QR-коду (Мгновенно)</h4>
-            <img src="assets/qr_code.png" alt="QR-код для оплаты" width="200">
+            <h4>ИЛИ Быстрая оплата по QR-коду</h4>
+            <img src="assets/qr_code.png" alt="QR-код для оплаты" class="qr-image">
             <p>Наведите камеру или откройте приложение банка.</p>
         </div>
 
     </div>
 
-    <p class="ps-note">P.S. Цены вырастут после 14 декабря. Успейте!</p>
+    <div class="footer-note">
+        <p>⏰ **Важно:** Количество мест ограничено! Пакеты на 96 занятий снимаются с продажи с января.</p>
+        <p>💌 **Что делать дальше:** Ответьте на сообщение словом "Хочу" или оплатите здесь, чтобы забронировать пакет!</p>
+    </div>
+
 </div>
 
 <script src="script.js"></script>
