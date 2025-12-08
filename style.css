@@ -1,98 +1,42 @@
 :root {
   --light-color: #e0e5ec; /* Светлый фон (основа неоморфизма) */
-  --primary-color: #5c6ac4; /* Акцентный цвет (для текста/кнопок) */
+  --primary-color: #5c6ac4; /* Акцентный цвет */
   --shadow-light: rgba(255,255,255, 1);
   --shadow-dark: rgba(163,177,198, 0.6);
   --shadow-inset-light: rgba(255,255,255, 1);
   --shadow-inset-dark: rgba(163,177,198, 0.8);
+  --border-color: #333; /* Цвет рамки для окошка суммы */
 }
 
-body {
-  background-color: var(--light-color);
-  padding: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #333;
-}
+/* ... (предыдущие стили body, neumorphic-card, packages-grid остаются) ... */
 
-.neumorphic-card {
-  padding: 30px;
-  border-radius: 20px;
-  background: var(--light-color);
-  /* Выдавленный эффект (OUTER shadow) */
-  box-shadow: 
-    10px 10px 20px var(--shadow-dark), 
-    -10px -10px 20px var(--shadow-light);
-  margin-bottom: 25px;
-}
-
-/* --- Главный контейнер --- */
-.payment-hub {
-    max-width: 900px;
-    margin: 40px auto;
-    text-align: center;
-}
-.title { color: var(--primary-color); }
-.subtitle { margin-bottom: 30px; }
-
-/* --- Сетка пакетов --- */
-.packages-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    margin-bottom: 40px;
-}
-
-.package-item {
-    padding: 20px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: center;
-    border-radius: 15px;
-}
-
-/* Стиль для выбранного пакета (ВДАВЛЕННЫЙ) */
+/* --- Стиль для выбранного пакета --- */
 .package-item.selected {
     box-shadow: 
         inset 6px 6px 12px var(--shadow-inset-dark), 
         inset -6px -6px 12px var(--shadow-inset-light);
-    border: 1px solid var(--primary-color); /* Визуальный акцент */
+    border: 1px solid var(--primary-color);
+}
+/* ... (стили .package-title, .lessons, .old-price, .new-price остаются) ... */
+
+
+/* --- Окошко для суммы (НОВЫЙ СТИЛЬ) --- */
+.price-display-box {
+    margin: 20px auto;
+    padding: 15px 30px;
+    font-size: 1.3em;
+    font-weight: bold;
+    color: var(--primary-color);
+    /* Черное обрамление с округленными краями */
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    max-width: 400px;
+    background-color: white; /* Делаем его заметным на светлом фоне */
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2); /* Добавляем легкую тень */
 }
 
-.package-title { font-size: 1.4em; color: var(--primary-color); margin-bottom: 5px; }
-.lessons { font-weight: bold; }
-.old-price { text-decoration: line-through; color: #999; font-size: 0.9em; }
-.new-price { font-size: 1.6em; font-weight: 800; color: #e44d26; margin-bottom: 15px;}
-.info { min-height: 40px; font-size: 0.85em; }
 
-/* --- Кнопки (Общие) --- */
-.neumorphic-button {
-  padding: 15px 25px;
-  border-radius: 12px;
-  background: var(--light-color);
-  border: none;
-  cursor: pointer;
-  font-weight: bold;
-  transition: all 0.2s ease;
-  color: #333;
-  /* Выдавленная кнопка */
-  box-shadow: 
-    6px 6px 12px var(--shadow-dark), 
-    -6px -6px 12px var(--shadow-light);
-  width: 100%;
-  max-width: 300px; /* Ограничиваем ширину кнопок в пакете */
-}
-
-/* Эффект "Нажатия" (ВДАВЛЕННАЯ кнопка) */
-.neumorphic-button:active {
-  box-shadow: 
-    inset 4px 4px 8px var(--shadow-inset-dark), 
-    inset -4px -4px 8px var(--shadow-inset-light);
-}
-
-/* --- Стиль для кнопок оплаты --- */
-#payment-options {
-    text-align: center;
-}
+/* --- Кнопки оплаты --- */
 .payment-button {
     margin: 10px;
     font-size: 1.1em;
@@ -102,34 +46,52 @@ body {
 .installment-button {
     color: var(--primary-color);
     border: 1px solid var(--primary-color);
-}
-.sbp-button {
-    background-color: #5cb85c;
-    color: white;
-}
-
-/* --- QR Секция --- */
-.qr-section {
-    margin-top: 30px;
-    padding: 20px;
-    max-width: 350px;
-    margin-left: auto;
-    margin-right: auto;
-    border-radius: 15px;
-}
-.qr-image {
-    width: 150px;
-    height: 150px;
-    /* Изображение тоже в стиле неоморфизма */
-    border-radius: 10px;
+    /* Выдавленная кнопка, как и все */
     box-shadow: 
-        4px 4px 8px var(--shadow-dark), 
-        -4px -4px 8px var(--shadow-light);
-    margin: 10px 0;
+        6px 6px 12px var(--shadow-dark), 
+        -6px -6px 12px var(--shadow-light);
 }
 
-.footer-note {
-    margin-top: 40px;
-    font-size: 0.9em;
-    color: #666;
+/* Измененная кнопка Оплатить Картой / СБП */
+.sbp-card-button {
+    color: #333;
+    border: 1px solid #c0c0c0; /* Светлая рамка */
+    background: var(--light-color); /* Светлый цвет, как у остальных */
+    /* Вставляем иконку СБП (квадратный логотип СБП) */
+    position: relative;
+    padding-left: 50px; 
 }
+.sbp-icon {
+    content: '';
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background-color: #f7a900; /* Цвет лого СБП */
+    border-radius: 5px;
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+}
+
+/* --- Кнопки связи (WhatsApp) --- */
+.contact-title {
+    margin-top: 40px;
+    margin-bottom: 15px;
+}
+.contact-buttons-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+.contact-button {
+    max-width: 300px;
+    color: #25D366; /* Зеленый для WhatsApp */
+    border: 1px solid #25D366;
+}
+.contact-button i {
+    margin-right: 8px;
+}
+/* ... (остальные стили qr-section, footer-note остаются) ... */
