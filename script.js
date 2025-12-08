@@ -1,3 +1,6 @@
+// Глобальная переменная для хранения выбранной ссылки рассрочки
+let currentInstallmentLink = '';
+
 document.addEventListener('DOMContentLoaded', () => {
     const packageItems = document.querySelectorAll('.package-item');
     const paymentOptions = document.getElementById('payment-options');
@@ -17,27 +20,36 @@ document.addEventListener('DOMContentLoaded', () => {
         selectButton.addEventListener('click', () => {
             const price = item.getAttribute('data-price');
             const name = item.getAttribute('data-name');
-            const installments = item.getAttribute('data-installments'); // Получаем инфо о рассрочке
+            const installments = item.getAttribute('data-installments');
+            const link = item.getAttribute('data-link'); // Получаем ссылку рассрочки
 
             // 1. Снимаем выделение со всех и добавляем класс 'selected'
             packageItems.forEach(i => i.classList.remove('selected'));
             item.classList.add('selected');
 
             // 2. Обновляем информацию в блоке оплаты
-            selectedName.textContent = name;
+            selectedName.textContent = name; // В окошке суммы название убрано, но мы его сохраним для будущего
             selectedPrice.textContent = formatPrice(price);
             paymentOptions.style.display = 'block';
 
             // 3. Логика кнопки рассрочки
-            if (installments !== 'Нет') {
+            if (installments !== 'Нет' && link) {
+                // Пакеты 96, 64, 48 имеют ссылку и срок
+                currentInstallmentLink = link;
                 installmentBtn.style.display = 'inline-block';
                 installmentBtn.disabled = false;
-                // Меняем текст на кнопке
-                installmentMonths.textContent = `до ${installments} мес.`;
+                
+                // Установка текста в зависимости от срока
+                if (installments === '6') {
+                    installmentMonths.textContent = `на 6 мес.`;
+                } else {
+                    installmentMonths.textContent = `до ${installments} мес.`;
+                }
+
             } else {
-                // Скрываем или делаем кнопку неактивной, если рассрочка недоступна
+                // Скрываем, если рассрочка недоступна для этого пакета
                 installmentBtn.style.display = 'none'; 
-                // Или можно: installmentBtn.disabled = true; installmentBtn.style.opacity = 0.5;
+                currentInstallmentLink = '';
             }
 
             // 4. Прокрутка к блоку оплаты
@@ -45,3 +57,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+// Глобальная функция для открытия ссылки рассрочки (вызывается из HTML)
+function openInstallmentLink() {
+    if (currentInstallmentLink) {
+        window.open(currentInstallmentLink, '_blank');
+    }
+}
