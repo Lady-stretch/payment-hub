@@ -1,0 +1,52 @@
+/* Пример основных стилей для неоморфизма */
+:root {
+  --light-color: #e0e5ec; /* Светлый фон */
+  --primary-color: #5c6ac4; /* Акцентный цвет для кнопок */
+}
+
+body {
+  background-color: var(--light-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.neumorphic-card {
+  /* Эффект "выдавленной" карточки */
+  padding: 30px;
+  border-radius: 20px;
+  background: var(--light-color);
+  box-shadow: 
+    9px 9px 16px rgba(163,177,198,.6), 
+    -9px -9px 16px rgba(255,255,255, 1);
+}
+
+.neumorphic-button {
+  /* Эффект "выдавленной" кнопки */
+  padding: 15px 25px;
+  border-radius: 12px;
+  background: var(--light-color);
+  box-shadow: 
+    6px 6px 12px rgba(163,177,198,.6), 
+    -6px -6px 12px rgba(255,255,255, 1);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.neumorphic-button:hover {
+  /* Легкое поднятие */
+  box-shadow: 
+    3px 3px 6px rgba(163,177,198,.6), 
+    -3px -3px 6px rgba(255,255,255, 1);
+}
+
+.neumorphic-button:active {
+  /* Эффект "нажатия" (вдавленная кнопка) */
+  box-shadow: 
+    inset 4px 4px 8px rgba(163,177,198, 0.6), 
+    inset -4px -4px 8px rgba(255,255,255, 1);
+}
