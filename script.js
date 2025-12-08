@@ -3,7 +3,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const paymentOptions = document.getElementById('payment-options');
     const selectedName = document.getElementById('selected-package-name');
     const selectedPrice = document.getElementById('selected-package-price');
-    const body = document.body;
+    const installmentBtn = document.getElementById('installment-btn');
+    const installmentMonths = document.getElementById('installment-months');
+
+    // Функция для форматирования числа с пробелами (например, 34 320)
+    const formatPrice = (price) => {
+        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    };
 
     packageItems.forEach(item => {
         const selectButton = item.querySelector('.select-package');
@@ -11,24 +17,31 @@ document.addEventListener('DOMContentLoaded', () => {
         selectButton.addEventListener('click', () => {
             const price = item.getAttribute('data-price');
             const name = item.getAttribute('data-name');
-            
-            // 1. Снимаем выделение со всех
-            packageItems.forEach(i => i.style.boxShadow = '9px 9px 16px rgba(163,177,198,.6), -9px -9px 16px rgba(255,255,255, 1)');
-            
-            // 2. Выделяем текущий (легкое "нажатие" или акцент)
-            item.style.boxShadow = 'inset 4px 4px 8px rgba(163,177,198, 0.6), inset -4px -4px 8px rgba(255,255,255, 1)';
+            const installments = item.getAttribute('data-installments'); // Получаем инфо о рассрочке
 
-            // 3. Обновляем информацию в блоке оплаты
+            // 1. Снимаем выделение со всех и добавляем класс 'selected'
+            packageItems.forEach(i => i.classList.remove('selected'));
+            item.classList.add('selected');
+
+            // 2. Обновляем информацию в блоке оплаты
             selectedName.textContent = name;
-            selectedPrice.textContent = price.replace(/\B(?=(\d{3})+(?!\d))/g, " "); // Форматирование числа
+            selectedPrice.textContent = formatPrice(price);
             paymentOptions.style.display = 'block';
 
-            // 4. Прокрутка к блоку оплаты
-            paymentOptions.scrollIntoView({ behavior: 'smooth' });
+            // 3. Логика кнопки рассрочки
+            if (installments !== 'Нет') {
+                installmentBtn.style.display = 'inline-block';
+                installmentBtn.disabled = false;
+                // Меняем текст на кнопке
+                installmentMonths.textContent = `до ${installments} мес.`;
+            } else {
+                // Скрываем или делаем кнопку неактивной, если рассрочка недоступна
+                installmentBtn.style.display = 'none'; 
+                // Или можно: installmentBtn.disabled = true; installmentBtn.style.opacity = 0.5;
+            }
 
-            // **TODO: Здесь можно добавить логику, которая меняет ссылки на рассрочку
-            // в зависимости от выбранного пакета (например, лимит рассрочки).**
-            // Например: if (name === 'Королевский') { installmentButton.href = '...' }
+            // 4. Прокрутка к блоку оплаты
+            paymentOptions.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
     });
 });
