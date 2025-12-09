@@ -33,9 +33,22 @@ body {
     text-align: center;
 }
 
-/* КРАСНЫЙ ТЕКСТ ДЛЯ ГЛАВНОГО ЗАГОЛОВКА */
+/* КРАСНЫЙ ТЕКСТ ДЛЯ ГЛАВНОГО ЗАГОЛОВКА И ТАЙМЕРА */
 .red-alert-text {
     color: var(--red-alert);
+}
+
+/* --- СТИЛИ ДЛЯ ТАЙМЕРА ОБРАТНОГО ОТСЧЕТА (НОВЫЙ БЛОК) --- */
+#countdown-timer span {
+    /* Чтобы цифры были крупнее и выделялись */
+    font-size: 1.2em;
+    padding: 3px 5px;
+    /* Стиль неоморфизма для цифр */
+    border-radius: 5px;
+    background: var(--light-color);
+    box-shadow: 
+      inset 2px 2px 4px var(--shadow-dark), 
+      inset -2px -2px 4px var(--shadow-light);
 }
 
 .packages-grid {
