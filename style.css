@@ -6,12 +6,13 @@
   --shadow-inset-light: rgba(255,255,255, 1);
   --shadow-inset-dark: rgba(163,177,198, 0.8);
   --text-color: #333;
-  --red-alert: #cc0000; /* Красный цвет для предупреждения */
+  --red-alert: #cc0000;
+  --header-height: 80px; /* Высота фиксированного хедера */
 }
 
 body {
   background-color: var(--light-color);
-  padding: 20px;
+  padding: 0; 
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: var(--text-color);
   line-height: 1.5;
@@ -61,18 +62,70 @@ body {
 .package-title { font-size: 1.4em; color: var(--primary-color); margin-bottom: 5px; }
 .info { min-height: 40px; font-size: 0.85em; }
 
+
+/* --- ФИКСИРОВАННЫЙ HEADER --- */
+.header-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background: var(--light-color);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    height: var(--header-height);
+}
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    height: 100%;
+    box-shadow: none; 
+    border-radius: 0;
+}
+.logo-and-back {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.logo-img {
+    height: 40px; /* Размер логотипа */
+}
+.banner-text {
+    font-weight: bold;
+    color: var(--red-alert);
+    text-align: right;
+    font-size: 1.1em;
+}
+
+/* Отступ для основного контента */
+.content-wrapper {
+    padding-top: calc(var(--header-height) + 20px); 
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* --- Кнопка Назад --- */
+.back-button {
+    width: auto;
+    padding: 10px 15px;
+    font-size: 0.9em;
+    max-width: none;
+}
+.back-button i {
+    margin-right: 5px;
+}
+
 /* --- Активная кнопка СУММА К ОПЛАТЕ (СБП) --- */
 a.price-display-box {
     display: block; 
     text-decoration: none;
     cursor: pointer;
-    
     margin: 20px auto;
     padding: 15px 30px;
     font-size: 1.3em;
     font-weight: bold;
     color: var(--primary-color); 
-    
     border-radius: 10px;
     background: var(--light-color);
     box-shadow: 
@@ -115,8 +168,11 @@ a.price-display-box:active {
     font-size: 1.1em;
     max-width: 400px;
 }
+.installment-button {
+    color: var(--primary-color);
+}
 
-/* --- Кнопка Оплатить Картой / СБП --- */
+/* --- Кнопка Оплаты Картой / СБП --- */
 .sbp-card-button {
     color: var(--text-color);
     background: var(--light-color); 
@@ -139,7 +195,7 @@ a.price-display-box:active {
         inset -2px -2px 4px rgba(255,255,255,0.7);
 }
 
-/* --- Стилизация важного предупреждения (Красный и Жирный) --- */
+/* --- Стилизация важного предупреждения --- */
 .important-warning {
     margin-bottom: 25px;
     color: var(--red-alert);
@@ -151,7 +207,7 @@ a.price-display-box:active {
     text-transform: uppercase;
 }
 
-/* --- QR Секция и Кнопки связи --- */
+/* --- QR Секция --- */
 .qr-section {
     margin-top: 30px;
     padding: 20px;
@@ -168,6 +224,35 @@ a.price-display-box:active {
         4px 4px 8px var(--shadow-dark), 
         -4px -4px 8px var(--shadow-light);
     margin: 10px 0;
+}
+/* --- Кнопка Max Администратор (Кастомный логотип "M") --- */
+.max-messenger-button {
+    position: relative;
+    padding-left: 50px;
+    color: var(--primary-color);
+}
+.max-logo {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 25px;
+    height: 25px;
+    background-color: var(--light-color); 
+    border-radius: 50%;
+    font-weight: 900;
+    font-size: 1.2em;
+    color: var(--primary-color); 
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    box-shadow: 
+        inset 2px 2px 4px rgba(0,0,0,0.2), 
+        inset -2px -2px 4px rgba(255,255,255,0.7);
+}
+.contact-title {
+    margin-top: 40px;
+    margin-bottom: 15px;
 }
 .contact-buttons-wrapper {
     display: flex;
