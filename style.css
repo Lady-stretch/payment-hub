@@ -69,7 +69,7 @@ body {
 .info { min-height: 40px; font-size: 0.85em; }
 
 
-/* --- ФИКСИРОВАННЫЙ HEADER --- */
+/* --- ФИКСИРОВАННЫЙ HEADER (Центрирование лого) --- */
 .header-fixed {
     position: fixed;
     top: 0;
@@ -82,7 +82,8 @@ body {
 }
 .header-content {
     display: flex;
-    justify-content: space-between;
+    /* Центрируем контент по горизонтали */
+    justify-content: center; 
     align-items: center;
     padding: 10px 20px;
     height: 100%;
@@ -95,13 +96,12 @@ body {
     gap: 15px;
 }
 .logo-img {
-    height: 40px; /* Размер логотипа */
+    /* Увеличен размер логотипа для эффекта баннера */
+    height: 55px; 
 }
 .banner-text {
-    font-weight: bold;
-    color: var(--red-alert);
-    text-align: right;
-    font-size: 1.1em;
+    /* Скрываем пустой баннерный текст, чтобы он не мешал центрированию */
+    display: none; 
 }
 
 /* Отступ для основного контента */
