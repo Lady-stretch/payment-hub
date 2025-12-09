@@ -4,141 +4,161 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lady Stretch | Платежный Хаб (Неоморфизм)</title>
+    
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 
-<div class="neumorphic-card payment-hub">
-    <h2 class="title">🔥 ВНИМАНИЕ! ТОЛЬКО СЕГОДНЯ: Скидка до 45%! 🔥</h2>
-    <p class="subtitle">⚡️ Выберите свой идеальный пакет и удобный способ оплаты:</p>
-
-    <div class="packages-grid">
-
-        <div class="package-item neumorphic-card" 
-            data-price="34320" 
-            data-name="Королевский" 
-            data-installments="10" 
-            data-link="https://ecom.otpbank.ru/smart-form?config=96dca84c-9424-4115-bd82-65a55f06e35e">
-            <h3 class="package-title">👑 Королевский пакет</h3>
-            <p class="lessons">96 занятий</p>
-            <p class="old-price">~~43 680 ₽~~</p>
-            <p class="new-price">34 320 ₽</p>
-            <p class="info limit">Доступна банковская беспроцентная рассрочка до 10 месяцев</p>
-            <button class="neumorphic-button select-package">Выбрать и оплатить</button>
+<header class="header-fixed">
+    <div class="header-content neumorphic-card">
+        <div class="logo-and-back">
+            <button class="neumorphic-button back-button" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i> Назад
+            </button>
+            <div class="logo">
+                <img src="assets/logo_header_final.png" alt="Lady Stretch Logo" class="logo-img">
+            </div>
         </div>
-
-        <div class="package-item neumorphic-card" 
-            data-price="27040" 
-            data-name="Премиум" 
-            data-installments="10" 
-            data-link="https://ecom.otpbank.ru/smart-form?config=6ed1f1bc-33ee-45b7-a7ae-852ca0ffa44f">
-            <h3 class="package-title">✨ Премиум-пакет</h3>
-            <p class="lessons">64 занятия</p>
-            <p class="old-price">~~33 280 ₽~~</p>
-            <p class="new-price">27 040 ₽</p>
-            <p class="info">Доступна банковская беспроцентная рассрочка до 10 месяцев</p>
-            <button class="neumorphic-button select-package">Выбрать и оплатить</button>
+        <div class="banner-text">
+            СКИДКИ ДО 45%! УСПЕЙТЕ КУПИТЬ!
         </div>
-
-        <div class="package-item neumorphic-card" 
-            data-price="20280" 
-            data-name="Оптимальный" 
-            data-installments="6" 
-            data-link="https://ecom.otpbank.ru/smart-form?config=9d8793c4-bd20-4bfe-91d9-bfc9c60498da">
-            <h3 class="package-title">✅ Оптимальный выбор</h3>
-            <p class="lessons">48 занятий</p>
-            <p class="old-price">~~24 960 ₽~~</p>
-            <p class="new-price">20 280 ₽</p>
-            <p class="info">Доступна банковская беспроцентная рассрочка на 6 месяцев</p>
-            <button class="neumorphic-button select-package">Выбрать и оплатить</button>
-        </div>
-
-        <div class="package-item neumorphic-card" 
-            data-price="15600" 
-            data-name="Активный старт" 
-            data-installments="Нет" 
-            data-link="">
-            <h3 class="package-title">🏃 Активный старт</h3>
-            <p class="lessons">32 занятия</p>
-            <p class="old-price">~~18 720 ₽~~</p>
-            <p class="new-price">15 600 ₽</p>
-            <p class="info">Идеально для регулярных занятий</p>
-            <button class="neumorphic-button select-package">Выбрать и оплатить</button>
-        </div>
-
-        <div class="package-item neumorphic-card" 
-            data-price="13280" 
-            data-name="Интенсив" 
-            data-installments="Нет" 
-            data-link="">
-            <h3 class="package-title">💪 Интенсив</h3>
-            <p class="lessons">24 занятия</p>
-            <p class="old-price">~~15 600 ₽~~</p>
-            <p class="new-price">13 280 ₽</p>
-            <p class="info">Быстрый результат без переплат</p>
-            <button class="neumorphic-button select-package">Выбрать и оплатить</button>
-        </div>
-
-        <div class="package-item neumorphic-card" 
-            data-price="8840" 
-            data-name="Пробный курс" 
-            data-installments="Нет" 
-            data-link="">
-            <h3 class="package-title">🌟 Пробный курс</h3>
-            <p class="lessons">16 занятий</p>
-            <p class="old-price">~~10 400 ₽~~</p>
-            <p class="new-price">8 840 ₽</p>
-            <p class="info">Отличный старт для новичков</p>
-            <button class="neumorphic-button select-package">Выбрать и оплатить</button>
-        </div>
-
     </div>
-    
-    <div id="payment-options" style="display:none; margin-top: 50px;">
+</header>
+
+<div class="content-wrapper"> 
+    <div class="neumorphic-card payment-hub">
+        <h2 class="title">🔥 ВНИМАНИЕ! ТОЛЬКО СЕГОДНЯ: Скидка до 45%! 🔥</h2>
+        <p class="subtitle">⚡️ Выберите свой идеальный пакет и удобный способ оплаты:</p>
+
+        <div class="packages-grid">
+
+            <div class="package-item neumorphic-card" 
+                data-price="34320" 
+                data-name="Королевский" 
+                data-installments="10" 
+                data-link="https://ecom.otpbank.ru/smart-form?config=96dca84c-9424-4115-bd82-65a55f06e35e">
+                <h3 class="package-title">👑 Королевский пакет</h3>
+                <p class="lessons">96 занятий</p>
+                <p class="old-price">~~43 680 ₽~~</p>
+                <p class="new-price">34 320 ₽</p>
+                <p class="info limit">Доступна банковская беспроцентная рассрочка до 10 месяцев</p>
+                <button class="neumorphic-button select-package">Выбрать и оплатить</button>
+            </div>
+            
+            <div class="package-item neumorphic-card" 
+                data-price="27040" 
+                data-name="Премиум" 
+                data-installments="10" 
+                data-link="https://ecom.otpbank.ru/smart-form?config=6ed1f1bc-33ee-45b7-a7ae-852ca0ffa44f">
+                <h3 class="package-title">✨ Премиум-пакет</h3>
+                <p class="lessons">64 занятия</p>
+                <p class="old-price">~~33 280 ₽~~</p>
+                <p class="new-price">27 040 ₽</p>
+                <p class="info">Доступна банковская беспроцентная рассрочка до 10 месяцев</p>
+                <button class="neumorphic-button select-package">Выбрать и оплатить</button>
+            </div>
+            
+            <div class="package-item neumorphic-card" 
+                data-price="20280" 
+                data-name="Оптимальный" 
+                data-installments="6" 
+                data-link="https://ecom.otpbank.ru/smart-form?config=9d8793c4-bd20-4bfe-91d9-bfc9c60498da">
+                <h3 class="package-title">✅ Оптимальный выбор</h3>
+                <p class="lessons">48 занятий</p>
+                <p class="old-price">~~24 960 ₽~~</p>
+                <p class="new-price">20 280 ₽</p>
+                <p class="info">Доступна банковская беспроцентная рассрочка на 6 месяцев</p>
+                <button class="neumorphic-button select-package">Выбрать и оплатить</button>
+            </div>
+            
+            <div class="package-item neumorphic-card" 
+                data-price="15600" 
+                data-name="Активный старт" 
+                data-installments="Нет" 
+                data-link="">
+                <h3 class="package-title">🏃 Активный старт</h3>
+                <p class="lessons">32 занятия</p>
+                <p class="old-price">~~18 720 ₽~~</p>
+                <p class="new-price">15 600 ₽</p>
+                <p class="info">Идеально для регулярных занятий</p>
+                <button class="neumorphic-button select-package">Выбрать и оплатить</button>
+            </div>
+
+            <div class="package-item neumorphic-card" 
+                data-price="13280" 
+                data-name="Интенсив" 
+                data-installments="Нет" 
+                data-link="">
+                <h3 class="package-title">💪 Интенсив</h3>
+                <p class="lessons">24 занятия</p>
+                <p class="old-price">~~15 600 ₽~~</p>
+                <p class="new-price">13 280 ₽</p>
+                <p class="info">Быстрый результат без переплат</p>
+                <button class="neumorphic-button select-package">Выбрать и оплатить</button>
+            </div>
+
+            <div class="package-item neumorphic-card" 
+                data-price="8840" 
+                data-name="Пробный курс" 
+                data-installments="Нет" 
+                data-link="">
+                <h3 class="package-title">🌟 Пробный курс</h3>
+                <p class="lessons">16 занятий</p>
+                <p class="old-price">~~10 400 ₽~~</p>
+                <p class="new-price">8 840 ₽</p>
+                <p class="info">Отличный старт для новичков</p>
+                <button class="neumorphic-button select-package">Выбрать и оплатить</button>
+            </div>
+        </div>
         
-        <a id="price-button-link" 
-           href="https://qr.nspk.ru/AS2A006F0RCJU7V991SBLV4AACJGFT2P?type=01&bank=100000000004&crc=A93E" 
-           target="_blank" 
-           class="price-display-box neumorphic-button">
-            Сумма к оплате: <strong><span id="selected-package-price"></span> ₽</strong> (Нажмите для оплаты СБП)
-        </a>
-        
-        <h4 class="method-title">Выберите удобный способ оплаты:</h4>
-
-        <button id="installment-btn" class="neumorphic-button payment-button installment-button" onclick="openInstallmentLink()" style="display:none;">
-            💳 Оформить <strong>Рассрочку</strong> (<span id="installment-months"></span>)
-        </button>
-
-        <button class="neumorphic-button payment-button sbp-card-button" onclick="window.open('https://checkout.tochka.com/f1ba70a9-318b-4849-bd4c-cee3ce0c541e', '_blank') ">
-            <span class="sbp-icon"></span> Оплатить <strong>Картой / СБП</strong> (резервный магазин)
-        </button>
-
-        <div class="qr-section neumorphic-card">
-            <h4>ИЛИ Быстрая оплата по QR-коду СБП</h4>
-            <a href="https://qr.nspk.ru/AS2A006F0RCJU7V991SBLV4AACJGFT2P?type=01&bank=100000000004&crc=A93E" target="_blank">
-                <img src="assets/qr_code.png" alt="QR-код для оплаты СБП" class="qr-image">
+        <div id="payment-options" style="display:none; margin-top: 50px;">
+            
+            <a id="price-button-link" 
+               href="https://qr.nspk.ru/AS2A006F0RCJU7V991SBLV4AACJGFT2P?type=01&bank=100000000004&crc=A93E" 
+               target="_blank" 
+               class="price-display-box neumorphic-button">
+                Сумма к оплате: <strong><span id="selected-package-price"></span> ₽</strong> (Нажмите для оплаты СБП)
             </a>
-            <p>Наведите камеру или откройте приложение банка.</p>
+            
+            <h4 class="method-title">Выберите удобный способ оплаты:</h4>
+
+            <button id="installment-btn" class="neumorphic-button payment-button installment-button" onclick="openInstallmentLink()" style="display:none;">
+                💳 Оформить <strong>Рассрочку</strong> (<span id="installment-months"></span>)
+            </button>
+
+            <button class="neumorphic-button payment-button sbp-card-button" onclick="window.open('https://checkout.tochka.com/f1ba70a9-318b-4849-bd4c-cee3ce0c541e', '_blank') ">
+                <span class="sbp-icon"></span> Оплатить <strong>Картой / СБП</strong> (резервный магазин)
+            </button>
+
+            <div class="qr-section neumorphic-card">
+                <h4>ИЛИ Быстрая оплата по QR-коду СБП</h4>
+                <a href="https://qr.nspk.ru/AS2A006F0RCJU7V991SBLV4AACJGFT2P?type=01&bank=100000000004&crc=A93E" target="_blank">
+                    <img src="assets/qr_code.png" alt="QR-код для оплаты СБП" class="qr-image">
+                </a>
+                <p>Наведите камеру или откройте приложение банка.</p>
+            </div>
+
+        </div>
+
+        <div class="footer-note">
+            <p class="important-warning">
+                <span class="bold">Важно: Количество абонементов и время продажи по АКЦИИ ограничено! С 16 декабря цены <span class="uppercase">ВЫРАСТУТ!</span></span>
+            </p>
+            <h4 class="contact-title">Написать администратору:</h4>
+            <div class="contact-buttons-wrapper">
+                <a href="https://clck.ru/3QjknT" target="_blank" class="neumorphic-button contact-button whatsapp-button">
+                    <i class="fab fa-whatsapp"></i> WhatsApp Администратор
+                </a>
+                <a href="https://clck.ru/3QjkoU" target="_blank" class="neumorphic-button contact-button max-messenger-button">
+                    <span class="max-logo">M</span> Max Администратор
+                </a>
+            </div>
         </div>
 
     </div>
-
-    <div class="footer-note">
-        <p class="important-warning">
-            <span class="bold">Важно: Количество мест ограничено! С 16 декабря цены <span class="uppercase">ВЫРАСТУТ!</span></span>
-        </p>
-        <h4 class="contact-title">Написать администратору:</h4>
-        <div class="contact-buttons-wrapper">
-            <a href="https://clck.ru/3QjknT" target="_blank" class="neumorphic-button contact-button whatsapp-button">
-                <i class="fab fa-whatsapp"></i> WhatsApp Администратор
-            </a>
-            <a href="https://clck.ru/3QjkoU" target="_blank" class="neumorphic-button contact-button whatsapp-button">
-                <i class="fab fa-whatsapp"></i> Max Администратор
-            </a>
-        </div>
-    </div>
-
 </div>
 
 <script src="script.js"></script>
