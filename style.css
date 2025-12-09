@@ -294,3 +294,41 @@ a.price-display-box:active {
     color: #25D366; 
     margin-right: 8px;
 }
+
+
+/* --- Медиазапросы для мобильных устройств (ИСПРАВЛЕНИЕ ТАЙМЕРА) --- */
+@media (max-width: 600px) {
+    
+    .neumorphic-card {
+        padding: 20px 15px; /* Уменьшаем внутренние отступы карты */
+    }
+
+    /* Стиль для главного контейнера таймера */
+    #countdown-timer {
+        font-size: 1.2em !important; /* Уменьшаем общий шрифт таймера */
+        /* Flexbox гарантирует, что все элементы будут пытаться уместиться в одну строку */
+        display: flex;
+        flex-wrap: nowrap; /* Не разрешаем перенос */
+        justify-content: center;
+        align-items: center;
+        gap: 5px; /* Небольшой отступ между элементами */
+    }
+
+    /* Стиль для цифр таймера */
+    #countdown-timer span {
+        font-size: 1em; /* Еще немного уменьшаем сами цифры */
+        padding: 2px 3px;
+    }
+    
+    /* Скрываем подпись "До конца акции осталось" или делаем ее меньше */
+    #countdown-timer p {
+        font-size: 0.9em;
+        margin-bottom: 0px !important; /* Убираем нижний отступ, чтобы не мешал */
+        margin-right: 5px; /* Небольшой отступ от таймера */
+    }
+    
+    /* Чтобы текст "д : ч : м : с" не переносился */
+    #countdown-timer > *:not(p) {
+        white-space: nowrap;
+    }
+}
