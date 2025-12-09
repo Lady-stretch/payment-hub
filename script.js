@@ -1,14 +1,17 @@
 // Глобальная переменная для хранения выбранной ссылки рассрочки
 let currentInstallmentLink = '';
 
+// Переменная для сохранения предыдущей позиции прокрутки
+let lastScrollPosition = 0;
+
 document.addEventListener('DOMContentLoaded', () => {
     const packageItems = document.querySelectorAll('.package-item');
     const paymentOptions = document.getElementById('payment-options');
-    const selectedPrice = document.getElementById('selected-package-price');
+    const selectedPriceSpan = document.getElementById('selected-package-price'); 
     const installmentBtn = document.getElementById('installment-btn');
     const installmentMonths = document.getElementById('installment-months');
 
-    // Функция для форматирования числа с пробелами (например, 34 320)
+    // Функция для форматирования числа с пробелами
     const formatPrice = (price) => {
         return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
     };
@@ -16,35 +19,32 @@ document.addEventListener('DOMContentLoaded', () => {
     packageItems.forEach(item => {
         const selectButton = item.querySelector('.select-package');
         
-        selectButton.addEventListener('click', () => {
+        selectButton.addEventListener('click', (event) => {
+            // 1. Сохраняем текущую позицию перед скроллом
+            lastScrollPosition = window.scrollY;
+            
             const price = item.getAttribute('data-price');
             const installments = item.getAttribute('data-installments');
-            const link = item.getAttribute('data-link'); // Получаем ссылку рассрочки
+            const link = item.getAttribute('data-link'); 
 
-            // 1. Снимаем выделение со всех и добавляем класс 'selected'
+            // 2. Логика выделения и отображения блока оплаты
             packageItems.forEach(i => i.classList.remove('selected'));
             item.classList.add('selected');
-
-            // 2. Обновляем информацию в блоке оплаты
-            selectedPrice.textContent = formatPrice(price);
+            selectedPriceSpan.textContent = formatPrice(price);
             paymentOptions.style.display = 'block';
 
             // 3. Логика кнопки рассрочки
             if (installments !== 'Нет' && link) {
-                // Активируем кнопку только для пакетов с рассрочкой
                 currentInstallmentLink = link;
                 installmentBtn.style.display = 'inline-block';
                 installmentBtn.disabled = false;
                 
-                // Установка текста в зависимости от срока
                 if (installments === '6') {
                     installmentMonths.textContent = `на 6 месяцев`;
                 } else {
                     installmentMonths.textContent = `до ${installments} месяцев`;
                 }
-
             } else {
-                // Скрываем, если рассрочка недоступна для этого пакета
                 installmentBtn.style.display = 'none'; 
                 currentInstallmentLink = '';
             }
@@ -55,9 +55,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Глобальная функция для открытия ссылки рассрочки (вызывается из HTML)
+// Глобальная функция для открытия ссылки рассрочки
 function openInstallmentLink() {
     if (currentInstallmentLink) {
         window.open(currentInstallmentLink, '_blank');
     }
+}
+
+// Глобальная функция для кнопки "Назад"
+function goBack() {
+    // Скрываем блок оплаты
+    document.getElementById('payment-options').style.display = 'none';
+    
+    // Снимаем выделение со всех абонементов
+    document.querySelectorAll('.package-item').forEach(i => i.classList.remove('selected'));
+
+    // Возвращаем на сохраненную позицию
+    window.scrollTo({
+        top: lastScrollPosition,
+        behavior: 'smooth'
+    });
 }
