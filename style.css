@@ -32,6 +32,12 @@ body {
     margin: 40px auto;
     text-align: center;
 }
+
+/* КРАСНЫЙ ТЕКСТ ДЛЯ ГЛАВНОГО ЗАГОЛОВКА */
+.red-alert-text {
+    color: var(--red-alert);
+}
+
 .packages-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -103,17 +109,6 @@ body {
     padding-top: calc(var(--header-height) + 20px); 
     padding-left: 20px;
     padding-right: 20px;
-}
-
-/* --- Кнопка Назад --- */
-.back-button {
-    width: auto;
-    padding: 10px 15px;
-    font-size: 0.9em;
-    max-width: none;
-}
-.back-button i {
-    margin-right: 5px;
 }
 
 /* --- Активная кнопка СУММА К ОПЛАТЕ (СБП) --- */
@@ -225,6 +220,24 @@ a.price-display-box:active {
         -4px -4px 8px var(--shadow-light);
     margin: 10px 0;
 }
+
+/* --- НОВЫЙ СТИЛЬ КНОПКИ "НАЗАД" ВНИЗУ --- */
+.back-button-container {
+    margin-top: 30px; 
+    margin-bottom: 30px;
+    text-align: center;
+}
+.back-button-bottom {
+    max-width: 400px;
+    font-size: 1.1em;
+    padding: 15px 30px;
+    color: var(--primary-color); 
+}
+.back-button-bottom i {
+    margin-right: 8px;
+}
+
+
 /* --- Кнопка Max Администратор (Кастомный логотип "M") --- */
 .max-messenger-button {
     position: relative;
