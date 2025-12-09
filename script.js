@@ -9,12 +9,14 @@ function updateCountdown() {
     const now = new Date().getTime();
     const distance = END_DATE.getTime() - now;
     
-    let timerElement = document.getElementById("countdown-timer");
+    let timerDisplay = document.getElementById("countdown-timer");
+    let timerCaption = document.querySelector(".timer-caption");
 
     // Если время вышло
     if (distance < 0) {
         clearInterval(countdownInterval); 
-        timerElement.innerHTML = "АКЦИЯ ЗАВЕРШЕНА!";
+        timerDisplay.innerHTML = "АКЦИЯ ЗАВЕРШЕНА!";
+        timerCaption.style.display = 'none'; // Скрываем подпись "Осталось до конца акции"
         
         // --- БЛОКИРОВКА КНОПОК ПОКУПКИ ---
         document.querySelectorAll('.select-package').forEach(button => {
@@ -39,12 +41,13 @@ function updateCountdown() {
     // Добавляем нули спереди (01, 05)
     const format = (t) => String(t).padStart(2, '0');
 
-    // Обновляем HTML
-    timerElement.innerHTML = `<p style="margin-bottom: 5px;">До конца акции осталось:</p>
-                                <span id="days">${format(days)}</span>д : 
-                                <span id="hours">${format(hours)}</span>ч : 
-                                <span id="minutes">${format(minutes)}</span>м : 
-                                <span id="seconds">${format(seconds)}</span>с`;
+    // Обновляем HTML: выводим только цифры и разделители
+    timerDisplay.innerHTML = `<span id="days">${format(days)}</span>д : 
+                              <span id="hours">${format(hours)}</span>ч : 
+                              <span id="minutes">${format(minutes)}</span>м : 
+                              <span id="seconds">${format(seconds)}</span>с`;
+    
+    timerCaption.style.display = 'block'; // Убеждаемся, что подпись видна
 }
 
 // Запускаем обновление таймера каждую секунду
@@ -106,17 +109,21 @@ packages.forEach(pkg => {
     });
 });
 
-function openInstallmentLink() {
-    if (installmentLink) {
-        window.open(installmentLink, '_blank');
-    }
-}
-
+/**
+ * Функция возвращает пользователя к сетке пакетов.
+ * Теперь скролл идет именно к блоку .packages-grid.
+ */
 function goBack() {
     // Скрываем опции оплаты
     paymentOptions.style.display = 'none';
     // Сбрасываем выделение
     packages.forEach(p => p.classList.remove('selected'));
-    // Плавный скролл к началу пакетов
+    // Плавный скролл к сетке пакетов
     document.querySelector('.packages-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function openInstallmentLink() {
+    if (installmentLink) {
+        window.open(installmentLink, '_blank');
+    }
 }
