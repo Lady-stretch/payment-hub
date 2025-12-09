@@ -38,7 +38,19 @@ body {
     color: var(--red-alert);
 }
 
-/* --- СТИЛИ ДЛЯ ТАЙМЕРА ОБРАТНОГО ОТСЧЕТА --- */
+/* --- СТИЛИ ДЛЯ ТАЙМЕРА ОБРАТНОГО ОТСЧЕТА (НОВАЯ СТРУКТУРА) --- */
+/* Контейнер для цифр */
+.timer-display {
+    font-size: 1.5em; /* Общий размер для больших экранов */
+    margin-bottom: 5px; 
+}
+/* Подпись под таймером */
+.timer-caption {
+    font-size: 0.9em;
+    font-weight: normal;
+    margin: 0;
+}
+
 #countdown-timer span {
     /* Чтобы цифры были крупнее и выделялись */
     font-size: 1.2em;
@@ -296,39 +308,42 @@ a.price-display-box:active {
 }
 
 
-/* --- Медиазапросы для мобильных устройств (ИСПРАВЛЕНИЕ ТАЙМЕРА) --- */
+/* --- Медиазапросы для мобильных устройств (ИСПРАВЛЕНИЯ) --- */
 @media (max-width: 600px) {
     
     .neumorphic-card {
         padding: 20px 15px; /* Уменьшаем внутренние отступы карты */
     }
 
-    /* Стиль для главного контейнера таймера */
-    #countdown-timer {
-        font-size: 1.2em !important; /* Уменьшаем общий шрифт таймера */
-        /* Flexbox гарантирует, что все элементы будут пытаться уместиться в одну строку */
+    /* Уменьшение заголовка для мобильной версии, чтобы вмещался в 3 строки */
+    .payment-hub .title {
+        font-size: 1.4em; 
+        line-height: 1.2;
+    }
+
+    /* Стиль для цифр таймера */
+    .timer-display {
+        font-size: 1.2em; /* Уменьшаем общий шрифт таймера */
         display: flex;
         flex-wrap: nowrap; /* Не разрешаем перенос */
         justify-content: center;
         align-items: center;
-        gap: 5px; /* Небольшой отступ между элементами */
+        gap: 5px; 
     }
-
-    /* Стиль для цифр таймера */
+    
     #countdown-timer span {
         font-size: 1em; /* Еще немного уменьшаем сами цифры */
         padding: 2px 3px;
     }
     
-    /* Скрываем подпись "До конца акции осталось" или делаем ее меньше */
-    #countdown-timer p {
-        font-size: 0.9em;
-        margin-bottom: 0px !important; /* Убираем нижний отступ, чтобы не мешал */
-        margin-right: 5px; /* Небольшой отступ от таймера */
+    /* Подпись под таймером */
+    .timer-caption {
+        font-size: 0.8em;
+        margin-top: 5px; /* Немного отступа от цифр */
     }
     
     /* Чтобы текст "д : ч : м : с" не переносился */
-    #countdown-timer > *:not(p) {
+    .timer-display > *:not(.timer-caption) {
         white-space: nowrap;
     }
 }
