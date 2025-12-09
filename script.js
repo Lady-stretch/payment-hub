@@ -3,31 +3,31 @@
 // ===============================================
 
 // 1. Устанавливаем конечную дату акции: 15 декабря 2025 года, 23:59:59, по МСК (GMT+0300)
-// Таймер отсчитывает до окончания акции.
+// Таймер сразу начинает отсчет до этой даты.
 const END_DATE = new Date('December 15, 2025 23:59:59 GMT+0300'); 
-// Начало акции: 10 декабря 2025 года, 09:00:00.
-const START_DATE = new Date('December 10, 2025 09:00:00 GMT+0300'); 
 
 function updateCountdown() {
     const now = new Date().getTime();
+    const distance = END_DATE.getTime() - now;
     
-    let distance;
     let timerElement = document.getElementById("countdown-timer");
-
-    // Проверяем, началась ли акция (если страница открыта до 09:00 10.12)
-    if (now < START_DATE.getTime()) {
-        timerElement.innerHTML = "АКЦИЯ СТАРТУЕТ: 10 декабря в 09:00!";
-        document.getElementById("payment-options").style.display = 'none'; // Скрываем оплату до старта
-        return;
-    } 
-
-    // Основной отсчет (если акция идет)
-    distance = END_DATE.getTime() - now;
 
     // Если время вышло
     if (distance < 0) {
-        clearInterval(countdownInterval);
+        clearInterval(countdownInterval); 
         timerElement.innerHTML = "АКЦИЯ ЗАВЕРШЕНА!";
+        
+        // --- БЛОКИРОВКА КНОПОК ПОКУПКИ ---
+        document.querySelectorAll('.select-package').forEach(button => {
+            button.disabled = true;
+            button.textContent = 'Акция завершена';
+            button.style.opacity = '0.5';
+            button.style.boxShadow = 'none'; // Убираем эффект неоморфизма для неактивной кнопки
+            button.style.cursor = 'default';
+        });
+        document.getElementById('payment-options').style.display = 'none'; // Скрываем блок оплаты
+        // --------------------------------
+
         return;
     }
 
@@ -72,6 +72,11 @@ const installmentMonthsSpan = document.getElementById('installment-months');
 
 packages.forEach(pkg => {
     pkg.addEventListener('click', function() {
+        // Проверяем, активна ли кнопка (если акция завершена, кнопка будет disabled)
+        if (this.querySelector('.select-package').disabled) {
+            return; 
+        }
+
         // Сброс всех выбранных элементов
         packages.forEach(p => p.classList.remove('selected'));
         
@@ -86,10 +91,6 @@ packages.forEach(pkg => {
         // Обновление цены и ссылки СБП
         priceDisplay.textContent = selectedPrice.toLocaleString('ru-RU');
         
-        // Обновление ссылки для оплаты СБП (для кнопки-цены)
-        // ВАЖНО: Это пример. Для реальной интеграции СБП/QR-кода нужно динамически генерировать ссылку с суммой!
-        // priceButtonLink.href = `https://ваш-qr-код-с-суммой?amount=${selectedPrice}`; 
-
         // Показ опций оплаты
         paymentOptions.style.display = 'block';
 
