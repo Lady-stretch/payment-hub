@@ -4,35 +4,44 @@ function updateCountdown() {
     const now = new Date().getTime();
     const distance = END_DATE.getTime() - now;
     let timerDisplay = document.getElementById("countdown-timer");
+    let timerCaption = document.querySelector(".timer-caption");
 
     if (distance < 0) {
         timerDisplay.innerHTML = "АКЦИЯ ЗАВЕРШЕНА!";
+        if(timerCaption) timerCaption.style.display = 'none';
+        document.querySelectorAll('.select-package').forEach(b => {
+            b.disabled = true; b.textContent = 'Завершено'; b.style.opacity = '0.5';
+        });
         return;
     }
 
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    const format = (t) => String(t).padStart(2, '0');
+    const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((distance % (1000 * 60)) / 1000);
+    const f = (t) => String(t).padStart(2, '0');
 
-    timerDisplay.innerHTML = `<span>${format(days)}</span>д : <span>${format(hours)}</span>ч : <span>${format(minutes)}</span>м : <span>${format(seconds)}</span>с`;
+    timerDisplay.innerHTML = `<span>${f(d)}</span>д : <span>${f(h)}</span>ч : <span>${f(m)}</span>м : <span>${f(s)}</span>с`;
 }
 setInterval(updateCountdown, 1000);
+updateCountdown();
 
-// ПОСЕТИТЕЛИ
+// Счетчик посетителей
 setInterval(() => {
     const el = document.getElementById('active-visitors-count');
-    let val = parseInt(el.innerText);
-    el.innerText = val + (Math.random() > 0.5 ? 1 : -1);
-}, 5000);
+    if(el) {
+        let val = parseInt(el.innerText);
+        el.innerText = val + (Math.random() > 0.5 ? 1 : -1);
+    }
+}, 4000);
 
-// ВЫБОР
 const packages = document.querySelectorAll('.package-item');
 const paymentOptions = document.getElementById('payment-options');
 
 packages.forEach(pkg => {
     pkg.addEventListener('click', function() {
+        if (this.querySelector('.select-package').disabled) return;
+
         packages.forEach(p => {
             p.classList.remove('selected');
             p.querySelector('.select-package').textContent = 'Выбрать';
@@ -41,17 +50,19 @@ packages.forEach(pkg => {
         this.classList.add('selected');
         this.querySelector('.select-package').textContent = 'Выбрано';
         
-        document.getElementById('selected-package-price').textContent = parseInt(this.dataset.price).toLocaleString('ru-RU');
+        const price = this.dataset.price;
+        document.getElementById('selected-package-price').textContent = parseInt(price).toLocaleString('ru-RU');
         paymentOptions.style.display = 'block';
 
         const instBtn = document.getElementById('installment-btn');
         if (this.dataset.installments !== 'Нет') {
             instBtn.style.display = 'block';
             document.getElementById('installment-months').textContent = this.dataset.installments + ' мес.';
-            window.currentLink = this.dataset.link;
+            window.currentInstallmentLink = this.dataset.link;
         } else {
             instBtn.style.display = 'none';
         }
+
         paymentOptions.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
 });
@@ -66,5 +77,5 @@ function goBack() {
 }
 
 function openInstallmentLink() {
-    if (window.currentLink) window.open(window.currentLink, '_blank');
+    if (window.currentInstallmentLink) window.open(window.currentInstallmentLink, '_blank');
 }
