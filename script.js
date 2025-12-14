@@ -1,76 +1,71 @@
-// Таймер
-const endDate = new Date('Dec 15, 2025 23:59:59').getTime();
+const END_DATE = new Date('December 15, 2025 23:59:59 GMT+0300'); 
 
-const timer = setInterval(() => {
+function updateCountdown() {
     const now = new Date().getTime();
-    const t = endDate - now;
-    if (t < 0) {
-        clearInterval(timer);
-        document.getElementById('countdown-timer').innerHTML = "АКЦИЯ ЗАВЕРШЕНА";
+    const distance = END_DATE.getTime() - now;
+    let timerDisplay = document.getElementById("countdown-timer");
+
+    if (distance < 0) {
+        timerDisplay.innerHTML = "АКЦИЯ ЗАВЕРШЕНА!";
         return;
     }
-    const d = Math.floor(t/(1000*60*60*24));
-    const h = Math.floor((t%(1000*60*60*24))/(1000*60*60));
-    const m = Math.floor((t%(1000*60*60))/(1000*60));
-    const s = Math.floor((t%(1000*60))/1000);
-    document.getElementById('days').innerText = d;
-    document.getElementById('hours').innerText = h < 10 ? '0'+h : h;
-    document.getElementById('minutes').innerText = m < 10 ? '0'+m : m;
-    document.getElementById('seconds').innerText = s < 10 ? '0'+s : s;
-}, 1000);
 
-// Имитация посетителей
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    const format = (t) => String(t).padStart(2, '0');
+
+    timerDisplay.innerHTML = `<span>${format(days)}</span>д : <span>${format(hours)}</span>ч : <span>${format(minutes)}</span>м : <span>${format(seconds)}</span>с`;
+}
+setInterval(updateCountdown, 1000);
+
+// СЧЕТЧИК ПОСЕТИТЕЛЕЙ
 setInterval(() => {
     const el = document.getElementById('active-visitors-count');
     let val = parseInt(el.innerText);
     el.innerText = val + (Math.random() > 0.5 ? 1 : -1);
-}, 4000);
+}, 5000);
 
-// Выбор пакета
-let installmentUrl = '';
-const options = document.getElementById('payment-options');
+// ЛОГИКА ВЫБОРА
+const packages = document.querySelectorAll('.package-item');
+const paymentOptions = document.getElementById('payment-options');
 
-document.querySelectorAll('.package-item').forEach(item => {
-    item.addEventListener('click', () => {
-        // Убираем выделение у всех
-        document.querySelectorAll('.package-item').forEach(i => {
-            i.classList.remove('selected');
-            i.querySelector('.select-package').innerText = 'Выбрать';
+packages.forEach(pkg => {
+    pkg.addEventListener('click', function() {
+        packages.forEach(p => {
+            p.classList.remove('selected');
+            p.querySelector('.select-package').textContent = 'Выбрать';
         });
-
-        // Выделяем текущий
-        item.classList.add('selected');
-        item.querySelector('.select-package').innerText = 'Выбрано';
-
-        // Данные
-        const price = item.getAttribute('data-price');
-        const inst = item.getAttribute('data-installments');
-        installmentUrl = item.getAttribute('data-link');
-
-        document.getElementById('selected-package-price').innerText = parseInt(price).toLocaleString();
         
+        this.classList.add('selected');
+        this.querySelector('.select-package').textContent = 'Выбрано';
+        
+        document.getElementById('selected-package-price').textContent = parseInt(this.dataset.price).toLocaleString('ru-RU');
+        paymentOptions.style.display = 'block';
+
         const instBtn = document.getElementById('installment-btn');
-        if(inst !== "Нет") {
+        if (this.dataset.installments !== 'Нет') {
             instBtn.style.display = 'block';
-            document.getElementById('installment-months').innerText = inst + ' мес.';
+            document.getElementById('installment-months').textContent = this.dataset.installments + ' мес.';
+            window.currentLink = this.dataset.link;
         } else {
             instBtn.style.display = 'none';
         }
 
-        options.style.display = 'block';
-        options.scrollIntoView({ behavior: 'smooth' });
+        paymentOptions.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
 });
 
 function goBack() {
-    options.style.display = 'none';
-    document.querySelectorAll('.package-item').forEach(i => {
-        i.classList.remove('selected');
-        i.querySelector('.select-package').innerText = 'Выбрать';
+    paymentOptions.style.display = 'none';
+    packages.forEach(p => {
+        p.classList.remove('selected');
+        p.querySelector('.select-package').textContent = 'Выбрать';
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function openInstallmentLink() {
-    if(installmentUrl) window.open(installmentUrl, '_blank');
+    if (window.currentLink) window.open(window.currentLink, '_blank');
 }
