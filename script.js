@@ -20,14 +20,14 @@ function updateCountdown() {
 }
 setInterval(updateCountdown, 1000);
 
-// СЧЕТЧИК ПОСЕТИТЕЛЕЙ
+// ПОСЕТИТЕЛИ
 setInterval(() => {
     const el = document.getElementById('active-visitors-count');
     let val = parseInt(el.innerText);
     el.innerText = val + (Math.random() > 0.5 ? 1 : -1);
 }, 5000);
 
-// ЛОГИКА ВЫБОРА
+// ВЫБОР
 const packages = document.querySelectorAll('.package-item');
 const paymentOptions = document.getElementById('payment-options');
 
@@ -52,7 +52,6 @@ packages.forEach(pkg => {
         } else {
             instBtn.style.display = 'none';
         }
-
         paymentOptions.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
 });
