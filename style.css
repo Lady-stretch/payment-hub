@@ -12,53 +12,63 @@
 
 body {
   background-color: var(--light-color); margin: 0; padding: 0;
-  font-family: 'Segoe UI', sans-serif; color: var(--text-color);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-color); line-height: 1.5;
 }
 
 .neumorphic-card {
   padding: 30px; border-radius: 20px; background: var(--light-color);
   box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light);
+  margin-bottom: 25px;
 }
 
 .payment-hub { max-width: 900px; margin: 40px auto; text-align: center; }
+.red-alert-text { color: var(--red-alert) !important; }
 
+/* ТАЙМЕР */
 .timer-display { font-size: 1.5em; margin-bottom: 5px; }
+.timer-caption { font-size: 0.9em; font-weight: normal; margin: 0; }
 #countdown-timer span {
     font-size: 1.2em; padding: 3px 5px; border-radius: 5px; background: var(--light-color);
     box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
 }
 
+/* СЕТКА ПАКЕТОВ */
 .packages-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
-.package-item { padding: 20px; cursor: pointer; transition: all 0.3s ease; }
-.package-item.selected { box-shadow: inset 6px 6px 12px var(--shadow-inset-dark), inset -6px -6px 12px var(--shadow-inset-light); }
+.package-item { padding: 20px; cursor: pointer; transition: all 0.3s ease; text-align: center; border-radius: 15px; }
+.package-item.selected { box-shadow: inset 6px 6px 12px var(--shadow-inset-dark), inset -6px -6px 12px var(--shadow-inset-light); border: none; }
 
 .package-title { font-size: 1.4em; color: var(--primary-color); margin-bottom: 5px; }
 .new-price { font-size: 1.6em; font-weight: 800; color: #e44d26; margin-bottom: 15px;}
 .old-price { text-decoration: line-through; color: #999; font-size: 0.9em; }
+.info { min-height: 40px; font-size: 0.85em; }
 
-.header-fixed {
-    position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
-    background: var(--light-color); box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1); height: var(--header-height);
-}
-.header-content { display: flex; justify-content: center; align-items: center; height: 100%; }
+/* ХЕДЕР */
+.header-fixed { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background: var(--light-color); box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1); height: var(--header-height); }
+.header-content { display: flex; justify-content: center; align-items: center; padding: 10px 20px; height: 100%; box-shadow: none; border-radius: 0; }
 .logo-img { height: 55px; }
-
 .content-wrapper { padding-top: calc(var(--header-height) + 20px); padding-left: 20px; padding-right: 20px; }
 
+/* КНОПКА СБП ГЛАВНАЯ */
 a.price-display-box {
-    display: block; text-decoration: none; margin: 20px auto; padding: 15px 30px;
-    font-size: 1.3em; font-weight: bold; color: var(--primary-color); 
-    border-radius: 10px; box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
+    display: block; text-decoration: none; cursor: pointer; margin: 20px auto; padding: 15px 30px;
+    font-size: 1.3em; font-weight: bold; color: var(--primary-color); border-radius: 10px;
+    background: var(--light-color); box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light), inset 0 0 0 2px var(--shadow-dark); 
     max-width: 400px; width: 100%; box-sizing: border-box;
 }
 
+/* ОБЩИЕ КНОПКИ */
 .neumorphic-button {
   padding: 15px 25px; border-radius: 12px; background: var(--light-color); border: none;
-  cursor: pointer; font-weight: bold; box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light);
+  cursor: pointer; font-weight: bold; transition: all 0.2s ease; color: var(--text-color);
+  box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light);
   width: 100%; max-width: 300px;
 }
+.neumorphic-button:active { box-shadow: inset 4px 4px 8px var(--shadow-inset-dark), inset -4px -4px 8px var(--shadow-inset-light); }
 
-.payment-button { margin: 10px; font-size: 1.1em; max-width: 400px; }
+.payment-button { margin: 10px auto; font-size: 1.1em; max-width: 400px; display: block; }
+.installment-button { color: var(--primary-color); }
+
 .sbp-card-button { position: relative; padding-left: 50px; }
 .sbp-icon {
     width: 25px; height: 25px; background: var(--light-color); border-radius: 5px;
@@ -66,22 +76,28 @@ a.price-display-box {
     box-shadow: inset 2px 2px 4px rgba(0,0,0,0.2), inset -2px -2px 4px rgba(255,255,255,0.7);
 }
 
-.qr-image { width: 150px; border-radius: 10px; box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light); }
-.back-button-bottom { color: var(--primary-color); max-width: 400px; }
+/* QR СЕКЦИЯ */
+.qr-section { margin: 30px auto; padding: 20px; max-width: 350px; }
+.qr-image { width: 150px; height: 150px; border-radius: 10px; box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light); }
 
-.contact-buttons-wrapper { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
-.contact-button i { color: #25D366; margin-right: 8px; }
+/* МЕССЕНДЖЕРЫ */
+.contact-buttons-wrapper { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 20px; }
+.contact-button { max-width: 300px; color: var(--text-color); text-decoration: none; display: flex; align-items: center; justify-content: center; }
+.contact-button i { color: #25D366; margin-right: 8px; font-size: 1.2em; }
 
-.max-messenger-button { position: relative; padding-left: 50px; color: var(--primary-color); }
+.max-messenger-button { position: relative; padding-left: 50px !important; color: var(--primary-color); }
 .max-logo {
-    display: inline-flex; justify-content: center; align-items: center;
-    width: 25px; height: 25px; border-radius: 50%; font-weight: 900;
+    display: inline-flex; justify-content: center; align-items: center; width: 25px; height: 25px;
+    background-color: var(--light-color); border-radius: 50%; font-weight: 900; font-size: 1.1em;
     color: var(--primary-color); position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
     box-shadow: inset 2px 2px 4px rgba(0,0,0,0.2), inset -2px -2px 4px rgba(255,255,255,0.7);
 }
 
+.important-warning { color: var(--red-alert); margin-bottom: 25px; }
+.bold { font-weight: 700; }
+.uppercase { text-transform: uppercase; }
+
 @media (max-width: 600px) {
-    .payment-hub .title { font-size: 1.4em; }
+    .payment-hub .title { font-size: 1.3em; }
     .timer-display { font-size: 1.1em; display: flex; justify-content: center; gap: 5px; }
-    #countdown-timer span { font-size: 1em; padding: 2px 3px; }
 }
