@@ -4,11 +4,9 @@ function updateCountdown() {
     const now = new Date().getTime();
     const distance = END_DATE.getTime() - now;
     let timerDisplay = document.getElementById("countdown-timer");
-    let timerCaption = document.querySelector(".timer-caption");
 
     if (distance < 0) {
         timerDisplay.innerHTML = "АКЦИЯ ЗАВЕРШЕНА!";
-        if(timerCaption) timerCaption.style.display = 'none';
         document.querySelectorAll('.select-package').forEach(b => {
             b.disabled = true; b.textContent = 'Завершено'; b.style.opacity = '0.5';
         });
@@ -26,7 +24,7 @@ function updateCountdown() {
 setInterval(updateCountdown, 1000);
 updateCountdown();
 
-// Счетчик посетителей
+// Имитация активности
 setInterval(() => {
     const el = document.getElementById('active-visitors-count');
     if(el) {
@@ -50,15 +48,14 @@ packages.forEach(pkg => {
         this.classList.add('selected');
         this.querySelector('.select-package').textContent = 'Выбрано';
         
-        const price = this.dataset.price;
-        document.getElementById('selected-package-price').textContent = parseInt(price).toLocaleString('ru-RU');
+        document.getElementById('selected-package-price').textContent = parseInt(this.dataset.price).toLocaleString('ru-RU');
         paymentOptions.style.display = 'block';
 
         const instBtn = document.getElementById('installment-btn');
         if (this.dataset.installments !== 'Нет') {
             instBtn.style.display = 'block';
             document.getElementById('installment-months').textContent = this.dataset.installments + ' мес.';
-            window.currentInstallmentLink = this.dataset.link;
+            window.currentLink = this.dataset.link;
         } else {
             instBtn.style.display = 'none';
         }
@@ -77,5 +74,5 @@ function goBack() {
 }
 
 function openInstallmentLink() {
-    if (window.currentInstallmentLink) window.open(window.currentInstallmentLink, '_blank');
+    if (window.currentLink) window.open(window.currentLink, '_blank');
 }
