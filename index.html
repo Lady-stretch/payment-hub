@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lady Stretch | Платежный хаб</title>
+    <title>Lady Stretch | Сыктывкар АКЦИЯ</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -11,86 +12,88 @@
 
 <header class="header-fixed">
     <div class="header-content neumorphic-card">
-        <div class="logo">
-            <img src="logo_header_final.png" alt="Lady Stretch" class="logo-img">
+        <div class="logo-and-back">
+            <div class="logo">
+                <img src="logo_header_final.png" alt="Lady Stretch Logo" class="logo-img">
+            </div>
         </div>
     </div>
 </header>
 
-<div class="content-wrapper">
+<div class="content-wrapper"> 
     <div class="neumorphic-card payment-hub">
-        <h2 class="title red-alert-text">ВНИМАНИЕ! ВЫБЕРИТЕ СВОЙ<br>АБОНЕМЕНТ ПО АКЦИИ!</h2>
+        <h2 class="title red-alert-text">ВНИМАНИЕ! ВЫБЕРИТЕ СВОЙ АБОНЕМЕНТ ПО АКЦИИ!</h2>
         
-        <div id="countdown-wrapper" class="red-alert-text">
+        <div id="countdown-wrapper" class="red-alert-text" style="font-weight: bold; margin-bottom: 25px;">
             <div id="countdown-timer" class="timer-display">
                 <span id="days">00</span>д : <span id="hours">00</span>ч : <span id="minutes">00</span>м : <span id="seconds">00</span>с
             </div>
             <p class="timer-caption">Осталось до конца акции</p>
         </div>
 
-        <div id="social-proof-counter" class="social-proof">
+        <div id="social-proof-counter" class="red-alert-text" style="margin-bottom: 25px; font-size: 0.9em; opacity: 0.8;">
              <i class="fas fa-users"></i> <span id="active-visitors-count">24</span> человека сейчас смотрят эту акцию!
         </div>
 
-        <p class="subtitle">Выберите пакет услуг:</p>
+        <p class="subtitle">Выберите свой идеальный пакет и удобный способ оплаты:</p>
 
         <div class="packages-grid">
             <div class="package-item neumorphic-card" data-price="34320" data-installments="10" data-link="https://ecom.otpbank.ru/smart-form?config=96dca84c-9424-4115-bd82-65a55f06e35e">
                 <h3 class="package-title">Королевский пакет</h3>
                 <p class="lessons">96 занятий</p>
-                <p class="old-price">43 680 ₽</p>
+                <p class="old-price">~~43 680 ₽~~</p>
                 <p class="new-price">34 320 ₽</p>
-                <p class="info limit">Рассрочка до 10 месяцев</p>
+                <p class="info limit">Доступна банковская беспроцентная рассрочка до 10 месяцев</p>
                 <button class="neumorphic-button select-package">Выбрать</button>
             </div>
             
             <div class="package-item neumorphic-card" data-price="27040" data-installments="10" data-link="https://ecom.otpbank.ru/smart-form?config=6ed1f1bc-33ee-45b7-a7ae-852ca0ffa44f">
                 <h3 class="package-title">Премиум-пакет</h3>
                 <p class="lessons">64 занятия</p>
-                <p class="old-price">33 280 ₽</p>
+                <p class="old-price">~~33 280 ₽~~</p>
                 <p class="new-price">27 040 ₽</p>
-                <p class="info">Рассрочка до 10 месяцев</p>
+                <p class="info">Доступна банковская беспроцентная рассрочка до 10 месяцев</p>
                 <button class="neumorphic-button select-package">Выбрать</button>
             </div>
             
             <div class="package-item neumorphic-card" data-price="20280" data-installments="6" data-link="https://ecom.otpbank.ru/smart-form?config=9d8793c4-bd20-4bfe-91d9-bfc9c60498da">
                 <h3 class="package-title">Оптимальный выбор</h3>
                 <p class="lessons">48 занятий</p>
-                <p class="old-price">24 960 ₽</p>
+                <p class="old-price">~~24 960 ₽~~</p>
                 <p class="new-price">20 280 ₽</p>
-                <p class="info">Рассрочка на 6 месяцев</p>
+                <p class="info">Доступна банковская беспроцентная рассрочка на 6 месяцев</p>
                 <button class="neumorphic-button select-package">Выбрать</button>
             </div>
-            
+
             </div>
         
-        <div id="payment-options" style="display:none;">
-            <a id="price-button-link" href="https://qr.nspk.ru/AS2A006F0RCJU7V991SBLV4AACJGFT2P?type=01&bank=100000000004&crc=A93E" target="_blank" class="price-display-box neumorphic-button">
-                Оплатить СБП: <span id="selected-package-price"></span> ₽
+        <div id="payment-options" style="display:none; margin-top: 50px;">
+            <a id="price-button-link" href="https://qr.nspk.ru/AS2A006F0RCJU7V991SBLV4AACJGFT2P?type=01&bank=100000000004&crc=A93E" target="_blank" class="price-display-box">
+                Сумма к оплате: <strong><span id="selected-package-price"></span> ₽</strong> (Нажмите для оплаты СБП)
             </a>
             
-            <h4 class="method-title">Или выберите другой способ:</h4>
-
+            <h4 class="method-title">Выберите удобный способ оплаты:</h4>
             <button id="installment-btn" class="neumorphic-button payment-button installment-button" onclick="openInstallmentLink()" style="display:none;">
                 Оформить <strong>Рассрочку</strong> (<span id="installment-months"></span>)
             </button>
-
-            <button class="neumorphic-button payment-button sbp-card-button" onclick="window.open('https://checkout.tochka.com/f1ba70a9-318b-4849-bd4c-cee3ce0c541e', '_blank')">
-                Оплатить <strong>Картой</strong> (резерв)
+            <button class="neumorphic-button payment-button sbp-card-button" onclick="window.open('https://checkout.tochka.com/f1ba70a9-318b-4849-bd4c-cee3ce0c541e', '_blank') ">
+                <span class="sbp-icon"></span> Оплатить <strong>Картой / СБП</strong>
             </button>
 
-            <div class="qr-section">
-                <h4>QR-код для оплаты</h4>
-                <img src="qr_code.png" alt="QR СБП" class="qr-image">
+            <div class="qr-section neumorphic-card">
+                <h4>Быстрая оплата по QR-коду СБП</h4>
+                <img src="qr_code.png" alt="QR-код" class="qr-image">
             </div>
+        </div>
 
-            <button class="neumorphic-button back-button" onclick="goBack()">
+        <div class="back-button-container"> 
+            <button class="neumorphic-button back-button-bottom" onclick="goBack()">
                 <i class="fas fa-arrow-left"></i> Выбрать другой абонемент
             </button>
         </div>
 
         <div class="footer-note">
-            <p class="important-warning">С 16 декабря цены вырастут!</p>
+            <p class="important-warning">Важно: Количество абонементов ограничено! С 16 декабря цены ВЫРАСТУТ!</p>
             <div class="contact-buttons-wrapper">
                 <a href="https://clck.ru/3QjknT" target="_blank" class="neumorphic-button contact-button whatsapp-button">
                     <i class="fab fa-whatsapp"></i> WhatsApp
