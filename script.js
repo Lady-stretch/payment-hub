@@ -1,4 +1,5 @@
-const END_DATE = new Date('December 15, 2025 23:59:59 GMT+0300'); 
+// Конечная дата: 17 декабря 2025 года (Финальный Week-end)
+const END_DATE = new Date('December 17, 2025 23:59:59 GMT+0300'); 
 
 function updateCountdown() {
     const now = new Date().getTime();
@@ -6,9 +7,9 @@ function updateCountdown() {
     let timerDisplay = document.getElementById("countdown-timer");
 
     if (distance < 0) {
-        timerDisplay.innerHTML = "АКЦИЯ ЗАВЕРШЕНА!";
+        timerDisplay.innerHTML = "АКЦИЯ ОКОНЧАТЕЛЬНО ЗАВЕРШЕНА";
         document.querySelectorAll('.select-package').forEach(b => {
-            b.disabled = true; b.textContent = 'Завершено'; b.style.opacity = '0.5';
+            b.disabled = true; b.textContent = 'Мест нет'; b.style.opacity = '0.5';
         });
         return;
     }
@@ -24,7 +25,7 @@ function updateCountdown() {
 setInterval(updateCountdown, 1000);
 updateCountdown();
 
-// Имитация активности
+// Имитация живых посетителей
 setInterval(() => {
     const el = document.getElementById('active-visitors-count');
     if(el) {
@@ -39,15 +40,12 @@ const paymentOptions = document.getElementById('payment-options');
 packages.forEach(pkg => {
     pkg.addEventListener('click', function() {
         if (this.querySelector('.select-package').disabled) return;
-
         packages.forEach(p => {
             p.classList.remove('selected');
             p.querySelector('.select-package').textContent = 'Выбрать';
         });
-        
         this.classList.add('selected');
         this.querySelector('.select-package').textContent = 'Выбрано';
-        
         document.getElementById('selected-package-price').textContent = parseInt(this.dataset.price).toLocaleString('ru-RU');
         paymentOptions.style.display = 'block';
 
@@ -56,10 +54,7 @@ packages.forEach(pkg => {
             instBtn.style.display = 'block';
             document.getElementById('installment-months').textContent = this.dataset.installments + ' мес.';
             window.currentLink = this.dataset.link;
-        } else {
-            instBtn.style.display = 'none';
-        }
-
+        } else { instBtn.style.display = 'none'; }
         paymentOptions.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
 });
