@@ -3,12 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lady Stretch | Сыктывкар АКЦИЯ</title>
-    
-    <meta property="og:title" content="Lady Stretch | Сыктывкар АКЦИЯ">
-    <meta property="og:description" content="Только сегодня: выберите свой абонемент со скидкой до 45%!">
+    <title>Lady Stretch | FINAL WEEKEND</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -24,20 +20,22 @@
 
 <div class="content-wrapper"> 
     <div class="neumorphic-card payment-hub">
-        <h2 class="title red-alert-text">ВНИМАНИЕ! ВЫБЕРИТЕ СВОЙ АБОНЕМЕНТ ПО АКЦИИ!</h2>
+        <h2 class="title red-alert-text">FINAL WEEKEND: МЫ ПРОДЛЕВАЕМ АКЦИЮ!</h2>
         
+        <div class="last-call-note">
+            <p><strong>Старт FINAL WEEKEND!</strong> Из-за огромного количества сообщений и тех, кто не успел оплатить абонемент в будни, мы открываем дополнительные <strong>48 часов</strong>. Это ваш «Второй шанс» забрать абонемент по старой цене!</p>
+        </div>
+
         <div id="countdown-wrapper" class="red-alert-text" style="font-weight: bold; margin-bottom: 25px;">
             <div id="countdown-timer" class="timer-display">
                 <span id="days">00</span>д : <span id="hours">00</span>ч : <span id="minutes">00</span>м : <span id="seconds">00</span>с
             </div>
-            <p class="timer-caption">Осталось до конца акции</p>
+            <p class="timer-caption">До окончательного повышения цен осталось</p>
         </div>
 
         <div id="social-proof" class="red-alert-text" style="margin-bottom: 20px; font-size: 0.9em; font-weight: bold;">
-             <i class="fas fa-users"></i> <span id="active-visitors-count">24</span> человека сейчас смотрят эту акцию!
+             <i class="fas fa-users"></i> <span id="active-visitors-count">34</span> человека сейчас выбирают абонемент!
         </div>
-
-        <p class="subtitle">Выберите свой идеальный пакет и удобный способ оплаты:</p>
 
         <div class="packages-grid">
             <div class="package-item neumorphic-card" data-price="34320" data-installments="10" data-link="https://ecom.otpbank.ru/smart-form?config=96dca84c-9424-4115-bd82-65a55f06e35e">
@@ -48,6 +46,7 @@
                 <p class="info">Доступна банковская рассрочка до 10 месяцев</p>
                 <button class="neumorphic-button select-package">Выбрать</button>
             </div>
+            
             <div class="package-item neumorphic-card" data-price="27040" data-installments="10" data-link="https://ecom.otpbank.ru/smart-form?config=6ed1f1bc-33ee-45b7-a7ae-852ca0ffa44f">
                 <h3 class="package-title">Премиум-пакет</h3>
                 <p class="lessons">64 занятия</p>
@@ -56,6 +55,7 @@
                 <p class="info">Доступна банковская рассрочка до 10 месяцев</p>
                 <button class="neumorphic-button select-package">Выбрать</button>
             </div>
+            
             <div class="package-item neumorphic-card" data-price="20280" data-installments="6" data-link="https://ecom.otpbank.ru/smart-form?config=9d8793c4-bd20-4bfe-91d9-bfc9c60498da">
                 <h3 class="package-title">Оптимальный выбор</h3>
                 <p class="lessons">48 занятий</p>
@@ -64,6 +64,7 @@
                 <p class="info">Доступна банковская рассрочка на 6 месяцев</p>
                 <button class="neumorphic-button select-package">Выбрать</button>
             </div>
+            
             <div class="package-item neumorphic-card" data-price="15600" data-installments="Нет">
                 <h3 class="package-title">Активный старт</h3>
                 <p class="lessons">32 занятия</p>
@@ -72,6 +73,7 @@
                 <p class="info">Идеально для регулярных занятий</p>
                 <button class="neumorphic-button select-package">Выбрать</button>
             </div>
+
             <div class="package-item neumorphic-card" data-price="13280" data-installments="Нет">
                 <h3 class="package-title">Интенсив</h3>
                 <p class="lessons">24 занятия</p>
@@ -80,6 +82,7 @@
                 <p class="info">Быстрый результат без переплат</p>
                 <button class="neumorphic-button select-package">Выбрать</button>
             </div>
+
             <div class="package-item neumorphic-card" data-price="8840" data-installments="Нет">
                 <h3 class="package-title">Пробный курс</h3>
                 <p class="lessons">16 занятий</p>
@@ -92,11 +95,9 @@
         
         <div id="payment-options" style="display:none; margin-top: 50px;">
             <a id="price-button-link" href="https://qr.nspk.ru/AS2A006F0RCJU7V991SBLV4AACJGFT2P?type=01&bank=100000000004&crc=A93E" target="_blank" class="price-display-box">
-                Сумма к оплате: <strong><span id="selected-package-price"></span> ₽</strong> (Оплата СБП)
+                Сумма к оплате: <strong><span id="selected-package-price"></span> ₽</strong> (Нажмите для оплаты СБП)
             </a>
             
-            <h4 class="method-title">Выберите удобный способ оплаты:</h4>
-
             <button id="installment-btn" class="neumorphic-button payment-button installment-button" onclick="openInstallmentLink()" style="display:none;">
                 Оформить <strong>Рассрочку</strong> (<span id="installment-months"></span>)
             </button>
@@ -120,9 +121,8 @@
 
         <div class="footer-note">
             <p class="important-warning">
-                <span class="bold">Важно: Количество абонементов ограничено! С 16 декабря цены <span class="uppercase">ВЫРАСТУТ!</span></span>
+                <span class="bold uppercase">Внимание: Это финальное продление! 17 декабря цены вырастут окончательно!</span>
             </p>
-            <h4 class="contact-title">Написать администратору:</h4>
             <div class="contact-buttons-wrapper">
                 <a href="https://clck.ru/3QjknT" target="_blank" class="neumorphic-button contact-button">
                     <i class="fab fa-whatsapp"></i> WhatsApp Администратор
@@ -134,7 +134,6 @@
         </div>
     </div>
 </div>
-
 <script src="script.js"></script>
 </body>
 </html>
