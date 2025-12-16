@@ -128,20 +128,17 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* НОВЫЙ СТИЛЬ: Мерцающая кнопка */
+/* Мерцающая кнопка */
 .hit-button {
     animation: pulse-button 2s infinite alternate; 
     border: 1px solid var(--red-alert);
 }
 
-/* Определение ключевых кадров для мерцания кнопки */
 @keyframes pulse-button {
     0% {
-        /* Начальное состояние: обычная тень кнопки */
         box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light);
     }
     100% {
-        /* Мерцание: тень становится ярче, добавляется красный ореол */
         box-shadow: 6px 6px 15px rgba(204, 0, 0, 0.5), -6px -6px 15px rgba(255, 100, 100, 0.3), 
                     0 0 15px rgba(255, 0, 0, 0.7);
     }
