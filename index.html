@@ -13,11 +13,15 @@
     <meta property="og:image" content="https://your-domain.com/images/promo_banner_hit.jpg"> 
     <meta property="og:url" content="https://your-domain.com/landing-page">
     <meta property="og:type" content="website">
-    
-</head>
+    </head>
 <body>
 
 <header class="header-fixed">
+    <div class="header-content">
+        <div class="logo-and-back">
+            <img src="logo_header_final.png" alt="Lady Stretch" class="logo-img">
+        </div>
+    </div>
 </header>
 
 <div class="content-wrapper"> 
@@ -28,7 +32,18 @@
             <p><strong>Срочно! ФИНАЛЬНЫЕ 48 ЧАСОВ!</strong> Из-за огромного количества сообщений и тех, кто не успел оплатить абонемент в период акции, мы открываем дополнительные <strong>48 часов</strong>. Это ваш «Второй шанс» забрать абонемент по старой цене!</p>
         </div>
 
-<div class="packages-grid">
+        <div id="countdown-wrapper" class="red-alert-text" style="font-weight: bold; margin-bottom: 25px;">
+            <div id="countdown-timer" class="timer-display">
+                <span id="days">00</span>д : <span id="hours">00</span>ч : <span id="minutes">00</span>м : <span id="seconds">00</span>с
+            </div>
+            <p class="timer-caption">До окончательного повышения цен осталось</p>
+        </div>
+
+        <div id="social-proof" class="red-alert-text" style="margin-bottom: 20px; font-size: 0.9em; font-weight: bold;">
+             <i class="fas fa-users"></i> <span id="active-visitors-count">34</span> человека сейчас выбирают абонемент!
+        </div>
+
+        <div class="packages-grid">
             
             <div class="package-item neumorphic-card" data-price="34320" data-installments="10" data-link="https://ecom.otpbank.ru/smart-form?config=96dca84c-9424-4115-bd82-65a55f06e35e">
                 <h3 class="package-title">Королевский пакет</h3>
@@ -85,12 +100,44 @@
             </div>
         </div>
         
-<div class="footer-note">
+        <div id="payment-options" style="display:none; margin-top: 50px;">
+            <a id="price-button-link" href="https://qr.nspk.ru/AS2A006F0RCJU7V991SBLV4AACJGFT2P?type=01&bank=100000000004&crc=A93E" target="_blank" class="price-display-box">
+                Сумма к оплате: <strong><span id="selected-package-price"></span> ₽</strong> (Нажмите для оплаты СБП)
+            </a>
+            
+            <button id="installment-btn" class="neumorphic-button payment-button installment-button" onclick="openInstallmentLink()" style="display:none;">
+                Оформить <strong>Рассрочку</strong> (<span id="installment-months"></span>)
+            </button>
+
+            <button class="neumorphic-button payment-button sbp-card-button" onclick="window.open('https://checkout.tochka.com/f1ba70a9-318b-4849-bd4c-cee3ce0c541e', '_blank')">
+                <span class="sbp-icon"></span> Оплатить <strong>Картой / СБП</strong> (резервный магазин)
+            </button>
+
+            <div class="qr-section neumorphic-card">
+                <h4>ИЛИ Быстрая оплата по QR-коду СБП</h4>
+                <img src="qr_code.png" alt="QR СБП" class="qr-image">
+                <p style="font-size: 0.8em; margin-top: 10px;">Наведите камеру или откройте приложение банка.</p>
+            </div>
+        </div>
+
+        <div class="back-button-container"> 
+            <button class="neumorphic-button back-button-bottom" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i> Выбрать другой абонемент
+            </button>
+        </div>
+
+        <div class="footer-note">
             <p class="important-warning">
                 <span class="bold uppercase">Внимание: Это финальное продление! 18 декабря цены вырастут окончательно!</span>
             </p>
             <div class="contact-buttons-wrapper">
-</div>
+                <a href="https://clck.ru/3QjknT" target="_blank" class="neumorphic-button contact-button">
+                    <i class="fab fa-whatsapp"></i> WhatsApp Администратор
+                </a>
+                <a href="https://clck.ru/3QjkoU" target="_blank" class="neumorphic-button contact-button max-messenger-button">
+                    <span class="max-logo">M</span> Max Администратор
+                </a>
+            </div>
         </div>
     </div>
 </div>
