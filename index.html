@@ -28,11 +28,7 @@
     <div class="neumorphic-card payment-hub">
         <h2 class="title red-alert-text">ФИНАЛЬНЫЕ 48 ЧАСОВ: МЫ ПРОДЛЕВАЕМ АКЦИЮ!</h2>
         
-        <div class="last-call-note">
-            <p><strong>Срочно! ФИНАЛЬНЫЕ 48 ЧАСОВ!</strong> Из-за огромного количества сообщений и тех, кто не успел оплатить абонемент в период акции, мы открываем дополнительные <strong>48 часов</strong>. Это ваш «Второй шанс» забрать абонемент по старой цене! <strong>ДРУГОГО ШАНСА НЕ БУДЕТ!</strong> По окончанию времени на таймере кнопки с выбором абонементов заблокируются!</p>
-        </div>
-
-        <div id="countdown-wrapper" class="red-alert-text" style="font-weight: bold; margin-bottom: 25px;">
+        <div id="countdown-wrapper" class="red-alert-text" style="font-weight: bold; margin-bottom: 25px; margin-top: 30px;">
             <div id="countdown-timer" class="timer-display">
                 <span id="days">00</span>д : <span id="hours">00</span>ч : <span id="minutes">00</span>м : <span id="seconds">00</span>с
             </div>
@@ -103,6 +99,12 @@
             <a id="price-button-link" href="#" target="_blank" class="price-display-box">
                 Сумма к оплате: <strong><span id="selected-package-price"></span> ₽</strong> (Оплатить СБП)
             </a>
+
+            <div class="qr-section">
+                <p style="margin-bottom: 15px; font-weight: bold;">Оплата через СБП (QR-код):</p>
+                <img src="qr_code.png" alt="QR Код для оплаты" class="qr-image">
+            </div>
+
             <button id="installment-btn" class="neumorphic-button payment-button installment-button" onclick="openInstallmentLink()" style="display:none;">
                 Оформить <strong>Рассрочку</strong> (<span id="installment-months"></span>)
             </button>
