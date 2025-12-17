@@ -1,4 +1,4 @@
-// Конечная дата: 17 декабря 2025 года (Финальный Week-end)
+// Конечная дата: 17 декабря 2025 года, 23:59:59
 const END_DATE = new Date('December 17, 2025 23:59:59 GMT+0300'); 
 
 function updateCountdown() {
@@ -7,9 +7,14 @@ function updateCountdown() {
     let timerDisplay = document.getElementById("countdown-timer");
 
     if (distance < 0) {
-        timerDisplay.innerHTML = "АКЦИЯ ОКОНЧАТЕЛЬНО ЗАВЕРШЕНА";
+        // Текст после завершения акции
+        timerDisplay.innerHTML = "<div style='font-size: 0.7em; line-height: 1.4; color: #cc0000;'>Акция закончена, всем спасибо за участие.<br>Доброй ночи и до встречи на тренировках!</div>";
+        
+        // Блокировка всех кнопок выбора
         document.querySelectorAll('.select-package').forEach(b => {
-            b.disabled = true; b.textContent = 'Мест нет'; b.style.opacity = '0.5';
+            b.disabled = true; 
+            b.textContent = 'Акция завершена'; 
+            b.classList.remove('hit-button'); // Отключаем мерцание
         });
         return;
     }
@@ -25,7 +30,7 @@ function updateCountdown() {
 setInterval(updateCountdown, 1000);
 updateCountdown();
 
-// Имитация живых посетителей
+// Социальное доказательство
 setInterval(() => {
     const el = document.getElementById('active-visitors-count');
     if(el) {
@@ -34,18 +39,22 @@ setInterval(() => {
     }
 }, 4000);
 
+// Логика кнопок
 const packages = document.querySelectorAll('.package-item');
 const paymentOptions = document.getElementById('payment-options');
 
 packages.forEach(pkg => {
     pkg.addEventListener('click', function() {
-        if (this.querySelector('.select-package').disabled) return;
+        const btn = this.querySelector('.select-package');
+        if (btn.disabled) return; 
+
         packages.forEach(p => {
             p.classList.remove('selected');
             p.querySelector('.select-package').textContent = 'Выбрать';
         });
         this.classList.add('selected');
-        this.querySelector('.select-package').textContent = 'Выбрано';
+        btn.textContent = 'Выбрано';
+        
         document.getElementById('selected-package-price').textContent = parseInt(this.dataset.price).toLocaleString('ru-RU');
         paymentOptions.style.display = 'block';
 
@@ -55,6 +64,7 @@ packages.forEach(pkg => {
             document.getElementById('installment-months').textContent = this.dataset.installments + ' мес.';
             window.currentLink = this.dataset.link;
         } else { instBtn.style.display = 'none'; }
+        
         paymentOptions.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
 });
