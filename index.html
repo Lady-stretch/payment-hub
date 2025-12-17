@@ -10,10 +10,9 @@
     
     <meta property="og:title" content="ФИНАЛЬНЫЕ 48 ЧАСОВ: Успей забрать абонемент по старой цене!">
     <meta property="og:description" content="Только 48 часов! Мы продлили акцию по многочисленным просьбам. Не упусти свой второй шанс!">
-    <meta property="og:image" content="https://your-domain.com/images/promo_banner_hit.jpg"> 
-    <meta property="og:url" content="https://your-domain.com/landing-page">
+    <meta property="og:image" content="https://your-domain.com/images/promo_banner.jpg"> 
+    <meta property="og:url" content="https://your-domain.com/promo">
     <meta property="og:type" content="website">
-    
 </head>
 <body>
 
@@ -30,7 +29,7 @@
         <h2 class="title red-alert-text">ФИНАЛЬНЫЕ 48 ЧАСОВ: МЫ ПРОДЛЕВАЕМ АКЦИЮ!</h2>
         
         <div class="last-call-note">
-            <p><strong>Срочно! ФИНАЛЬНЫЕ 48 ЧАСОВ!</strong> Из-за огромного количества сообщений и тех, кто не успел оплатить абонемент в период акции, мы открываем дополнительные <strong>48 часов</strong>. Это ваш «Второй шанс» забрать абонемент по старой цене!</p>
+            <p><strong>Срочно! ФИНАЛЬНЫЕ 48 ЧАСОВ!</strong> Из-за огромного количества сообщений и тех, кто не успел оплатить абонемент в период акции, мы открываем дополнительные <strong>48 часов</strong>. Это ваш «Второй шанс» забрать абонемент по старой цене! <strong>ДРУГОГО ШАНСА НЕ БУДЕТ!</strong> По окончанию времени на таймере кнопки с выбором абонементов заблокируются!</p>
         </div>
 
         <div id="countdown-wrapper" class="red-alert-text" style="font-weight: bold; margin-bottom: 25px;">
@@ -45,7 +44,6 @@
         </div>
 
         <div class="packages-grid">
-            
             <div class="package-item neumorphic-card" data-price="34320" data-installments="10" data-link="https://ecom.otpbank.ru/smart-form?config=96dca84c-9424-4115-bd82-65a55f06e35e">
                 <h3 class="package-title">Королевский пакет</h3>
                 <p class="lessons">96 занятий</p>
@@ -103,22 +101,14 @@
         
         <div id="payment-options" style="display:none; margin-top: 50px;">
             <a id="price-button-link" href="https://qr.nspk.ru/AS2A006F0RCJU7V991SBLV4AACJGFT2P?type=01&bank=100000000004&crc=A93E" target="_blank" class="price-display-box">
-                Сумма к оплате: <strong><span id="selected-package-price"></span> ₽</strong> (Нажмите для оплаты СБП)
+                Сумма к оплате: <strong><span id="selected-package-price"></span> ₽</strong> (Оплатить СБП)
             </a>
-            
             <button id="installment-btn" class="neumorphic-button payment-button installment-button" onclick="openInstallmentLink()" style="display:none;">
                 Оформить <strong>Рассрочку</strong> (<span id="installment-months"></span>)
             </button>
-
             <button class="neumorphic-button payment-button sbp-card-button" onclick="window.open('https://checkout.tochka.com/f1ba70a9-318b-4849-bd4c-cee3ce0c541e', '_blank')">
-                <span class="sbp-icon"></span> Оплатить <strong>Картой / СБП</strong> (резервный магазин)
+                <span class="sbp-icon"></span> Оплатить <strong>Картой / СБП</strong>
             </button>
-
-            <div class="qr-section neumorphic-card">
-                <h4>ИЛИ Быстрая оплата по QR-коду СБП</h4>
-                <img src="qr_code.png" alt="QR СБП" class="qr-image">
-                <p style="font-size: 0.8em; margin-top: 10px;">Наведите камеру или откройте приложение банка.</p>
-            </div>
         </div>
 
         <div class="back-button-container"> 
