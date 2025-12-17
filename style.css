@@ -203,8 +203,17 @@ a.price-display-box {
   max-width: 300px;
   transition: all 0.2s ease;
 }
-.neumorphic-button:active { 
+.neumorphic-button:active:not(:disabled) { 
     box-shadow: inset 4px 4px 8px var(--shadow-inset-dark), inset -4px -4px 8px var(--shadow-inset-light); 
+}
+
+/* БЛОК БЛОКИРОВКИ КНОПОК ПОСЛЕ ТАЙМЕРА */
+.neumorphic-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none; /* Кнопка становится плоской */
+    border: 1px solid #ccc;
+    animation: none; /* Убираем все анимации, включая мерцание ХИТа */
 }
 
 .payment-button { 
