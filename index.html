@@ -3,16 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lady Stretch | ФИНАЛЬНЫЕ 48 ЧАСОВ</title>
+    <title>Lady Stretch | ФИНАЛЬНЫЕ МИНУТЫ</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
-    <meta property="og:title" content="ФИНАЛЬНЫЕ 48 ЧАСОВ: Успей забрать абонемент по старой цене!">
-    <meta property="og:description" content="Только 48 часов! Мы продлили акцию по многочисленным просьбам. Не упусти свой второй шанс!">
-    <meta property="og:image" content="https://your-domain.com/images/promo_banner.jpg"> 
-    <meta property="og:url" content="https://your-domain.com/promo">
-    <meta property="og:type" content="website">
+    <meta property="og:title" content="ФИНАЛЬНЫЕ МИНУТЫ: Успей забрать абонемент по старой цене!">
+    <meta property="og:description" content="Остались считанные минуты! Успейте забронировать свой абонемент до повышения цен.">
 </head>
 <body>
 
@@ -26,7 +23,7 @@
 
 <div class="content-wrapper"> 
     <div class="neumorphic-card payment-hub">
-        <h2 class="title red-alert-text">ФИНАЛЬНЫЕ 48 ЧАСОВ: МЫ ПРОДЛЕВАЕМ АКЦИЮ!</h2>
+        <h2 class="title red-alert-text">ФИНАЛЬНЫЕ МИНУТЫ, УСПЕЙТЕ ЗАБРОНИРОВАТЬ!</h2>
         
         <div id="countdown-wrapper" class="red-alert-text" style="font-weight: bold; margin-bottom: 25px; margin-top: 30px;">
             <div id="countdown-timer" class="timer-display">
@@ -36,7 +33,7 @@
         </div>
 
         <div id="social-proof" class="red-alert-text" style="margin-bottom: 20px; font-size: 0.9em; font-weight: bold;">
-             <i class="fas fa-users"></i> <span id="active-visitors-count">34</span> человека сейчас выбирают абонемент!
+             <i class="fas fa-users"></i> <span id="active-visitors-count">42</span> человека сейчас выбирают абонемент!
         </div>
 
         <div class="packages-grid">
@@ -50,7 +47,7 @@
             </div>
             
             <div class="package-item neumorphic-card" data-price="27040" data-installments="10" data-link="https://ecom.otpbank.ru/smart-form?config=6ed1f1bc-33ee-45b7-a7ae-852ca0ffa44f">
-                <h3 class="package-title">Премиум-пакет <span class="hit-label">ХИТ</span></h3> 
+                <h3 class="package-title">Премиум <span class="hit-label">ХИТ</span></h3> 
                 <p class="lessons">64 занятия</p>
                 <p class="old-price">~~33 280 ₽~~</p>
                 <p class="new-price">27 040 ₽</p>
@@ -59,7 +56,7 @@
             </div>
             
             <div class="package-item neumorphic-card" data-price="20280" data-installments="6" data-link="https://ecom.otpbank.ru/smart-form?config=9d8793c4-bd20-4bfe-91d9-bfc9c60498da">
-                <h3 class="package-title">Оптимальный выбор</h3>
+                <h3 class="package-title">Оптимальный</h3>
                 <p class="lessons">48 занятий</p>
                 <p class="old-price">~~24 960 ₽~~</p>
                 <p class="new-price">20 280 ₽</p>
@@ -100,17 +97,18 @@
                 Сумма к оплате: <strong><span id="selected-package-price"></span> ₽</strong> (Оплатить СБП)
             </a>
 
-            <div class="qr-section">
-                <p style="margin-bottom: 15px; font-weight: bold;">Оплата через СБП (QR-код):</p>
-                <img src="qr_code.png" alt="QR Код для оплаты" class="qr-image">
-            </div>
-
-            <button id="installment-btn" class="neumorphic-button payment-button installment-button" onclick="openInstallmentLink()" style="display:none;">
+            <button id="installment-btn" class="neumorphic-button payment-button installment-button" onclick="openInstallmentLink()" style="display:none; margin-bottom: 20px;">
                 Оформить <strong>Рассрочку</strong> (<span id="installment-months"></span>)
             </button>
+
             <button class="neumorphic-button payment-button sbp-card-button" onclick="window.open('https://checkout.tochka.com/f1ba70a9-318b-4849-bd4c-cee3ce0c541e', '_blank')">
                 <span class="sbp-icon"></span> Оплатить <strong>Картой / СБП</strong>
             </button>
+
+            <div class="qr-section">
+                <p style="margin-top: 20px; font-weight: bold;">Оплата через СБП (QR-код):</p>
+                <img src="qr_code.png" alt="QR Код" class="qr-image">
+            </div>
         </div>
 
         <div class="back-button-container"> 
@@ -121,14 +119,14 @@
 
         <div class="footer-note">
             <p class="important-warning">
-                <span class="bold uppercase">Внимание: Это финальное продление! 18 декабря цены вырастут окончательно!</span>
+                <span class="bold uppercase">Внимание: 18 декабря цены вырастут окончательно!</span>
             </p>
             <div class="contact-buttons-wrapper">
                 <a href="https://clck.ru/3QjknT" target="_blank" class="neumorphic-button contact-button">
-                    <i class="fab fa-whatsapp"></i> WhatsApp Администратор
+                    <i class="fab fa-whatsapp"></i> WhatsApp
                 </a>
                 <a href="https://clck.ru/3QjkoU" target="_blank" class="neumorphic-button contact-button max-messenger-button">
-                    <span class="max-logo">M</span> Max Администратор
+                    <span class="max-logo">M</span> Max
                 </a>
             </div>
         </div>
