@@ -1,83 +1,65 @@
-// Конечная дата: 17 декабря 2025 года, 23:59:59
-const END_DATE = new Date('December 17, 2025 23:59:59 GMT+0300'); 
+const END_DATE = new Date('January 5, 2025 23:59:59 GMT+0300');
 
+/* Таймер */
 function updateCountdown() {
-    const now = new Date().getTime();
-    const distance = END_DATE.getTime() - now;
-    let timerDisplay = document.getElementById("countdown-timer");
+  const el = document.getElementById('countdown-timer');
+  if (!el) return;
 
-    if (distance < 0) {
-        // Текст после завершения акции
-        timerDisplay.innerHTML = "<div style='font-size: 0.7em; line-height: 1.4; color: #cc0000;'>Акция закончена, всем спасибо за участие.<br>Доброй ночи и до встречи на тренировках!</div>";
-        
-        // Блокировка всех кнопок выбора
-        document.querySelectorAll('.select-package').forEach(b => {
-            b.disabled = true; 
-            b.textContent = 'Акция завершена'; 
-            b.classList.remove('hit-button'); // Отключаем мерцание
-        });
-        return;
-    }
+  const diff = END_DATE - Date.now();
 
-    const d = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const s = Math.floor((distance % (1000 * 60)) / 1000);
-    const f = (t) => String(t).padStart(2, '0');
+  if (diff <= 0) {
+    el.textContent = 'Запись в январские группы закрыта';
+    document.querySelectorAll('.select-package').forEach(b => {
+      b.disabled = true;
+      b.textContent = 'Запись закрыта';
+    });
+    return;
+  }
 
-    timerDisplay.innerHTML = `<span>${f(d)}</span>д : <span>${f(h)}</span>ч : <span>${f(m)}</span>м : <span>${f(s)}</span>с`;
+  const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const m = Math.floor((diff / (1000 * 60)) % 60);
+
+  el.textContent = `${d}д ${h}ч ${m}м`;
 }
+
 setInterval(updateCountdown, 1000);
 updateCountdown();
 
-// Социальное доказательство
+/* Социальное доказательство */
 setInterval(() => {
-    const el = document.getElementById('active-visitors-count');
-    if(el) {
-        let val = parseInt(el.innerText);
-        el.innerText = val + (Math.random() > 0.5 ? 1 : -1);
-    }
+  const el = document.getElementById('active-visitors-count');
+  if (!el) return;
+  let v = parseInt(el.textContent, 10);
+  el.textContent = Math.min(49, Math.max(18, v + (Math.random() > 0.5 ? 1 : -1)));
 }, 4000);
 
-// Логика кнопок
-const packages = document.querySelectorAll('.package-item');
-const paymentOptions = document.getElementById('payment-options');
+/* Выбор пакета */
+document.querySelectorAll('.package').forEach(card => {
+  card.addEventListener('click', () => {
+    document.getElementById('payment-options').style.display = 'block';
+    document.getElementById('selected-package-price').textContent =
+      Number(card.dataset.price).toLocaleString('ru-RU');
 
-packages.forEach(pkg => {
-    pkg.addEventListener('click', function() {
-        const btn = this.querySelector('.select-package');
-        if (btn.disabled) return; 
+    const inst = card.dataset.installments;
+    const btn = document.getElementById('installment-btn');
 
-        packages.forEach(p => {
-            p.classList.remove('selected');
-            p.querySelector('.select-package').textContent = 'Выбрать';
-        });
-        this.classList.add('selected');
-        btn.textContent = 'Выбрано';
-        
-        document.getElementById('selected-package-price').textContent = parseInt(this.dataset.price).toLocaleString('ru-RU');
-        paymentOptions.style.display = 'block';
+    if (inst && inst !== 'Нет') {
+      btn.style.display = 'block';
+      document.getElementById('installment-months').textContent = inst + ' мес';
+      window.currentLink = card.dataset.link;
+    } else {
+      btn.style.display = 'none';
+    }
 
-        const instBtn = document.getElementById('installment-btn');
-        if (this.dataset.installments !== 'Нет') {
-            instBtn.style.display = 'block';
-            document.getElementById('installment-months').textContent = this.dataset.installments + ' мес.';
-            window.currentLink = this.dataset.link;
-        } else { instBtn.style.display = 'none'; }
-        
-        paymentOptions.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
+    document.getElementById('payment-options')
+      .scrollIntoView({ behavior: 'smooth' });
+  });
 });
 
-function goBack() {
-    paymentOptions.style.display = 'none';
-    packages.forEach(p => {
-        p.classList.remove('selected');
-        p.querySelector('.select-package').textContent = 'Выбрать';
-    });
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
+/* Рассрочка */
 function openInstallmentLink() {
-    if (window.currentLink) window.open(window.currentLink, '_blank');
+  if (window.currentLink) {
+    window.open(window.currentLink, '_blank');
+  }
 }
