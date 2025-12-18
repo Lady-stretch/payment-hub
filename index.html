@@ -1,137 +1,125 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lady Stretch | ФИНАЛЬНЫЕ МИНУТЫ</title>
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    
-    <meta property="og:title" content="ФИНАЛЬНЫЕ МИНУТЫ: Успей забрать абонемент по старой цене!">
-    <meta property="og:description" content="Остались считанные минуты! Успейте забронировать свой абонемент до повышения цен.">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lady Stretch — Новый год 2025</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,700;0,900;1,800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
 
-<header class="header-fixed">
-    <div class="header-content">
-        <div class="logo-and-back">
-            <img src="logo_header_final.png" alt="Lady Stretch" class="logo-img">
-        </div>
-    </div>
+<header class="header-fixed glass">
+  <img src="logo_header_final.png" alt="Lady Stretch" class="logo-img">
 </header>
 
-<div class="content-wrapper"> 
-    <div class="neumorphic-card payment-hub">
-        <h2 class="title red-alert-text">ФИНАЛЬНЫЕ МИНУТЫ, УСПЕЙТЕ ЗАБРОНИРОВАТЬ!</h2>
-        
-        <div id="countdown-wrapper" class="red-alert-text" style="font-weight: bold; margin-bottom: 25px; margin-top: 30px;">
-            <div id="countdown-timer" class="timer-display">
-                <span id="days">00</span>д : <span id="hours">00</span>ч : <span id="minutes">00</span>м : <span id="seconds">00</span>с
-            </div>
-            <p class="timer-caption">До окончательного повышения цен осталось</p>
-        </div>
+<main class="content-wrapper">
 
-        <div id="social-proof" class="red-alert-text" style="margin-bottom: 20px; font-size: 0.9em; font-weight: bold;">
-             <i class="fas fa-users"></i> <span id="active-visitors-count">42</span> человека сейчас выбирают абонемент!
-        </div>
+  <!-- HERO -->
+  <section class="hero glass">
+    <h1 class="hero-title">
+      <span class="glow">НОВОГОДНЕЕ</span>
+      <span class="accent">НАСТРОЕНИЕ</span> 🎄
+    </h1>
 
-        <div class="packages-grid">
-            <div class="package-item neumorphic-card" data-price="34320" data-installments="10" data-link="https://ecom.otpbank.ru/smart-form?config=96dca84c-9424-4115-bd82-65a55f06e35e">
-                <h3 class="package-title">Королевский пакет</h3>
-                <p class="lessons">96 занятий</p>
-                <p class="old-price">~~43 680 ₽~~</p>
-                <p class="new-price">34 320 ₽</p>
-                <p class="info">Доступна банковская рассрочка до 10 месяцев</p>
-                <button class="neumorphic-button select-package">Выбрать</button>
-            </div>
-            
-            <div class="package-item neumorphic-card" data-price="27040" data-installments="10" data-link="https://ecom.otpbank.ru/smart-form?config=6ed1f1bc-33ee-45b7-a7ae-852ca0ffa44f">
-                <h3 class="package-title">Премиум <span class="hit-label">ХИТ</span></h3> 
-                <p class="lessons">64 занятия</p>
-                <p class="old-price">~~33 280 ₽~~</p>
-                <p class="new-price">27 040 ₽</p>
-                <p class="info">Доступна банковская рассрочка до 10 месяцев</p>
-                <button class="neumorphic-button select-package hit-button">Выбрать</button> 
-            </div>
-            
-            <div class="package-item neumorphic-card" data-price="20280" data-installments="6" data-link="https://ecom.otpbank.ru/smart-form?config=9d8793c4-bd20-4bfe-91d9-bfc9c60498da">
-                <h3 class="package-title">Оптимальный</h3>
-                <p class="lessons">48 занятий</p>
-                <p class="old-price">~~24 960 ₽~~</p>
-                <p class="new-price">20 280 ₽</p>
-                <p class="info">Доступна банковская рассрочка на 6 месяцев</p>
-                <button class="neumorphic-button select-package">Выбрать</button>
-            </div>
-            
-            <div class="package-item neumorphic-card" data-price="15600" data-installments="Нет">
-                <h3 class="package-title">Активный старт</h3>
-                <p class="lessons">32 занятия</p>
-                <p class="old-price">~~18 720 ₽~~</p>
-                <p class="new-price">15 600 ₽</p>
-                <p class="info">Идеально для регулярных занятий</p>
-                <button class="neumorphic-button select-package">Выбрать</button>
-            </div>
+    <p class="hero-subtitle">
+      Начните <strong>2025 год</strong> с новой энергии.  
+      Гибкость, красота и здоровье — с закреплённым местом в студии.
+    </p>
+  </section>
 
-            <div class="package-item neumorphic-card" data-price="13280" data-installments="Нет">
-                <h3 class="package-title">Интенсив</h3>
-                <p class="lessons">24 занятия</p>
-                <p class="old-price">~~15 600 ₽~~</p>
-                <p class="new-price">13 280 ₽</p>
-                <p class="info">Быстрый результат без переплат</p>
-                <button class="neumorphic-button select-package">Выбрать</button>
-            </div>
+  <!-- INFO -->
+  <section class="glass info-block">
+    <p>
+      В январе группы Lady Stretch традиционно заполняются очень быстро.
+      Мы заранее открыли возможность <strong>закрепить за собой место</strong>
+      в удобных группах — без спешки и давления.
+    </p>
+    <p>
+      Абонемент — это не «покупка занятий»,  
+      а <strong>гарантированное место</strong>, внимание тренера и спокойный старт года.
+    </p>
+  </section>
 
-            <div class="package-item neumorphic-card" data-price="8840" data-installments="Нет">
-                <h3 class="package-title">Пробный курс</h3>
-                <p class="lessons">16 занятий</p>
-                <p class="old-price">~~10 400 ₽~~</p>
-                <p class="new-price">8 840 ₽</p>
-                <p class="info">Отличный старт для новичков</p>
-                <button class="neumorphic-button select-package">Выбрать</button>
-            </div>
-        </div>
-        
-        <div id="payment-options" style="display:none; margin-top: 50px;">
-            <a id="price-button-link" href="#" target="_blank" class="price-display-box">
-                Сумма к оплате: <strong><span id="selected-package-price"></span> ₽</strong> (Оплатить СБП)
-            </a>
+  <!-- TIMER -->
+  <section class="glass timer-block">
+    <div id="countdown-timer" class="timer-display"></div>
+    <p class="timer-caption">До закрытия записи в январские группы</p>
+  </section>
 
-            <button id="installment-btn" class="neumorphic-button payment-button installment-button" onclick="openInstallmentLink()" style="display:none; margin-bottom: 20px;">
-                Оформить <strong>Рассрочку</strong> (<span id="installment-months"></span>)
-            </button>
+  <!-- SOCIAL -->
+  <div class="social-proof">
+    <i class="fas fa-users"></i>
+    <span id="active-visitors-count">34</span>
+    человека сейчас выбирают группы на январь
+  </div>
 
-            <button class="neumorphic-button payment-button sbp-card-button" onclick="window.open('https://checkout.tochka.com/f1ba70a9-318b-4849-bd4c-cee3ce0c541e', '_blank')">
-                <span class="sbp-icon"></span> Оплатить <strong>Картой / СБП</strong>
-            </button>
+  <!-- PACKAGES -->
+  <section class="packages-grid">
 
-            <div class="qr-section">
-                <p style="margin-top: 20px; font-weight: bold;">Оплата через СБП (QR-код):</p>
-                <img src="qr_code.png" alt="QR Код" class="qr-image">
-            </div>
-        </div>
-
-        <div class="back-button-container"> 
-            <button class="neumorphic-button back-button-bottom" onclick="goBack()">
-                <i class="fas fa-arrow-left"></i> Выбрать другой абонемент
-            </button>
-        </div>
-
-        <div class="footer-note">
-            <p class="important-warning">
-                <span class="bold uppercase">Внимание: 18 декабря цены вырастут окончательно!</span>
-            </p>
-            <div class="contact-buttons-wrapper">
-                <a href="https://clck.ru/3QjknT" target="_blank" class="neumorphic-button contact-button">
-                    <i class="fab fa-whatsapp"></i> WhatsApp
-                </a>
-                <a href="https://clck.ru/3QjkoU" target="_blank" class="neumorphic-button contact-button max-messenger-button">
-                    <span class="max-logo">M</span> Max
-                </a>
-            </div>
-        </div>
+    <div class="package glass" data-price="34320" data-installments="10"
+         data-link="https://ecom.otpbank.ru/smart-form?config=96dca84c-9424-4115-bd82-65a55f06e35e">
+      <h3>Максимальная трансформация</h3>
+      <p class="lessons">96 занятий · 3–4 раза в неделю</p>
+      <p class="price">34 320 ₽</p>
+      <button class="select-package">Выбрать формат</button>
     </div>
-</div>
+
+    <div class="package glass hit" data-price="27040" data-installments="10"
+         data-link="https://ecom.otpbank.ru/smart-form?config=6ed1f1bc-33ee-45b7-a7ae-852ca0ffa44f">
+      <h3>Регулярный формат <span class="hit-label">РЕКОМЕНДУЕМ</span></h3>
+      <p class="lessons">64 занятия · 2–3 раза в неделю</p>
+      <p class="price">27 040 ₽</p>
+      <button class="select-package">Выбрать формат</button>
+    </div>
+
+    <div class="package glass" data-price="20280" data-installments="6"
+         data-link="https://ecom.otpbank.ru/smart-form?config=9d8793c4-bd20-4bfe-91d9-bfc9c60498da">
+      <h3>Комфортный режим</h3>
+      <p class="lessons">48 занятий · 2 раза в неделю</p>
+      <p class="price">20 280 ₽</p>
+      <button class="select-package">Выбрать формат</button>
+    </div>
+
+    <div class="package glass" data-price="15600" data-installments="Нет">
+      <h3>Мягкий старт</h3>
+      <p class="lessons">32 занятия</p>
+      <p class="price">15 600 ₽</p>
+      <button class="select-package">Выбрать формат</button>
+    </div>
+
+  </section>
+
+  <!-- PAYMENT -->
+  <section id="payment-options" class="glass payment" style="display:none;">
+    <a id="price-button-link"
+       href="https://qr.nspk.ru/AS2A006F0RCJU7V991SBLV4AACJGFT2P"
+       target="_blank"
+       class="pay-link">
+      Закрепление места: <strong><span id="selected-package-price"></span> ₽</strong>
+    </a>
+
+    <button id="installment-btn" class="installment-btn" style="display:none"
+            onclick="openInstallmentLink()">
+      Оплатить частями (<span id="installment-months"></span>)
+    </button>
+  </section>
+
+  <footer class="footer-note">
+    <p>
+      Количество мест в группах ограничено.  
+      Мы сохраняем камерный формат и индивидуальный подход.
+    </p>
+  </footer>
+
+</main>
+
 <script src="script.js"></script>
 </body>
 </html>
