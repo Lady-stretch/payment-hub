@@ -46,7 +46,7 @@ body {
 }
 
 .hero-title {
-  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 900;
   line-height: 1.1;
 }
@@ -74,6 +74,23 @@ body {
   font-size: 1.1rem;
 }
 
+.timer-display {
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.timer-caption {
+  text-align: center;
+  color: var(--muted);
+}
+
+.social-proof {
+  text-align: center;
+  margin-bottom: 30px;
+  color: var(--muted);
+}
+
 .packages-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -87,7 +104,13 @@ body {
 .price {
   font-size: 1.6rem;
   font-weight: 800;
-  margin: 15px 0;
+  margin: 10px 0;
+}
+
+.old-price {
+  text-decoration: line-through;
+  color: rgba(255,255,255,0.4);
+  font-size: 0.9rem;
 }
 
 .select-package {
@@ -108,13 +131,50 @@ body {
   font-size: 0.65rem;
 }
 
-.timer-display {
-  font-size: 1.4rem;
-  font-weight: 700;
+.payment {
   text-align: center;
 }
 
-.timer-caption {
-  text-align: center;
-  color: var(--muted);
+.pay-link {
+  display: block;
+  margin-bottom: 15px;
+  color: white;
+  text-decoration: none;
+  font-size: 1.3rem;
+}
+
+.installment-btn {
+  margin-top: 10px;
+  padding: 14px 20px;
+  border-radius: 14px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* TOOLTIP */
+[data-tooltip] {
+  position: relative;
+  cursor: help;
+}
+
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 130%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.85);
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  width: 220px;
+  opacity: 0;
+  transition: 0.2s;
+  pointer-events: none;
+}
+
+[data-tooltip]:hover::after {
+  opacity: 1;
 }
