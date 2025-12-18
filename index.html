@@ -22,7 +22,7 @@
 <main class="content-wrapper">
 
   <!-- HERO -->
-  <section class="hero glass">
+  <section class="glass hero">
     <h1 class="hero-title">
       <span class="glow">НОВОГОДНЕЕ</span>
       <span class="accent">НАСТРОЕНИЕ</span> 🎄
@@ -37,13 +37,12 @@
   <!-- INFO -->
   <section class="glass info-block">
     <p>
-      В январе группы Lady Stretch традиционно заполняются очень быстро.
-      Мы заранее открыли возможность <strong>закрепить за собой место</strong>
-      в удобных группах — без спешки и давления.
+      Мы не продаём «абонементы».  
+      Вы <strong>закрепляете место</strong> в группах Lady Stretch на начало года.
     </p>
     <p>
-      Абонемент — это не «покупка занятий»,  
-      а <strong>гарантированное место</strong>, внимание тренера и спокойный старт года.
+      Камерные группы, внимание тренера и спокойный старт после праздников —
+      без спешки и давления.
     </p>
   </section>
 
@@ -63,35 +62,78 @@
   <!-- PACKAGES -->
   <section class="packages-grid">
 
-    <div class="package glass" data-price="34320" data-installments="10"
-         data-link="https://ecom.otpbank.ru/smart-form?config=96dca84c-9424-4115-bd82-65a55f06e35e">
-      <h3>Максимальная трансформация</h3>
-      <p class="lessons">96 занятий · 3–4 раза в неделю</p>
-      <p class="price">34 320 ₽</p>
-      <button class="select-package">Выбрать формат</button>
+    <!-- 96 -->
+    <div class="package glass"
+         data-price="37440"
+         data-installments="12"
+         data-link="https://ecom.otpbank.ru/smart-form?config=42943585-8511-400a-a027-49732f1d8fb2">
+
+      <h3>Максимальная трансформация <span class="hit-label">ПОСЛЕДНИЙ ГОД</span></h3>
+
+      <p class="lessons"
+         data-tooltip="Абонемент действует 12 месяцев. В 2026 году формат 96 занятий продаваться не будет.">
+        96 занятий · 12 месяцев
+      </p>
+
+      <p class="old-price">62 400 ₽</p>
+      <p class="price">37 440 ₽</p>
+
+      <button class="select-package">Закрепить место</button>
     </div>
 
-    <div class="package glass hit" data-price="27040" data-installments="10"
-         data-link="https://ecom.otpbank.ru/smart-form?config=6ed1f1bc-33ee-45b7-a7ae-852ca0ffa44f">
+    <!-- 64 -->
+    <div class="package glass hit"
+         data-price="33280"
+         data-installments="10"
+         data-link="https://ecom.otpbank.ru/smart-form?config=e0d01fc2-5884-4fb1-b769-c7955a2d3b69">
+
       <h3>Регулярный формат <span class="hit-label">РЕКОМЕНДУЕМ</span></h3>
-      <p class="lessons">64 занятия · 2–3 раза в неделю</p>
-      <p class="price">27 040 ₽</p>
-      <button class="select-package">Выбрать формат</button>
+
+      <p class="lessons"
+         data-tooltip="Абонемент действует 12 месяцев. Оптимальный формат для стабильного результата.">
+        64 занятия · 12 месяцев
+      </p>
+
+      <p class="old-price">41 600 ₽</p>
+      <p class="price">33 280 ₽</p>
+
+      <button class="select-package">Закрепить место</button>
     </div>
 
-    <div class="package glass" data-price="20280" data-installments="6"
-         data-link="https://ecom.otpbank.ru/smart-form?config=9d8793c4-bd20-4bfe-91d9-bfc9c60498da">
-      <h3>Комфортный режим</h3>
-      <p class="lessons">48 занятий · 2 раза в неделю</p>
-      <p class="price">20 280 ₽</p>
-      <button class="select-package">Выбрать формат</button>
+    <!-- 32 -->
+    <div class="package glass"
+         data-price="18720"
+         data-installments="Нет">
+
+      <h3>Комфортный старт</h3>
+
+      <p class="lessons"
+         data-tooltip="Абонемент действует 5 месяцев. Подходит для мягкого входа.">
+        32 занятия · 5 месяцев
+      </p>
+
+      <p class="old-price">20 800 ₽</p>
+      <p class="price">18 720 ₽</p>
+
+      <button class="select-package">Закрепить место</button>
     </div>
 
-    <div class="package glass" data-price="15600" data-installments="Нет">
-      <h3>Мягкий старт</h3>
-      <p class="lessons">32 занятия</p>
-      <p class="price">15 600 ₽</p>
-      <button class="select-package">Выбрать формат</button>
+    <!-- 16 -->
+    <div class="package glass"
+         data-price="9880"
+         data-installments="Нет">
+
+      <h3>Знакомство со студией</h3>
+
+      <p class="lessons"
+         data-tooltip="Абонемент действует 3 месяца. Идеально для первого шага.">
+        16 занятий · 3 месяца
+      </p>
+
+      <p class="old-price">10 400 ₽</p>
+      <p class="price">9 880 ₽</p>
+
+      <button class="select-package">Закрепить место</button>
     </div>
 
   </section>
@@ -99,23 +141,27 @@
   <!-- PAYMENT -->
   <section id="payment-options" class="glass payment" style="display:none;">
     <a id="price-button-link"
-       href="https://qr.nspk.ru/AS2A006F0RCJU7V991SBLV4AACJGFT2P"
+       href="https://qr.nspk.ru/AS2A006F0RCJU7V991SBLV4AACJGFT2P?type=01&bank=100000000004&crc=A93E"
        target="_blank"
        class="pay-link">
       Закрепление места: <strong><span id="selected-package-price"></span> ₽</strong>
     </a>
 
-    <button id="installment-btn" class="installment-btn" style="display:none"
+    <button class="installment-btn"
+            onclick="window.open('https://checkout.tochka.com/35716534-5fd6-46ab-9ca0-1336d47f692a','_blank')">
+      Оплатить картой / СБП
+    </button>
+
+    <button id="installment-btn"
+            class="installment-btn"
+            style="display:none;"
             onclick="openInstallmentLink()">
-      Оплатить частями (<span id="installment-months"></span>)
+      Рассрочка (<span id="installment-months"></span>)
     </button>
   </section>
 
   <footer class="footer-note">
-    <p>
-      Количество мест в группах ограничено.  
-      Мы сохраняем камерный формат и индивидуальный подход.
-    </p>
+    Количество мест ограничено. Камерные группы до 10 человек.
   </footer>
 
 </main>
