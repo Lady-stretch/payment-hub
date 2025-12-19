@@ -26,7 +26,7 @@ function createSnow() {
   }
 }
 
-/* Таймер до Нового года с секундами */
+/* Таймер до Нового года с секундами (компактная версия) */
 const END_DATE = new Date('January 1, 2026 00:00:00 GMT+0300');
 
 function updateTimer() {
@@ -36,8 +36,8 @@ function updateTimer() {
   const diff = END_DATE - Date.now();
   
   if (diff <= 0) {
-    el.textContent = 'С Новым годом! 🎄';
-    el.style.fontSize = '2.2rem';
+    el.textContent = 'С НОВЫМ ГОДОМ! 🎄';
+    el.style.fontSize = '1.8rem';
     return;
   }
 
@@ -49,7 +49,28 @@ function updateTimer() {
   // Форматирование с ведущими нулями
   const format = (num) => num < 10 ? '0' + num : num;
   
-  el.innerHTML = `${format(d)}<span style="font-size:0.7em">д</span> : ${format(h)}<span style="font-size:0.7em">ч</span> : ${format(m)}<span style="font-size:0.7em">м</span> : ${format(s)}<span style="font-size:0.7em">с</span>`;
+  // Компактное отображение в одну строку
+  el.innerHTML = `
+    <span style="display: inline-flex; align-items: baseline;">
+      ${format(d)}<span style="font-size:0.5em; margin:0 2px;">д</span>
+    </span>
+    <span style="margin:0 2px;">:</span>
+    <span style="display: inline-flex; align-items: baseline;">
+      ${format(h)}<span style="font-size:0.5em; margin:0 2px;">ч</span>
+    </span>
+    <span style="margin:0 2px;">:</span>
+    <span style="display: inline-flex; align-items: baseline;">
+      ${format(m)}<span style="font-size:0.5em; margin:0 2px;">м</span>
+    </span>
+    <span style="margin:0 2px;">:</span>
+    <span style="display: inline-flex; align-items: baseline;">
+      ${format(s)}<span style="font-size:0.5em; margin:0 2px;">с</span>
+    </span>
+  `;
+  
+  // Адаптивный размер шрифта для мобильных
+  const isMobile = window.innerWidth < 768;
+  el.style.fontSize = isMobile ? '1.2rem' : '1.8rem';
 }
 
 /* Выбор пакета */
@@ -117,4 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
   createSnow();
   updateTimer();
   setInterval(updateTimer, 1000);
+  
+  // Адаптация таймера при изменении размера окна
+  window.addEventListener('resize', updateTimer);
 });
