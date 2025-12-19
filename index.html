@@ -6,32 +6,43 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Great+Vibes&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <!-- Снег -->
+  <!-- Снег и звезды -->
   <div class="snow-container"></div>
+  <div class="stars-container"></div>
+  
+  <!-- Счетчик снеговиков -->
+  <div id="snowman-counter" class="snowman-counter" style="display: none;">
+    ⛄ Поймано: <span id="snowman-count">0</span>/3
+  </div>
+
+  <!-- Кнопка переключения темы -->
+  <button id="theme-toggle" class="theme-toggle">
+    <span class="sun-icon">☀️</span>
+    <span class="moon-icon">🌙</span>
+  </button>
 
   <header class="header glass">
     <img src="logo_header_final.png" alt="Lady Stretch" class="logo">
   </header>
 
   <main class="wrapper">
-
     <!-- HERO -->
     <section class="hero glass">
       <h1 class="hero-title">
-        <span class="gold">НОВОГОДНЕЕ</span>
-        <span class="accent">НАСТРОЕНИЕ</span> 🎄
+        <span class="gold">Новогоднее</span>
+        <span class="accent">настроение</span> 🎄
       </h1>
-
       <p class="hero-subtitle">
-        С НАСТУПАЮЩИМ НОВЫМ ГОДОМ
+        С наступающим Новым годом
       </p>
     </section>
 
