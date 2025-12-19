@@ -57,9 +57,9 @@ function updateTimer() {
   }
 
   const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
-  const m = Math.floor((diff / (1000 * 60)) % 60);
-  const s = Math.floor((diff / 1000) % 60);
+  const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  const s = Math.floor((diff % (1000 * 60)) / 1000);
 
   const format = (num) => num < 10 ? '0' + num : num;
   
@@ -114,8 +114,6 @@ function createSnow() {
     
     snowContainer.appendChild(snowflake);
   }
-  
-  console.log('Снег создан: 80 снежинок');
 }
 
 // ======================
@@ -144,31 +142,34 @@ function createStars() {
     
     starsContainer.appendChild(star);
   }
-  
-  console.log('Звезды созданы: 150 звезд');
 }
 
 // ======================
 // ПЕРЕКЛЮЧЕНИЕ ТЕМЫ
 // ======================
 function setupEventListeners() {
-  console.log('Настраиваем обработчики событий...');
-  
   // Кнопка темы
   const themeToggle = document.getElementById('theme-toggle');
   if (themeToggle) {
     themeToggle.addEventListener('click', toggleTheme);
-    console.log('Кнопка темы подключена');
   }
   
-  // Выбор пакетов
-  const cards = document.querySelectorAll('.card');
-  console.log(`Найдено карточек: ${cards.length}`);
-  
-  cards.forEach(card => {
-    card.addEventListener('click', selectPackage);
+  // Выбор пакетов - ИСПРАВЛЕНО
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('click', function(e) {
+      // Если кликнули на кнопку "Выбрать формат", не выполняем дважды
+      if (e.target.classList.contains('select')) {
+        selectPackage.call(this);
+        return;
+      }
+      
+      // Если кликнули на саму карточку (но не на кнопку)
+      if (e.target === this || e.target.closest('.desc') || e.target.closest('.price')) {
+        selectPackage.call(this);
+      }
+    });
     
-    // Обработчик для кнопки внутри карточки
+    // Отдельный обработчик для кнопки
     const selectBtn = card.querySelector('.select');
     if (selectBtn) {
       selectBtn.addEventListener('click', function(e) {
@@ -177,17 +178,9 @@ function setupEventListeners() {
       });
     }
   });
-  
-  // Кнопка назад
-  const backButton = document.querySelector('.back-button');
-  if (backButton) {
-    backButton.addEventListener('click', goBack);
-  }
 }
 
 function selectPackage() {
-  console.log('Выбран пакет:', this.querySelector('h3').textContent);
-  
   // Сбрасываем предыдущий выбор
   document.querySelectorAll('.card').forEach(c => {
     c.style.borderColor = '';
@@ -213,14 +206,12 @@ function selectPackage() {
   const installmentBtn = document.getElementById('installment-btn');
   const installments = this.getAttribute('data-installments');
   
-  if (installments && installments !== 'null') {
+  if (installments && installments !== 'null' && installments !== 'undefined') {
     currentInstallment = this.getAttribute('data-link');
-    document.getElementById('months').textContent = installments;
+    document.getElementById('months').textContent = installments + ' мес';
     installmentBtn.style.display = 'block';
-    console.log('Рассрочка доступна:', installments, 'месяцев');
   } else {
     installmentBtn.style.display = 'none';
-    console.log('Рассрочка не доступна');
   }
 
   // Плавный скролл к блоку оплаты
@@ -232,13 +223,29 @@ function selectPackage() {
 
 function openInstallment() {
   if (currentInstallment) {
-    console.log('Открываем ссылку на рассрочку:', currentInstallment);
     window.open(currentInstallment, '_blank');
   }
 }
 
+// ======================
+// КНОПКА НАЗАД
+// ======================
+function goBack() {
+  const paymentSection = document.getElementById('payment');
+  paymentSection.style.display = 'none';
+  
+  // Сбрасываем выделение карточек
+  document.querySelectorAll('.card').forEach(card => {
+    card.style.borderColor = '';
+    card.style.borderWidth = '';
+    card.style.borderStyle = '';
+  });
+  
+  // Скролл к началу страницы
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 function toggleTheme() {
-  console.log('Переключение темы...');
   isLightTheme = !isLightTheme;
   document.body.classList.toggle('light-theme', isLightTheme);
   localStorage.setItem('theme', isLightTheme ? 'light' : 'dark');
@@ -248,26 +255,187 @@ function toggleTheme() {
     // В светлой теме останавливаем снеговиков
     clearInterval(snowmanInterval);
     removeAllSnowmen();
-    document.querySelector('.snowman-counter').style.display = 'none';
+    const counter = document.getElementById('snowman-counter');
+    if (counter) counter.style.display = 'none';
   } else {
     // В темной теме запускаем снеговиков
     createStars();
     startSnowmanFall();
     updateSnowmanCounter();
   }
-  
-  console.log('Тема переключена:', isLightTheme ? 'светлая' : 'темная');
 }
 
+// ======================
+// ЗАГРУЗКА ДАННЫХ
+// ======================
 function loadSavedData() {
-  console.log('Загружаем сохраненные данные...');
-  
   // Загружаем тему
   const savedTheme = localStorage.getItem('theme');
   if (savedTheme === 'light') {
     isLightTheme = true;
     document.body.classList.add('light-theme');
-    console.log('Загружена светлая тема');
-  } else {
-    console.log('Загружена темная тема (по умолчанию)');
- 
+  }
+  
+  // Загружаем снеговиков
+  const savedSnowmen = localStorage.getItem('snowmanCaught');
+  if (savedSnowmen) {
+    caughtSnowmen = parseInt(savedSnowmen);
+  }
+  
+  // Загружаем награду
+  const savedReward = localStorage.getItem('snowmanReward');
+  if (savedReward === 'true') {
+    hasReward = true;
+  }
+}
+
+// ======================
+// СНЕГОВИКИ И ИГРА
+// ======================
+function createSnowman() {
+  if (hasReward || isLightTheme) return;
+  
+  const snowman = document.createElement('div');
+  snowman.className = 'snowman';
+  snowman.innerHTML = '⛄';
+  snowman.style.left = Math.random() * 85 + 5 + 'vw';
+  snowman.style.fontSize = Math.random() * 30 + 40 + 'px';
+  
+  const duration = Math.random() * 10 + 15;
+  snowman.style.animation = `snowman-fall ${duration}s linear forwards`;
+  
+  snowman.addEventListener('click', catchSnowman);
+  
+  document.querySelector('.snow-container').appendChild(snowman);
+  
+  setTimeout(() => {
+    if (snowman.parentNode) {
+      snowman.remove();
+    }
+  }, duration * 1000);
+}
+
+function startSnowmanFall() {
+  if (hasReward || isLightTheme) return;
+  
+  // Первый снеговик через 5 секунд
+  setTimeout(() => {
+    if (!hasReward && !isLightTheme) createSnowman();
+  }, 5000);
+  
+  // Затем каждые 20-40 секунд
+  snowmanInterval = setInterval(() => {
+    if (!hasReward && !isLightTheme && Math.random() > 0.5) {
+      createSnowman();
+    }
+  }, 20000);
+}
+
+function removeAllSnowmen() {
+  document.querySelectorAll('.snowman').forEach(snowman => {
+    snowman.remove();
+  });
+}
+
+function catchSnowman(event) {
+  if (hasReward || isLightTheme) return;
+  
+  const snowman = event.target;
+  
+  // Анимация исчезновения
+  snowman.style.transform = 'scale(0)';
+  snowman.style.transition = 'transform 0.3s ease';
+  
+  // Увеличиваем счет
+  caughtSnowmen++;
+  localStorage.setItem('snowmanCaught', caughtSnowmen.toString());
+  
+  // Создаем эффект
+  createCatchEffect(event.clientX, event.clientY);
+  
+  // Обновляем счетчик
+  updateSnowmanCounter();
+  
+  // Проверяем награду
+  checkForReward();
+  
+  // Удаляем снеговика
+  setTimeout(() => {
+    if (snowman.parentNode) {
+      snowman.remove();
+    }
+  }, 300);
+}
+
+function createCatchEffect(x, y) {
+  const effect = document.createElement('div');
+  effect.className = 'catch-effect';
+  effect.innerHTML = '🎁 +1';
+  effect.style.left = (x - 20) + 'px';
+  effect.style.top = (y - 20) + 'px';
+  effect.style.color = '#FFD700';
+  effect.style.fontWeight = 'bold';
+  
+  document.body.appendChild(effect);
+  
+  setTimeout(() => {
+    effect.remove();
+  }, 1000);
+}
+
+function updateSnowmanCounter() {
+  const counter = document.getElementById('snowman-counter');
+  const countSpan = document.getElementById('snowman-count');
+  
+  if (caughtSnowmen > 0 && !isLightTheme) {
+    if (counter) {
+      counter.style.display = 'block';
+      if (countSpan) {
+        countSpan.textContent = caughtSnowmen;
+      }
+      
+      // Если награда получена
+      if (hasReward) {
+        counter.innerHTML = '⛄ Награда получена! 🎁';
+        counter.style.background = 'linear-gradient(to right, #4CAF50, #45a049)';
+      }
+    }
+  } else if (counter) {
+    counter.style.display = 'none';
+  }
+}
+
+function checkForReward() {
+  if (!hasReward && caughtSnowmen >= SNOWMEN_FOR_REWARD) {
+    hasReward = true;
+    localStorage.setItem('snowmanReward', 'true');
+    showRewardNotification();
+    updateSnowmanCounter();
+  }
+}
+
+function showRewardNotification() {
+  const notification = document.createElement('div');
+  notification.className = 'reward-notification';
+  notification.innerHTML = `
+    <h3>🎉 Поздравляем!</h3>
+    <p>Вы поймали ${SNOWMEN_FOR_REWARD} снеговиков!</p>
+    <p><strong>Ваша награда: 2 дополнительных занятия!</strong></p>
+    <p>При покупке абонемента покажите этот экран администратору</p>
+    <button onclick="this.parentElement.remove()">OK</button>
+  `;
+  
+  document.body.appendChild(notification);
+  
+  // Автоматически скрыть через 10 секунд
+  setTimeout(() => {
+    if (notification.parentNode) {
+      notification.remove();
+    }
+  }, 10000);
+}
+
+// ======================
+// АДАПТАЦИЯ ПРИ ИЗМЕНЕНИИ РАЗМЕРА
+// ======================
+window.addEventListener('resize', updateTimer);
