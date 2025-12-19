@@ -73,6 +73,37 @@
       font-weight: 700;
       z-index: 2;
     }
+    
+    /* Стили для цен со скидкой */
+    .original-price {
+      text-decoration: line-through;
+      color: var(--muted);
+      font-size: 1.1rem;
+      margin-bottom: 5px;
+    }
+    
+    .discount-badge {
+      display: inline-block;
+      background: var(--red);
+      color: white;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-left: 10px;
+    }
+    
+    .trial-card {
+      background: linear-gradient(135deg, rgba(184, 30, 43, 0.1), rgba(184, 30, 43, 0.05));
+      border: 2px solid var(--red) !important;
+    }
+    
+    .trial-price {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--red);
+      margin: 15px 0;
+    }
   </style>
 </head>
 
@@ -105,16 +136,16 @@
 
     <!-- БАННЕР -->
     <section class="glass future-banner">
-      <h2>🚀 Обновленная система абонементов</h2>
-      <p>В новом году мы представляем улучшенные форматы занятий с дополнительными возможностями</p>
+      <h2>🚀 Обновленная система абонементов 2026</h2>
+      <p>Новые форматы с улучшенными условиями и специальными скидками</p>
       <div class="future-date">Доступны с 1 января 2026 года</div>
     </section>
 
     <!-- ИНФО -->
     <section class="glass info">
       <p>
-        С 2026 года мы вводим новые форматы абонементов, которые позволят 
-        вам еще эффективнее достигать своих целей.
+        С 2026 года мы обновляем цены, но сохраняем специальные скидки 
+        для новых клиентов и постоянных участников.
       </p>
       <p>
         Все абонементы включают персональную консультацию тренера 
@@ -125,52 +156,75 @@
     <!-- БУДУЩИЕ ПАКЕТЫ -->
     <section class="packages">
       <div class="card glass future-card"
-           data-price="42900">
-        <h3>ПРЕМИУМ+ 96 занятий</h3>
-        <p class="desc"
-           data-tooltip="Срок действия 12 месяцев + 2 персональные тренировки">
-          Глубокая работа · 12 месяцев<br>
-          + 2 персональные тренировки
-        </p>
-        <p class="price">42 900 ₽</p>
-        <button class="select" onclick="showComingSoon()">Скоро доступно</button>
-      </div>
-
-      <div class="card glass future-card hit"
-           data-price="36900">
-        <h3>ОПТИМАЛЬНЫЙ+ 64 занятий</h3>
+           data-price="44800">
+        <h3>64 занятия <span class="discount-badge">-15%</span></h3>
+        <p class="original-price">44 800 ₽</p>
         <p class="desc"
            data-tooltip="Срок действия 12 месяцев + доступ к онлайн-курсу">
           Регулярные тренировки · 12 месяцев<br>
           + доступ к онлайн-курсу
         </p>
-        <p class="price">36 900 ₽</p>
+        <p class="price">38 080 ₽</p>
+        <p class="desc" style="color: var(--red); font-weight: 600;">
+          Экономия: 6 720 ₽
+        </p>
         <button class="select" onclick="showComingSoon()">Скоро доступно</button>
       </div>
 
       <div class="card glass future-card"
-           data-price="21900">
-        <h3>СТАРТ+ 32 занятия</h3>
+           data-price="22400">
+        <h3>32 занятия <span class="discount-badge">-10%</span></h3>
+        <p class="original-price">22 400 ₽</p>
         <p class="desc"
            data-tooltip="Срок действия 6 месяцев + фитнес-тестирование">
           Интенсивный старт · 6 месяцев<br>
-          + фитнес-тестирование
+          + курс детокс
         </p>
-        <p class="price">21 900 ₽</p>
+        <p class="price">20 160 ₽</p>
+        <p class="desc" style="color: var(--red); font-weight: 600;">
+          Экономия: 2 240 ₽
+        </p>
         <button class="select" onclick="showComingSoon()">Скоро доступно</button>
       </div>
 
       <div class="card glass future-card"
-           data-price="12900">
-        <h3>ЗНАКОМСТВО+ 16 занятий</h3>
+           data-price="11200">
+        <h3>16 занятий <span class="discount-badge">-5%</span></h3>
+        <p class="original-price">11 200 ₽</p>
         <p class="desc"
            data-tooltip="Срок действия 3 месяца + программа питания">
           Первые шаги · 3 месяца<br>
           + программа питания
         </p>
-        <p class="price">12 900 ₽</p>
+        <p class="price">10 640 ₽</p>
+        <p class="desc" style="color: var(--red); font-weight: 600;">
+          Экономия: 560 ₽
+        </p>
         <button class="select" onclick="showComingSoon()">Скоро доступно</button>
       </div>
+
+      <div class="card glass trial-card"
+           data-price="455">
+        <h3>Пробное занятие</h3>
+        <p class="desc"
+           data-tooltip="Первое знакомство со студией и тренером">
+          Знакомство со студией · 1 занятие<br>
+          + консультация тренера
+        </p>
+        <p class="trial-price">455 ₽</p>
+        <button class="select" onclick="showComingSoon()">Скоро доступно</button>
+      </div>
+    </section>
+
+    <!-- ПРИМЕЧАНИЕ -->
+    <section class="glass info" style="background: rgba(184, 30, 43, 0.05); border: 1px solid rgba(184, 30, 43, 0.1);">
+      <p style="color: var(--red); font-weight: 600;">
+        ⭐ Скидки действуют при предварительной записи до 31 декабря 2025 года
+      </p>
+      <p>
+        После 1 января 2026 года абонементы будут доступны по полной цене.
+        Успейте забронировать по специальной цене!
+      </p>
     </section>
 
     <!-- КНОПКА НАЗАД -->
@@ -181,25 +235,37 @@
     </div>
 
     <footer class="footer">
-      Новые абонементы доступны с 1 января 2026 года
+      Новые абонементы доступны с 1 января 2026 года<br>
+      Предзаказ по специальным ценам открыт до 31 декабря 2025
     </footer>
   </main>
 
   <script>
     // Простые функции для второй страницы
     function showComingSoon() {
-      alert('Эти абонементы будут доступны с 1 января 2026 года!\n\nА пока вы можете приобрести текущие абонементы по специальной новогодней цене.');
+      alert('Эти абонементы будут доступны с 1 января 2026 года!\n\nВы можете забронировать их заранее по специальной цене до 31 декабря 2025 года.');
     }
     
     // Переключение темы
     document.getElementById('theme-toggle').addEventListener('click', function() {
       document.body.classList.toggle('light-theme');
+      localStorage.setItem('theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+    });
+    
+    // Загрузка темы
+    document.addEventListener('DOMContentLoaded', function() {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'light') {
+        document.body.classList.add('light-theme');
+      }
     });
     
     // Снег
     function createSnow() {
       const container = document.querySelector('.snow-container');
       if (!container) return;
+      
+      container.innerHTML = '';
       
       for (let i = 0; i < 60; i++) {
         const flake = document.createElement('div');
@@ -221,6 +287,8 @@
     function createStars() {
       const container = document.querySelector('.stars-container');
       if (!container) return;
+      
+      container.innerHTML = '';
       
       for (let i = 0; i < 120; i++) {
         const star = document.createElement('div');
@@ -258,7 +326,16 @@
           0% { opacity: 0.2; transform: scale(1); }
           100% { opacity: 0.8; transform: scale(1.1); }
         }
-        .stars-container { display: none; }
+        .stars-container { 
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          pointer-events: none;
+          z-index: 0;
+          display: none; 
+        }
         body:not(.light-theme) .stars-container { display: block; }
       `;
       document.head.appendChild(style);
