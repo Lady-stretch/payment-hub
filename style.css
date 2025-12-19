@@ -1,7 +1,7 @@
 :root {
   /* Темная тема (по умолчанию) */
   --bg: #0b0c10;
-  --glass: rgba(255,255,255,0.18);
+  --glass: rgba(255,255,255,0.08);
   --border: rgba(255,255,255,0.16);
   --text: #fff;
   --muted: rgba(255,255,255,0.65);
@@ -13,7 +13,7 @@
 .light-theme {
   /* Светлая тема */
   --bg: #f8f9fa;
-  --glass: rgba(255, 255, 255, 0.88);
+  --glass: rgba(255, 255, 255, 0.95);
   --border: rgba(0, 0, 0, 0.08);
   --text: #222;
   --muted: rgba(0, 0, 0, 0.65);
@@ -273,7 +273,7 @@ body.light-theme .header {
 .glass {
   background: var(--glass);
   border: 1px solid var(--border);
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(18px);
   border-radius: 22px;
   padding: 32px;
   margin-bottom: 28px;
@@ -425,20 +425,12 @@ body.light-theme .header {
   }
 }
 
-/* ====================== */
-/* КАРТОЧКИ С АБОНЕМЕНТАМИ - ИСПРАВЛЕНО */
-/* ====================== */
-
 .card {
-  position: relative;
-  overflow: hidden;
   padding: 32px 28px;
   transition: all 0.3s ease;
   cursor: pointer;
   text-align: center;
   border-radius: 20px;
-  background: var(--glass);
-  border: 1px solid var(--border);
 }
 
 .card:hover {
@@ -446,144 +438,6 @@ body.light-theme .header {
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
 }
 
-/* УБИРАЕМ ЛИШНИЕ ГРАДИЕНТЫ И ФОНЫ */
-.card {
-  background-image: none !important;
-  background-origin: initial !important;
-  background-clip: initial !important;
-}
-
-/* Снежный эффект на углах карточек - ТОЛЬКО ДЛЯ УГЛОВ */
-.card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    /* Верхний левый угол */
-    radial-gradient(circle at 0% 0%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
-    /* Верхний правый угол */
-    radial-gradient(circle at 100% 0%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
-    /* Нижний левый угол */
-    radial-gradient(circle at 0% 100%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
-    /* Нижний правый угол */
-    radial-gradient(circle at 100% 100%, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
-  z-index: -1;
-  border-radius: 20px;
-  pointer-events: none;
-}
-
-body.light-theme .card::before {
-  background: 
-    radial-gradient(circle at 0% 0%, rgba(0, 0, 0, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 100% 0%, rgba(0, 0, 0, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 0% 100%, rgba(0, 0, 0, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 100% 100%, rgba(0, 0, 0, 0.05) 0%, transparent 50%);
-}
-
-/* Снежинки в углах карточек - ТОЛЬКО В ТЕМНОЙ ТЕМЕ */
-body:not(.light-theme) .card::after {
-  content: '❄';
-  position: absolute;
-  font-size: 12px;
-  opacity: 0.4;
-  animation: float 4s infinite ease-in-out;
-  z-index: 1;
-}
-
-body.light-theme .card::after {
-  content: '❄';
-  position: absolute;
-  font-size: 12px;
-  opacity: 0.2;
-  animation: float 4s infinite ease-in-out;
-  z-index: 1;
-}
-
-.card:nth-child(1)::after {
-  top: 10px;
-  right: 10px;
-  animation-delay: 0s;
-}
-
-.card:nth-child(2)::after {
-  top: 10px;
-  left: 10px;
-  content: '❅';
-  animation-delay: 0.5s;
-}
-
-.card:nth-child(3)::after {
-  bottom: 10px;
-  right: 10px;
-  content: '❆';
-  animation-delay: 1s;
-}
-
-.card:nth-child(4)::after {
-  bottom: 10px;
-  left: 10px;
-  content: '✻';
-  animation-delay: 1.5s;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.4; }
-  50% { transform: translateY(-5px) rotate(180deg); opacity: 0.8; }
-}
-
-/* Тени для карточек */
-body:not(.light-theme) .card {
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
-
-body.light-theme .card {
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-}
-
-/* Иней на заголовках */
-.card h3 { 
-  font-size: 1.8rem;
-  margin-bottom: 10px;
-  color: var(--text);
-  font-weight: 800;
-  position: relative;
-  display: inline-block;
-}
-
-/* УБИРАЕМ СНЕЖИНКУ ВОЗЛЕ ЗАГОЛОВКА - она перекрывала текст "64 занятий" */
-.card h3::after {
-  display: none;
-}
-
-.desc {
-  font-size: 0.95rem;
-  color: var(--muted);
-  margin-bottom: 20px;
-  line-height: 1.5;
-  min-height: 45px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-/* Цена */
-.price {
-  font-size: 2rem;
-  font-weight: 900;
-  color: var(--red);
-  margin: 20px 0;
-}
-
-/* УБИРАЕМ ЛИШНИЙ ЭФФЕКТ НА ЦЕНЕ */
-.price::before {
-  display: none;
-}
-
-/* Стиль для карточки ХИТ */
 .card.hit {
   border: 2px solid var(--red);
   position: relative;
@@ -601,10 +455,34 @@ body.light-theme .card {
   font-size: 0.8rem;
   font-weight: 700;
   box-shadow: 0 4px 8px rgba(184, 30, 43, 0.3);
-  z-index: 2;
 }
 
-/* Стили для кнопки выбора */
+.card h3 { 
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  color: var(--text);
+  font-weight: 800;
+}
+
+.desc {
+  font-size: 0.95rem;
+  color: var(--muted);
+  margin-bottom: 20px;
+  line-height: 1.5;
+  min-height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.price {
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--red);
+  margin: 20px 0;
+}
+
 .select {
   width: 100%;
   padding: 16px;
@@ -621,18 +499,6 @@ body.light-theme .card {
 .select:hover {
   background: linear-gradient(to right, #3a5f95, #5a83bb);
   transform: scale(1.02);
-}
-
-/* УБИРАЕМ СЛОЖНЫЙ ЭФФЕКТ НА КНОПКАХ */
-.select::before {
-  display: none;
-}
-
-/* Адаптивность для снежинок в углах */
-@media (max-width: 768px) {
-  .card::after {
-    font-size: 10px;
-  }
 }
 
 .payment {
