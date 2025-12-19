@@ -77,8 +77,9 @@ function updateTimer() {
     </span>
   `;
   
+  // Адаптивный размер шрифта для мобильных
   const isMobile = window.innerWidth < 768;
-  el.style.fontSize = isMobile ? '1.5rem' : '2.5rem';
+  el.style.fontSize = isMobile ? '1.8rem' : '2.5rem';
 }
 
 // ======================
@@ -198,17 +199,19 @@ function selectPackage() {
   document.getElementById('selected-price').textContent = 
     Number(price).toLocaleString('ru-RU');
 
-  // НАСТРОЙКА КНОПКИ РАССРОЧКИ - ИСПРАВЛЕНО
+  // ИСПРАВЛЕНИЕ РАССРОЧКИ - проверяем явно
   const installmentBtn = document.getElementById('installment-btn');
   const installments = this.getAttribute('data-installments');
   
-  // Проверяем, есть ли атрибут data-installments и не равен ли он "null" или "undefined"
-  if (installments && installments !== 'null' && installments !== 'undefined' && installments !== 'Нет') {
+  // Для 32 и 16 занятий в HTML должно быть data-installments="Нет"
+  if (installments && installments !== 'Нет' && installments !== 'null' && installments !== 'undefined') {
     currentInstallment = this.getAttribute('data-link');
     document.getElementById('months').textContent = installments;
     installmentBtn.style.display = 'block';
+    console.log('Рассрочка доступна для:', this.querySelector('h3').textContent);
   } else {
     installmentBtn.style.display = 'none';
+    console.log('Рассрочка НЕ доступна для:', this.querySelector('h3').textContent);
   }
 
   // Плавный скролл к блоку оплаты
@@ -371,7 +374,7 @@ function createCatchEffect(x, y) {
   effect.style.left = (x - 20) + 'px';
   effect.style.top = (y - 20) + 'px';
   effect.style.color = '#FFD700';
-  effect.style.fontWeight = 'bold';
+  effect.style.fontWeight: 'bold';
   
   document.body.appendChild(effect);
   
@@ -416,23 +419,4 @@ function showRewardNotification() {
   notification.className = 'reward-notification';
   notification.innerHTML = `
     <h3>🎉 Поздравляем!</h3>
-    <p>Вы поймали ${SNOWMEN_FOR_REWARD} снеговиков!</p>
-    <p><strong>Ваша награда: 2 дополнительных занятия!</strong></p>
-    <p>При покупке абонемента покажите этот экран администратору</p>
-    <button onclick="this.parentElement.remove()">OK</button>
-  `;
-  
-  document.body.appendChild(notification);
-  
-  // Автоматически скрыть через 10 секунд
-  setTimeout(() => {
-    if (notification.parentNode) {
-      notification.remove();
-    }
-  }, 10000);
-}
-
-// ======================
-// АДАПТАЦИЯ ПРИ ИЗМЕНЕНИИ РАЗМЕРА
-// ======================
-window.addEventListener('resize', updateTimer);
+    <p>Вы поймали ${SNOWMEN_FOR_REWARD} снеговиков!</
