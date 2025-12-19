@@ -1,1 +1,268 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Lady Stretch | Абонементы 2026</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
 
+  <!-- Open Graph метатеги -->
+  <meta property="og:title" content="Lady Stretch | Новые абонементы 2026">
+  <meta property="og:description" content="Новые абонементы с 1 января 2026 года">
+  <meta property="og:image" content="https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPOSITORY/main/images/new-year-preview.jpg">
+  <meta property="og:url" content="https://YOUR_USERNAME.github.io/YOUR_REPOSITORY/future-packages.html">
+  <meta property="og:type" content="website">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Great+Vibes&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Дополнительные стили для второй страницы */
+    .future-banner {
+      background: linear-gradient(135deg, #4a6fa5, #6a93cb);
+      color: white;
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    
+    .future-date {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-top: 10px;
+      color: #FFD700;
+    }
+    
+    .back-to-main {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 12px 24px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+    
+    .back-to-main:hover {
+      background: rgba(255,255,255,0.2);
+      transform: translateY(-2px);
+    }
+    
+    .future-card {
+      position: relative;
+      border: 2px solid #4a6fa5 !important;
+    }
+    
+    .future-card::before {
+      content: "НОВИНКА 2026";
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #4a6fa5;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      z-index: 2;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Снег и звезды -->
+  <div class="snow-container"></div>
+  <div class="stars-container"></div>
+
+  <!-- Кнопка переключения темы -->
+  <button id="theme-toggle" class="theme-toggle">
+    <span class="moon-icon">🌙</span>
+    <span class="sun-icon">☀️</span>
+  </button>
+
+  <header class="header glass">
+    <img src="logo_header_final.png" alt="Lady Stretch" class="logo">
+  </header>
+
+  <main class="wrapper">
+    <!-- HERO -->
+    <section class="hero glass">
+      <h1 class="hero-title">
+        <span class="gold">Новые</span>
+        <span class="accent">абонементы</span> 🎯
+      </h1>
+      <p class="hero-subtitle">
+        С 1 января 2026 года
+      </p>
+    </section>
+
+    <!-- БАННЕР -->
+    <section class="glass future-banner">
+      <h2>🚀 Обновленная система абонементов</h2>
+      <p>В новом году мы представляем улучшенные форматы занятий с дополнительными возможностями</p>
+      <div class="future-date">Доступны с 1 января 2026 года</div>
+    </section>
+
+    <!-- ИНФО -->
+    <section class="glass info">
+      <p>
+        С 2026 года мы вводим новые форматы абонементов, которые позволят 
+        вам еще эффективнее достигать своих целей.
+      </p>
+      <p>
+        Все абонементы включают персональную консультацию тренера 
+        и доступ к закрытому чату участников.
+      </p>
+    </section>
+
+    <!-- БУДУЩИЕ ПАКЕТЫ -->
+    <section class="packages">
+      <div class="card glass future-card"
+           data-price="42900">
+        <h3>ПРЕМИУМ+ 96 занятий</h3>
+        <p class="desc"
+           data-tooltip="Срок действия 12 месяцев + 2 персональные тренировки">
+          Глубокая работа · 12 месяцев<br>
+          + 2 персональные тренировки
+        </p>
+        <p class="price">42 900 ₽</p>
+        <button class="select" onclick="showComingSoon()">Скоро доступно</button>
+      </div>
+
+      <div class="card glass future-card hit"
+           data-price="36900">
+        <h3>ОПТИМАЛЬНЫЙ+ 64 занятий</h3>
+        <p class="desc"
+           data-tooltip="Срок действия 12 месяцев + доступ к онлайн-курсу">
+          Регулярные тренировки · 12 месяцев<br>
+          + доступ к онлайн-курсу
+        </p>
+        <p class="price">36 900 ₽</p>
+        <button class="select" onclick="showComingSoon()">Скоро доступно</button>
+      </div>
+
+      <div class="card glass future-card"
+           data-price="21900">
+        <h3>СТАРТ+ 32 занятия</h3>
+        <p class="desc"
+           data-tooltip="Срок действия 6 месяцев + фитнес-тестирование">
+          Интенсивный старт · 6 месяцев<br>
+          + фитнес-тестирование
+        </p>
+        <p class="price">21 900 ₽</p>
+        <button class="select" onclick="showComingSoon()">Скоро доступно</button>
+      </div>
+
+      <div class="card glass future-card"
+           data-price="12900">
+        <h3>ЗНАКОМСТВО+ 16 занятий</h3>
+        <p class="desc"
+           data-tooltip="Срок действия 3 месяца + программа питания">
+          Первые шаги · 3 месяца<br>
+          + программа питания
+        </p>
+        <p class="price">12 900 ₽</p>
+        <button class="select" onclick="showComingSoon()">Скоро доступно</button>
+      </div>
+    </section>
+
+    <!-- КНОПКА НАЗАД -->
+    <div style="text-align: center; margin-top: 40px;">
+      <a href="index.html" class="back-to-main">
+        ← Вернуться к текущим абонементам
+      </a>
+    </div>
+
+    <footer class="footer">
+      Новые абонементы доступны с 1 января 2026 года
+    </footer>
+  </main>
+
+  <script>
+    // Простые функции для второй страницы
+    function showComingSoon() {
+      alert('Эти абонементы будут доступны с 1 января 2026 года!\n\nА пока вы можете приобрести текущие абонементы по специальной новогодней цене.');
+    }
+    
+    // Переключение темы
+    document.getElementById('theme-toggle').addEventListener('click', function() {
+      document.body.classList.toggle('light-theme');
+    });
+    
+    // Снег
+    function createSnow() {
+      const container = document.querySelector('.snow-container');
+      if (!container) return;
+      
+      for (let i = 0; i < 60; i++) {
+        const flake = document.createElement('div');
+        flake.style.cssText = `
+          position: absolute;
+          top: -10px;
+          left: ${Math.random() * 100}vw;
+          color: rgba(180, 220, 255, 0.8);
+          font-size: ${Math.random() * 1.2 + 0.8}em;
+          animation: fall ${Math.random() * 8 + 8}s linear infinite;
+          animation-delay: ${Math.random() * 5}s;
+        `;
+        flake.innerHTML = ['❄', '•', '✻'][Math.floor(Math.random() * 3)];
+        container.appendChild(flake);
+      }
+    }
+    
+    // Звезды
+    function createStars() {
+      const container = document.querySelector('.stars-container');
+      if (!container) return;
+      
+      for (let i = 0; i < 120; i++) {
+        const star = document.createElement('div');
+        star.style.cssText = `
+          position: absolute;
+          left: ${Math.random() * 100}vw;
+          top: ${Math.random() * 100}vh;
+          width: ${Math.random() * 3 + 1}px;
+          height: ${Math.random() * 3 + 1}px;
+          background: white;
+          border-radius: 50%;
+          animation: twinkle ${Math.random() * 4 + 2}s infinite alternate;
+          animation-delay: ${Math.random() * 3}s;
+          opacity: ${Math.random() * 0.8 + 0.2};
+        `;
+        container.appendChild(star);
+      }
+    }
+    
+    // Инициализация
+    document.addEventListener('DOMContentLoaded', () => {
+      createSnow();
+      if (!document.body.classList.contains('light-theme')) {
+        createStars();
+      }
+      
+      // Анимация для звезд
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes fall {
+          0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+          100% { transform: translateY(100vh) rotate(360deg); opacity: 0.3; }
+        }
+        @keyframes twinkle {
+          0% { opacity: 0.2; transform: scale(1); }
+          100% { opacity: 0.8; transform: scale(1.1); }
+        }
+        .stars-container { display: none; }
+        body:not(.light-theme) .stars-container { display: block; }
+      `;
+      document.head.appendChild(style);
+    });
+  </script>
+</body>
+</html>
