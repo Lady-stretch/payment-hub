@@ -26,7 +26,7 @@ function createSnow() {
   }
 }
 
-/* Таймер до Нового года с секундами (компактная версия) */
+/* Таймер до Нового года с секундами */
 const END_DATE = new Date('January 1, 2026 00:00:00 GMT+0300');
 
 function updateTimer() {
@@ -37,7 +37,7 @@ function updateTimer() {
   
   if (diff <= 0) {
     el.textContent = 'С НОВЫМ ГОДОМ! 🎄';
-    el.style.fontSize = '1.8rem';
+    el.style.fontSize = '2.2rem';
     return;
   }
 
@@ -52,25 +52,25 @@ function updateTimer() {
   // Компактное отображение в одну строку
   el.innerHTML = `
     <span style="display: inline-flex; align-items: baseline;">
-      ${format(d)}<span style="font-size:0.5em; margin:0 2px;">д</span>
+      ${format(d)}<span style="font-size:0.7em; margin:0 3px; color: #b81e2b;">д</span>
     </span>
-    <span style="margin:0 2px;">:</span>
+    <span style="margin:0 3px; color: #b81e2b;">:</span>
     <span style="display: inline-flex; align-items: baseline;">
-      ${format(h)}<span style="font-size:0.5em; margin:0 2px;">ч</span>
+      ${format(h)}<span style="font-size:0.7em; margin:0 3px; color: #b81e2b;">ч</span>
     </span>
-    <span style="margin:0 2px;">:</span>
+    <span style="margin:0 3px; color: #b81e2b;">:</span>
     <span style="display: inline-flex; align-items: baseline;">
-      ${format(m)}<span style="font-size:0.5em; margin:0 2px;">м</span>
+      ${format(m)}<span style="font-size:0.7em; margin:0 3px; color: #b81e2b;">м</span>
     </span>
-    <span style="margin:0 2px;">:</span>
+    <span style="margin:0 3px; color: #b81e2b;">:</span>
     <span style="display: inline-flex; align-items: baseline;">
-      ${format(s)}<span style="font-size:0.5em; margin:0 2px;">с</span>
+      ${format(s)}<span style="font-size:0.7em; margin:0 3px; color: #b81e2b;">с</span>
     </span>
   `;
   
-  // Адаптивный размер шрифта для мобильных
+  // Адаптивный размер шрифта
   const isMobile = window.innerWidth < 768;
-  el.style.fontSize = isMobile ? '1.2rem' : '1.8rem';
+  el.style.fontSize = isMobile ? '1.5rem' : '2.5rem';
 }
 
 /* Выбор пакета */
@@ -100,7 +100,7 @@ document.querySelectorAll('.card').forEach(card => {
     if (card.dataset.installments) {
       currentInstallment = card.dataset.link;
       document.getElementById('months').textContent =
-        card.dataset.installments;
+        card.dataset.installments + ' мес';
       installmentBtn.style.display = 'block';
     } else {
       installmentBtn.style.display = 'none';
