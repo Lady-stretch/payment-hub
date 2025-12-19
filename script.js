@@ -12,6 +12,8 @@ let snowmanInterval;
 // ИНИЦИАЛИЗАЦИЯ
 // ======================
 document.addEventListener('DOMContentLoaded', () => {
+  console.log('DOM загружен, запускаем инициализацию...');
+  
   // Загружаем сохраненные данные
   loadSavedData();
   
@@ -26,11 +28,15 @@ document.addEventListener('DOMContentLoaded', () => {
   // Настраиваем обработчики событий
   setupEventListeners();
   
-  // Запускаем снеговиков
-  startSnowmanFall();
+  // Запускаем снеговиков (только в темной теме)
+  if (!isLightTheme) {
+    startSnowmanFall();
+  }
   
   // Показываем счетчик если уже ловили снеговиков
   updateSnowmanCounter();
+  
+  console.log('Инициализация завершена');
 });
 
 // ======================
@@ -88,15 +94,18 @@ function createSnow() {
   
   const snowflakes = ['❄', '•', '✻', '✾', '❉'];
   
-  for (let i = 0; i < 50; i++) {
+  // Очищаем контейнер
+  snowContainer.innerHTML = '';
+  
+  for (let i = 0; i < 80; i++) {
     const snowflake = document.createElement('div');
     snowflake.classList.add('snowflake');
     snowflake.innerHTML = snowflakes[Math.floor(Math.random() * snowflakes.length)];
     
     snowflake.style.left = Math.random() * 100 + 'vw';
     
-    const size = Math.random() * 1.2 + 0.8;
-    const duration = Math.random() * 10 + 10;
+    const size = Math.random() * 1.5 + 0.5;
+    const duration = Math.random() * 8 + 8;
     const delay = Math.random() * 5;
     
     snowflake.style.fontSize = size + 'em';
@@ -105,6 +114,8 @@ function createSnow() {
     
     snowContainer.appendChild(snowflake);
   }
+  
+  console.log('Снег создан: 80 снежинок');
 }
 
 // ======================
@@ -114,187 +125,149 @@ function createStars() {
   const starsContainer = document.querySelector('.stars-container');
   if (!starsContainer) return;
   
-  for (let i = 0; i < 200; i++) {
+  // Очищаем контейнер
+  starsContainer.innerHTML = '';
+  
+  for (let i = 0; i < 150; i++) {
     const star = document.createElement('div');
     star.className = 'star';
     
     star.style.left = Math.random() * 100 + 'vw';
     star.style.top = Math.random() * 100 + 'vh';
-    star.style.width = Math.random() * 3 + 1 + 'px';
-    star.style.height = star.style.width;
+    const starSize = Math.random() * 3 + 1;
+    star.style.width = starSize + 'px';
+    star.style.height = starSize + 'px';
     star.style.opacity = Math.random() * 0.8 + 0.2;
     
-    star.style.animationDuration = Math.random() * 5 + 3 + 's';
-    star.style.animationDelay = Math.random() * 2 + 's';
+    star.style.animationDuration = Math.random() * 4 + 2 + 's';
+    star.style.animationDelay = Math.random() * 3 + 's';
     
     starsContainer.appendChild(star);
   }
+  
+  console.log('Звезды созданы: 150 звезд');
 }
 
 // ======================
 // ПЕРЕКЛЮЧЕНИЕ ТЕМЫ
 // ======================
 function setupEventListeners() {
+  console.log('Настраиваем обработчики событий...');
+  
   // Кнопка темы
   const themeToggle = document.getElementById('theme-toggle');
   if (themeToggle) {
     themeToggle.addEventListener('click', toggleTheme);
+    console.log('Кнопка темы подключена');
   }
   
   // Выбор пакетов
-  document.querySelectorAll('.card').forEach(card => {
-    card.addEventListener('click', () => {
-      document.querySelectorAll('.card').forEach(c => {
-        c.style.borderColor = '';
+  const cards = document.querySelectorAll('.card');
+  console.log(`Найдено карточек: ${cards.length}`);
+  
+  cards.forEach(card => {
+    card.addEventListener('click', selectPackage);
+    
+    // Обработчик для кнопки внутри карточки
+    const selectBtn = card.querySelector('.select');
+    if (selectBtn) {
+      selectBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        selectPackage.call(card);
       });
-      
-      card.style.borderColor = '#4a6fa5';
-      card.style.borderWidth = '2px';
-      card.style.borderStyle = 'solid';
-      
-      document.getElementById('payment').style.display = 'block';
-      document.getElementById('selected-price').textContent =
-        Number(card.dataset.price).toLocaleString('ru-RU');
+    }
+  });
+  
+  // Кнопка назад
+  const backButton = document.querySelector('.back-button');
+  if (backButton) {
+    backButton.addEventListener('click', goBack);
+  }
+}
 
-      const installmentBtn = document.getElementById('installment-btn');
-      if (card.dataset.installments) {
-        currentInstallment = card.dataset.link;
-        document.getElementById('months').textContent =
-          card.dataset.installments + ' мес';
-        installmentBtn.style.display = 'block';
-      } else {
-        installmentBtn.style.display = 'none';
-      }
+function selectPackage() {
+  console.log('Выбран пакет:', this.querySelector('h3').textContent);
+  
+  // Сбрасываем предыдущий выбор
+  document.querySelectorAll('.card').forEach(c => {
+    c.style.borderColor = '';
+    c.style.borderWidth = '';
+    c.style.borderStyle = '';
+  });
+  
+  // Выделяем выбранную карточку
+  this.style.borderColor = '#4a6fa5';
+  this.style.borderWidth = '2px';
+  this.style.borderStyle = 'solid';
+  
+  // Показываем блок оплаты
+  const paymentSection = document.getElementById('payment');
+  paymentSection.style.display = 'block';
+  
+  // Устанавливаем цену
+  const price = this.getAttribute('data-price');
+  document.getElementById('selected-price').textContent = 
+    Number(price).toLocaleString('ru-RU');
 
-      document.getElementById('payment')
-        .scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
+  // Настройка кнопки рассрочки
+  const installmentBtn = document.getElementById('installment-btn');
+  const installments = this.getAttribute('data-installments');
+  
+  if (installments && installments !== 'null') {
+    currentInstallment = this.getAttribute('data-link');
+    document.getElementById('months').textContent = installments;
+    installmentBtn.style.display = 'block';
+    console.log('Рассрочка доступна:', installments, 'месяцев');
+  } else {
+    installmentBtn.style.display = 'none';
+    console.log('Рассрочка не доступна');
+  }
+
+  // Плавный скролл к блоку оплаты
+  paymentSection.scrollIntoView({ 
+    behavior: 'smooth', 
+    block: 'start' 
   });
 }
 
+function openInstallment() {
+  if (currentInstallment) {
+    console.log('Открываем ссылку на рассрочку:', currentInstallment);
+    window.open(currentInstallment, '_blank');
+  }
+}
+
 function toggleTheme() {
+  console.log('Переключение темы...');
   isLightTheme = !isLightTheme;
   document.body.classList.toggle('light-theme', isLightTheme);
   localStorage.setItem('theme', isLightTheme ? 'light' : 'dark');
+  
+  // Обновляем звезды и снеговиков
+  if (isLightTheme) {
+    // В светлой теме останавливаем снеговиков
+    clearInterval(snowmanInterval);
+    removeAllSnowmen();
+    document.querySelector('.snowman-counter').style.display = 'none';
+  } else {
+    // В темной теме запускаем снеговиков
+    createStars();
+    startSnowmanFall();
+    updateSnowmanCounter();
+  }
+  
+  console.log('Тема переключена:', isLightTheme ? 'светлая' : 'темная');
 }
 
 function loadSavedData() {
+  console.log('Загружаем сохраненные данные...');
+  
   // Загружаем тему
   const savedTheme = localStorage.getItem('theme');
   if (savedTheme === 'light') {
     isLightTheme = true;
     document.body.classList.add('light-theme');
-  }
-  
-  // Загружаем снеговиков
-  const savedSnowmen = localStorage.getItem('snowmanCaught');
-  if (savedSnowmen) {
-    caughtSnowmen = parseInt(savedSnowmen);
-  }
-  
-  // Загружаем награду
-  const savedReward = localStorage.getItem('snowmanReward');
-  if (savedReward === 'true') {
-    hasReward = true;
-  }
-}
-
-// ======================
-// СНЕГОВИКИ И ИГРА
-// ======================
-function createSnowman() {
-  if (hasReward) return; // Не создаем снеговиков если награда уже получена
-  
-  const snowman = document.createElement('div');
-  snowman.className = 'snowman';
-  snowman.innerHTML = '⛄';
-  snowman.style.left = Math.random() * 85 + 5 + 'vw';
-  snowman.style.fontSize = Math.random() * 30 + 40 + 'px';
-  
-  const duration = Math.random() * 10 + 15;
-  snowman.style.animation = `fall ${duration}s linear forwards`;
-  
-  snowman.addEventListener('click', catchSnowman);
-  snowman.addEventListener('mouseenter', () => {
-    snowman.style.transform = 'scale(1.2)';
-  });
-  snowman.addEventListener('mouseleave', () => {
-    snowman.style.transform = 'scale(1)';
-  });
-  
-  document.querySelector('.snow-container').appendChild(snowman);
-  
-  setTimeout(() => {
-    if (snowman.parentNode) {
-      snowman.remove();
-    }
-  }, duration * 1000);
-}
-
-function startSnowmanFall() {
-  if (hasReward) return;
-  
-  // Первый снеговик через 5 секунд
-  setTimeout(() => {
-    if (!hasReward) createSnowman();
-  }, 5000);
-  
-  // Затем каждые 20-40 секунд
-  snowmanInterval = setInterval(() => {
-    if (!hasReward && Math.random() > 0.5) {
-      createSnowman();
-    }
-  }, 20000);
-}
-
-function catchSnowman(event) {
-  if (hasReward) return;
-  
-  const snowman = event.target;
-  
-  // Анимация исчезновения
-  snowman.style.transform = 'scale(0)';
-  snowman.style.transition = 'transform 0.3s ease';
-  
-  // Увеличиваем счет
-  caughtSnowmen++;
-  localStorage.setItem('snowmanCaught', caughtSnowmen.toString());
-  
-  // Создаем эффект
-  createCatchEffect(event.clientX, event.clientY);
-  
-  // Обновляем счетчик
-  updateSnowmanCounter();
-  
-  // Проверяем награду
-  checkForReward();
-  
-  // Удаляем снеговика
-  setTimeout(() => {
-    if (snowman.parentNode) {
-      snowman.remove();
-    }
-  }, 300);
-}
-
-function createCatchEffect(x, y) {
-  const effect = document.createElement('div');
-  effect.className = 'catch-effect';
-  effect.innerHTML = '🎁 +1';
-  effect.style.left = (x - 20) + 'px';
-  effect.style.top = (y - 20) + 'px';
-  effect.style.color = '#FFD700';
-  effect.style.fontWeight = 'bold';
-  
-  document.body.appendChild(effect);
-  
-  setTimeout(() => {
-    effect.remove();
-  }, 1000);
-}
-
-function updateSnowmanCounter() {
-  const counter = document.getElementById('snowman-counter');
-  const countSpan = document.getElementById('snowman-count');
-  
-  if (caughtSnow
+    console.log('Загружена светлая тема');
+  } else {
+    console.log('Загружена темная тема (по умолчанию)');
+ 
