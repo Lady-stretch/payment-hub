@@ -12,8 +12,6 @@ let snowmanInterval;
 // ИНИЦИАЛИЗАЦИЯ
 // ======================
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('DOM загружен, запускаем инициализацию...');
-  
   // Загружаем сохраненные данные
   loadSavedData();
   
@@ -35,8 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Показываем счетчик если уже ловили снеговиков
   updateSnowmanCounter();
-  
-  console.log('Инициализация завершена');
 });
 
 // ======================
@@ -154,7 +150,7 @@ function setupEventListeners() {
     themeToggle.addEventListener('click', toggleTheme);
   }
   
-  // Выбор пакетов - ИСПРАВЛЕНО
+  // Выбор пакетов
   document.querySelectorAll('.card').forEach(card => {
     card.addEventListener('click', function(e) {
       // Если кликнули на кнопку "Выбрать формат", не выполняем дважды
@@ -202,13 +198,14 @@ function selectPackage() {
   document.getElementById('selected-price').textContent = 
     Number(price).toLocaleString('ru-RU');
 
-  // Настройка кнопки рассрочки
+  // НАСТРОЙКА КНОПКИ РАССРОЧКИ - ИСПРАВЛЕНО
   const installmentBtn = document.getElementById('installment-btn');
   const installments = this.getAttribute('data-installments');
   
-  if (installments && installments !== 'null' && installments !== 'undefined') {
+  // Проверяем, есть ли атрибут data-installments и не равен ли он "null" или "undefined"
+  if (installments && installments !== 'null' && installments !== 'undefined' && installments !== 'Нет') {
     currentInstallment = this.getAttribute('data-link');
-    document.getElementById('months').textContent = installments + ' мес';
+    document.getElementById('months').textContent = installments;
     installmentBtn.style.display = 'block';
   } else {
     installmentBtn.style.display = 'none';
