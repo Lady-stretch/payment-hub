@@ -425,19 +425,142 @@ body.light-theme .header {
   }
 }
 
+/* ====================== */
+/* СНЕЖНЫЕ СУГРОБЫ В УГЛАХ КАРТОЧЕК */
+/* ====================== */
+
 .card {
+  position: relative;
+  overflow: hidden;
   padding: 32px 28px;
   transition: all 0.3s ease;
   cursor: pointer;
   text-align: center;
   border-radius: 20px;
+  background: var(--glass);
+  border: 1px solid var(--border);
+}
+
+/* Снежные сугробы в углах */
+.card::before {
+  content: '';
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background: 
+    radial-gradient(circle at 100% 100%, transparent 15px, rgba(255, 255, 255, 0.1) 15px, rgba(255, 255, 255, 0.1) 20px, transparent 20px),
+    radial-gradient(circle at 0% 100%, transparent 15px, rgba(255, 255, 255, 0.1) 15px, rgba(255, 255, 255, 0.1) 20px, transparent 20px),
+    radial-gradient(circle at 100% 0%, transparent 15px, rgba(255, 255, 255, 0.1) 15px, rgba(255, 255, 255, 0.1) 20px, transparent 20px),
+    radial-gradient(circle at 0% 0%, transparent 15px, rgba(255, 255, 255, 0.1) 15px, rgba(255, 255, 255, 0.1) 20px, transparent 20px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+body.light-theme .card::before {
+  background: 
+    radial-gradient(circle at 100% 100%, transparent 15px, rgba(0, 0, 0, 0.05) 15px, rgba(0, 0, 0, 0.05) 20px, transparent 20px),
+    radial-gradient(circle at 0% 100%, transparent 15px, rgba(0, 0, 0, 0.05) 15px, rgba(0, 0, 0, 0.05) 20px, transparent 20px),
+    radial-gradient(circle at 100% 0%, transparent 15px, rgba(0, 0, 0, 0.05) 15px, rgba(0, 0, 0, 0.05) 20px, transparent 20px),
+    radial-gradient(circle at 0% 0%, transparent 15px, rgba(0, 0, 0, 0.05) 15px, rgba(0, 0, 0, 0.05) 20px, transparent 20px);
+}
+
+/* Иней на поверхности карточек */
+.card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 10% 10%, rgba(255, 255, 255, 0.1) 2px, transparent 3px),
+    radial-gradient(circle at 20% 15%, rgba(255, 255, 255, 0.08) 1px, transparent 2px),
+    radial-gradient(circle at 15% 25%, rgba(255, 255, 255, 0.06) 1.5px, transparent 2.5px),
+    radial-gradient(circle at 90% 10%, rgba(255, 255, 255, 0.1) 2px, transparent 3px),
+    radial-gradient(circle at 85% 20%, rgba(255, 255, 255, 0.08) 1px, transparent 2px),
+    radial-gradient(circle at 10% 85%, rgba(255, 255, 255, 0.1) 2px, transparent 3px),
+    radial-gradient(circle at 20% 90%, rgba(255, 255, 255, 0.08) 1px, transparent 2px),
+    radial-gradient(circle at 90% 85%, rgba(255, 255, 255, 0.1) 2px, transparent 3px),
+    radial-gradient(circle at 85% 90%, rgba(255, 255, 255, 0.08) 1px, transparent 2px);
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.5;
+  animation: frost-glow 8s infinite alternate;
+}
+
+body.light-theme .card::after {
+  background-image: 
+    radial-gradient(circle at 10% 10%, rgba(0, 0, 0, 0.05) 2px, transparent 3px),
+    radial-gradient(circle at 20% 15%, rgba(0, 0, 0, 0.03) 1px, transparent 2px),
+    radial-gradient(circle at 15% 25%, rgba(0, 0, 0, 0.04) 1.5px, transparent 2.5px),
+    radial-gradient(circle at 90% 10%, rgba(0, 0, 0, 0.05) 2px, transparent 3px),
+    radial-gradient(circle at 85% 20%, rgba(0, 0, 0, 0.03) 1px, transparent 2px),
+    radial-gradient(circle at 10% 85%, rgba(0, 0, 0, 0.05) 2px, transparent 3px),
+    radial-gradient(circle at 20% 90%, rgba(0, 0, 0, 0.03) 1px, transparent 2px),
+    radial-gradient(circle at 90% 85%, rgba(0, 0, 0, 0.05) 2px, transparent 3px),
+    radial-gradient(circle at 85% 90%, rgba(0, 0, 0, 0.03) 1px, transparent 2px);
+  opacity: 0.3;
+}
+
+@keyframes frost-glow {
+  0% { opacity: 0.3; }
+  100% { opacity: 0.7; }
+}
+
+/* Мягкий снежный градиент по краям */
+.card {
+  background-image: 
+    linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.02) 0%, 
+      transparent 20%,
+      transparent 80%,
+      rgba(255, 255, 255, 0.02) 100%
+    ),
+    var(--glass);
+}
+
+body.light-theme .card {
+  background-image: 
+    linear-gradient(135deg, 
+      rgba(0, 0, 0, 0.01) 0%, 
+      transparent 20%,
+      transparent 80%,
+      rgba(0, 0, 0, 0.01) 100%
+    ),
+    var(--glass);
+}
+
+/* Легкая снежная тень */
+.card {
+  box-shadow: 
+    var(--shadow),
+    inset 0 0 30px rgba(255, 255, 255, 0.03),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+body.light-theme .card {
+  box-shadow: 
+    var(--shadow),
+    inset 0 0 30px rgba(0, 0, 0, 0.02),
+    0 0 0 1px rgba(0, 0, 0, 0.03);
 }
 
 .card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.2),
+    inset 0 0 40px rgba(255, 255, 255, 0.05),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
+body.light-theme .card:hover {
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.15),
+    inset 0 0 40px rgba(0, 0, 0, 0.03),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+/* Стиль для карточки ХИТ */
 .card.hit {
   border: 2px solid var(--red);
   position: relative;
@@ -455,6 +578,7 @@ body.light-theme .header {
   font-size: 0.8rem;
   font-weight: 700;
   box-shadow: 0 4px 8px rgba(184, 30, 43, 0.3);
+  z-index: 2;
 }
 
 .card h3 { 
@@ -462,6 +586,8 @@ body.light-theme .header {
   margin-bottom: 10px;
   color: var(--text);
   font-weight: 800;
+  position: relative;
+  z-index: 2;
 }
 
 .desc {
@@ -474,6 +600,8 @@ body.light-theme .header {
   align-items: center;
   justify-content: center;
   text-align: center;
+  position: relative;
+  z-index: 2;
 }
 
 .price {
@@ -481,6 +609,8 @@ body.light-theme .header {
   font-weight: 900;
   color: var(--red);
   margin: 20px 0;
+  position: relative;
+  z-index: 2;
 }
 
 .select {
@@ -494,11 +624,34 @@ body.light-theme .header {
   color: white;
   font-size: 1.1rem;
   transition: all 0.3s ease;
+  position: relative;
+  z-index: 2;
 }
 
 .select:hover {
   background: linear-gradient(to right, #3a5f95, #5a83bb);
   transform: scale(1.02);
+}
+
+/* Адаптивность для сугробов */
+@media (max-width: 768px) {
+  .card::before {
+    width: 40px;
+    height: 40px;
+    background: 
+      radial-gradient(circle at 100% 100%, transparent 10px, rgba(255, 255, 255, 0.1) 10px, rgba(255, 255, 255, 0.1) 15px, transparent 15px),
+      radial-gradient(circle at 0% 100%, transparent 10px, rgba(255, 255, 255, 0.1) 10px, rgba(255, 255, 255, 0.1) 15px, transparent 15px),
+      radial-gradient(circle at 100% 0%, transparent 10px, rgba(255, 255, 255, 0.1) 10px, rgba(255, 255, 255, 0.1) 15px, transparent 15px),
+      radial-gradient(circle at 0% 0%, transparent 10px, rgba(255, 255, 255, 0.1) 10px, rgba(255, 255, 255, 0.1) 15px, transparent 15px);
+  }
+  
+  body.light-theme .card::before {
+    background: 
+      radial-gradient(circle at 100% 100%, transparent 10px, rgba(0, 0, 0, 0.05) 10px, rgba(0, 0, 0, 0.05) 15px, transparent 15px),
+      radial-gradient(circle at 0% 100%, transparent 10px, rgba(0, 0, 0, 0.05) 10px, rgba(0, 0, 0, 0.05) 15px, transparent 15px),
+      radial-gradient(circle at 100% 0%, transparent 10px, rgba(0, 0, 0, 0.05) 10px, rgba(0, 0, 0, 0.05) 15px, transparent 15px),
+      radial-gradient(circle at 0% 0%, transparent 10px, rgba(0, 0, 0, 0.05) 10px, rgba(0, 0, 0, 0.05) 15px, transparent 15px);
+  }
 }
 
 .payment {
