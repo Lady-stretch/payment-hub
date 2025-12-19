@@ -79,14 +79,14 @@ body.light-theme {
   z-index: 2;
   transition: transform 0.3s ease;
   filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
-  animation: fall linear forwards;
+  animation: snowman-fall linear forwards;
 }
 
 .snowman:hover {
   transform: scale(1.1);
 }
 
-@keyframes fall {
+@keyframes snowman-fall {
   to { transform: translateY(110vh); }
 }
 
@@ -106,6 +106,7 @@ body.light-theme {
   box-shadow: var(--shadow);
   text-align: center;
   min-width: 150px;
+  display: none;
 }
 
 /* Звездное небо */
@@ -155,26 +156,36 @@ body.light-theme .stars-container {
   backdrop-filter: blur(10px);
   box-shadow: var(--shadow);
   transition: all 0.3s ease;
+  overflow: hidden;
 }
 
 .theme-toggle:hover {
   transform: scale(1.1);
 }
 
+.theme-toggle span {
+  position: absolute;
+  transition: all 0.3s ease;
+}
+
 .sun-icon {
-  display: none;
+  transform: translateY(50px);
+  opacity: 0;
 }
 
 .moon-icon {
-  display: block;
+  transform: translateY(0);
+  opacity: 1;
 }
 
 body.light-theme .sun-icon {
-  display: block;
+  transform: translateY(0);
+  opacity: 1;
 }
 
 body.light-theme .moon-icon {
-  display: none;
+  transform: translateY(-50px);
+  opacity: 0;
 }
 
 /* Уведомление о награде */
@@ -184,7 +195,7 @@ body.light-theme .moon-icon {
   left: 50%;
   transform: translate(-50%, -50%);
   background: var(--glass);
-  border: 1px solid var(--border);
+  border: 2px solid var(--red);
   padding: 30px;
   border-radius: 25px;
   z-index: 10000;
@@ -273,14 +284,15 @@ body.light-theme .header {
 }
 
 .hero-title {
-  font-family: 'Great Vibes', 'Dancing Script', cursive;
-  font-size: clamp(3.5rem, 8vw, 5.5rem);
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(3rem, 7vw, 4.5rem);
   font-weight: 700;
   line-height: 1.1;
   margin-bottom: 10px;
   text-align: center;
   letter-spacing: 1px;
   text-transform: none;
+  padding: 0 20px;
 }
 
 .gold {
@@ -290,6 +302,7 @@ body.light-theme .header {
   animation: shine 6s linear infinite;
   background-size: 200% auto;
   display: inline-block;
+  padding: 0 5px;
 }
 
 @keyframes shine {
@@ -299,9 +312,10 @@ body.light-theme .header {
 
 .accent {
   color: var(--red);
-  font-family: 'Great Vibes', 'Dancing Script', cursive;
+  font-family: 'Great Vibes', cursive;
   display: inline-block;
   margin-left: 10px;
+  padding: 0 5px;
 }
 
 .hero-subtitle {
@@ -375,6 +389,13 @@ body.light-theme .header {
   
   .hero-subtitle {
     font-size: 1.1rem;
+  }
+  
+  .snowman-counter {
+    top: 80px;
+    right: 10px;
+    font-size: 0.8rem;
+    min-width: 130px;
   }
 }
 
@@ -629,7 +650,8 @@ body.light-theme .header {
   position: fixed;
   pointer-events: none;
   z-index: 10000;
-  font-size: 20px;
+  font-size: 24px;
+  font-weight: bold;
   animation: floatUp 1s ease-out forwards;
 }
 
