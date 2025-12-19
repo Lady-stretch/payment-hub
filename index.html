@@ -77,11 +77,22 @@
       <p class="timer-caption">До Нового года осталось</p>
     </section>
 
+    <!-- КНОПКА ДЛЯ БУДУЩИХ АБОНЕМЕНТОВ -->
+    <section class="glass future-link-section">
+      <h3 style="margin-bottom: 15px; color: var(--text);">А что будет в 2026 году?</h3>
+      <p style="margin-bottom: 20px; color: var(--muted);">
+        Уже с 1 января появятся новые улучшенные абонементы с дополнительными возможностями
+      </p>
+      <a href="future-packages.html" class="future-link-button">
+        Посмотреть абонементы 2026 года →
+      </a>
+    </section>
+
     <!-- PACKAGES -->
     <section class="packages">
       <div class="card glass"
            data-price="37440"
-           data-link="https://ecom.otpbank.ru/smart-form?config=42943585-8511-400a-a027-49732f1d8fb2"
+           data-link="https://ecom.otpbank.ru/smart-form?config=42943585-8511-400a-a027=49732f1d8fb2"
            data-installments="12">
         <h3>96 занятий</h3>
         <p class="desc"
@@ -94,7 +105,7 @@
 
       <div class="card glass hit"
            data-price="33280"
-           data-link="https://ecom.otpbank.ru/smart-form?config=e0d01fc2-5884-4fb1-b769-c7955a2d3b69"
+           data-link="https://ecom.otpbank.ru/smart-form?config=e0d01fc2-5884-4fb1-b769=c7955a2d3b69"
            data-installments="10">
         <h3>64 занятий</h3>
         <p class="desc"
@@ -166,9 +177,51 @@
 
     <footer class="footer">
       Мини-группы до 10 человек · Индивидуальный подход
+      <div style="margin-top: 15px; font-size: 0.9rem;">
+        <a href="future-packages.html" style="color: var(--red); text-decoration: none; font-weight: 600;">
+          Посмотреть абонементы 2026 года →
+        </a>
+      </div>
     </footer>
   </main>
 
   <script src="script.js"></script>
+  
+  <style>
+    /* Стили для кнопки будущих абонементов */
+    .future-link-section {
+      text-align: center;
+      padding: 25px !important;
+      background: linear-gradient(135deg, rgba(74, 111, 165, 0.1), rgba(106, 147, 203, 0.1));
+      border: 1px solid rgba(74, 111, 165, 0.2);
+    }
+    
+    .future-link-button {
+      display: inline-block;
+      padding: 14px 30px;
+      background: linear-gradient(to right, #4a6fa5, #6a93cb);
+      color: white;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+    
+    .future-link-button:hover {
+      background: linear-gradient(to right, #3a5f95, #5a83bb);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(74, 111, 165, 0.3);
+    }
+    
+    @media (max-width: 768px) {
+      .future-link-button {
+        padding: 12px 24px;
+        font-size: 1rem;
+      }
+    }
+  </style>
 </body>
 </html>
