@@ -1,7 +1,7 @@
 :root {
   /* Темная тема (по умолчанию) */
   --bg: #0b0c10;
-  --glass: rgba(255,255,255,0.18); /* Увеличена прозрачность с 0.08 до 0.18 */
+  --glass: rgba(255,255,255,0.18);
   --border: rgba(255,255,255,0.16);
   --text: #fff;
   --muted: rgba(255,255,255,0.65);
@@ -13,7 +13,7 @@
 .light-theme {
   /* Светлая тема */
   --bg: #f8f9fa;
-  --glass: rgba(255, 255, 255, 0.88); /* Уменьшена прозрачность с 0.95 до 0.88 */
+  --glass: rgba(255, 255, 255, 0.88);
   --border: rgba(0, 0, 0, 0.08);
   --text: #222;
   --muted: rgba(0, 0, 0, 0.65);
@@ -426,7 +426,7 @@ body.light-theme .header {
 }
 
 /* ====================== */
-/* СНЕЖНЫЕ ЭФФЕКТЫ НА КАРТОЧКАХ */
+/* КАРТОЧКИ С АБОНЕМЕНТАМИ - ИСПРАВЛЕНО */
 /* ====================== */
 
 .card {
@@ -437,12 +437,8 @@ body.light-theme .header {
   cursor: pointer;
   text-align: center;
   border-radius: 20px;
-  border: 1px solid transparent;
-  background-image: 
-    radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.03) 0%, transparent 20%),
-    radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.03) 0%, transparent 20%);
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
+  background: var(--glass);
+  border: 1px solid var(--border);
 }
 
 .card:hover {
@@ -450,49 +446,58 @@ body.light-theme .header {
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
 }
 
-/* Снежный эффект на углах карточек */
+/* УБИРАЕМ ЛИШНИЕ ГРАДИЕНТЫ И ФОНЫ */
+.card {
+  background-image: none !important;
+  background-origin: initial !important;
+  background-clip: initial !important;
+}
+
+/* Снежный эффект на углах карточек - ТОЛЬКО ДЛЯ УГЛОВ */
 .card::before {
   content: '';
   position: absolute;
-  top: -10px;
-  left: -10px;
-  right: -10px;
-  bottom: -10px;
-  background: linear-gradient(45deg, 
-    transparent 70%, 
-    rgba(255, 255, 255, 0.1) 70%, 
-    rgba(255, 255, 255, 0.2) 80%, 
-    transparent 80%
-  );
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    /* Верхний левый угол */
+    radial-gradient(circle at 0% 0%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
+    /* Верхний правый угол */
+    radial-gradient(circle at 100% 0%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
+    /* Нижний левый угол */
+    radial-gradient(circle at 0% 100%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
+    /* Нижний правый угол */
+    radial-gradient(circle at 100% 100%, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
   z-index: -1;
-  border-radius: 25px;
+  border-radius: 20px;
   pointer-events: none;
 }
 
 body.light-theme .card::before {
-  background: linear-gradient(45deg, 
-    transparent 70%, 
-    rgba(0, 0, 0, 0.05) 70%, 
-    rgba(0, 0, 0, 0.1) 80%, 
-    transparent 80%
-  );
+  background: 
+    radial-gradient(circle at 0% 0%, rgba(0, 0, 0, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 100% 0%, rgba(0, 0, 0, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 0% 100%, rgba(0, 0, 0, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 100% 100%, rgba(0, 0, 0, 0.05) 0%, transparent 50%);
 }
 
-.card:hover::before {
-  background: linear-gradient(45deg, 
-    transparent 70%, 
-    rgba(255, 255, 255, 0.2) 70%, 
-    rgba(255, 255, 255, 0.3) 80%, 
-    transparent 80%
-  );
-}
-
-/* Снежинки в углах карточек */
-.card::after {
+/* Снежинки в углах карточек - ТОЛЬКО В ТЕМНОЙ ТЕМЕ */
+body:not(.light-theme) .card::after {
   content: '❄';
   position: absolute;
   font-size: 12px;
-  opacity: 0.6;
+  opacity: 0.4;
+  animation: float 4s infinite ease-in-out;
+  z-index: 1;
+}
+
+body.light-theme .card::after {
+  content: '❄';
+  position: absolute;
+  font-size: 12px;
+  opacity: 0.2;
   animation: float 4s infinite ease-in-out;
   z-index: 1;
 }
@@ -525,23 +530,17 @@ body.light-theme .card::before {
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-5px) rotate(180deg); }
+  0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.4; }
+  50% { transform: translateY(-5px) rotate(180deg); opacity: 0.8; }
 }
 
-/* Тени для карточек в разных темах */
+/* Тени для карточек */
 body:not(.light-theme) .card {
-  box-shadow: 
-    0 10px 30px rgba(0, 0, 0, 0.3),
-    inset 0 0 20px rgba(255, 255, 255, 0.05),
-    0 0 0 1px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 body.light-theme .card {
-  box-shadow: 
-    0 10px 30px rgba(0, 0, 0, 0.1),
-    inset 0 0 20px rgba(255, 255, 255, 0.8),
-    0 0 0 1px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 /* Иней на заголовках */
@@ -554,27 +553,9 @@ body.light-theme .card {
   display: inline-block;
 }
 
+/* УБИРАЕМ СНЕЖИНКУ ВОЗЛЕ ЗАГОЛОВКА - она перекрывала текст "64 занятий" */
 .card h3::after {
-  content: '';
-  position: absolute;
-  top: -5px;
-  right: -10px;
-  width: 20px;
-  height: 20px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23ffffff' d='M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5s1.1-2.5 2.5-2.5 2.5 1.1 2.5 2.5-1.1 2.5-2.5 2.5z'/%3E%3C/svg%3E");
-  background-size: contain;
-  opacity: 0.7;
-  filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.5));
-  animation: sparkle 2s infinite alternate;
-}
-
-body.light-theme .card h3::after {
-  filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.3));
-}
-
-@keyframes sparkle {
-  0% { opacity: 0.3; transform: scale(0.8); }
-  100% { opacity: 0.8; transform: scale(1.2); }
+  display: none;
 }
 
 .desc {
@@ -589,30 +570,17 @@ body.light-theme .card h3::after {
   text-align: center;
 }
 
-/* Морозный эффект на цене */
+/* Цена */
 .price {
   font-size: 2rem;
   font-weight: 900;
   color: var(--red);
   margin: 20px 0;
-  position: relative;
-  display: inline-block;
 }
 
+/* УБИРАЕМ ЛИШНИЙ ЭФФЕКТ НА ЦЕНЕ */
 .price::before {
-  content: '';
-  position: absolute;
-  top: -5px;
-  left: -10px;
-  right: -10px;
-  bottom: -5px;
-  background: linear-gradient(45deg, 
-    transparent 0%, 
-    rgba(255, 255, 255, 0.05) 25%, 
-    transparent 50%
-  );
-  border-radius: 10px;
-  z-index: -1;
+  display: none;
 }
 
 /* Стиль для карточки ХИТ */
@@ -648,8 +616,6 @@ body.light-theme .card h3::after {
   color: white;
   font-size: 1.1rem;
   transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
 }
 
 .select:hover {
@@ -657,46 +623,15 @@ body.light-theme .card h3::after {
   transform: scale(1.02);
 }
 
-/* Иней на кнопках при наведении */
+/* УБИРАЕМ СЛОЖНЫЙ ЭФФЕКТ НА КНОПКАХ */
 .select::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    45deg,
-    transparent 30%,
-    rgba(255, 255, 255, 0.1) 50%,
-    transparent 70%
-  );
-  transform: rotate(45deg);
-  transition: all 0.5s ease;
-  opacity: 0;
-}
-
-.select:hover::before {
-  opacity: 1;
-  animation: frost-shine 1.5s linear;
-}
-
-@keyframes frost-shine {
-  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-  100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+  display: none;
 }
 
 /* Адаптивность для снежинок в углах */
 @media (max-width: 768px) {
   .card::after {
     font-size: 10px;
-  }
-  
-  .card h3::after {
-    width: 15px;
-    height: 15px;
-    right: -8px;
-    top: -3px;
   }
 }
 
