@@ -70,11 +70,14 @@ body {
 }
 
 .wrapper {
-  max-width: 1200px;
+  max-width: 1100px;
   margin: auto;
-  padding: 120px 20px 60px;
+  padding: 100px 15px 40px;
   position: relative;
   z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .glass {
@@ -88,11 +91,19 @@ body {
   text-align: center;
 }
 
+/* Обновленные стили для hero-секции */
+.hero.glass {
+  padding: 40px 20px;
+}
+
 .hero-title {
-  font-size: clamp(2.4rem, 5vw, 3.8rem);
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
   font-weight: 900;
   line-height: 1.2;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+  text-align: center;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
 .gold {
@@ -116,13 +127,16 @@ body {
 
 .hero-subtitle {
   margin-top: 10px;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   color: var(--text);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 800;
 }
 
-.hero-subtitle strong {
-  font-weight: 800;
-  letter-spacing: 0.5px;
+.info {
+  text-align: center;
 }
 
 .info p {
@@ -130,24 +144,39 @@ body {
   font-size: 1.1rem;
   line-height: 1.6;
   color: var(--muted);
+  text-align: center;
 }
 
 .info p:last-child {
   margin-bottom: 0;
 }
 
+/* Обновленные стили для таймера */
 .timer {
   text-align: center;
   padding: 30px !important;
 }
 
 #countdown-timer {
-  font-size: 2.5rem;
+  font-size: 1.8rem;
   font-weight: 800;
   color: var(--red);
   letter-spacing: 1px;
   margin-bottom: 8px;
   font-family: 'Inter', monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 5px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+#countdown-timer span {
+  font-size: 0.6em;
+  color: var(--muted);
+  margin: 0 2px;
 }
 
 .timer-caption {
@@ -167,6 +196,8 @@ body {
 @media (max-width: 768px) {
   .packages {
     grid-template-columns: 1fr;
+    max-width: 400px;
+    width: 100%;
   }
 }
 
@@ -386,4 +417,48 @@ body {
   z-index: 100;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   line-height: 1.4;
+}
+
+/* Для мобильных - уменьшаем шрифт таймера, но оставляем в одну строку */
+@media (max-width: 768px) {
+  #countdown-timer {
+    font-size: 1.5rem;
+    gap: 3px;
+    padding: 0 10px;
+  }
+  
+  #countdown-timer span {
+    font-size: 0.5em;
+  }
+  
+  .card {
+    padding: 25px 20px;
+  }
+  
+  .hero-title {
+    font-size: 1.8rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  
+  .wrapper {
+    padding: 90px 10px 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  #countdown-timer {
+    font-size: 1.2rem;
+    gap: 2px;
+  }
+  
+  .hero-title {
+    font-size: 1.6rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.9rem;
+  }
 }
