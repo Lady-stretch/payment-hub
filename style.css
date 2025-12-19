@@ -1,7 +1,7 @@
 :root {
   /* Темная тема (по умолчанию) */
   --bg: #0b0c10;
-  --glass: rgba(255,255,255,0.08);
+  --glass: rgba(255,255,255,0.12); /* Увеличена прозрачность */
   --border: rgba(255,255,255,0.16);
   --text: #fff;
   --muted: rgba(255,255,255,0.65);
@@ -13,7 +13,7 @@
 .light-theme {
   /* Светлая тема */
   --bg: #f8f9fa;
-  --glass: rgba(255, 255, 255, 0.95);
+  --glass: rgba(255, 255, 255, 0.85); /* Уменьшена непрозрачность */
   --border: rgba(0, 0, 0, 0.08);
   --text: #222;
   --muted: rgba(0, 0, 0, 0.65);
@@ -372,11 +372,12 @@ body.light-theme .header {
   font-weight: 600;
 }
 
+/* МОБИЛЬНАЯ ВЕРСИЯ - ИСПРАВЛЕНИЯ */
 @media (max-width: 768px) {
   #countdown-timer {
-    font-size: 1.8rem;
-    gap: 5px;
-    padding: 0 10px;
+    font-size: 2rem; /* Увеличен для мобильных */
+    gap: 4px;
+    padding: 0 5px;
   }
   
   #countdown-timer span {
@@ -397,16 +398,39 @@ body.light-theme .header {
     font-size: 0.8rem;
     min-width: 130px;
   }
+  
+  /* Кнопка темы в мобильной версии - смещена правее */
+  .theme-toggle {
+    top: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    font-size: 1.3rem;
+  }
 }
 
 @media (max-width: 480px) {
   #countdown-timer {
-    font-size: 1.5rem;
-    gap: 4px;
+    font-size: 1.8rem; /* Еще больше для маленьких экранов */
+    gap: 3px;
   }
   
   .hero-title {
     font-size: 2rem;
+  }
+  
+  /* Еще больше сдвигаем кнопку темы для очень маленьких экранов */
+  .theme-toggle {
+    right: 15px;
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 380px) {
+  #countdown-timer {
+    font-size: 1.6rem; /* Адаптация для очень маленьких экранов */
+    gap: 2px;
   }
 }
 
@@ -426,7 +450,7 @@ body.light-theme .header {
 }
 
 /* ====================== */
-/* КАРТОЧКИ С АБОНЕМЕНТАМИ - ИСПРАВЛЕНО */
+/* КАРТОЧКИ С АБОНЕМЕНТАМИ - БОЛЕЕ ПРОЗРАЧНЫЕ */
 /* ====================== */
 
 .card {
@@ -436,17 +460,27 @@ body.light-theme .header {
   cursor: pointer;
   text-align: center;
   border-radius: 20px;
-  background: var(--glass);
+  background: rgba(255, 255, 255, 0.1); /* Более прозрачные */
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
+  backdrop-filter: blur(15px);
+}
+
+body.light-theme .card {
+  background: rgba(255, 255, 255, 0.75); /* Более прозрачные в светлой теме */
 }
 
 .card:hover {
   transform: translateY(-8px);
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.15); /* Немного ярче при наведении */
 }
 
-/* СТИЛЬ ДЛЯ КАРТОЧКИ ХИТ - ИСПРАВЛЕНО */
+body.light-theme .card:hover {
+  background: rgba(255, 255, 255, 0.85);
+}
+
+/* СТИЛЬ ДЛЯ КАРТОЧКИ ХИТ */
 .card.hit {
   border: 2px solid var(--red);
   position: relative;
@@ -464,10 +498,6 @@ body.light-theme .header {
   font-size: 0.7rem;
   font-weight: 700;
   z-index: 2;
-}
-
-.card.hit::after {
-  display: none; /* Убираем все лишние псевдоэлементы */
 }
 
 .card h3 { 
@@ -512,17 +542,6 @@ body.light-theme .header {
 .select:hover {
   background: linear-gradient(to right, #3a5f95, #5a83bb);
   transform: scale(1.02);
-}
-
-/* УБИРАЕМ ВСЕ ЛИШНИЕ ЭФФЕКТЫ И СНЕЖНЫЕ СУГРОБЫ */
-.card::before,
-.card::after {
-  display: none !important;
-}
-
-/* УБИРАЕМ ЛИШНИЕ ФОНЫ И ГРАДИЕНТЫ */
-.card {
-  background-image: none !important;
 }
 
 .payment {
