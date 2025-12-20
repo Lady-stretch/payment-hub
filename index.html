@@ -33,9 +33,10 @@
   <div class="snow-container"></div>
   <div class="stars-container"></div>
   
-  <!-- Счетчик снеговиков -->
-  <div id="snowman-counter" class="snowman-counter">
-    ⛄ Поймано: <span id="snowman-count">0</span>/3
+  <!-- Счетчик новогодних персонажей -->
+  <div id="character-counter" class="character-counter">
+    🎁 Поймано: <span id="character-count">0</span>/5
+    <div class="counter-hint">Ловите персонажей для подарков!</div>
   </div>
 
   <!-- Кнопка переключения темы -->
@@ -56,8 +57,11 @@
         <span class="accent">настроение</span> 🎄
       </h1>
       <p class="hero-subtitle">
-        С наступающим Новым годом
+        С наступающим Новым годом!
       </p>
+      <div class="game-hint">
+        🎮 Ловите падающих новогодних персонажей и получайте праздничные подарки!
+      </div>
     </section>
 
     <!-- INFO -->
@@ -186,42 +190,5 @@
   </main>
 
   <script src="script.js"></script>
-  
-  <style>
-    /* Стили для кнопки будущих абонементов */
-    .future-link-section {
-      text-align: center;
-      padding: 25px !important;
-      background: linear-gradient(135deg, rgba(74, 111, 165, 0.1), rgba(106, 147, 203, 0.1));
-      border: 1px solid rgba(74, 111, 165, 0.2);
-    }
-    
-    .future-link-button {
-      display: inline-block;
-      padding: 14px 30px;
-      background: linear-gradient(to right, #4a6fa5, #6a93cb);
-      color: white;
-      text-decoration: none;
-      border-radius: 12px;
-      font-weight: 700;
-      font-size: 1.1rem;
-      transition: all 0.3s ease;
-      border: none;
-      cursor: pointer;
-    }
-    
-    .future-link-button:hover {
-      background: linear-gradient(to right, #3a5f95, #5a83bb);
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(74, 111, 165, 0.3);
-    }
-    
-    @media (max-width: 768px) {
-      .future-link-button {
-        padding: 12px 24px;
-        font-size: 1rem;
-      }
-    }
-  </style>
 </body>
 </html>
