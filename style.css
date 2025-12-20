@@ -2,26 +2,32 @@
   /* Темная тема (по умолчанию) */
   --bg: #0b0c10;
   --glass: rgba(255,255,255,0.12);
-  --glass-light: rgba(255,255,255,0.08); /* Более прозрачный вариант */
+  --card-bg: rgba(255,255,255,0.1); /* Более прозрачные карточки */
   --border: rgba(255,255,255,0.16);
   --text: #fff;
   --muted: rgba(255,255,255,0.65);
   --red: #b81e2b;
   --gold: linear-gradient(90deg, #f5d27a, #fff3c4, #f5d27a);
   --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --gradient-primary: linear-gradient(to right, #4a6fa5, #6a93cb);
+  --gradient-success: linear-gradient(to right, #2e7d32, #4caf50);
+  --gradient-warning: linear-gradient(to right, #ff9800, #ffb74d);
 }
 
 .light-theme {
   /* Светлая тема - более прозрачная */
   --bg: #f8f9fa;
-  --glass: rgba(255, 255, 255, 0.8); /* 80% прозрачность как просили */
-  --glass-light: rgba(255, 255, 255, 0.7);
+  --glass: rgba(255, 255, 255, 0.9); /* Чуть прозрачнее */
+  --card-bg: rgba(255, 255, 255, 0.85); /* Карточки прозрачнее на 85% */
   --border: rgba(0, 0, 0, 0.15); /* Более заметная граница */
   --text: #222;
   --muted: rgba(0, 0, 0, 0.65);
   --red: #b81e2b;
   --gold: linear-gradient(90deg, #d4af37, #f5d27a, #d4af37);
   --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --gradient-primary: linear-gradient(to right, #3a5f95, #5a83bb);
+  --gradient-success: linear-gradient(to right, #1e6d32, #3c9f50);
+  --gradient-warning: linear-gradient(to right, #e68900, #ffa726);
 }
 
 * { 
@@ -54,7 +60,7 @@ body.light-theme {
   position: fixed;
   top: 100px;
   right: 20px;
-  background: var(--glass);
+  background: var(--card-bg);
   border: 1px solid var(--border);
   padding: 12px 20px;
   border-radius: 20px;
@@ -220,7 +226,7 @@ body.light-theme .stars-container {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: var(--glass);
+  background: var(--card-bg);
   border: 1px solid var(--border);
   cursor: pointer;
   z-index: 1000;
@@ -269,7 +275,7 @@ body.light-theme .moon-icon {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: var(--glass);
+  background: var(--card-bg);
   border: 2px solid var(--red);
   padding: 30px;
   border-radius: 25px;
@@ -299,7 +305,7 @@ body.light-theme .moon-icon {
 }
 
 .gift-notification button {
-  background: linear-gradient(to right, #4a6fa5, #6a93cb);
+  background: var(--gradient-primary);
   color: white;
   border: none;
   padding: 12px 30px;
@@ -356,12 +362,6 @@ body.light-theme .header {
   width: 100%;
   box-shadow: var(--shadow);
   transition: all 0.5s ease;
-}
-
-/* В светлой теме делаем еще прозрачнее */
-body.light-theme .glass {
-  background: var(--glass);
-  border: 1px solid var(--border);
 }
 
 .hero-title {
@@ -462,7 +462,7 @@ body.light-theme .glass {
 .future-link-button {
   display: inline-block;
   padding: 14px 30px;
-  background: linear-gradient(to right, #4a6fa5, #6a93cb);
+  background: var(--gradient-primary);
   color: white;
   text-decoration: none;
   border-radius: 12px;
@@ -513,4 +513,245 @@ body.light-theme .glass {
   }
   
   .hero-title {
-    font-size:
+    font-size: 2.5rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.1rem;
+  }
+}
+
+/* ====================== */
+/* КАРТОЧКИ С АБОНЕМЕНТАМИ - ПРОЗРАЧНЫЕ */
+/* ====================== */
+
+.card {
+  position: relative;
+  padding: 32px 28px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  text-align: center;
+  border-radius: 20px;
+  background: var(--card-bg); /* Используем отдельную переменную для прозрачности */
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(15px);
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.15); /* Немного ярче при наведении */
+}
+
+body.light-theme .card:hover {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+/* СТИЛЬ ДЛЯ КАРТОЧКИ ХИТ */
+.card.hit {
+  border: 2px solid var(--red);
+  position: relative;
+}
+
+.card.hit::before {
+  content: "ХИТ";
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--red);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  z-index: 2;
+}
+
+.card h3 { 
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  color: var(--text);
+  font-weight: 800;
+}
+
+.desc {
+  font-size: 0.95rem;
+  color: var(--muted);
+  margin-bottom: 20px;
+  line-height: 1.5;
+  min-height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.price {
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--red);
+  margin: 20px 0;
+}
+
+.select {
+  width: 100%;
+  padding: 16px;
+  border-radius: 14px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  background: var(--gradient-primary);
+  color: white;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.select:hover {
+  background: linear-gradient(to right, #3a5f95, #5a83bb);
+  transform: scale(1.02);
+}
+
+.payment {
+  text-align: center;
+  max-width: 600px;
+  width: 100%;
+}
+
+.pay-main {
+  display: block;
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+  color: white;
+  text-decoration: none;
+  padding: 18px;
+  border-radius: 14px;
+  background: var(--gradient-success);
+  transition: all 0.3s ease;
+  font-weight: 700;
+}
+
+.pay-main:hover {
+  background: linear-gradient(to right, #1e6d32, #3c9f50);
+  transform: scale(1.02);
+}
+
+.installment-btn {
+  display: block !important;
+  margin: 15px auto;
+  padding: 16px 24px;
+  background: var(--gradient-warning);
+  color: white;
+  font-weight: 700;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 80%;
+  max-width: 400px;
+}
+
+.installment-btn:hover {
+  background: linear-gradient(to right, #e68900, #ffa726);
+  transform: scale(1.02);
+}
+
+.pay-alt {
+  padding: 16px 24px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 15px;
+  background: var(--card-bg);
+  color: var(--text);
+  transition: all 0.3s ease;
+  width: 80%;
+  max-width: 400px;
+}
+
+.pay-alt:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+.qr-section {
+  margin: 40px auto 30px;
+  padding: 25px;
+  background: var(--card-bg);
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  max-width: 350px;
+  width: 100%;
+}
+
+.qr-section h4 {
+  margin-bottom: 15px;
+  color: var(--text);
+  font-size: 1.2rem;
+}
+
+.qr-image {
+  width: 180px; /* Вернул нормальный размер */
+  height: 180px;
+  border-radius: 12px;
+  margin: 10px auto;
+  display: block;
+  border: 1px solid var(--border);
+}
+
+.qr-section p {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-top: 15px;
+}
+
+.back-button {
+  display: block;
+  margin: 30px auto 0;
+  padding: 14px 28px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--text);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  max-width: 400px;
+  width: 100%;
+}
+
+.back-button:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+.footer {
+  text-align: center;
+  color: var(--muted);
+  margin-top: 50px;
+  font-size: 1rem;
+  padding: 20px;
+}
+
+/* tooltip */
+[data-tooltip] {
+  position: relative;
+  cursor: help;
+}
+
+[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 130%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.9);
+  color: white;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  width: 240px;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  line-height: 1.5;
+}
