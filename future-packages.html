@@ -240,106 +240,12 @@
     </footer>
   </main>
 
+  <script src="script.js"></script>
   <script>
     // Простые функции для второй страницы
     function showComingSoon() {
       alert('Эти абонементы будут доступны с 1 января 2026 года!\n\nВы можете забронировать их заранее по специальной цене до 31 декабря 2025 года.');
     }
-    
-    // Переключение темы
-    document.getElementById('theme-toggle').addEventListener('click', function() {
-      document.body.classList.toggle('light-theme');
-      localStorage.setItem('theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
-    });
-    
-    // Загрузка темы
-    document.addEventListener('DOMContentLoaded', function() {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme === 'light') {
-        document.body.classList.add('light-theme');
-      }
-    });
-    
-    // Снег
-    function createSnow() {
-      const container = document.querySelector('.snow-container');
-      if (!container) return;
-      
-      container.innerHTML = '';
-      
-      for (let i = 0; i < 60; i++) {
-        const flake = document.createElement('div');
-        flake.style.cssText = `
-          position: absolute;
-          top: -10px;
-          left: ${Math.random() * 100}vw;
-          color: rgba(180, 220, 255, 0.8);
-          font-size: ${Math.random() * 1.2 + 0.8}em;
-          animation: fall ${Math.random() * 8 + 8}s linear infinite;
-          animation-delay: ${Math.random() * 5}s;
-        `;
-        flake.innerHTML = ['❄', '•', '✻'][Math.floor(Math.random() * 3)];
-        container.appendChild(flake);
-      }
-    }
-    
-    // Звезды
-    function createStars() {
-      const container = document.querySelector('.stars-container');
-      if (!container) return;
-      
-      container.innerHTML = '';
-      
-      for (let i = 0; i < 120; i++) {
-        const star = document.createElement('div');
-        star.style.cssText = `
-          position: absolute;
-          left: ${Math.random() * 100}vw;
-          top: ${Math.random() * 100}vh;
-          width: ${Math.random() * 3 + 1}px;
-          height: ${Math.random() * 3 + 1}px;
-          background: white;
-          border-radius: 50%;
-          animation: twinkle ${Math.random() * 4 + 2}s infinite alternate;
-          animation-delay: ${Math.random() * 3}s;
-          opacity: ${Math.random() * 0.8 + 0.2};
-        `;
-        container.appendChild(star);
-      }
-    }
-    
-    // Инициализация
-    document.addEventListener('DOMContentLoaded', () => {
-      createSnow();
-      if (!document.body.classList.contains('light-theme')) {
-        createStars();
-      }
-      
-      // Анимация для звезд
-      const style = document.createElement('style');
-      style.textContent = `
-        @keyframes fall {
-          0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
-          100% { transform: translateY(100vh) rotate(360deg); opacity: 0.3; }
-        }
-        @keyframes twinkle {
-          0% { opacity: 0.2; transform: scale(1); }
-          100% { opacity: 0.8; transform: scale(1.1); }
-        }
-        .stars-container { 
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          pointer-events: none;
-          z-index: 0;
-          display: none; 
-        }
-        body:not(.light-theme) .stars-container { display: block; }
-      `;
-      document.head.appendChild(style);
-    });
   </script>
 </body>
 </html>
