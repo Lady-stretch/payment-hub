@@ -2,313 +2,305 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Lady Stretch | Новогодние абонементы 2026 по ценам 2025</title>
+  <title>Lady Stretch | Абонементы 2026 по ценам 2025</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 
   <!-- Open Graph метатеги -->
-  <meta property="og:title" content="Lady Stretch | Новогодние абонементы 2026 по ценам 2025">
-  <meta property="og:description" content="Забронируйте абонемент 2026 года по ценам 2025! Только до 31 декабря. Ловите новогодних персонажей и получите бесплатное занятие!">
+  <meta property="og:title" content="Lady Stretch | Абонементы 2026 года по ценам 2025">
+  <meta property="og:description" content="Забронируйте абонемент на 2026 год по старым ценам. Только до 31 декабря. Ловите новогодних персонажей и получите бесплатное занятие!">
   <meta property="og:image" content="https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPOSITORY/main/images/new-year-preview.jpg">
   <meta property="og:url" content="https://YOUR_USERNAME.github.io/YOUR_REPOSITORY/">
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Lady Stretch">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Great+Vibes&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Great+Vibes&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <!-- Снег и звезды -->
+  <!-- Снег и звёзды -->
   <div class="snow-container"></div>
   <div class="stars-container"></div>
-  
-  <!-- Счетчик новогодних персонажей -->
+
+  <!-- Счётчик персонажей -->
   <div id="character-counter" class="character-counter">
     <div class="counter-emoji">🎁</div>
     <div class="counter-text">
-      <strong>Поймано: <span id="character-count">0</span>/5</strong>
-      <div class="counter-hint">Ловите персонажей для бесплатного занятия!</div>
+      <div>Поймано: <strong id="character-count">0</strong>/5</div>
+      <div class="counter-hint">Бесплатное занятие</div>
     </div>
   </div>
 
-  <!-- Кнопка переключения темы -->
+  <!-- Переключение темы -->
   <button id="theme-toggle" class="theme-toggle">
     <span class="moon-icon">🌙</span>
     <span class="sun-icon">☀️</span>
   </button>
 
-  <header class="header glass">
-    <img src="logo_header_final.png" alt="Lady Stretch" class="logo" id="main-logo">
-    <a href="#packages-anchor" class="header-cta">
-      <span class="cta-text">Посмотреть абонементы</span>
-      <span class="cta-arrow">→</span>
+  <!-- Хедер -->
+  <header class="header">
+    <img src="logo_header_final.png" alt="Lady Stretch" class="logo">
+    <a href="#packages" class="header-cta">
+      <span>Выбрать абонемент</span>
     </a>
   </header>
 
   <main class="wrapper">
-    <!-- HERO -->
-    <section class="hero glass">
+    <!-- Герой -->
+    <section class="hero">
       <h1 class="hero-title">
         <span class="gold">Новогоднее</span>
-        <span class="accent">настроение</span> 🎄
+        <span class="accent">предложение</span>
       </h1>
-      <p class="hero-subtitle">
-        Забронируйте абонемент 2026 года по ценам 2025!
-      </p>
+      <p class="hero-subtitle">Абонементы 2026 года по ценам 2025</p>
       <div class="hero-notice">
         <span class="notice-badge">Только до 31 декабря</span>
-        <p>После Нового года цены вырастут</p>
+        <p class="notice-text">Цены повысятся в новом году</p>
       </div>
     </section>
 
-    <!-- ИНФО + КНОПКА НА ТЕСТ -->
-    <section class="glass info">
-      <p>
-        Lady Stretch — это мини-группы, внимательное сопровождение тренера
-        и спокойный, осознанный фитнес.
-      </p>
-      <p>
-        <strong>Фитнес — это не на месяц, это на всю жизнь!</strong>
-        Инвестиция в здоровье, энергию и качество жизни.
-      </p>
+    <!-- Игра -->
+    <section class="glass game-section">
+      <h2 class="game-title">🎁 Новогодний сюрприз</h2>
+      <div class="game-description">
+        <p>По сайту летают новогодние персонажи. Кликните на пять разных — получите бесплатное занятие!</p>
+        <p><em>Игра работает в тёмной и светлой теме</em></p>
+      </div>
+    </section>
+
+    <!-- Фитнес-инфо -->
+    <section class="glass info-section">
+      <h3>Фитнес — это на всю жизнь</h3>
+      <p>Не просто тренировки, а инвестиция в здоровье, энергию и качество жизни. Осознанный подход даёт результаты, которые остаются с вами.</p>
+      
       <div class="test-cta">
-        <p>Пройдите короткий тест и узнайте, какой фитнес подходит именно вам:</p>
+        <p>Узнайте, какой формат подходит именно вам:</p>
         <a href="fitness-test.html" class="test-button">
-          <span class="test-icon">🤔</span>
-          <span class="test-text">Пройти тест о фитнесе</span>
+          <span class="test-icon">🎯</span>
+          <span class="test-text">Пройти тест</span>
           <span class="test-arrow">→</span>
         </a>
       </div>
     </section>
 
-    <!-- ИГРА -->
-    <section class="glass game-section">
-      <h3 class="game-title">🎮 Новогодняя игра "Собери подарки!"</h3>
-      <div class="game-description">
-        <p>На сайте падают новогодние персонажи. Кликайте на них!</p>
-        <p><strong>Соберите 5 разных персонажей → получите 1 БЕСПЛАТНОЕ занятие!</strong></p>
-        <p class="game-note">Игра доступна в обеих темах (тёмной и светлой)</p>
-      </div>
-      <div class="game-characters">
-        <div class="character-sample">⛄</div>
-        <div class="character-sample">🎅</div>
-        <div class="character-sample">🎁</div>
-        <div class="character-sample">🦌</div>
-        <div class="character-sample">🌟</div>
-      </div>
-    </section>
-
-    <!-- ТАЙМЕР -->
+    <!-- Таймер -->
     <section class="glass timer">
-      <div id="countdown-timer"></div>
+      <div id="countdown-timer">00:00:00:00</div>
       <p class="timer-caption">До Нового года осталось</p>
     </section>
 
-    <!-- АБОНЕМЕНТЫ 2026 ПО ЦЕНАМ 2025 -->
-    <section id="packages-anchor" class="packages-section">
-      <h2 class="section-title">Абонементы 2026 года по ценам 2025</h2>
-      <p class="section-subtitle">Успейте заморозить цену до 31 декабря 2025</p>
-      
-      <div class="price-comparison glass">
+    <!-- Сравнение цен -->
+    <section class="glass price-comparison">
+      <h3>Успейте сохранить цену</h3>
+      <div class="comparison-container">
         <div class="comparison-item">
           <div class="comparison-badge old">2025</div>
           <div class="comparison-price">33 280 ₽</div>
-          <div class="comparison-label">64 занятия</div>
+          <div class="comparison-desc">64 занятия</div>
         </div>
         <div class="comparison-arrow">→</div>
         <div class="comparison-item">
           <div class="comparison-badge new">2026</div>
           <div class="comparison-price">44 800 ₽</div>
-          <div class="comparison-label">(+34%)</div>
+          <div class="comparison-desc">(+11 520 ₽)</div>
         </div>
       </div>
+      <p class="comparison-note">С 1 января цены вырастут на 25-40%</p>
+    </section>
+
+    <!-- Абонементы -->
+    <section id="packages" class="packages-section">
+      <h2 class="section-title">Абонементы 2026 года</h2>
+      <p class="section-subtitle">Действительны весь 2026 год • По ценам 2025</p>
 
       <div class="packages">
-        <!-- Карточка 1: 96 занятий -->
-        <div class="card glass"
-             data-price="37440"
-             data-link="https://ecom.otpbank.ru/smart-form?config=42943585-8511-400a-a027=49732f1d8fb2"
-             data-installments="12">
-          <div class="card-badge price-badge">-40%</div>
+        <!-- 96 занятий -->
+        <div class="card" data-price="37440" data-link="https://ecom.otpbank.ru/smart-form?config=42943585-8511-400a-a027=49732f1d8fb2" data-installments="12">
+          <div class="price-badge">-40%</div>
           <h3>96 занятий</h3>
           <p class="card-subtitle">На 2026 год • 12 месяцев</p>
+          
           <div class="price-container">
             <div class="old-price">62 400 ₽</div>
             <div class="current-price">37 440 ₽</div>
-            <div class="price-per-lesson">390 ₽ за занятие</div>
+            <div class="price-per-lesson">390 ₽ / занятие</div>
           </div>
+          
           <div class="saving">Экономия 25 000 ₽</div>
+          
           <p class="desc">
-            Самая выгодная цена за занятие. Подходит для регулярных занятий весь год.
+            Самый выгодный вариант. Занятия весь год по минимальной цене.
           </p>
-          <button class="select">Выбрать формат</button>
+          
+          <button class="select">Выбрать этот формат</button>
         </div>
 
-        <!-- Карточка 2: 64 занятия (ХИТ) -->
-        <div class="card glass hit"
-             data-price="33280"
-             data-link="https://ecom.otpbank.ru/smart-form?config=e0d01fc2-5884-4fb1-b769=c7955a2d3b69"
-             data-installments="10">
-          <div class="card-badge hit-badge">ХИТ</div>
-          <div class="card-badge price-badge">-20%</div>
+        <!-- 64 занятия (ХИТ) -->
+        <div class="card hit" data-price="33280" data-link="https://ecom.otpbank.ru/smart-form?config=e0d01fc2-5884-4fb1-b769=c7955a2d3b69" data-installments="10">
+          <div class="hit-badge">ХИТ</div>
+          <div class="price-badge">-20%</div>
           <h3>64 занятия</h3>
           <p class="card-subtitle">На 2026 год • 12 месяцев</p>
+          
           <div class="price-container">
             <div class="old-price">41 600 ₽</div>
             <div class="current-price">33 280 ₽</div>
-            <div class="price-per-lesson">520 ₽ за занятие</div>
+            <div class="price-per-lesson">520 ₽ / занятие</div>
           </div>
+          
           <div class="saving">Экономия 8 320 ₽</div>
+          
           <p class="desc">
-            Оптимальный баланс цены и количества. Самый популярный формат.
+            Оптимальный выбор. Баланс цены и количества занятий.
           </p>
-          <button class="select">Выбрать формат</button>
+          
+          <button class="select">Выбрать этот формат</button>
         </div>
 
-        <!-- Карточка 3: 32 занятия -->
-        <div class="card glass"
-             data-price="18720"
-             data-installments="Нет">
-          <div class="card-badge price-badge">-10%</div>
+        <!-- 32 занятия -->
+        <div class="card" data-price="18720" data-installments="Нет">
+          <div class="price-badge">-10%</div>
           <h3>32 занятия</h3>
           <p class="card-subtitle">На 2026 год • 5 месяцев</p>
+          
           <div class="price-container">
             <div class="old-price">20 800 ₽</div>
             <div class="current-price">18 720 ₽</div>
-            <div class="price-per-lesson">585 ₽ за занятие</div>
+            <div class="price-per-lesson">585 ₽ / занятие</div>
           </div>
+          
           <div class="saving">Экономия 2 080 ₽</div>
+          
           <p class="desc">
-            Комфортный старт. Идеально для знакомства с направлениями студии.
+            Для комфортного старта. Познакомьтесь с разными направлениями.
           </p>
-          <button class="select">Выбрать формат</button>
+          
+          <button class="select">Выбрать этот формат</button>
         </div>
 
-        <!-- Карточка 4: 16 занятий -->
-        <div class="card glass"
-             data-price="9880"
-             data-installments="Нет">
-          <div class="card-badge price-badge">-5%</div>
+        <!-- 16 занятий -->
+        <div class="card" data-price="9880" data-installments="Нет">
+          <div class="price-badge">-5%</div>
           <h3>16 занятий</h3>
           <p class="card-subtitle">На 2026 год • 3 месяца</p>
+          
           <div class="price-container">
             <div class="old-price">10 400 ₽</div>
             <div class="current-price">9 880 ₽</div>
-            <div class="price-per-lesson">618 ₽ за занятие</div>
+            <div class="price-per-lesson">618 ₽ / занятие</div>
           </div>
+          
           <div class="saving">Экономия 520 ₽</div>
+          
           <p class="desc">
-            Первые шаги. Познакомьтесь со студией и выберите любимое направление.
+            Первые шаги. Идеально для знакомства со студией и тренером.
           </p>
-          <button class="select">Выбрать формат</button>
+          
+          <button class="select">Выбрать этот формат</button>
         </div>
       </div>
     </section>
 
-    <!-- СРАВНЕНИЕ СТОИМОСТИ ЗАНЯТИЯ -->
+    <!-- Сравнение стоимости -->
     <section class="glass comparison-section">
-      <h3 class="comparison-title">💎 Сравнение стоимости одного занятия</h3>
+      <h3 class="comparison-title">Сравнение стоимости одного занятия</h3>
+      
       <div class="comparison-chart">
         <div class="chart-item">
           <div class="chart-label">16 занятий</div>
           <div class="chart-bar" style="width: 100%">
-            <div class="chart-value">618 ₽</div>
+            <span class="chart-value">618 ₽</span>
           </div>
         </div>
+        
         <div class="chart-item">
           <div class="chart-label">32 занятия</div>
           <div class="chart-bar" style="width: 95%">
-            <div class="chart-value">585 ₽</div>
+            <span class="chart-value">585 ₽</span>
           </div>
           <div class="chart-save">-33 ₽</div>
         </div>
+        
         <div class="chart-item">
           <div class="chart-label">64 занятия</div>
           <div class="chart-bar" style="width: 84%">
-            <div class="chart-value">520 ₽</div>
+            <span class="chart-value">520 ₽</span>
           </div>
           <div class="chart-save">-98 ₽</div>
         </div>
+        
         <div class="chart-item">
           <div class="chart-label">96 занятий</div>
           <div class="chart-bar" style="width: 63%">
-            <div class="chart-value">390 ₽</div>
+            <span class="chart-value">390 ₽</span>
           </div>
           <div class="chart-save">-228 ₽</div>
         </div>
       </div>
+      
       <p class="comparison-note">
         <strong>Чем больше занятий — тем дешевле каждое!</strong><br>
-        Вы экономите до 228 ₽ на каждом занятии при выборе большего пакета.
+        Экономия до 37% при выборе годового абонемента.
       </p>
     </section>
 
-    <!-- КНОПКА ДЛЯ АБОНЕМЕНТОВ 2026 ГОДА -->
-    <section class="glass future-link-section">
-      <h3 style="margin-bottom: 15px; color: var(--text);">А что будет с 2026 года?</h3>
-      <p style="margin-bottom: 20px; color: var(--muted);">
-        С 1 января 2026 года вступят в силу новые цены на абонементы.
-        Посмотрите, как изменится стоимость.
-      </p>
-      <a href="future-packages.html" class="future-link-button">
-        Посмотреть абонементы 2026 года →
+    <!-- Ссылка на абонементы 2026 -->
+    <section class="glass future-section">
+      <h3>А что в 2026 году?</h3>
+      <p>Посмотрите новые абонементы, которые будут доступны с 1 января по обновлённым ценам.</p>
+      <a href="future-packages.html" class="future-link">
+        <span>Абонементы 2026 года</span>
+        <span class="link-arrow">→</span>
       </a>
     </section>
 
-    <!-- БЛОК ОПЛАТЫ -->
-    <section id="payment" class="glass payment" style="display:none;">
-      <a id="sbp-link"
-         href="https://qr.nspk.ru/AS2A006F0RCJU7V991SBLV4AACJGFT2P?type=01&bank=100000000004&crc=A93E"
-         target="_blank"
-         class="pay-main">
-        Оплатить <strong><span id="selected-price"></span> ₽</strong>
+    <!-- Блок оплаты -->
+    <section id="payment" class="glass payment" style="display: none;">
+      <h3>Оплата выбранного абонемента</h3>
+      
+      <a id="sbp-link" href="https://qr.nspk.ru/AS2A006F0RCJU7V991SBLV4AACJGFT2P?type=01&bank=100000000004&crc=A93E" target="_blank" class="pay-main">
+        Оплатить <strong><span id="selected-price">0</span> ₽</strong> через СБП
       </a>
 
-      <button id="installment-btn"
-              class="pay-alt installment-btn"
-              style="display:none;"
-              onclick="openInstallment()">
-        Оформить рассрочку на <span id="months"></span>
+      <button id="installment-btn" class="pay-alt installment-btn" style="display: none;">
+        Рассрочка на <span id="months">12</span> месяцев
       </button>
 
-      <button class="pay-alt"
-        onclick="window.open('https://checkout.tochka.com/35716534-5fd6-46ab-9ca0-1336d47f692a','_blank')">
-        Онлайн-оплата картой
+      <button class="pay-alt" onclick="window.open('https://checkout.tochka.com/35716534-5fd6-46ab-9ca0-1336d47f692a','_blank')">
+        Оплата картой онлайн
       </button>
 
-      <!-- QR код -->
       <div class="qr-section">
-        <h4>Или отсканируйте QR-код СБП</h4>
+        <h4>QR-код для СБП</h4>
         <img src="qr_code.png" alt="QR-код для оплаты" class="qr-image">
-        <p>Наведите камеру или откройте приложение банка</p>
+        <p>Отсканируйте камерой телефона</p>
       </div>
 
-      <!-- Кнопка Назад -->
       <button class="back-button" onclick="goBack()">
-        ← Выбрать другой формат
+        ← Выбрать другой абонемент
       </button>
     </section>
 
+    <!-- Футер -->
     <footer class="footer">
       <div class="footer-content">
-        <p>Мини-группы до 10 человек · Индивидуальный подход</p>
-        <p class="footer-note">
-          🎁 Не забудьте: ловите новогодних персонажей на сайте для получения бесплатного занятия!
-        </p>
-        <div class="footer-links">
-          <a href="directions.html" style="color: var(--red); text-decoration: none; font-weight: 600;">
-            Узнать о направлениях фитнеса →
-          </a>
+        <p class="footer-main">Lady Stretch • Мини-группы • Индивидуальный подход</p>
+        
+        <div class="footer-notes">
+          <p>🎁 Ловите новогодних персонажей на сайте для получения бесплатного занятия</p>
+          <p>💪 <a href="directions.html">Узнайте больше о направлениях фитнеса</a></p>
         </div>
+        
+        <p class="footer-copyright">Абонементы 2026 года по ценам 2025 • Действительны до 31 декабря 2025</p>
       </div>
     </footer>
   </main>
 
+  <!-- Скрипты -->
   <script src="script.js"></script>
 </body>
 </html>
