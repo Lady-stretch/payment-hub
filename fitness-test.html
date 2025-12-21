@@ -1,1 +1,883 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Lady Stretch | Фитнес-тест</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
 
+  <!-- Open Graph метатеги -->
+  <meta property="og:title" content="Lady Stretch | Что вы знаете о фитнесе?">
+  <meta property="og:description" content="Пройдите тест из 6 вопросов о фитнесе и получите +1 к новогодней игре!">
+  <meta property="og:image" content="https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPOSITORY/main/images/fitness-test.jpg">
+  <meta property="og:url" content="https://YOUR_USERNAME.github.io/YOUR_REPOSITORY/fitness-test.html">
+  <meta property="og:type" content="website">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Great+Vibes&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Стили для теста */
+    .test-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .test-progress {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding: 15px;
+      background: var(--glass);
+      border-radius: 15px;
+      border: 1px solid var(--border);
+    }
+    
+    .progress-bar {
+      flex-grow: 1;
+      height: 8px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 4px;
+      margin: 0 20px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: var(--green);
+      border-radius: 4px;
+      transition: width 0.5s ease;
+      width: 0%;
+    }
+    
+    .question-counter {
+      font-weight: 700;
+      color: var(--green);
+      white-space: nowrap;
+    }
+    
+    .question-card {
+      text-align: left;
+      padding: 30px;
+      margin-bottom: 20px;
+      display: none;
+    }
+    
+    .question-card.active {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .question-text {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 25px;
+      color: var(--text);
+      line-height: 1.5;
+    }
+    
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .option {
+      padding: 18px 20px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+    
+    .option:hover {
+      background: rgba(255,255,255,0.1);
+      transform: translateX(5px);
+    }
+    
+    .option.selected {
+      background: rgba(46, 204, 113, 0.15);
+      border-color: var(--green);
+    }
+    
+    .option.correct {
+      background: rgba(46, 204, 113, 0.2);
+      border-color: var(--green);
+    }
+    
+    .option.incorrect {
+      background: rgba(184, 30, 43, 0.15);
+      border-color: var(--red);
+    }
+    
+    .option-letter {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      background: var(--glass);
+      border-radius: 50%;
+      margin-right: 15px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    
+    .option-text {
+      flex-grow: 1;
+    }
+    
+    .explanation {
+      margin-top: 20px;
+      padding: 20px;
+      background: rgba(138, 43, 226, 0.1);
+      border-radius: 12px;
+      border: 1px solid rgba(138, 43, 226, 0.2);
+      display: none;
+    }
+    
+    .explanation.show {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    .explanation-title {
+      color: var(--purple);
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    
+    .navigation-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+      gap: 15px;
+    }
+    
+    .nav-btn {
+      padding: 14px 28px;
+      border-radius: 12px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      flex: 1;
+      text-align: center;
+    }
+    
+    .nav-btn.prev {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    
+    .nav-btn.next {
+      background: var(--purple);
+      color: white;
+    }
+    
+    body.light-theme .nav-btn.next {
+      background: #6c757d;
+    }
+    
+    .nav-btn.submit {
+      background: var(--green);
+      color: white;
+      display: none;
+    }
+    
+    .nav-btn:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+    
+    .nav-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    /* Результат теста */
+    .result-card {
+      display: none;
+      text-align: center;
+      padding: 40px 30px;
+    }
+    
+    .result-card.show {
+      display: block;
+      animation: fadeIn 0.8s ease;
+    }
+    
+    .result-emoji {
+      font-size: 4rem;
+      margin-bottom: 20px;
+    }
+    
+    .result-title {
+      font-size: 2rem;
+      color: var(--green);
+      margin-bottom: 15px;
+      font-weight: 700;
+    }
+    
+    .result-score {
+      font-size: 3.5rem;
+      font-weight: 900;
+      color: var(--green);
+      margin: 20px 0;
+    }
+    
+    .result-message {
+      font-size: 1.2rem;
+      margin-bottom: 25px;
+      line-height: 1.6;
+    }
+    
+    .game-bonus {
+      background: rgba(255, 215, 0, 0.1);
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      padding: 15px;
+      border-radius: 12px;
+      margin: 25px 0;
+    }
+    
+    .retake-btn {
+      display: inline-block;
+      padding: 14px 28px;
+      background: var(--purple);
+      color: white;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    
+    body.light-theme .retake-btn {
+      background: #6c757d;
+    }
+    
+    .retake-btn:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+    
+    @media (max-width: 768px) {
+      .test-progress {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+      }
+      
+      .progress-bar {
+        width: 100%;
+        margin: 10px 0;
+      }
+      
+      .navigation-buttons {
+        flex-direction: column;
+      }
+      
+      .question-card {
+        padding: 20px;
+      }
+      
+      .question-text {
+        font-size: 1.1rem;
+      }
+      
+      .option {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Снег и звезды -->
+  <div class="snow-container"></div>
+  <div class="stars-container"></div>
+
+  <!-- Кнопка переключения темы -->
+  <button id="theme-toggle" class="theme-toggle">
+    <span class="moon-icon">🌙</span>
+    <span class="sun-icon">☀️</span>
+  </button>
+
+  <!-- Кнопка назад -->
+  <a href="index.html" class="back-nav-button">
+    ← На главную
+  </a>
+
+  <header class="header glass">
+    <img src="logo_header_final.png" alt="Lady Stretch" class="logo">
+  </header>
+
+  <main class="wrapper">
+    <!-- HERO -->
+    <section class="hero glass">
+      <h1 class="hero-title">
+        <span class="green-text">Фитнес-тест</span>
+      </h1>
+      <p class="hero-subtitle">
+        Что вы знаете о фитнесе? Проверьте свои знания!
+      </p>
+      <div class="game-hint">
+        🎁 За прохождение теста — +1 к счётчику новогодней игры!
+      </div>
+    </section>
+
+    <!-- ТЕСТ -->
+    <section class="glass test-container">
+      <!-- Прогресс-бар -->
+      <div class="test-progress">
+        <div class="question-counter">Вопрос <span id="current-question">1</span> из 6</div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <div id="score-display" style="font-weight: 700; color: var(--purple);">
+          Верно: <span id="correct-count">0</span>/6
+        </div>
+      </div>
+
+      <!-- Вопросы -->
+      <div id="questions-container">
+        <!-- Вопрос 1 -->
+        <div class="question-card glass active" data-question="1">
+          <div class="question-text">
+            1. Для чего в первую очередь нужен фитнес?
+          </div>
+          
+          <div class="options-list">
+            <div class="option" data-letter="a" data-correct="false">
+              <span class="option-letter">а</span>
+              <span class="option-text">Для похудения</span>
+            </div>
+            
+            <div class="option" data-letter="b" data-correct="false">
+              <span class="option-letter">б</span>
+              <span class="option-text">Для красивого тела</span>
+            </div>
+            
+            <div class="option" data-letter="c" data-correct="true">
+              <span class="option-letter">в</span>
+              <span class="option-text">Для здоровья и долголетия</span>
+            </div>
+            
+            <div class="option" data-letter="d" data-correct="false">
+              <span class="option-letter">г</span>
+              <span class="option-text">Для моды</span>
+            </div>
+          </div>
+          
+          <div class="explanation">
+            <div class="explanation-title">✅ Правильный ответ: Для здоровья и долголетия</div>
+            <p>Фитнес — это прежде всего инструмент для поддержания здоровья, укрепления иммунитета и повышения качества жизни. Красивое тело и похудение — приятные побочные эффекты!</p>
+          </div>
+        </div>
+
+        <!-- Вопрос 2 -->
+        <div class="question-card glass" data-question="2">
+          <div class="question-text">
+            2. Почему мягкий и осознанный фитнес эффективнее?
+          </div>
+          
+          <div class="options-list">
+            <div class="option" data-letter="a" data-correct="false">
+              <span class="option-letter">а</span>
+              <span class="option-text">Меньше устаёшь</span>
+            </div>
+            
+            <div class="option" data-letter="b" data-correct="true">
+              <span class="option-letter">б</span>
+              <span class="option-text">Учит чувствовать тело и предотвращает травмы</span>
+            </div>
+            
+            <div class="option" data-letter="c" data-correct="false">
+              <span class="option-letter">в</span>
+              <span class="option-text">Дешевле</span>
+            </div>
+            
+            <div class="option" data-letter="d" data-correct="false">
+              <span class="option-letter">г</span>
+              <span class="option-text">Быстрее виден результат</span>
+            </div>
+          </div>
+          
+          <div class="explanation">
+            <div class="explanation-title">✅ Правильный ответ: Учит чувствовать тело и предотвращает травмы</div>
+            <p>Осознанный подход позволяет лучше понять своё тело, работать в правильной технике и избежать травм. Это долгосрочная инвестиция в здоровье, а не быстрый, но рискованный результат.</p>
+          </div>
+        </div>
+
+        <!-- Вопрос 3 -->
+        <div class="question-card glass" data-question="3">
+          <div class="question-text">
+            3. Что даёт пилатес?
+          </div>
+          
+          <div class="options-list">
+            <div class="option" data-letter="a" data-correct="true">
+              <span class="option-letter">а</span>
+              <span class="option-text">Укрепляет глубокие мышцы и улучшает осанку</span>
+            </div>
+            
+            <div class="option" data-letter="b" data-correct="false">
+              <span class="option-letter">б</span>
+              <span class="option-text">Быстро сжигает калории</span>
+            </div>
+            
+            <div class="option" data-letter="c" data-correct="false">
+              <span class="option-letter">в</span>
+              <span class="option-text">Накачивает мышцы</span>
+            </div>
+            
+            <div class="option" data-letter="d" data-correct="false">
+              <span class="option-letter">г</span>
+              <span class="option-text">Развивает выносливость</span>
+            </div>
+          </div>
+          
+          <div class="explanation">
+            <div class="explanation-title">✅ Правильный ответ: Укрепляет глубокие мышцы и улучшает осанку</div>
+            <p>Пилатес фокусируется на глубоких мышцах кора, которые поддерживают позвоночник. Это улучшает осанку, снимает напряжение в спине и создает прочный мышечный корсет.</p>
+          </div>
+        </div>
+
+        <!-- Вопрос 4 -->
+        <div class="question-card glass" data-question="4">
+          <div class="question-text">
+            4. Зачем нужна растяжка?
+          </div>
+          
+          <div class="options-list">
+            <div class="option" data-letter="a" data-correct="false">
+              <span class="option-letter">а</span>
+              <span class="option-text">Чтобы сесть на шпагат</span>
+            </div>
+            
+            <div class="option" data-letter="b" data-correct="true">
+              <span class="option-letter">б</span>
+              <span class="option-text">Для подвижности суставов и снятия мышечных зажимов</span>
+            </div>
+            
+            <div class="option" data-letter="c" data-correct="false">
+              <span class="option-letter">в</span>
+              <span class="option-text">Для гибкости на показ</span>
+            </div>
+            
+            <div class="option" data-letter="d" data-correct="false">
+              <span class="option-letter">г</span>
+              <span class="option-text">Чтобы расслабиться</span>
+            </div>
+          </div>
+          
+          <div class="explanation">
+            <div class="explanation-title">✅ Правильный ответ: Для подвижности суставов и снятия мышечных зажимов</div>
+            <p>Растяжка поддерживает здоровье суставов, улучшает кровообращение и снимает напряжение, которое накапливается в мышцах от сидячего образа жизни или стресса.</p>
+          </div>
+        </div>
+
+        <!-- Вопрос 5 -->
+        <div class="question-card glass" data-question="5">
+          <div class="question-text">
+            5. Что важнее: регулярность или интенсивность?
+          </div>
+          
+          <div class="options-list">
+            <div class="option" data-letter="a" data-correct="false">
+              <span class="option-letter">а</span>
+              <span class="option-text">Интенсивность — быстрее результат</span>
+            </div>
+            
+            <div class="option" data-letter="b" data-correct="true">
+              <span class="option-letter">б</span>
+              <span class="option-text">Регулярность — формирует привычку на всю жизнь</span>
+            </div>
+            
+            <div class="option" data-letter="c" data-correct="false">
+              <span class="option-letter">в</span>
+              <span class="option-text">Чередовать и то, и другое</span>
+            </div>
+            
+            <div class="option" data-letter="d" data-correct="false">
+              <span class="option-letter">г</span>
+              <span class="option-text">Зависит от цели</span>
+            </div>
+          </div>
+          
+          <div class="explanation">
+            <div class="explanation-title">✅ Правильный ответ: Регулярность — формирует привычку на всю жизнь</div>
+            <p>Регулярные умеренные тренировки приносят больше пользы, чем редкие интенсивные. Они формируют устойчивую привычку, которая становится частью образа жизни и даёт долгосрочные результаты.</p>
+          </div>
+        </div>
+
+        <!-- Вопрос 6 -->
+        <div class="question-card glass" data-question="6">
+          <div class="question-text">
+            6. Фитнес — это:
+          </div>
+          
+          <div class="options-list">
+            <div class="option" data-letter="a" data-correct="false">
+              <span class="option-letter">а</span>
+              <span class="option-text">Спорт для профессионалов</span>
+            </div>
+            
+            <div class="option" data-letter="b" data-correct="false">
+              <span class="option-letter">б</span>
+              <span class="option-text">Наказание за лишние кг</span>
+            </div>
+            
+            <div class="option" data-letter="c" data-correct="true">
+              <span class="option-letter">в</span>
+              <span class="option-text">Инвестиция в своё здоровье и качество жизни</span>
+            </div>
+            
+            <div class="option" data-letter="d" data-correct="false">
+              <span class="option-letter">г</span>
+              <span class="option-text">Модное увлечение</span>
+            </div>
+          </div>
+          
+          <div class="explanation">
+            <div class="explanation-title">✅ Правильный ответ: Инвестиция в своё здоровье и качество жизни</div>
+            <p>Фитнес — это лучшая инвестиция, которую вы можете сделать в себя. Он возвращается энергией, здоровьем, уверенностью и годами активной, полноценной жизни.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Кнопки навигации -->
+      <div class="navigation-buttons">
+        <button class="nav-btn prev" id="prev-btn" disabled>
+          ← Назад
+        </button>
+        <button class="nav-btn next" id="next-btn">
+          Далее →
+        </button>
+        <button class="nav-btn submit" id="submit-btn">
+          Узнать результат
+        </button>
+      </div>
+
+      <!-- Результат теста -->
+      <div class="result-card glass" id="result-card">
+        <div class="result-emoji" id="result-emoji">🎉</div>
+        <h2 class="result-title" id="result-title">Отличный результат!</h2>
+        
+        <div class="result-score">
+          <span id="final-score">0</span>/6
+        </div>
+        
+        <div class="result-message" id="result-message">
+          Вы отлично разбираетесь в основах фитнеса и понимаете его настоящую ценность!
+        </div>
+        
+        <div class="game-bonus" id="game-bonus">
+          <p style="font-weight: 600; color: var(--green);">
+            🎁 +1 к новогодней игре!
+          </p>
+          <p>Ваш счётчик персонажей на главной странице увеличен на 1.</p>
+        </div>
+        
+        <div style="margin-top: 30px;">
+          <button class="retake-btn" id="retake-btn">
+            Пройти тест ещё раз
+          </button>
+        </div>
+        
+        <div style="margin-top: 25px;">
+          <a href="fitness-motivation.html" class="test-link" style="min-width: 200px; display: inline-block;">
+            Узнать больше о направлениях →
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- КНОПКА НАЗАД -->
+    <div style="text-align: center; margin: 40px 0;">
+      <a href="index.html" class="back-to-main">
+        ← Вернуться к выбору абонемента
+      </a>
+    </div>
+
+    <footer class="footer">
+      Фитнес — это про осознанность! Тест пройден ✅<br>
+      Не забывайте: здоровье — лучший подарок, который вы можете себе сделать!
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+    // Логика теста
+    document.addEventListener('DOMContentLoaded', function() {
+      // Загружаем тему
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'light') {
+        document.body.classList.add('light-theme');
+      }
+      
+      // Кнопка темы
+      const themeToggle = document.getElementById('theme-toggle');
+      if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+          document.body.classList.toggle('light-theme');
+          localStorage.setItem('theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        });
+      }
+      
+      // Инициализация теста
+      initTest();
+    });
+    
+    // Переменные теста
+    let currentQuestion = 1;
+    let userAnswers = {};
+    let testCompleted = false;
+    
+    function initTest() {
+      // Настройка прогресс-бара
+      updateProgress();
+      
+      // Обработчики для вариантов ответов
+      document.querySelectorAll('.option').forEach(option => {
+        option.addEventListener('click', function() {
+          if (testCompleted) return;
+          
+          const questionCard = this.closest('.question-card');
+          const questionNum = parseInt(questionCard.dataset.question);
+          
+          // Снимаем выделение с других вариантов
+          questionCard.querySelectorAll('.option').forEach(opt => {
+            opt.classList.remove('selected');
+          });
+          
+          // Выделяем выбранный вариант
+          this.classList.add('selected');
+          
+          // Сохраняем ответ
+          userAnswers[questionNum] = {
+            letter: this.dataset.letter,
+            correct: this.dataset.correct === 'true'
+          };
+          
+          // Показываем объяснение
+          const explanation = questionCard.querySelector('.explanation');
+          explanation.classList.add('show');
+          
+          // Обновляем счетчик правильных ответов
+          updateScoreDisplay();
+          
+          // Включаем кнопку "Далее"
+          document.getElementById('next-btn').disabled = false;
+        });
+      });
+      
+      // Кнопка "Назад"
+      document.getElementById('prev-btn').addEventListener('click', () => {
+        if (currentQuestion > 1) {
+          showQuestion(currentQuestion - 1);
+        }
+      });
+      
+      // Кнопка "Далее"
+      document.getElementById('next-btn').addEventListener('click', () => {
+        if (currentQuestion < 6) {
+          showQuestion(currentQuestion + 1);
+        } else if (currentQuestion === 6) {
+          showResults();
+        }
+      });
+      
+      // Кнопка "Узнать результат"
+      document.getElementById('submit-btn').addEventListener('click', showResults);
+      
+      // Кнопка "Пройти ещё раз"
+      document.getElementById('retake-btn').addEventListener('click', resetTest);
+    }
+    
+    function showQuestion(questionNum) {
+      // Скрываем текущий вопрос
+      document.querySelector('.question-card.active').classList.remove('active');
+      
+      // Показываем новый вопрос
+      document.querySelector(`[data-question="${questionNum}"]`).classList.add('active');
+      
+      // Обновляем текущий вопрос
+      currentQuestion = questionNum;
+      document.getElementById('current-question').textContent = questionNum;
+      
+      // Обновляем прогресс-бар
+      updateProgress();
+      
+      // Обновляем состояние кнопок
+      document.getElementById('prev-btn').disabled = questionNum === 1;
+      document.getElementById('next-btn').textContent = questionNum === 6 ? 'Узнать результат' : 'Далее →';
+      document.getElementById('next-btn').disabled = !userAnswers[questionNum];
+      
+      // Показываем/скрываем кнопку отправки
+      document.getElementById('submit-btn').style.display = questionNum === 6 ? 'block' : 'none';
+      document.getElementById('next-btn').style.display = questionNum === 6 ? 'none' : 'block';
+      
+      // Если ответ уже выбран, выделяем его
+      if (userAnswers[questionNum]) {
+        const selectedOption = document.querySelector(`[data-question="${questionNum}"] .option[data-letter="${userAnswers[questionNum].letter}"]`);
+        if (selectedOption) {
+          selectedOption.classList.add('selected');
+          
+          // Показываем правильность ответа если тест завершен
+          if (testCompleted) {
+            selectedOption.classList.add(userAnswers[questionNum].correct ? 'correct' : 'incorrect');
+          }
+        }
+        
+        // Показываем объяснение если тест завершен
+        if (testCompleted) {
+          const explanation = document.querySelector(`[data-question="${questionNum}"] .explanation`);
+          explanation.classList.add('show');
+        }
+      }
+    }
+    
+    function updateProgress() {
+      const progress = ((currentQuestion - 1) / 6) * 100;
+      document.getElementById('progress-fill').style.width = `${progress}%`;
+    }
+    
+    function updateScoreDisplay() {
+      let correctCount = 0;
+      
+      for (let i = 1; i <= 6; i++) {
+        if (userAnswers[i] && userAnswers[i].correct) {
+          correctCount++;
+        }
+      }
+      
+      document.getElementById('correct-count').textContent = correctCount;
+    }
+    
+    function showResults() {
+      testCompleted = true;
+      
+      // Подсчет результатов
+      let correctCount = 0;
+      for (let i = 1; i <= 6; i++) {
+        if (userAnswers[i] && userAnswers[i].correct) {
+          correctCount++;
+        }
+      }
+      
+      // Определение эмодзи и сообщения
+      let emoji, title, message;
+      
+      if (correctCount === 6) {
+        emoji = "🏆";
+        title = "Идеальный результат!";
+        message = "Вы отлично разбираетесь в фитнесе! Вы понимаете, что это инвестиция в здоровье и качество жизни.";
+      } else if (correctCount >= 4) {
+        emoji = "🎯";
+        title = "Отличный результат!";
+        message = "Вы хорошо понимаете основы фитнеса и его настоящую ценность для здоровья.";
+      } else if (correctCount >= 2) {
+        emoji = "👍";
+        title = "Хороший результат!";
+        message = "Вы на верном пути! Теперь вы знаете больше о пользе фитнеса для здоровья.";
+      } else {
+        emoji = "🧠";
+        title = "Есть куда расти!";
+        message = "Теперь вы знаете больше о фитнесе! Помните: фитнес — это прежде всего здоровье и качество жизни.";
+      }
+      
+      // Показываем результаты
+      document.getElementById('questions-container').style.display = 'none';
+      document.querySelector('.navigation-buttons').style.display = 'none';
+      document.getElementById('test-progress').style.display = 'none';
+      
+      document.getElementById('result-emoji').textContent = emoji;
+      document.getElementById('result-title').textContent = title;
+      document.getElementById('final-score').textContent = correctCount;
+      document.getElementById('result-message').textContent = message;
+      
+      document.getElementById('result-card').classList.add('show');
+      
+      // Даем бонус к игре
+      giveGameBonus();
+    }
+    
+    function giveGameBonus() {
+      // Проверяем, давали ли уже бонус за этот тест
+      const testBonusGiven = localStorage.getItem('testBonusGiven');
+      
+      if (!testBonusGiven) {
+        // Получаем текущий счетчик персонажей
+        let caughtCharacters = parseInt(localStorage.getItem('charactersCaught') || '0');
+        
+        // Увеличиваем на 1
+        caughtCharacters++;
+        localStorage.setItem('charactersCaught', caughtCharacters.toString());
+        
+        // Отмечаем, что бонус выдан
+        localStorage.setItem('testBonusGiven', 'true');
+        
+        // Показываем сообщение о бонусе
+        document.getElementById('game-bonus').style.display = 'block';
+        
+        console.log('🎁 Бонус за тест добавлен! Новый счетчик:', caughtCharacters);
+      } else {
+        document.getElementById('game-bonus').innerHTML = `
+          <p>Вы уже получали бонус за прохождение этого теста.</p>
+          <p>Продолжайте ловить персонажей на главной странице!</p>
+        `;
+      }
+    }
+    
+    function resetTest() {
+      // Сбрасываем переменные
+      currentQuestion = 1;
+      userAnswers = {};
+      testCompleted = false;
+      
+      // Сбрасываем отображение
+      document.getElementById('questions-container').style.display = 'block';
+      document.querySelector('.navigation-buttons').style.display = 'flex';
+      document.getElementById('test-progress').style.display = 'flex';
+      document.getElementById('result-card').classList.remove('show');
+      
+      // Сбрасываем выбор ответов
+      document.querySelectorAll('.option').forEach(option => {
+        option.classList.remove('selected', 'correct', 'incorrect');
+      });
+      
+      // Скрываем объяснения
+      document.querySelectorAll('.explanation').forEach(expl => {
+        expl.classList.remove('show');
+      });
+      
+      // Сбрасываем счетчик
+      document.getElementById('correct-count').textContent = '0';
+      
+      // Показываем первый вопрос
+      showQuestion(1);
+      
+      // Сбрасываем флаг бонуса (опционально, если хотим разрешить проходить тест несколько раз)
+      // localStorage.removeItem('testBonusGiven');
+    }
+  </script>
+</body>
+</html>
