@@ -1,894 +1,299 @@
-:root {
-  /* Темная тема (по умолчанию) */
-  --bg: #0b0c10;
-  --glass: rgba(255,255,255,0.12);
-  --border: rgba(255,255,255,0.16);
-  --text: #fff;
-  --muted: rgba(255,255,255,0.65);
-  --red: #b81e2b;
-  --gold: linear-gradient(90deg, #f5d27a, #fff3c4, #f5d27a);
-  --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-}
-
-.light-theme {
-  /* Светлая тема - более прозрачная */
-  --bg: #f8f9fa;
-  --glass: rgba(255, 255, 255, 0.85); /* 85% прозрачности */
-  --border: rgba(0, 0, 0, 0.1);
-  --text: #222;
-  --muted: rgba(0, 0, 0, 0.65);
-  --red: #b81e2b;
-  --gold: linear-gradient(90deg, #d4af37, #f5d27a, #d4af37);
-  --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-}
-
-* { 
-  box-sizing: border-box; 
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  background: radial-gradient(circle at top, #1a1c22, #000);
-  color: var(--text);
-  min-height: 100vh;
-  position: relative;
-  overflow-x: hidden;
-  transition: background 0.5s ease, color 0.5s ease;
-}
-
-body.light-theme {
-  background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
-}
-
-/* Эффект снега */
-.snow-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.snowflake {
-  position: absolute;
-  top: -10px;
-  color: rgba(180, 220, 255, 0.8);
-  font-size: 1em;
-  user-select: none;
-  animation-name: fall;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-}
-
-@keyframes fall {
-  0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
-  100% { transform: translateY(100vh) rotate(360deg); opacity: 0.3; }
-}
-
-/* Счетчик персонажей */
-.character-counter {
-  position: fixed;
-  top: 100px;
-  right: 20px;
-  background: var(--glass);
-  border: 1px solid var(--border);
-  padding: 12px 20px;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  z-index: 1000;
-  backdrop-filter: blur(10px);
-  box-shadow: var(--shadow);
-  text-align: center;
-  min-width: 150px;
-  display: none;
-}
-
-.counter-hint {
-  font-size: 0.75rem;
-  color: var(--muted);
-  margin-top: 5px;
-  font-weight: 400;
-}
-
-/* Звездное небо */
-.stars-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.star {
-  position: absolute;
-  background-color: white;
-  border-radius: 50%;
-  animation: twinkle infinite alternate;
-}
-
-@keyframes twinkle {
-  0% { opacity: 0.2; transform: scale(1); }
-  100% { opacity: 0.8; transform: scale(1.1); }
-}
-
-/* Скрываем звезды в светлой теме */
-body.light-theme .stars-container {
-  display: none;
-}
-
-/* Кнопка переключения темы */
-.theme-toggle {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: var(--glass);
-  border: 1px solid var(--border);
-  cursor: pointer;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  backdrop-filter: blur(10px);
-  box-shadow: var(--shadow);
-  transition: all 0.3s ease;
-  overflow: hidden;
-}
-
-.theme-toggle:hover {
-  transform: scale(1.1);
-}
-
-.theme-toggle span {
-  position: absolute;
-  transition: all 0.3s ease;
-}
-
-.sun-icon {
-  transform: translateY(50px);
-  opacity: 0;
-}
-
-.moon-icon {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-body.light-theme .sun-icon {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-body.light-theme .moon-icon {
-  transform: translateY(-50px);
-  opacity: 0;
-}
-
-/* Хедер с лого слева */
-.header {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  padding: 16px 24px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  z-index: 10;
-  background: rgba(11, 12, 16, 0.7);
-  backdrop-filter: blur(10px);
-}
-
-body.light-theme .header {
-  background: rgba(248, 249, 250, 0.9);
-}
-
-.logo {
-  height: 50px;
-  width: 50px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid var(--border);
-  transition: all 0.3s ease;
-}
-
-.logo:hover {
-  transform: scale(1.05);
-  border-color: var(--red);
-}
-
-.wrapper {
-  max-width: 1100px;
-  margin: auto;
-  padding: 120px 20px 60px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  z-index: 2;
-}
-
-.glass {
-  background: var(--glass);
-  border: 1px solid var(--border);
-  backdrop-filter: blur(18px);
-  border-radius: 22px;
-  padding: 32px;
-  margin-bottom: 28px;
-  text-align: center;
-  width: 100%;
-  box-shadow: var(--shadow);
-  transition: all 0.5s ease;
-}
-
-.hero-title {
-  font-family: 'Great Vibes', cursive;
-  font-size: clamp(3rem, 7vw, 4.5rem);
-  font-weight: 700;
-  line-height: 1.1;
-  margin-bottom: 10px;
-  text-align: center;
-  letter-spacing: 1px;
-  text-transform: none;
-  padding: 0 20px;
-}
-
-.gold {
-  background: var(--gold);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 6s linear infinite;
-  background-size: 200% auto;
-  display: inline-block;
-  padding: 0 5px;
-}
-
-@keyframes shine {
-  from { background-position: 0% center; }
-  to { background-position: 200% center; }
-}
-
-.accent {
-  color: var(--red);
-  font-family: 'Great Vibes', cursive;
-  display: inline-block;
-  margin-left: 10px;
-  padding: 0 5px;
-}
-
-.hero-subtitle {
-  margin-top: 10px;
-  font-size: 1.4rem;
-  color: var(--text);
-  text-align: center;
-  letter-spacing: 0.5px;
-  font-weight: 600;
-}
-
-.game-hint {
-  margin-top: 15px;
-  font-size: 0.9rem;
-  color: var(--muted);
-  padding: 10px;
-  background: rgba(255, 215, 0, 0.1);
-  border-radius: 10px;
-  border: 1px solid rgba(255, 215, 0, 0.2);
-}
-
-.info p {
-  margin-bottom: 16px;
-  font-size: 1.1rem;
-  line-height: 1.6;
-  color: var(--muted);
-  text-align: center;
-}
-
-.info p:last-child {
-  margin-bottom: 0;
-}
-
-/* Тест о фитнесе */
-.test-section {
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 1px solid var(--border);
-}
-
-.test-link {
-  display: inline-block;
-  margin-top: 10px;
-  padding: 12px 24px;
-  background: linear-gradient(to right, #4a6fa5, #6a93cb);
-  color: white;
-  text-decoration: none;
-  border-radius: 12px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.test-link:hover {
-  background: linear-gradient(to right, #3a5f95, #5a83bb);
-  transform: translateY(-2px);
-}
-
-.timer {
-  text-align: center;
-}
-
-#countdown-timer {
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: var(--red);
-  letter-spacing: 1px;
-  margin-bottom: 8px;
-  font-family: 'Inter', monospace;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: nowrap;
-  gap: 8px;
-  overflow-x: auto;
-  white-space: nowrap;
-}
-
-#countdown-timer span {
-  font-size: 0.7em;
-  color: var(--red);
-  margin: 0 3px;
-}
-
-.timer-caption {
-  color: var(--red);
-  font-size: 1rem;
-  margin-top: 8px;
-  font-weight: 600;
-}
-
-/* Сравнение цен */
-.price-comparison {
-  max-width: 500px;
-  margin: 0 auto 28px;
-}
-
-.comparison-grid {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 30px;
-  margin: 20px 0;
-}
-
-.comparison-item {
-  text-align: center;
-  flex: 1;
-}
-
-.year-badge {
-  display: inline-block;
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 700;
-  margin-bottom: 10px;
-  background: rgba(74, 111, 165, 0.2);
-  color: var(--text);
-}
-
-.year-badge.new {
-  background: rgba(184, 30, 43, 0.2);
-  color: var(--red);
-}
-
-.comparison-item .price {
-  font-size: 1.8rem;
-  font-weight: 800;
-  margin: 5px 0;
-  color: var(--text);
-}
-
-.comparison-item .desc {
-  font-size: 0.9rem;
-  color: var(--muted);
-}
-
-.comparison-arrow {
-  font-size: 1.5rem;
-  color: var(--red);
-}
-
-.comparison-note {
-  margin-top: 15px;
-  font-size: 0.9rem;
-  color: var(--muted);
-  font-style: italic;
-}
-
-/* Стоимость занятия */
-.price-per-lesson {
-  max-width: 500px;
-  margin: 0 auto 28px;
-}
-
-.lesson-prices {
-  margin: 20px 0;
-}
-
-.lesson-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--border);
-}
-
-.lesson-item:last-child {
-  border-bottom: none;
-}
-
-.lesson-count {
-  color: var(--text);
-  font-weight: 500;
-}
-
-.lesson-price {
-  font-weight: 700;
-  color: var(--red);
-}
-
-.lesson-save {
-  font-size: 0.8rem;
-  color: #2ecc71;
-  font-weight: 600;
-}
-
-.lesson-note {
-  margin-top: 15px;
-  font-weight: 600;
-  color: var(--text);
-}
-
-/* Кнопка будущих абонементов */
-.future-link-section {
-  text-align: center;
-  padding: 25px !important;
-  background: linear-gradient(135deg, rgba(74, 111, 165, 0.1), rgba(106, 147, 203, 0.1));
-  border: 1px solid rgba(74, 111, 165, 0.2);
-}
-
-.future-link-button {
-  display: inline-block;
-  padding: 14px 30px;
-  background: linear-gradient(to right, #4a6fa5, #6a93cb);
-  color: white;
-  text-decoration: none;
-  border-radius: 12px;
-  font-weight: 700;
-  font-size: 1.1rem;
-  transition: all 0.3s ease;
-  border: none;
-  cursor: pointer;
-}
-
-.future-link-button:hover {
-  background: linear-gradient(to right, #3a5f95, #5a83bb);
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(74, 111, 165, 0.3);
-}
-
-.packages {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
-  max-width: 900px;
-  width: 100%;
-}
-
-@media (max-width: 768px) {
-  .packages {
-    grid-template-columns: 1fr;
-    max-width: 400px;
-  }
-  
-  .character-counter {
-    top: 80px;
-    right: 10px;
-    font-size: 0.8rem;
-    min-width: 130px;
-  }
-  
-  .theme-toggle {
-    top: 20px;
-    right: 20px;
-    width: 45px;
-    height: 45px;
-    font-size: 1.3rem;
-  }
-  
-  #countdown-timer {
-    font-size: 1.8rem;
-  }
-  
-  .hero-title {
-    font-size: 2.5rem;
-  }
-  
-  .hero-subtitle {
-    font-size: 1.1rem;
-  }
-  
-  .comparison-grid {
-    flex-direction: column;
-    gap: 20px;
-  }
-}
-
-@media (max-width: 480px) {
-  #countdown-timer {
-    font-size: 1.6rem;
-  }
-  
-  .hero-title {
-    font-size: 2rem;
-  }
-}
-
-/* Карточки */
-.card {
-  position: relative;
-  padding: 32px 28px;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  text-align: center;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(15px);
-}
-
-body.light-theme .card {
-  background: rgba(255, 255, 255, 0.85);
-}
-
-.card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-  background: rgba(255, 255, 255, 0.15);
-}
-
-body.light-theme .card:hover {
-  background: rgba(255, 255, 255, 0.9);
-}
-
-/* Карточка ХИТ */
-.card.hit {
-  border: 2px solid var(--red);
-  position: relative;
-}
-
-.card.hit::before {
-  content: "ХИТ";
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background: var(--red);
-  color: white;
-  padding: 4px 10px;
-  border-radius: 8px;
-  font-size: 0.7rem;
-  font-weight: 700;
-  z-index: 2;
-}
-
-.card h3 { 
-  font-size: 1.8rem;
-  margin-bottom: 10px;
-  color: var(--text);
-  font-weight: 800;
-}
-
-.desc {
-  font-size: 0.95rem;
-  color: var(--muted);
-  margin-bottom: 20px;
-  line-height: 1.5;
-  min-height: 45px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.price {
-  font-size: 2rem;
-  font-weight: 900;
-  color: var(--red);
-  margin: 20px 0;
-}
-
-.select {
-  width: 100%;
-  padding: 16px;
-  border-radius: 14px;
-  border: none;
-  font-weight: 700;
-  cursor: pointer;
-  background: linear-gradient(to right, #4a6fa5, #6a93cb);
-  color: white;
-  font-size: 1.1rem;
-  transition: all 0.3s ease;
-}
-
-.select:hover {
-  background: linear-gradient(to right, #3a5f95, #5a83bb);
-  transform: scale(1.02);
-}
-
-/* Оплата */
-.payment {
-  text-align: center;
-  max-width: 600px;
-  width: 100%;
-}
-
-.pay-main {
-  display: block;
-  font-size: 1.4rem;
-  margin-bottom: 20px;
-  color: white;
-  text-decoration: none;
-  padding: 18px;
-  border-radius: 14px;
-  background: linear-gradient(to right, #2e7d32, #4caf50);
-  transition: all 0.3s ease;
-  font-weight: 700;
-}
-
-.pay-main:hover {
-  background: linear-gradient(to right, #1e6d32, #3c9f50);
-  transform: scale(1.02);
-}
-
-.installment-btn {
-  display: block !important;
-  margin: 15px auto;
-  padding: 16px 24px;
-  background: linear-gradient(to right, #ff9800, #ffb74d);
-  color: white;
-  font-weight: 700;
-  border-radius: 14px;
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  width: 80%;
-  max-width: 400px;
-}
-
-.installment-btn:hover {
-  background: linear-gradient(to right, #e68900, #ffa726);
-  transform: scale(1.02);
-}
-
-.pay-alt {
-  padding: 16px 24px;
-  border-radius: 14px;
-  border: 1px solid var(--border);
-  font-weight: 700;
-  cursor: pointer;
-  margin-top: 15px;
-  background: var(--glass);
-  color: var(--text);
-  transition: all 0.3s ease;
-  width: 80%;
-  max-width: 400px;
-}
-
-.pay-alt:hover {
-  background: rgba(255,255,255,0.15);
-}
-
-.qr-section {
-  margin: 40px auto 30px;
-  padding: 25px;
-  background: var(--glass);
-  border-radius: 18px;
-  border: 1px solid var(--border);
-  max-width: 350px;
-  width: 100%;
-}
-
-.qr-section h4 {
-  margin-bottom: 15px;
-  color: var(--text);
-  font-size: 1.2rem;
-}
-
-.qr-image {
-  width: 180px;
-  height: 180px;
-  border-radius: 12px;
-  margin: 10px auto;
-  display: block;
-  border: 1px solid var(--border);
-}
-
-.qr-section p {
-  font-size: 0.9rem;
-  color: var(--muted);
-  margin-top: 15px;
-}
-
-.back-button {
-  display: block;
-  margin: 30px auto 0;
-  padding: 14px 28px;
-  border-radius: 14px;
-  border: 1px solid var(--border);
-  background: var(--glass);
-  color: var(--text);
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 1rem;
-  max-width: 400px;
-  width: 100%;
-}
-
-.back-button:hover {
-  background: rgba(255,255,255,0.15);
-}
-
-.footer {
-  text-align: center;
-  color: var(--muted);
-  margin-top: 50px;
-  font-size: 1rem;
-  padding: 20px;
-}
-
-.footer-links {
-  margin-top: 15px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
+/* =========================================== */
+/* ИСПРАВЛЕНИЯ И УЛУЧШЕНИЯ (25.12.2024) */
+/* =========================================== */
+
+/* 1. Кнопки уже, как в абонементах - одинаковые */
+.future-link-button,
+.test-link,
 .footer-links a {
-  color: var(--red);
-  text-decoration: none;
-  font-weight: 600;
+  display: inline-block;
+  padding: 12px 24px !important; /* Уже и одинаковые */
+  max-width: 320px;
+  width: auto !important;
+  margin: 10px auto !important;
+  text-align: center;
+  font-size: 1rem !important;
+  border-radius: 12px !important;
+  transition: all 0.3s ease !important;
+}
+
+/* 2. Цвет кнопок как в абонементах (.select) */
+.future-link-button,
+.test-link {
+  background: linear-gradient(to right, #4a6fa5, #6a93cb) !important;
+  color: white !important;
+  text-decoration: none !important;
+  font-weight: 700 !important;
+  border: none !important;
+  cursor: pointer !important;
+}
+
+.future-link-button:hover,
+.test-link:hover {
+  background: linear-gradient(to right, #3a5f95, #5a83bb) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 5px 15px rgba(74, 111, 165, 0.3) !important;
+}
+
+/* 3. Кнопки в футере */
+.footer-links a {
+  background: rgba(74, 111, 165, 0.15) !important;
+  border: 1px solid rgba(74, 111, 165, 0.3) !important;
+  color: var(--text) !important;
+  font-weight: 600 !important;
+  padding: 10px 20px !important;
+}
+
+.light-theme .footer-links a {
+  background: rgba(74, 111, 165, 0.1) !important;
+  border: 1px solid rgba(74, 111, 165, 0.2) !important;
+  color: #222 !important;
 }
 
 .footer-links a:hover {
-  text-decoration: underline;
+  background: rgba(74, 111, 165, 0.25) !important;
+  transform: translateY(-2px) !important;
+  text-decoration: none !important;
 }
 
-/* tooltip */
-[data-tooltip] {
-  position: relative;
-  cursor: help;
+/* 4. Кнопка "Вернуться" видима в светлой теме (для future-packages.html) */
+.back-to-main {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  color: white !important;
+  text-decoration: none !important;
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  padding: 12px 24px !important;
+  transition: all 0.3s ease !important;
+  display: inline-block !important;
+  margin-top: 20px !important;
 }
 
-[data-tooltip]:hover::after {
-  content: attr(data-tooltip);
+.light-theme .back-to-main {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(0, 0, 0, 0.2) !important;
+  color: #222 !important;
+}
+
+.back-to-main:hover {
+  background: rgba(255, 255, 255, 0.25) !important;
+  transform: translateY(-2px) !important;
+}
+
+.light-theme .back-to-main:hover {
+  background: rgba(255, 255, 255, 0.95) !important;
+}
+
+/* 5. Блок сравнения цен - 2026 виден в темной теме */
+.year-badge.new {
+  background: rgba(74, 111, 165, 0.3) !important;
+  color: var(--text) !important;
+  border: 1px solid rgba(74, 111, 165, 0.5) !important;
+}
+
+.light-theme .year-badge,
+.light-theme .year-badge.new {
+  background: rgba(74, 111, 165, 0.15) !important;
+  color: #222 !important;
+  border: 1px solid rgba(74, 111, 165, 0.3) !important;
+}
+
+/* 6. Улучшенная видимость цен в блоке сравнения */
+.comparison-item .price {
+  font-size: 1.8rem !important;
+  font-weight: 800 !important;
+  margin: 10px 0 !important;
+  color: var(--text) !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2) !important;
+}
+
+.light-theme .comparison-item .price {
+  text-shadow: none !important;
+}
+
+.comparison-item .desc {
+  font-size: 0.9rem !important;
+  color: var(--muted) !important;
+  opacity: 0.9 !important;
+}
+
+/* 7. Отступы между блоками */
+.price-comparison {
+  margin-bottom: 40px !important;
+  padding: 30px !important;
+}
+
+.future-link-section {
+  margin-top: 60px !important; /* Больше отступ сверху */
+  margin-bottom: 40px !important;
+  padding: 35px 30px !important;
+}
+
+/* 8. Улучшенные отступы для текста в блоке "А что будет в 2026" */
+.future-link-section h3 {
+  margin-bottom: 20px !important;
+  color: var(--text) !important;
+  font-size: 1.4rem !important;
+}
+
+.future-link-section p {
+  margin-bottom: 30px !important; /* Больше отступ перед кнопкой */
+  color: var(--muted) !important;
+  line-height: 1.6 !important;
+  font-size: 1.05rem !important;
+  max-width: 600px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* 9. Кнопка навигации в хедере для index.html */
+.nav-to-packages {
   position: absolute;
-  bottom: 130%;
+  right: 24px;
+  padding: 10px 18px;
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.nav-to-packages:hover {
+  background: rgba(255,255,255,0.15);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+/* 10. Улучшенная видимость стрелки сравнения */
+.comparison-arrow {
+  font-size: 1.8rem !important;
+  color: var(--red) !important;
+  font-weight: 800 !important;
+  opacity: 0.9 !important;
+  animation: pulse 2s infinite !important;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+/* 11. Улучшенные карточки абонементов */
+.card {
+  transition: all 0.3s ease !important;
+  border: 1px solid var(--border) !important;
+  min-height: 320px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+}
+
+.card:hover {
+  transform: translateY(-5px) !important;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* 12. Подсказка при наведении на кнопки */
+.future-link-button[title]:hover::after,
+.test-link[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 100%;
   left: 50%;
   transform: translateX(-50%);
   background: rgba(0,0,0,0.9);
   color: white;
-  padding: 12px 16px;
-  border-radius: 10px;
-  font-size: 0.85rem;
-  width: 240px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  white-space: nowrap;
   z-index: 100;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  line-height: 1.5;
 }
 
-/* Эффект при ловле персонажа */
-.catch-effect {
-  position: fixed;
-  pointer-events: none;
-  z-index: 10000;
-  font-size: 24px;
-  font-weight: bold;
-  animation: floatUp 1s ease-out forwards;
-}
-
-@keyframes floatUp {
-  0% {
-    transform: translateY(0) scale(1);
-    opacity: 1;
+/* 13. Адаптивность для мобильных */
+@media (max-width: 768px) {
+  .future-link-button,
+  .test-link,
+  .footer-links a,
+  .back-to-main {
+    padding: 10px 20px !important;
+    font-size: 0.95rem !important;
+    max-width: 280px !important;
   }
-  100% {
-    transform: translateY(-100px) scale(0.5);
-    opacity: 0;
+  
+  .future-link-section {
+    margin-top: 40px !important;
+    padding: 25px 20px !important;
+  }
+  
+  .future-link-section h3 {
+    font-size: 1.3rem !important;
+  }
+  
+  .future-link-section p {
+    font-size: 1rem !important;
+    margin-bottom: 25px !important;
+  }
+  
+  .price-comparison {
+    margin-bottom: 30px !important;
+    padding: 25px 20px !important;
+  }
+  
+  .comparison-grid {
+    flex-direction: column;
+    gap: 25px !important;
+  }
+  
+  .comparison-arrow {
+    transform: rotate(90deg);
+    margin: 10px 0;
+  }
+  
+  .nav-to-packages {
+    right: 16px;
+    padding: 8px 14px;
+    font-size: 0.85rem;
   }
 }
 
-/* Уведомление о награде */
-.gift-notification {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: var(--glass);
-  border: 2px solid var(--red);
-  padding: 30px;
-  border-radius: 25px;
-  z-index: 10000;
-  backdrop-filter: blur(20px);
-  text-align: center;
-  max-width: 400px;
-  width: 90%;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-  animation: popup 0.5s ease;
+@media (max-width: 480px) {
+  .future-link-button,
+  .test-link,
+  .footer-links a,
+  .back-to-main {
+    padding: 9px 18px !important;
+    font-size: 0.9rem !important;
+    max-width: 260px !important;
+  }
+  
+  .footer-links {
+    gap: 8px !important;
+  }
 }
 
-@keyframes popup {
-  0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
-  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+/* 14. Улучшенная читаемость в светлой теме */
+.light-theme .comparison-note {
+  color: rgba(0, 0, 0, 0.7) !important;
+  font-weight: 500 !important;
 }
 
-.gift-notification h3 {
-  color: var(--red);
-  margin-bottom: 15px;
-  font-size: 1.8rem;
+.light-theme .game-hint {
+  background: rgba(255, 215, 0, 0.15) !important;
+  border: 1px solid rgba(255, 215, 0, 0.25) !important;
+  color: rgba(0, 0, 0, 0.7) !important;
 }
 
-.gift-notification p {
-  margin-bottom: 15px;
-  line-height: 1.6;
-}
-
-.gift-notification button {
-  background: linear-gradient(to right, #4a6fa5, #6a93cb);
-  color: white;
-  border: none;
-  padding: 12px 30px;
-  border-radius: 12px
-/* ... весь остальной существующий CSS код ... */
-
-/* Кнопка назад в левом углу (для future-packages.html) */
-.back-nav-button {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  padding: 10px 16px;
-  background: var(--glass);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  color: var(--text);
-  text-decoration: none;
-  font-weight: 600;
-  z-index: 1001;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-}
-
-.back-nav-button:hover {
-  background: rgba(255,255,255,0.15);
-  transform: translateY(-2px);
-}
-
-/* Исправляем сравнение цен */
-.year-badge.new {
-  background: rgba(74, 111, 165, 0.2); /* Тот же цвет что и 2025 */
-  color: var(--text); /* Тот же цвет текста */
-}
-
-/* Отступ между блоками */
-.future-link-section {
-  margin-top: 40px !important; /* Добавляем отступ сверху */
+/* 15. Консистентность кнопок */
+.select,
+.future-link-button,
+.test-link {
+  font-family: 'Inter', sans-serif !important;
+  letter-spacing: 0.3px !important;
+  text-transform: none !important;
 }
