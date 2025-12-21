@@ -858,3 +858,37 @@ body.light-theme .card:hover {
   border: none;
   padding: 12px 30px;
   border-radius: 12px
+/* ... весь остальной существующий CSS код ... */
+
+/* Кнопка назад в левом углу (для future-packages.html) */
+.back-nav-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  padding: 10px 16px;
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+  z-index: 1001;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.back-nav-button:hover {
+  background: rgba(255,255,255,0.15);
+  transform: translateY(-2px);
+}
+
+/* Исправляем сравнение цен */
+.year-badge.new {
+  background: rgba(74, 111, 165, 0.2); /* Тот же цвет что и 2025 */
+  color: var(--text); /* Тот же цвет текста */
+}
+
+/* Отступ между блоками */
+.future-link-section {
+  margin-top: 40px !important; /* Добавляем отступ сверху */
+}
