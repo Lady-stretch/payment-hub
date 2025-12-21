@@ -6,20 +6,26 @@
   --text: #fff;
   --muted: rgba(255,255,255,0.65);
   --red: #b81e2b;
-  --gold: linear-gradient(90deg, #f5d27a, #fff3c4, #f5d27a);
+  --purple: #8a2be2; /* Фиолетовый для кнопок в темной теме */
+  --green: #2ecc71; /* Зеленый для акцентов */
+  --green-gradient: linear-gradient(90deg, #2ecc71, #27ae60, #2ecc71);
   --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --snow-color: #88c0ff; /* Снежный/ледяной цвет для таймера */
 }
 
 .light-theme {
-  /* Светлая тема - более прозрачная */
+  /* Светлая тема */
   --bg: #f8f9fa;
-  --glass: rgba(255, 255, 255, 0.85); /* 85% прозрачности */
+  --glass: rgba(255, 255, 255, 0.85);
   --border: rgba(0, 0, 0, 0.1);
   --text: #222;
   --muted: rgba(0, 0, 0, 0.65);
   --red: #b81e2b;
-  --gold: linear-gradient(90deg, #d4af37, #f5d27a, #d4af37);
+  --purple: #6c757d; /* Серый для кнопок в светлой теме */
+  --green: #27ae60;
+  --green-gradient: linear-gradient(90deg, #27ae60, #219653, #27ae60);
   --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --snow-color: #4a6fa5;
 }
 
 * { 
@@ -63,11 +69,59 @@ body.light-theme {
   animation-name: fall;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
+  pointer-events: none;
 }
 
 @keyframes fall {
   0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
   100% { transform: translateY(100vh) rotate(360deg); opacity: 0.3; }
+}
+
+/* Новогодние персонажи */
+.new-year-character {
+  position: fixed;
+  top: -50px;
+  font-size: 40px;
+  cursor: pointer;
+  z-index: 100;
+  animation: character-fall linear forwards;
+  transition: transform 0.3s ease;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+  pointer-events: auto;
+}
+
+.new-year-character:hover {
+  transform: scale(1.2);
+}
+
+@keyframes character-fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.character-tooltip {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.new-year-character:hover .character-tooltip {
+  opacity: 1;
 }
 
 /* Счетчик персонажей */
@@ -87,6 +141,7 @@ body.light-theme {
   text-align: center;
   min-width: 150px;
   display: none;
+  transition: all 0.3s ease;
 }
 
 .counter-hint {
@@ -94,6 +149,38 @@ body.light-theme {
   color: var(--muted);
   margin-top: 5px;
   font-weight: 400;
+}
+
+/* Уведомление о прогрессе */
+.progress-notification {
+  position: fixed;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--glass);
+  border: 1px solid var(--border);
+  padding: 15px 25px;
+  border-radius: 15px;
+  font-weight: 600;
+  z-index: 1001;
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow);
+  text-align: center;
+  max-width: 300px;
+  width: 90%;
+  display: none;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 }
 
 /* Звездное небо */
@@ -175,6 +262,30 @@ body.light-theme .moon-icon {
   opacity: 0;
 }
 
+/* Кнопка навигации "Абонементы" */
+.nav-button {
+  position: fixed;
+  top: 20px;
+  left: 90px;
+  padding: 10px 20px;
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.nav-button:hover {
+  background: var(--purple);
+  color: white;
+  transform: translateY(-2px);
+}
+
 /* Хедер с лого слева */
 .header {
   position: fixed;
@@ -204,7 +315,7 @@ body.light-theme .header {
 
 .logo:hover {
   transform: scale(1.05);
-  border-color: var(--red);
+  border-color: var(--green);
 }
 
 .wrapper {
@@ -243,27 +354,21 @@ body.light-theme .header {
   padding: 0 20px;
 }
 
-.gold {
-  background: var(--gold);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 6s linear infinite;
-  background-size: 200% auto;
-  display: inline-block;
-  padding: 0 5px;
-}
-
-@keyframes shine {
-  from { background-position: 0% center; }
-  to { background-position: 200% center; }
-}
-
-.accent {
-  color: var(--red);
+.green-text {
+  color: var(--green);
   font-family: 'Great Vibes', cursive;
   display: inline-block;
-  margin-left: 10px;
-  padding: 0 5px;
+  margin: 0 5px;
+}
+
+.green-link {
+  color: var(--green) !important;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.green-link:hover {
+  text-decoration: underline;
 }
 
 .hero-subtitle {
@@ -280,9 +385,9 @@ body.light-theme .header {
   font-size: 0.9rem;
   color: var(--muted);
   padding: 10px;
-  background: rgba(255, 215, 0, 0.1);
+  background: rgba(46, 204, 113, 0.1);
   border-radius: 10px;
-  border: 1px solid rgba(255, 215, 0, 0.2);
+  border: 1px solid rgba(46, 204, 113, 0.2);
 }
 
 .info p {
@@ -297,27 +402,37 @@ body.light-theme .header {
   margin-bottom: 0;
 }
 
-/* Тест о фитнесе */
+/* Тест и мотивация */
 .test-section {
   margin-top: 20px;
   padding-top: 20px;
   border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
 }
 
-.test-link {
+.test-link, .motivation-link {
   display: inline-block;
-  margin-top: 10px;
   padding: 12px 24px;
-  background: linear-gradient(to right, #4a6fa5, #6a93cb);
+  background: var(--purple);
   color: white;
   text-decoration: none;
   border-radius: 12px;
   font-weight: 600;
   transition: all 0.3s ease;
+  min-width: 250px;
+  text-align: center;
 }
 
-.test-link:hover {
-  background: linear-gradient(to right, #3a5f95, #5a83bb);
+body.light-theme .test-link,
+body.light-theme .motivation-link {
+  background: #6c757d;
+}
+
+.test-link:hover, .motivation-link:hover {
+  opacity: 0.9;
   transform: translateY(-2px);
 }
 
@@ -328,7 +443,7 @@ body.light-theme .header {
 #countdown-timer {
   font-size: 2.5rem;
   font-weight: 800;
-  color: var(--red);
+  color: var(--snow-color);
   letter-spacing: 1px;
   margin-bottom: 8px;
   font-family: 'Inter', monospace;
@@ -339,78 +454,20 @@ body.light-theme .header {
   gap: 8px;
   overflow-x: auto;
   white-space: nowrap;
+  text-shadow: 0 0 10px rgba(136, 192, 255, 0.3);
 }
 
 #countdown-timer span {
   font-size: 0.7em;
-  color: var(--red);
+  color: var(--snow-color);
   margin: 0 3px;
 }
 
 .timer-caption {
-  color: var(--red);
+  color: var(--snow-color);
   font-size: 1rem;
   margin-top: 8px;
   font-weight: 600;
-}
-
-/* Сравнение цен */
-.price-comparison {
-  max-width: 500px;
-  margin: 0 auto 28px;
-}
-
-.comparison-grid {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 30px;
-  margin: 20px 0;
-}
-
-.comparison-item {
-  text-align: center;
-  flex: 1;
-}
-
-.year-badge {
-  display: inline-block;
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 700;
-  margin-bottom: 10px;
-  background: rgba(74, 111, 165, 0.2);
-  color: var(--text);
-}
-
-.year-badge.new {
-  background: rgba(184, 30, 43, 0.2);
-  color: var(--red);
-}
-
-.comparison-item .price {
-  font-size: 1.8rem;
-  font-weight: 800;
-  margin: 5px 0;
-  color: var(--text);
-}
-
-.comparison-item .desc {
-  font-size: 0.9rem;
-  color: var(--muted);
-}
-
-.comparison-arrow {
-  font-size: 1.5rem;
-  color: var(--red);
-}
-
-.comparison-note {
-  margin-top: 15px;
-  font-size: 0.9rem;
-  color: var(--muted);
-  font-style: italic;
 }
 
 /* Стоимость занятия */
@@ -442,12 +499,12 @@ body.light-theme .header {
 
 .lesson-price {
   font-weight: 700;
-  color: var(--red);
+  color: var(--green);
 }
 
 .lesson-save {
   font-size: 0.8rem;
-  color: #2ecc71;
+  color: var(--green);
   font-weight: 600;
 }
 
@@ -460,15 +517,17 @@ body.light-theme .header {
 /* Кнопка будущих абонементов */
 .future-link-section {
   text-align: center;
-  padding: 25px !important;
+  padding: 30px !important;
   background: linear-gradient(135deg, rgba(74, 111, 165, 0.1), rgba(106, 147, 203, 0.1));
   border: 1px solid rgba(74, 111, 165, 0.2);
+  margin-top: 20px !important;
+  margin-bottom: 30px !important;
 }
 
 .future-link-button {
   display: inline-block;
   padding: 14px 30px;
-  background: linear-gradient(to right, #4a6fa5, #6a93cb);
+  background: var(--purple);
   color: white;
   text-decoration: none;
   border-radius: 12px;
@@ -477,12 +536,21 @@ body.light-theme .header {
   transition: all 0.3s ease;
   border: none;
   cursor: pointer;
+  margin-top: 15px;
+}
+
+body.light-theme .future-link-button {
+  background: #6c757d;
 }
 
 .future-link-button:hover {
-  background: linear-gradient(to right, #3a5f95, #5a83bb);
+  opacity: 0.9;
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(74, 111, 165, 0.3);
+  box-shadow: 0 5px 15px rgba(138, 43, 226, 0.3);
+}
+
+body.light-theme .future-link-button:hover {
+  box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
 }
 
 .packages {
@@ -514,8 +582,17 @@ body.light-theme .header {
     font-size: 1.3rem;
   }
   
+  .nav-button {
+    left: 70px;
+    padding: 8px 15px;
+    font-size: 0.8rem;
+  }
+  
   #countdown-timer {
     font-size: 1.8rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
   }
   
   .hero-title {
@@ -526,19 +603,30 @@ body.light-theme .header {
     font-size: 1.1rem;
   }
   
-  .comparison-grid {
-    flex-direction: column;
-    gap: 20px;
+  .test-link, .motivation-link {
+    min-width: 200px;
+    padding: 10px 20px;
   }
 }
 
 @media (max-width: 480px) {
   #countdown-timer {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  
+  #countdown-timer span {
+    font-size: 0.6em;
+    margin: 0 2px;
   }
   
   .hero-title {
     font-size: 2rem;
+  }
+  
+  .timer-caption {
+    font-size: 0.9rem;
   }
 }
 
@@ -572,7 +660,7 @@ body.light-theme .card:hover {
 
 /* Карточка ХИТ */
 .card.hit {
-  border: 2px solid var(--red);
+  border: 2px solid var(--green);
   position: relative;
 }
 
@@ -581,7 +669,7 @@ body.light-theme .card:hover {
   position: absolute;
   top: 12px;
   right: 12px;
-  background: var(--red);
+  background: var(--green);
   color: white;
   padding: 4px 10px;
   border-radius: 8px;
@@ -612,7 +700,7 @@ body.light-theme .card:hover {
 .price {
   font-size: 2rem;
   font-weight: 900;
-  color: var(--red);
+  color: var(--green);
   margin: 20px 0;
 }
 
@@ -623,14 +711,18 @@ body.light-theme .card:hover {
   border: none;
   font-weight: 700;
   cursor: pointer;
-  background: linear-gradient(to right, #4a6fa5, #6a93cb);
+  background: var(--purple);
   color: white;
   font-size: 1.1rem;
   transition: all 0.3s ease;
 }
 
+body.light-theme .select {
+  background: #6c757d;
+}
+
 .select:hover {
-  background: linear-gradient(to right, #3a5f95, #5a83bb);
+  opacity: 0.9;
   transform: scale(1.02);
 }
 
@@ -686,15 +778,19 @@ body.light-theme .card:hover {
   font-weight: 700;
   cursor: pointer;
   margin-top: 15px;
-  background: var(--glass);
-  color: var(--text);
+  background: var(--purple);
+  color: white;
   transition: all 0.3s ease;
   width: 80%;
   max-width: 400px;
 }
 
+body.light-theme .pay-alt {
+  background: #6c757d;
+}
+
 .pay-alt:hover {
-  background: rgba(255,255,255,0.15);
+  opacity: 0.9;
 }
 
 .qr-section {
@@ -734,8 +830,8 @@ body.light-theme .card:hover {
   padding: 14px 28px;
   border-radius: 14px;
   border: 1px solid var(--border);
-  background: var(--glass);
-  color: var(--text);
+  background: var(--purple);
+  color: white;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -744,8 +840,12 @@ body.light-theme .card:hover {
   width: 100%;
 }
 
+body.light-theme .back-button {
+  background: #6c757d;
+}
+
 .back-button:hover {
-  background: rgba(255,255,255,0.15);
+  opacity: 0.9;
 }
 
 .footer {
@@ -764,7 +864,6 @@ body.light-theme .card:hover {
 }
 
 .footer-links a {
-  color: var(--red);
   text-decoration: none;
   font-weight: 600;
 }
@@ -804,6 +903,7 @@ body.light-theme .card:hover {
   font-size: 24px;
   font-weight: bold;
   animation: floatUp 1s ease-out forwards;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
 }
 
 @keyframes floatUp {
@@ -824,7 +924,7 @@ body.light-theme .card:hover {
   left: 50%;
   transform: translate(-50%, -50%);
   background: var(--glass);
-  border: 2px solid var(--red);
+  border: 2px solid var(--green);
   padding: 30px;
   border-radius: 25px;
   z-index: 10000;
@@ -842,7 +942,7 @@ body.light-theme .card:hover {
 }
 
 .gift-notification h3 {
-  color: var(--red);
+  color: var(--green);
   margin-bottom: 15px;
   font-size: 1.8rem;
 }
@@ -853,12 +953,31 @@ body.light-theme .card:hover {
 }
 
 .gift-notification button {
-  background: linear-gradient(to right, #4a6fa5, #6a93cb);
+  background: var(--purple);
   color: white;
   border: none;
   padding: 12px 30px;
-  border-radius: 12px
-/* ... весь остальной существующий CSS код ... */
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 15px;
+}
+
+body.light-theme .gift-notification button {
+  background: #6c757d;
+}
+
+.gift-notification button:hover {
+  opacity: 0.9;
+}
+
+/* Анимация для прогресс-уведомлений */
+@keyframes progressPulse {
+  0% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.05); }
+  100% { transform: translateX(-50%) scale(1); }
+}
 
 /* Кнопка назад в левом углу (для future-packages.html) */
 .back-nav-button {
@@ -878,17 +997,11 @@ body.light-theme .card:hover {
 }
 
 .back-nav-button:hover {
-  background: rgba(255,255,255,0.15);
+  background: var(--purple);
+  color: white;
   transform: translateY(-2px);
 }
 
-/* Исправляем сравнение цен */
-.year-badge.new {
-  background: rgba(74, 111, 165, 0.2); /* Тот же цвет что и 2025 */
-  color: var(--text); /* Тот же цвет текста */
-}
-
-/* Отступ между блоками */
-.future-link-section {
-  margin-top: 40px !important; /* Добавляем отступ сверху */
+body.light-theme .back-nav-button:hover {
+  background: #6c757d;
 }
