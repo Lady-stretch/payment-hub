@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Lady Stretch | Для чего нужен фитнес?</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <!-- Open Graph метатеги -->
+  <meta property="og:title" content="Lady Stretch | Для чего нужен фитнес?">
+  <meta property="og:description" content="Узнайте о всех направлениях фитнеса и их пользе для здоровья">
+  <meta property="og:image" content="https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPOSITORY/main/images/fitness-motivation.jpg">
+  <meta property="og:url" content="https://YOUR_USERNAME.github.io/YOUR_REPOSITORY/fitness-motivation.html">
+  <meta property="og:type" content="website">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Great+Vibes&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Дополнительные стили для страницы мотивации */
+    .motivation-hero {
+      background: linear-gradient(135deg, rgba(46, 204, 113, 0.1), rgba(39, 174, 96, 0.05));
+      border: 2px solid rgba(46, 204, 113, 0.2);
+      margin-bottom: 40px;
+    }
+    
+    .direction-card {
+      text-align: left;
+      padding: 25px;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .direction-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--green);
+    }
+    
+    .direction-icon {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      display: block;
+    }
+    
+    .direction-title {
+      color: var(--green);
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+    
+    .direction-subtitle {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 15px;
+      font-style: italic;
+    }
+    
+    .benefits-list {
+      list-style: none;
+      padding: 0;
+      margin: 15px 0;
+    }
+    
+    .benefits-list li {
+      padding: 8px 0;
+      padding-left: 25px;
+      position: relative;
+      color: var(--text);
+    }
+    
+    .benefits-list li:before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: var(--green);
+      font-weight: bold;
+    }
+    
+    .test-promo {
+      background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), rgba(106, 13, 173, 0.05));
+      border: 2px solid rgba(138, 43, 226, 0.2);
+      margin: 40px 0;
+    }
+    
+    .back-to-main {
+      display: inline-block;
+      margin: 30px 0;
+      padding: 12px 24px;
+      background: var(--purple);
+      color: white;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    body.light-theme .back-to-main {
+      background: #6c757d;
+    }
+    
+    .back-to-main:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+    
+    /* Сетка направлений */
+    .directions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      width: 100%;
+    }
+    
+    @media (max-width: 768px) {
+      .directions-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .direction-card {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Снег и звезды -->
+  <div class="snow-container"></div>
+  <div class="stars-container"></div>
+
+  <!-- Кнопка переключения темы -->
+  <button id="theme-toggle" class="theme-toggle">
+    <span class="moon-icon">🌙</span>
+    <span class="sun-icon">☀️</span>
+  </button>
+
+  <!-- Кнопка назад -->
+  <a href="index.html" class="back-nav-button">
+    ← На главную
+  </a>
+
+  <header class="header glass">
+    <img src="logo_header_final.png" alt="Lady Stretch" class="logo">
+  </header>
+
+  <main class="wrapper">
+    <!-- HERO -->
+    <section class="hero glass motivation-hero">
+      <h1 class="hero-title">
+        <span class="green-text">Для чего</span>
+        <span class="green-text">нужен фитнес?</span> 💪
+      </h1>
+      <p class="hero-subtitle">
+        Фитнес — это инвестиция в ваше здоровье на всю жизнь
+      </p>
+    </section>
+
+    <!-- ВСТУПЛЕНИЕ -->
+    <section class="glass info">
+      <p style="font-size: 1.2rem; font-weight: 600; color: var(--green);">
+        Многие забывают, что фитнес — это не только про красоту тела, но и про здоровье, энергию и качество жизни.
+      </p>
+      <p>
+        Регулярные тренировки укрепляют иммунитет, улучшают осанку, снимают стресс и дарят энергию на весь день. 
+        Это привычка, которая окупается годами здоровой и активной жизни.
+      </p>
+    </section>
+
+    <!-- НАПРАВЛЕНИЯ ФИТНЕСА -->
+    <section class="glass">
+      <h2 style="text-align: center; margin-bottom: 30px; color: var(--green);">
+        Направления фитнеса в Lady Stretch
+      </h2>
+      
+      <div class="directions-grid">
+        <!-- Пилатес -->
+        <div class="direction-card glass">
+          <div class="direction-icon">🧘‍♀️</div>
+          <h3 class="direction-title">Пилатес</h3>
+          <p class="direction-subtitle">Укрепление глубоких мышц и осанки</p>
+          <p>Методика, которая развивает гибкость, силу и выносливость без ударной нагрузки на суставы.</p>
+          <ul class="benefits-list">
+            <li>Укрепляет мышцы кора и улучшает осанку</li>
+            <li>Повышает гибкость и мобильность суставов</li>
+            <li>Снимает напряжение в спине и шее</li>
+            <li>Помогает при реабилитации после травм</li>
+          </ul>
+        </div>
+
+        <!-- Стретчинг -->
+        <div class="direction-card glass">
+          <div class="direction-icon">🤸‍♀️</div>
+          <h3 class="direction-title">Стретчинг</h3>
+          <p class="direction-subtitle">Растяжка для гибкости и расслабления</p>
+          <p>Система упражнений для развития гибкости, эластичности мышц и снятия напряжения.</p>
+          <ul class="benefits-list">
+            <li>Увеличивает амплитуду движения суставов</li>
+            <li>Снимает мышечные зажимы и спазмы</li>
+            <li>Улучшает кровообращение</li>
+            <li>Помогает расслабиться после рабочего дня</li>
+          </ul>
+        </div>
+
+        <!-- Здоровая спина -->
+        <div class="direction-card glass">
+          <div class="direction-icon">🦴</div>
+          <h3 class="direction-title">Здоровая спина</h3>
+          <p class="direction-subtitle">Укрепление мышечного корсета</p>
+          <p>Специальные упражнения для профилактики и устранения проблем с позвоночником.</p>
+          <ul class="benefits-list">
+            <li>Укрепляет мышцы спины и пресса</li>
+            <li>Снимает боль в пояснице и шее</li>
+            <li>Улучшает осанку и походку</li>
+            <li>Профилактика остеохондроза</li>
+          </ul>
+        </div>
+
+        <!-- МФР -->
+        <div class="direction-card glass">
+          <div class="direction-icon">🎯</div>
+          <h3 class="direction-title">МФР (Миофасциальный релиз)</h3>
+          <p class="direction-subtitle">Работа с фасциями и триггерными точками</p>
+          <p>Техника самомассажа с помощью роллов для снятия мышечного напряжения и улучшения подвижности.</p>
+          <ul class="benefits-list">
+            <li>Снимает мышечные боли и напряжение</li>
+            <li>Улучшает эластичность тканей</li>
+            <li>Ускоряет восстановление после тренировок</li>
+            <li>Повышает эффективность растяжки</li>
+          </ul>
+        </div>
+
+        <!-- Sky stretching -->
+        <div class="direction-card glass">
+          <div class="direction-icon">☁️</div>
+          <h3 class="direction-title">Sky Stretching</h3>
+          <p class="direction-subtitle">Растяжка в гамаках</p>
+          <p>Уникальное направление, сочетающее элементы йоги, пилатеса и акробатики в воздушных гамаках.</p>
+          <ul class="benefits-list">
+            <li>Снимает нагрузку с позвоночника</li>
+            <li>Улучшает гибкость и координацию</li>
+            <li>Дает ощущение невесомости и расслабления</li>
+            <li>Тренирует вестибулярный аппарат</li>
+          </ul>
+        </div>
+
+        <!-- Подкачка с растяжкой -->
+        <div class="direction-card glass">
+          <div class="direction-icon">⚡</div>
+          <h3 class="direction-title">Подкачка с растяжкой</h3>
+          <p class="direction-subtitle">Сила + гибкость</p>
+          <p>Комбинированная тренировка, которая сочетает силовые упражнения с элементами растяжки.</p>
+          <ul class="benefits-list">
+            <li>Укрепляет мышцы без потери гибкости</li>
+            <li>Улучшает мышечный баланс</li>
+            <li>Повышает выносливость</li>
+            <li>Создает гармоничное телосложение</li>
+          </ul>
+        </div>
+
+        <!-- Ягодицы и пресс -->
+        <div class="direction-card glass">
+          <div class="direction-icon">🔥</div>
+          <h3 class="direction-title">Ягодицы и пресс</h3>
+          <p class="direction-subtitle">Локальная проработка</p>
+          <p>Интенсивная тренировка для целевой проработки мышц живота и ягодиц.</p>
+          <ul class="benefits-list">
+            <li>Укрепляет мышцы кора</li>
+            <li>Формирует красивый рельеф</li>
+            <li>Улучшает стабильность позвоночника</li>
+            <li>Профилактика проблем с тазобедренными суставами</li>
+          </ul>
+        </div>
+
+        <!-- Круговая тренировка -->
+        <div class="direction-card glass">
+          <div class="direction-icon">🔄</div>
+          <h3 class="direction-title">Круговая тренировка</h3>
+          <p class="direction-subtitle">Высокая интенсивность</p>
+          <p>Динамичная тренировка по круговой системе для сжигания калорий и развития выносливости.</p>
+          <ul class="benefits-list">
+            <li>Эффективное жиросжигание</li>
+            <li>Улучшает сердечно-сосудистую систему</li>
+            <li>Развивает общую выносливость</li>
+            <li>Экономит время (высокая эффективность)</li>
+          </ul>
+        </div>
+
+        <!-- Body sculpt -->
+        <div class="direction-card glass">
+          <div class="direction-icon">🗿</div>
+          <h3 class="direction-title">Body Sculpt</h3>
+          <p class="direction-subtitle">Формирование тела</p>
+          <p>Силовая тренировка с использованием дополнительного оборудования для создания красивого рельефа.</p>
+          <ul class="benefits-list">
+            <li>Формирует мышечный рельеф</li>
+            <li>Укрепляет костную ткань</li>
+            <li>Ускоряет метаболизм</li>
+            <li>Повышает силовые показатели</li>
+          </ul>
+        </div>
+
+        <!-- Табата -->
+        <div class="direction-card glass">
+          <div class="direction-icon">⏱️</div>
+          <h3 class="direction-title">Табата</h3>
+          <p class="direction-subtitle">Интервальная тренировка</p>
+          <p>Высокоинтенсивная интервальная тренировка по системе 20 секунд работы / 10 секунд отдыха.</p>
+          <ul class="benefits-list">
+            <li>Максимальное сжигание калорий за короткое время</li>
+            <li>Ускоряет метаболизм на 24-48 часов</li>
+            <li>Развивает анаэробную выносливость</li>
+            <li>Не требует оборудования</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ТЕСТ ПРОМО -->
+    <section class="glass test-promo">
+      <h3 style="color: var(--purple); text-align: center; margin-bottom: 20px;">
+        🧠 Проверьте свои знания о фитнесе!
+      </h3>
+      <p style="text-align: center; margin-bottom: 20px;">
+        Пройдите короткий тест из 6 вопросов и узнайте, насколько хорошо вы понимаете пользу фитнеса.
+      </p>
+      <p style="text-align: center; font-weight: 600; color: var(--purple);">
+        За прохождение теста — +1 к счётчику новогодней игры! 🎁
+      </p>
+      <div style="text-align: center; margin-top: 25px;">
+        <a href="fitness-test.html" class="test-link" style="min-width: 200px;">
+          Пройти фитнес-тест →
+        </a>
+      </div>
+    </section>
+
+    <!-- МОТИВАЦИОННОЕ ЗАКЛЮЧЕНИЕ -->
+    <section class="glass info">
+      <p style="font-size: 1.3rem; font-weight: 700; color: var(--green); text-align: center;">
+        Фитнес — это не наказание за лишние килограммы, а подарок себе!
+      </p>
+      <p style="text-align: center;">
+        Это возможность чувствовать себя энергичным, здоровым и уверенным каждый день. 
+        Это инвестиция, которая возвращается годами активной, полноценной жизни.
+      </p>
+      <p style="text-align: center; font-style: italic; color: var(--muted); margin-top: 20px;">
+        "Заботьтесь о своем теле. Это единственное место, где вам придется жить всегда." — Джим Рон
+      </p>
+    </section>
+
+    <!-- КНОПКА НАЗАД -->
+    <div style="text-align: center; margin: 40px 0;">
+      <a href="index.html" class="back-to-main">
+        ← Вернуться к выбору абонемента
+      </a>
+    </div>
+
+    <footer class="footer">
+      Lady Stretch — осознанный фитнес для здоровья на всю жизнь<br>
+      Мини-группы до 10 человек · Индивидуальный подход · Сертифицированные тренеры
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+    // Адаптируем игру для этой страницы
+    document.addEventListener('DOMContentLoaded', function() {
+      // Загружаем тему
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'light') {
+        document.body.classList.add('light-theme');
+      }
+      
+      // Кнопка темы
+      const themeToggle = document.getElementById('theme-toggle');
+      if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+          document.body.classList.toggle('light-theme');
+          localStorage.setItem('theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        });
+      }
+    });
+  </script>
+</body>
+</html>
