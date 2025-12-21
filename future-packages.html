@@ -22,41 +22,51 @@
   <style>
     /* Дополнительные стили для второй страницы */
     .future-banner {
-      background: linear-gradient(135deg, #4a6fa5, #6a93cb);
-      color: white;
-      padding: 20px;
+      background: linear-gradient(135deg, rgba(46, 204, 113, 0.15), rgba(39, 174, 96, 0.1));
+      color: var(--text);
+      padding: 25px;
       border-radius: 15px;
       margin-bottom: 30px;
       text-align: center;
+      border: 2px solid rgba(46, 204, 113, 0.3);
+    }
+    
+    .future-banner h2 {
+      color: var(--green);
+      margin-bottom: 15px;
     }
     
     .future-date {
       font-size: 1.3rem;
       font-weight: 700;
       margin-top: 10px;
-      color: #FFD700;
+      color: var(--green);
     }
     
     .back-to-main {
       display: inline-block;
       margin-top: 30px;
       padding: 12px 24px;
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.2);
+      background: var(--purple);
       color: white;
       text-decoration: none;
       border-radius: 10px;
+      font-weight: 600;
       transition: all 0.3s ease;
     }
     
+    body.light-theme .back-to-main {
+      background: #6c757d;
+    }
+    
     .back-to-main:hover {
-      background: rgba(255,255,255,0.2);
+      opacity: 0.9;
       transform: translateY(-2px);
     }
     
     .future-card {
       position: relative;
-      border: 2px solid #4a6fa5 !important;
+      border: 2px solid rgba(46, 204, 113, 0.3) !important;
     }
     
     .future-card::before {
@@ -65,7 +75,7 @@
       top: -10px;
       left: 50%;
       transform: translateX(-50%);
-      background: #4a6fa5;
+      background: var(--green);
       color: white;
       padding: 4px 12px;
       border-radius: 8px;
@@ -84,7 +94,7 @@
     
     .discount-badge {
       display: inline-block;
-      background: var(--red);
+      background: var(--green);
       color: white;
       padding: 3px 8px;
       border-radius: 6px;
@@ -103,6 +113,17 @@
       font-weight: 900;
       color: var(--red);
       margin: 15px 0;
+    }
+    
+    /* Адаптация для мобильных */
+    @media (max-width: 768px) {
+      .future-banner {
+        padding: 20px 15px;
+      }
+      
+      .future-date {
+        font-size: 1.1rem;
+      }
     }
   </style>
 </head>
@@ -131,8 +152,8 @@
     <!-- HERO -->
     <section class="hero glass">
       <h1 class="hero-title">
-        <span class="gold">Новые</span>
-        <span class="accent">абонементы</span> 🎯
+        <span class="green-text">Новые</span>
+        <span class="green-text">абонементы</span> 🎯
       </h1>
       <p class="hero-subtitle">
         С 1 января 2026 года
@@ -169,8 +190,8 @@
           Регулярные тренировки · 12 месяцев<br>
           + доступ к онлайн-курсу
         </p>
-        <p class="price">38 080 ₽</p>
-        <p class="desc" style="color: var(--red); font-weight: 600;">
+        <p class="price" style="color: var(--green);">38 080 ₽</p>
+        <p class="desc" style="color: var(--green); font-weight: 600;">
           Экономия: 6 720 ₽
         </p>
         <button class="select" onclick="showComingSoon()">Скоро доступно</button>
@@ -185,8 +206,8 @@
           Интенсивный старт · 6 месяцев<br>
           + курс детокс
         </p>
-        <p class="price">20 160 ₽</p>
-        <p class="desc" style="color: var(--red); font-weight: 600;">
+        <p class="price" style="color: var(--green);">20 160 ₽</p>
+        <p class="desc" style="color: var(--green); font-weight: 600;">
           Экономия: 2 240 ₽
         </p>
         <button class="select" onclick="showComingSoon()">Скоро доступно</button>
@@ -201,8 +222,8 @@
           Первые шаги · 3 месяца<br>
           + программа питания
         </p>
-        <p class="price">10 640 ₽</p>
-        <p class="desc" style="color: var(--red); font-weight: 600;">
+        <p class="price" style="color: var(--green);">10 640 ₽</p>
+        <p class="desc" style="color: var(--green); font-weight: 600;">
           Экономия: 560 ₽
         </p>
         <button class="select" onclick="showComingSoon()">Скоро доступно</button>
@@ -228,7 +249,7 @@
       </p>
       <p>
         Новые абонементы будут доступны с 1 января 2026 года.
-        Успейте забронировать по специальной цене - абонементы 2025 года!
+        Успейте забронировать по специальной цене — абонементы 2025 года!
       </p>
     </section>
 
@@ -252,11 +273,25 @@
       alert('Эти абонементы будут доступны с 1 января 2026 года!\n\nВы можете забронировать их заранее по специальной цене до 31 декабря 2025 года.');
     }
     
-    // Добавляем снег на эту страницу
+    // Адаптируем для этой страницы
     document.addEventListener('DOMContentLoaded', function() {
-      createSnow();
+      // Загружаем тему
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'light') {
+        document.body.classList.add('light-theme');
+      }
       
-      function createSnow() {
+      // Кнопка темы
+      const themeToggle = document.getElementById('theme-toggle');
+      if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+          document.body.classList.toggle('light-theme');
+          localStorage.setItem('theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        });
+      }
+      
+      // Простой снегопад
+      function createSimpleSnow() {
         const container = document.querySelector('.snow-container');
         if (!container) return;
         
@@ -272,11 +307,14 @@
             font-size: ${Math.random() * 1.2 + 0.8}em;
             animation: fall ${Math.random() * 8 + 8}s linear infinite;
             animation-delay: ${Math.random() * 5}s;
+            pointer-events: none;
           `;
           flake.innerHTML = ['❄', '•', '✻'][Math.floor(Math.random() * 3)];
           container.appendChild(flake);
         }
       }
+      
+      createSimpleSnow();
     });
   </script>
 </body>
