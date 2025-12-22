@@ -62,10 +62,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // Настраиваем обработчики событий
   setupEventListeners();
   
-  // Запускаем игровых персонажей
+  // Запускаем игровых персонажей (НЕЗАВИСИМО ОТ ТЕМЫ!)
   startCharacterGame();
   
-  // Показываем счетчик если уже ловили персонажей
+  // Показываем счетчик
   updateCharacterCounter();
   
   console.log('✅ Инициализация завершена. Игра активна:', isGameActive);
@@ -146,7 +146,7 @@ function updateTimer() {
 }
 
 // ======================
-// ДЕКОРАТИВНЫЙ СНЕГ (ПОСТОЯННО)
+// ДЕКОРАТИВНЫЙ СНЕГ (ПОСТОЯННО, В ОБЕИХ ТЕМАХ)
 // ======================
 function createDecorativeSnowflake() {
   const snowContainer = document.querySelector('.snow-container');
@@ -161,14 +161,20 @@ function createDecorativeSnowflake() {
   // Случайный размер
   const size = Math.random() * 1.2 + 0.8;
   snowflake.style.fontSize = size + 'em';
-  snowflake.style.color = 'rgba(180, 220, 255, 0.8)';
+  
+  // Цвет зависит от темы
+  if (isLightTheme) {
+    snowflake.style.color = 'rgba(74, 111, 165, 0.7)'; // Синий для светлой темы
+  } else {
+    snowflake.style.color = 'rgba(180, 220, 255, 0.8)'; // Светло-голубой для темной
+  }
   
   // Анимация
   const duration = Math.random() * 8 + 5; // 5-13 секунд
   snowflake.style.animation = `fall ${duration}s linear infinite`;
   snowflake.style.opacity = Math.random() * 0.6 + 0.4;
   
-  snowflake.innerHTML = ['❄', '•', '✻'][Math.floor(Math.random() * 3)];
+  snowflake.innerHTML = ['❄', '•', '✻', '❉', '❅'][Math.floor(Math.random() * 5)];
   
   snowContainer.appendChild(snowflake);
   
@@ -193,13 +199,12 @@ function startDecorativeSnow() {
 }
 
 // ======================
-// ИГРА: ПЕРСОНАЖИ
+// ИГРА: ПЕРСОНАЖИ (РАБОТАЕТ В ОБЕИХ ТЕМАХ!)
 // ======================
 
 // СОЗДАНИЕ ПЕРСОНАЖА
 function createGameCharacter() {
-  if (hasReward || isLightTheme || !isGameActive) {
-    console.log('Игра не активна:', {hasReward, isLightTheme, isGameActive});
+  if (hasReward || !isGameActive) {
     return;
   }
   
@@ -226,6 +231,11 @@ function createGameCharacter() {
   characterElement.style.fontSize = size + 'px';
   characterElement.style.zIndex = '1000';
   
+  // Цвет для светлой темы
+  if (isLightTheme) {
+    characterElement.style.filter = 'brightness(0.9)';
+  }
+  
   // Данные
   characterElement.dataset.emoji = characterEmoji;
   characterElement.dataset.name = characterName;
@@ -244,9 +254,6 @@ function createGameCharacter() {
   const snowContainer = document.querySelector('.snow-container');
   if (snowContainer) {
     snowContainer.appendChild(characterElement);
-    console.log(`Создан ${isClickable ? 'кликабельный' : 'некликабельный'} персонаж:`, characterName);
-  } else {
-    console.error('Контейнер для снега не найден!');
   }
   
   // Автоматическое удаление после падения
@@ -259,7 +266,7 @@ function createGameCharacter() {
 
 // ОБРАБОТКА КЛИКА ПО ПЕРСОНАЖУ
 function handleCharacterClick(event) {
-  if (hasReward || isLightTheme) return;
+  if (hasReward) return;
   
   const character = event.currentTarget;
   const isClickable = character.dataset.clickable === 'true';
@@ -331,14 +338,14 @@ function createClickEffect(x, y, text, color) {
   }, 1000);
 }
 
-// ЗАПУСК ИГРЫ С ПЕРСОНАЖАМИ
+// ЗАПУСК ИГРЫ С ПЕРСОНАЖАМИ (РАБОТАЕТ ВСЕГДА!)
 function startCharacterGame() {
-  if (hasReward || isLightTheme) {
-    console.log('Игра не может быть запущена:', {hasReward, isLightTheme});
+  if (hasReward) {
+    console.log('Игра не запущена: уже есть награда');
     return;
   }
   
-  console.log('🎮 Запуск новогодней игры с персонажами...');
+  console.log('🎮 Запуск новогодней игры...');
   isGameActive = true;
   
   // Первый персонаж через 2 секунды
@@ -348,7 +355,7 @@ function startCharacterGame() {
   
   // Затем каждые 3-5 секунд
   characterInterval = setInterval(() => {
-    if (isGameActive && !hasReward && !isLightTheme) {
+    if (isGameActive && !hasReward) {
       createGameCharacter();
     }
   }, 3000 + Math.random() * 2000); // 3-5 секунд
@@ -358,7 +365,7 @@ function startCharacterGame() {
 
 // ОСТАНОВКА ИГРЫ
 function stopCharacterGame() {
-  console.log('🛑 Остановка игры');
+  console.log('Остановка игры');
   isGameActive = false;
   
   if (characterInterval) {
@@ -435,7 +442,7 @@ function updateCharacterCounter() {
   const countSpan = document.getElementById('character-count');
   
   if (counter && countSpan) {
-    if (caughtCharacters > 0 && !isLightTheme) {
+    if (caughtCharacters > 0) {
       counter.style.display = 'block';
       countSpan.textContent = caughtCharacters;
       
@@ -444,17 +451,15 @@ function updateCharacterCounter() {
         counter.style.background = 'linear-gradient(to right, #4CAF50, #45a049)';
         counter.style.color = 'white';
       }
-    } else if (!isLightTheme && !hasReward) {
-      counter.style.display = 'block';
-      countSpan.textContent = caughtCharacters;
     } else {
-      counter.style.display = 'none';
+      counter.style.display = 'block';
+      countSpan.textContent = '0';
     }
   }
 }
 
 // ======================
-// ПЕРЕКЛЮЧЕНИЕ ТЕМЫ
+// ПЕРЕКЛЮЧЕНИЕ ТЕМЫ (ИГРА ПРОДОЛЖАЕТ РАБОТАТЬ!)
 // ======================
 function setupEventListeners() {
   // Кнопка темы
@@ -499,24 +504,22 @@ function toggleTheme() {
   document.body.classList.toggle('light-theme', isLightTheme);
   localStorage.setItem('theme', isLightTheme ? 'light' : 'dark');
   
-  // Очищаем снег и создаем заново
+  // Очищаем снег и создаем заново (с правильным цветом)
   clearInterval(decorativeSnowInterval);
   const snowContainer = document.querySelector('.snow-container');
   if (snowContainer) snowContainer.innerHTML = '';
   startDecorativeSnow();
   
-  // Управляем игрой
-  if (isLightTheme) {
-    stopCharacterGame();
-    console.log('☀️ Переключено на светлую тему, игра остановлена');
-  } else {
+  // Звезды только для темной темы
+  const starsContainer = document.querySelector('.stars-container');
+  if (starsContainer) starsContainer.innerHTML = '';
+  if (!isLightTheme) {
     createStars();
-    if (!hasReward) {
-      startCharacterGame();
-    }
-    console.log('🌙 Переключено на темную тему, игра запущена');
   }
   
+  console.log(isLightTheme ? '☀️ Светлая тема' : '🌙 Темная тема');
+  
+  // Игра ПРОДОЛЖАЕТ работать в обеих темах!
   updateCharacterCounter();
 }
 
@@ -580,9 +583,11 @@ function goBack() {
 }
 
 // ======================
-// ЗВЁЗДЫ
+// ЗВЁЗДЫ (ТОЛЬКО ДЛЯ ТЕМНОЙ ТЕМЫ)
 // ======================
 function createStars() {
+  if (isLightTheme) return;
+  
   const starsContainer = document.querySelector('.stars-container');
   if (!starsContainer) return;
   
@@ -644,29 +649,10 @@ document.addEventListener('visibilitychange', function() {
       clearInterval(characterInterval);
       characterInterval = null;
     }
-  } else if (!isLightTheme && !hasReward) {
+  } else if (!hasReward) {
     isGameActive = true;
     if (!characterInterval) {
       startCharacterGame();
     }
   }
 });
-
-// ======================
-// ФУНКЦИЯ ОТЛАДКИ - ДЛЯ ПРОВЕРКИ
-// ======================
-// Добавить эту кнопку в index.html временно для проверки:
-// <button onclick="testGame()" style="position:fixed; bottom:20px; left:20px; z-index:10000;">Тест игры</button>
-
-function testGame() {
-  console.log('=== ТЕСТ ИГРЫ ===');
-  console.log('isLightTheme:', isLightTheme);
-  console.log('hasReward:', hasReward);
-  console.log('isGameActive:', isGameActive);
-  console.log('characterInterval:', characterInterval);
-  console.log('Персонажей создано:', characterCounter);
-  console.log('Поймано персонажей:', caughtCharacters);
-  
-  // Создать тестового персонажа
-  createGameCharacter();
-}
