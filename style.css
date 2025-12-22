@@ -300,32 +300,6 @@ body.light-theme .moon-icon {
   opacity: 0;
 }
 
-/* Кнопка "Абонементы" в шапке */
-.packages-button {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 10px 24px;
-  background: var(--purple);
-  color: white;
-  border-radius: 12px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  font-size: 0.95rem;
-  white-space: nowrap;
-  z-index: 100;
-}
-
-body.light-theme .packages-button {
-  background: #6c757d;
-}
-
-.packages-button:hover {
-  opacity: 0.9;
-  transform: translateX(-50%) translateY(-2px);
-}
-
 /* Хедер с лого СЛЕВА и кнопкой Абонементов ПО ЦЕНТРУ */
 .header {
   position: fixed;
@@ -688,20 +662,23 @@ body.light-theme .future-link-button:hover {
     font-size: 1.3rem;
   }
   
-  /* Кнопка "Абонементы" в шапке */
-  .packages-button {
-    padding: 8px 16px;
-    font-size: 0.85rem;
-  }
-  
+  /* Адаптация шапки для мобильных */
   .header {
-    padding-bottom: 50px;
-    flex-direction: column;
-    gap: 10px;
+    padding: 16px 15px;
+    justify-content: flex-start;
   }
   
   .logo {
-    margin-bottom: 10px;
+    height: 40px;
+    width: 40px;
+  }
+  
+  .packages-button {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 140px;
   }
   
   /* Навигационные кнопки на других страницах */
@@ -753,10 +730,20 @@ body.light-theme .future-link-button:hover {
     font-size: 0.9rem;
   }
   
+  /* Адаптация шапки для очень маленьких экранов */
+  .header {
+    padding: 16px 10px;
+  }
+  
+  .logo {
+    height: 35px;
+    width: 35px;
+  }
+  
   .packages-button {
-    top: 70px;
-    padding: 6px 12px;
     font-size: 0.8rem;
+    padding: 6px 12px;
+    max-width: 120px;
   }
   
   .top-nav-button, .back-nav-button {
