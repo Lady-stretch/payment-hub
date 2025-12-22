@@ -161,7 +161,8 @@ function startDecorativeSnow() {
 // ИГРА: ПЕРСОНАЖИ
 // ======================
 function createGameCharacter() {
-  if (hasReward || !isGameActive) return;
+  // Исправление: Персонажи будут появляться ВСЕГДА для теста
+  if (!isGameActive) return;
   
   characterCounter++;
   const isClickable = (characterCounter % 3 === 0);
@@ -173,10 +174,10 @@ function createGameCharacter() {
   characterElement.className = `new-year-character ${isClickable ? 'clickable' : 'non-clickable'}`;
   characterElement.innerHTML = `${characterEmoji}<div class="character-tooltip">${isClickable ? 'Кликни!' : 'Мимо!'} ${characterName}</div>`;
   
-  // Позиция
   characterElement.style.left = Math.random() * 80 + 10 + 'vw';
   characterElement.style.fontSize = (Math.random() * 20 + 35) + 'px';
-  characterElement.style.zIndex = '1000';
+  characterElement.style.zIndex = '10000'; // Поверх всего
+  characterElement.style.position = 'fixed';
   
   if (isLightTheme) {
     characterElement.style.filter = 'brightness(0.9)';
@@ -186,29 +187,22 @@ function createGameCharacter() {
   characterElement.dataset.name = characterName;
   characterElement.dataset.clickable = isClickable.toString();
   
-  // Анимация
-  const duration = Math.random() * 10 + 15;
+  const duration = Math.random() * 5 + 10;
   characterElement.style.animation = `character-fall ${duration}s linear forwards`;
   
-  // События для ПК и мобильных
   characterElement.addEventListener('click', handleCharacterClick);
   characterElement.addEventListener('touchstart', function(event) {
     event.preventDefault();
     handleCharacterClick(event);
   }, { passive: false });
   
-  const snowContainer = document.querySelector('.snow-container');
-  if (snowContainer) {
-    snowContainer.appendChild(characterElement);
-    console.log(`🎯 Создан ${isClickable ? 'кликабельный' : 'некликабельный'} персонаж: ${characterName}`);
-  }
+  // Добавляем в body для обхода проблем с z-index
+  document.body.appendChild(characterElement);
   
   setTimeout(() => characterElement.remove(), duration * 1000);
 }
 
 function handleCharacterClick(event) {
-  if (hasReward) return;
-  
   const character = event.currentTarget;
   const isClickable = character.dataset.clickable === 'true';
   const name = character.dataset.name;
@@ -245,6 +239,7 @@ function createClickEffect(x, y, text, color) {
   effect.style.color = color;
   effect.style.fontWeight = 'bold';
   effect.style.zIndex = '10000';
+  effect.style.position = 'fixed';
   document.body.appendChild(effect);
   
   setTimeout(() => {
@@ -259,30 +254,19 @@ function createClickEffect(x, y, text, color) {
 // УПРАВЛЕНИЕ ИГРОЙ
 // ======================
 function startCharacterGame() {
-  console.log('🎮 Запуск игры...', {hasReward, isGameActive});
-  
-  if (hasReward) {
-    console.log('❌ Игра не запущена: уже есть награда');
-    return;
-  }
-  
+  console.log('🎮 Запуск игры...');
   isGameActive = true;
   if (characterInterval) clearInterval(characterInterval);
   
-  // Первый персонаж через 1 секунду
   setTimeout(() => {
-    console.log('🕐 Создаю первого персонажа...');
     createGameCharacter();
   }, 1000);
   
-  // Затем каждые 3-5 секунд
   characterInterval = setInterval(() => {
-    if (isGameActive && !hasReward) {
+    if (isGameActive) {
       createGameCharacter();
     }
   }, 3000 + Math.random() * 2000);
-  
-  console.log('✅ Игра запущена');
 }
 
 function stopCharacterGame() {
@@ -319,7 +303,6 @@ function checkForReward() {
     localStorage.setItem('characterReward', 'true');
     showFinalReward();
     updateCharacterCounter();
-    stopCharacterGame();
     console.log('🎁 Все подарки собраны!');
   }
 }
@@ -327,15 +310,15 @@ function checkForReward() {
 function showFinalReward() {
   const rewardElement = document.createElement('div');
   rewardElement.className = 'gift-notification';
+  rewardElement.style.cssText = "position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:white; color:black; padding:30px; border-radius:20px; z-index:20000; text-align:center; box-shadow:0 0 50px rgba(0,0,0,0.5);";
   rewardElement.innerHTML = `
     <h3>${FINAL_CONGRATS[0]}</h3>
     <p>${FINAL_CONGRATS[1]}</p>
     <p><small>${FINAL_CONGRATS[2]}</small></p>
     <p style="font-style: italic; margin: 20px 0;">${FINAL_CONGRATS[3]}</p>
-    <button onclick="this.parentElement.remove()">Забрать подарок!</button>
+    <button onclick="this.parentElement.remove()" style="padding:10px 20px; background:#2ecc71; color:white; border:none; border-radius:10px; cursor:pointer;">Забрать подарок!</button>
   `;
   document.body.appendChild(rewardElement);
-  setTimeout(() => rewardElement.remove(), 15000);
 }
 
 function updateCharacterCounter() {
@@ -354,7 +337,7 @@ function updateCharacterCounter() {
 }
 
 // ======================
-// ПЕРЕКЛЮЧЕНИЕ ТЕМЫ
+// ПЕРЕКЛЮЧЕНИЕ ТЕМЫ И ПАКЕТЫ
 // ======================
 function setupEventListeners() {
   const themeToggle = document.getElementById('theme-toggle');
@@ -364,23 +347,11 @@ function setupEventListeners() {
   
   document.querySelectorAll('.card').forEach(card => {
     card.addEventListener('click', function(e) {
-      if (e.target.classList.contains('select') || e.target === this || 
-          e.target.closest('.desc') || e.target.closest('.price')) {
+      if (e.target.classList.contains('select') || e.target === this || e.target.closest('.desc')) {
         selectPackage.call(this);
       }
     });
-    
-    const selectBtn = card.querySelector('.select');
-    if (selectBtn) {
-      selectBtn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        selectPackage.call(card);
-      });
-    }
   });
-  
-  const backButton = document.querySelector('.back-button');
-  if (backButton) backButton.addEventListener('click', goBack);
 }
 
 function toggleTheme() {
@@ -396,25 +367,9 @@ function toggleTheme() {
   const starsContainer = document.querySelector('.stars-container');
   if (starsContainer) starsContainer.innerHTML = '';
   if (!isLightTheme) createStars();
-  
-  console.log(isLightTheme ? '☀️ Светлая тема' : '🌙 Темная тема');
-  updateCharacterCounter();
 }
 
-// ======================
-// ЛОГИКА ПАКЕТОВ
-// ======================
 function selectPackage() {
-  document.querySelectorAll('.card').forEach(c => {
-    c.style.borderColor = '';
-    c.style.borderWidth = '';
-    c.style.borderStyle = '';
-  });
-  
-  this.style.borderColor = '#4a6fa5';
-  this.style.borderWidth = '2px';
-  this.style.borderStyle = 'solid';
-  
   const paymentSection = document.getElementById('payment');
   if (!paymentSection) return;
   
@@ -442,16 +397,11 @@ function openInstallment() {
 
 function goBack() {
   document.getElementById('payment').style.display = 'none';
-  document.querySelectorAll('.card').forEach(card => {
-    card.style.borderColor = '';
-    card.style.borderWidth = '';
-    card.style.borderStyle = '';
-  });
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // ======================
-// ЗВЁЗДЫ
+// ЗВЁЗДЫ И ЗАГРУЗКА
 // ======================
 function createStars() {
   if (isLightTheme) return;
@@ -465,77 +415,47 @@ function createStars() {
     star.style.left = Math.random() * 100 + 'vw';
     star.style.top = Math.random() * 100 + 'vh';
     star.style.width = star.style.height = (Math.random() * 2 + 1) + 'px';
-    star.style.opacity = Math.random() * 0.6 + 0.2;
     star.style.animationDuration = Math.random() * 4 + 2 + 's';
-    star.style.animationDelay = Math.random() * 3 + 's';
     starsContainer.appendChild(star);
   }
 }
 
-// ======================
-// ЗАГРУЗКА ДАННЫХ
-// ======================
 function loadSavedData() {
   const savedTheme = localStorage.getItem('theme');
   if (savedTheme === 'light') {
     isLightTheme = true;
     document.body.classList.add('light-theme');
   }
-  
   const savedCharacters = localStorage.getItem('charactersCaught');
   if (savedCharacters) caughtCharacters = parseInt(savedCharacters);
-  
   const savedReward = localStorage.getItem('characterReward');
   if (savedReward === 'true') hasReward = true;
-  
-  console.log('Загружены данные:', {isLightTheme, caughtCharacters, hasReward});
 }
 
 // ======================
-// СЛУЖЕБНЫЕ ФУНКЦИИ
+// СЛУЖЕБНЫЕ ФУНКЦИИ (ВИДИМОСТЬ И ЗАПУСК)
 // ======================
 window.addEventListener('resize', updateTimer);
 
 document.addEventListener('visibilitychange', function() {
   if (document.hidden) {
     isGameActive = false;
-    if (characterInterval) {
-      clearInterval(characterInterval);
-      characterInterval = null;
-    }
-  } else if (!hasReward) {
+    if (characterInterval) { clearInterval(characterInterval); characterInterval = null; }
+  } else {
     isGameActive = true;
     if (!characterInterval) startCharacterGame();
   }
 });
 
-// ======================
-// АВАРИЙНЫЙ ЗАПУСК
-// ======================
+// АВАРИЙНЫЕ ПРОВЕРКИ
 setTimeout(() => {
-  console.log('=== ПРОВЕРКА ИГРЫ ЧЕРЕЗ 5 СЕКУНД ===');
-  console.log('hasReward:', hasReward);
-  console.log('isGameActive:', isGameActive);
-  console.log('characterInterval:', characterInterval);
-  
-  if (!characterInterval && !hasReward) {
-    console.log('🔄 Перезапускаем игру вручную...');
-    startCharacterGame();
-  }
+  if (!characterInterval) startCharacterGame();
 }, 5000);
 
-// ======================
-// ТЕСТОВЫЕ ПЕРСОНАЖИ
-// ======================
 setTimeout(() => {
-  console.log('=== ЭКСТРЕННЫЙ ТЕСТ ИГРЫ ЧЕРЕЗ 10 СЕКУНД ===');
-  if (!hasReward && isGameActive) {
-    console.log('Создаю 3 тестовых персонажа...');
-    for (let i = 0; i < 3; i++) {
-      setTimeout(() => {
-        console.log(`Тестовый персонаж ${i+1}`);
-        createGameCharacter();
-      }, i * 1000);
+  if (isGameActive) {
+    for (let i = 0; i < 2; i++) {
+      setTimeout(createGameCharacter, i * 1000);
     }
   }
 }, 10000);
