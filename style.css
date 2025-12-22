@@ -79,7 +79,7 @@ body.light-theme {
   user-select: none;
 }
 
-/* Анимация падения персонажей - КРИТИЧЕСКИ ВАЖНО */
+/* Анимация падения персонажей */
 @keyframes character-fall {
   0% {
     transform: translateY(-50px) rotate(0deg);
@@ -97,16 +97,30 @@ body.light-theme {
   top: -50px;
   font-size: 40px;
   cursor: pointer;
-  z-index: 1000; /* Высокий z-index для кликабельности */
+  z-index: 1000;
   animation: character-fall linear forwards !important;
   transition: transform 0.3s ease;
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
   pointer-events: auto !important;
 }
 
-.new-year-character:hover {
+/* Кликабельные персонажи */
+.new-year-character.clickable:hover {
   transform: scale(1.3) !important;
   filter: drop-shadow(0 0 10px gold);
+  cursor: pointer;
+}
+
+/* Некликабельные персонажи */
+.new-year-character.non-clickable {
+  opacity: 0.7;
+  filter: grayscale(50%);
+  cursor: not-allowed;
+}
+
+.new-year-character.non-clickable:hover {
+  filter: grayscale(50%) brightness(1.2);
+  cursor: not-allowed;
 }
 
 .character-tooltip {
@@ -126,6 +140,17 @@ body.light-theme {
 
 .new-year-character:hover .character-tooltip {
   opacity: 1;
+}
+
+/* Эффект при клике */
+.click-effect {
+  position: fixed;
+  font-size: 20px;
+  pointer-events: none;
+  z-index: 10000;
+  transition: all 0.8s ease;
+  text-shadow: 0 0 5px rgba(0,0,0,0.5);
+  font-weight: bold;
 }
 
 /* Счетчик персонажей */
@@ -187,6 +212,12 @@ body.light-theme {
   }
 }
 
+@keyframes progressPulse {
+  0% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.05); }
+  100% { transform: translateX(-50%) scale(1); }
+}
+
 /* Звездное небо */
 .stars-container {
   position: fixed;
@@ -215,7 +246,7 @@ body.light-theme .stars-container {
 }
 
 /* ====================== */
-/* ВЕРХНЯЯ НАВИГАЦИЯ - ЕДИНЫЙ СТИЛЬ */
+/* ВЕРХНЯЯ НАВИГАЦИЯ */
 /* ====================== */
 
 /* Кнопка переключения темы */
@@ -269,30 +300,29 @@ body.light-theme .moon-icon {
   opacity: 0;
 }
 
-/* Единый стиль для ВСЕХ верхних навигационных кнопок */
-.top-nav-button {
-  position: fixed;
-  top: 20px;
+/* Кнопка "Абонементы" в шапке */
+.packages-button {
+  position: absolute;
   left: 50%;
   transform: translateX(-50%);
   padding: 10px 24px;
-  background: var(--glass);
-  border: 1px solid var(--border);
+  background: var(--purple);
+  color: white;
   border-radius: 12px;
-  color: var(--text);
   text-decoration: none;
   font-weight: 600;
-  z-index: 1003;
-  backdrop-filter: blur(10px);
   transition: all 0.3s ease;
   font-size: 0.95rem;
   white-space: nowrap;
-  text-align: center;
+  z-index: 100;
 }
 
-.top-nav-button:hover {
-  background: var(--purple);
-  color: white;
+body.light-theme .packages-button {
+  background: #6c757d;
+}
+
+.packages-button:hover {
+  opacity: 0.9;
   transform: translateX(-50%) translateY(-2px);
 }
 
@@ -326,6 +356,38 @@ body.light-theme .header {
 .logo:hover {
   transform: scale(1.05);
   border-color: var(--green);
+}
+
+/* Единый стиль для навигационных кнопок на других страницах */
+.top-nav-button, .back-nav-button {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 24px;
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+  z-index: 1003;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.top-nav-button:hover, .back-nav-button:hover {
+  background: var(--purple);
+  color: white;
+  transform: translateX(-50%) translateY(-2px);
+}
+
+body.light-theme .top-nav-button:hover,
+body.light-theme .back-nav-button:hover {
+  background: #6c757d;
 }
 
 /* ====================== */
@@ -581,6 +643,7 @@ body.light-theme .future-link-button:hover {
     max-width: 400px;
   }
   
+  /* Адаптация для мобильных */
   .character-counter {
     top: 80px;
     right: 10px;
@@ -596,8 +659,24 @@ body.light-theme .future-link-button:hover {
     font-size: 1.3rem;
   }
   
-  /* На мобильных навигационные кнопки адаптируются */
-  .top-nav-button {
+  /* Кнопка "Абонементы" в шапке */
+  .packages-button {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+  }
+  
+  .header {
+    padding-bottom: 50px;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .logo {
+    margin-bottom: 10px;
+  }
+  
+  /* Навигационные кнопки на других страницах */
+  .top-nav-button, .back-nav-button {
     top: 15px;
     padding: 8px 16px;
     font-size: 0.85rem;
@@ -645,8 +724,13 @@ body.light-theme .future-link-button:hover {
     font-size: 0.9rem;
   }
   
-  /* На очень маленьких экранах кнопки остаются видны */
-  .top-nav-button {
+  .packages-button {
+    top: 70px;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+  
+  .top-nav-button, .back-nav-button {
     top: 15px;
     padding: 8px 14px;
     font-size: 0.8rem;
@@ -919,28 +1003,6 @@ body.light-theme .back-button {
   line-height: 1.5;
 }
 
-/* Эффект при ловле персонажа */
-.catch-effect {
-  position: fixed;
-  pointer-events: none;
-  z-index: 10000;
-  font-size: 24px;
-  font-weight: bold;
-  animation: floatUp 1s ease-out forwards;
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
-}
-
-@keyframes floatUp {
-  0% {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(-100px) scale(0.5);
-    opacity: 0;
-  }
-}
-
 /* Уведомление о награде */
 .gift-notification {
   position: fixed;
@@ -994,61 +1056,4 @@ body.light-theme .gift-notification button {
 
 .gift-notification button:hover {
   opacity: 0.9;
-}
-
-/* Анимация для прогресс-уведомлений */
-@keyframes progressPulse {
-  0% { transform: translateX(-50%) scale(1); }
-  50% { transform: translateX(-50%) scale(1.05); }
-  100% { transform: translateX(-50%) scale(1); }
-}
-
-/* Для других страниц - класс back-nav-button теперь наследует top-nav-button */
-.back-nav-button {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 10px 24px;
-  background: var(--glass);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  color: var(--text);
-  text-decoration: none;
-  font-weight: 600;
-  z-index: 1003;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-  font-size: 0.95rem;
-  white-space: nowrap;
-  text-align: center;
-}
-
-.back-nav-button:hover {
-  background: var(--purple);
-  color: white;
-  transform: translateX(-50%) translateY(-2px);
-}
-
-body.light-theme .back-nav-button:hover {
-  background: #6c757d;
-}
-
-/* Кнопка отладки игры (временная) */
-.debug-button {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: rgba(0,0,0,0.8);
-  color: white;
-  padding: 10px 15px;
-  border-radius: 10px;
-  font-size: 12px;
-  z-index: 10000;
-  cursor: pointer;
-  border: 1px solid #666;
-}
-
-.debug-button:hover {
-  background: rgba(0,0,0,0.9);
 }
