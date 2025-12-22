@@ -6,11 +6,11 @@
   --text: #fff;
   --muted: rgba(255,255,255,0.65);
   --red: #b81e2b;
-  --purple: #8a2be2; /* Фиолетовый для кнопок в темной теме */
-  --green: #2ecc71; /* Зеленый для акцентов */
+  --purple: #8a2be2;
+  --green: #2ecc71;
   --green-gradient: linear-gradient(90deg, #2ecc71, #27ae60, #2ecc71);
   --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  --snow-color: #88c0ff; /* Снежный/ледяной цвет для таймера */
+  --snow-color: #88c0ff;
 }
 
 .light-theme {
@@ -21,7 +21,7 @@
   --text: #222;
   --muted: rgba(0, 0, 0, 0.65);
   --red: #b81e2b;
-  --purple: #6c757d; /* Серый для кнопок в светлой теме */
+  --purple: #6c757d;
   --green: #27ae60;
   --green-gradient: linear-gradient(90deg, #27ae60, #219653, #27ae60);
   --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
@@ -50,10 +50,9 @@ body.light-theme {
 }
 
 /* ====================== */
-/* ЭФФЕКТ СНЕГА И ИГРА */
+/* ИГРА: СНЕГ И ПЕРСОНАЖИ */
 /* ====================== */
 
-/* Контейнер для снега */
 .snow-container {
   position: fixed;
   top: 0;
@@ -66,14 +65,8 @@ body.light-theme {
 
 /* Анимация падения снежинок */
 @keyframes fall {
-  0% { 
-    transform: translateY(-10px) rotate(0deg); 
-    opacity: 1; 
-  }
-  100% { 
-    transform: translateY(100vh) rotate(360deg); 
-    opacity: 0.3; 
-  }
+  0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(360deg); opacity: 0.3; }
 }
 
 .snowflake {
@@ -81,12 +74,12 @@ body.light-theme {
   top: -10px;
   color: rgba(180, 220, 255, 0.8);
   font-size: 1em;
-  user-select: none;
   animation: fall linear infinite;
   pointer-events: none;
+  user-select: none;
 }
 
-/* Анимация для новогодних персонажей (КРИТИЧЕСКАЯ!) */
+/* Анимация падения персонажей - КРИТИЧЕСКИ ВАЖНО */
 @keyframes character-fall {
   0% {
     transform: translateY(-50px) rotate(0deg);
@@ -98,7 +91,7 @@ body.light-theme {
   }
 }
 
-/* Новогодние персонажи */
+/* Стили для кликабельных персонажей */
 .new-year-character {
   position: fixed;
   top: -50px;
@@ -108,11 +101,11 @@ body.light-theme {
   animation: character-fall linear forwards !important;
   transition: transform 0.3s ease;
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
-  pointer-events: auto;
+  pointer-events: auto !important;
 }
 
 .new-year-character:hover {
-  transform: scale(1.3);
+  transform: scale(1.3) !important;
   filter: drop-shadow(0 0 10px gold);
 }
 
@@ -217,13 +210,12 @@ body.light-theme {
   100% { opacity: 0.8; transform: scale(1.1); }
 }
 
-/* Скрываем звезды в светлой теме */
 body.light-theme .stars-container {
   display: none;
 }
 
 /* ====================== */
-/* ВЕРХНЯЯ НАВИГАЦИЯ */
+/* ВЕРХНЯЯ НАВИГАЦИЯ - ЕДИНЫЙ СТИЛЬ */
 /* ====================== */
 
 /* Кнопка переключения темы */
@@ -277,8 +269,8 @@ body.light-theme .moon-icon {
   opacity: 0;
 }
 
-/* Кнопка "Абонементы" - ПО ЦЕНТРУ ВВЕРХУ */
-.packages-nav-button {
+/* Единый стиль для ВСЕХ верхних навигационных кнопок */
+.top-nav-button {
   position: fixed;
   top: 20px;
   left: 50%;
@@ -295,9 +287,10 @@ body.light-theme .moon-icon {
   transition: all 0.3s ease;
   font-size: 0.95rem;
   white-space: nowrap;
+  text-align: center;
 }
 
-.packages-nav-button:hover {
+.top-nav-button:hover {
   background: var(--purple);
   color: white;
   transform: translateX(-50%) translateY(-2px);
@@ -603,13 +596,12 @@ body.light-theme .future-link-button:hover {
     font-size: 1.3rem;
   }
   
-  /* На мобильных кнопка "Абонементы" адаптируется */
-  .packages-nav-button {
+  /* На мобильных навигационные кнопки адаптируются */
+  .top-nav-button {
     top: 15px;
     padding: 8px 16px;
     font-size: 0.85rem;
     max-width: 140px;
-    text-align: center;
   }
   
   #countdown-timer {
@@ -653,16 +645,16 @@ body.light-theme .future-link-button:hover {
     font-size: 0.9rem;
   }
   
-  /* На очень маленьких экранах скрываем кнопку "Абонементы" */
-  .packages-nav-button {
-    display: none;
+  /* На очень маленьких экранах кнопки остаются видны */
+  .top-nav-button {
+    top: 15px;
+    padding: 8px 14px;
+    font-size: 0.8rem;
+    max-width: 130px;
   }
 }
 
-/* ====================== */
-/* КАРТОЧКИ АБОНЕМЕНТОВ */
-/* ====================== */
-
+/* Карточки */
 .card {
   position: relative;
   padding: 32px 28px;
@@ -758,10 +750,7 @@ body.light-theme .select {
   transform: scale(1.02);
 }
 
-/* ====================== */
-/* ОПЛАТА */
-/* ====================== */
-
+/* Оплата */
 .payment {
   text-align: center;
   max-width: 600px;
@@ -907,10 +896,6 @@ body.light-theme .back-button {
   text-decoration: underline;
 }
 
-/* ====================== */
-/* ВСПОМОГАТЕЛЬНЫЕ СТИЛИ */
-/* ====================== */
-
 /* tooltip */
 [data-tooltip] {
   position: relative;
@@ -1018,12 +1003,13 @@ body.light-theme .gift-notification button {
   100% { transform: translateX(-50%) scale(1); }
 }
 
-/* Кнопка назад в левом углу (для других страниц) */
+/* Для других страниц - класс back-nav-button теперь наследует top-nav-button */
 .back-nav-button {
   position: fixed;
   top: 20px;
-  left: 20px;
-  padding: 10px 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 24px;
   background: var(--glass);
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -1033,37 +1019,36 @@ body.light-theme .gift-notification button {
   z-index: 1003;
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  text-align: center;
 }
 
 .back-nav-button:hover {
   background: var(--purple);
   color: white;
-  transform: translateY(-2px);
+  transform: translateX(-50%) translateY(-2px);
 }
 
 body.light-theme .back-nav-button:hover {
   background: #6c757d;
 }
 
-/* ====================== */
-/* ИСПРАВЛЕНИЯ ДЛЯ ПЛОТНОСТИ СНЕГА */
-/* ====================== */
-
-/* Увеличиваем плотность снега на десктопе */
-@media (min-width: 769px) {
-  .snow-container {
-    /* Больше снежинок через JS */
-  }
+/* Кнопка отладки игры (временная) */
+.debug-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(0,0,0,0.8);
+  color: white;
+  padding: 10px 15px;
+  border-radius: 10px;
+  font-size: 12px;
+  z-index: 10000;
+  cursor: pointer;
+  border: 1px solid #666;
 }
 
-/* Убедимся, что снежинки не мешают кликам */
-.snowflake {
-  pointer-events: none !important;
-}
-
-/* Для мобильных - меньше снега */
-@media (max-width: 768px) {
-  .snow-container {
-    /* Меньше снежинок для производительности */
-  }
+.debug-button:hover {
+  background: rgba(0,0,0,0.9);
 }
