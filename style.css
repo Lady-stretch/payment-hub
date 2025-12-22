@@ -49,7 +49,11 @@ body.light-theme {
   background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
 }
 
-/* Эффект снега */
+/* ====================== */
+/* ЭФФЕКТ СНЕГА И ИГРА */
+/* ====================== */
+
+/* Контейнер для снега */
 .snow-container {
   position: fixed;
   top: 0;
@@ -60,21 +64,38 @@ body.light-theme {
   z-index: 1;
 }
 
+/* Анимация падения снежинок */
+@keyframes fall {
+  0% { 
+    transform: translateY(-10px) rotate(0deg); 
+    opacity: 1; 
+  }
+  100% { 
+    transform: translateY(100vh) rotate(360deg); 
+    opacity: 0.3; 
+  }
+}
+
 .snowflake {
   position: absolute;
   top: -10px;
   color: rgba(180, 220, 255, 0.8);
   font-size: 1em;
   user-select: none;
-  animation-name: fall;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
+  animation: fall linear infinite;
   pointer-events: none;
 }
 
-@keyframes fall {
-  0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
-  100% { transform: translateY(100vh) rotate(360deg); opacity: 0.3; }
+/* Анимация для новогодних персонажей (КРИТИЧЕСКАЯ!) */
+@keyframes character-fall {
+  0% {
+    transform: translateY(-50px) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(120vh) rotate(360deg);
+    opacity: 0;
+  }
 }
 
 /* Новогодние персонажи */
@@ -83,26 +104,16 @@ body.light-theme {
   top: -50px;
   font-size: 40px;
   cursor: pointer;
-  z-index: 100;
-  animation: character-fall linear forwards;
+  z-index: 1000; /* Высокий z-index для кликабельности */
+  animation: character-fall linear forwards !important;
   transition: transform 0.3s ease;
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
   pointer-events: auto;
 }
 
 .new-year-character:hover {
-  transform: scale(1.2);
-}
-
-@keyframes character-fall {
-  0% {
-    transform: translateY(0) rotate(0deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(110vh) rotate(360deg);
-    opacity: 0;
-  }
+  transform: scale(1.3);
+  filter: drop-shadow(0 0 10px gold);
 }
 
 .character-tooltip {
@@ -135,7 +146,7 @@ body.light-theme {
   border-radius: 20px;
   font-size: 0.9rem;
   font-weight: 600;
-  z-index: 1000;
+  z-index: 1001;
   backdrop-filter: blur(10px);
   box-shadow: var(--shadow);
   text-align: center;
@@ -162,7 +173,7 @@ body.light-theme {
   padding: 15px 25px;
   border-radius: 15px;
   font-weight: 600;
-  z-index: 1001;
+  z-index: 1002;
   backdrop-filter: blur(10px);
   box-shadow: var(--shadow);
   text-align: center;
@@ -211,6 +222,10 @@ body.light-theme .stars-container {
   display: none;
 }
 
+/* ====================== */
+/* ВЕРХНЯЯ НАВИГАЦИЯ */
+/* ====================== */
+
 /* Кнопка переключения темы */
 .theme-toggle {
   position: fixed;
@@ -222,7 +237,7 @@ body.light-theme .stars-container {
   background: var(--glass);
   border: 1px solid var(--border);
   cursor: pointer;
-  z-index: 1000;
+  z-index: 1003;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -262,28 +277,30 @@ body.light-theme .moon-icon {
   opacity: 0;
 }
 
-/* Кнопка навигации "Абонементы" */
-.nav-button {
+/* Кнопка "Абонементы" - ПО ЦЕНТРУ ВВЕРХУ */
+.packages-nav-button {
   position: fixed;
   top: 20px;
-  left: 90px;
-  padding: 10px 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 24px;
   background: var(--glass);
   border: 1px solid var(--border);
   border-radius: 12px;
   color: var(--text);
   text-decoration: none;
   font-weight: 600;
-  z-index: 1000;
+  z-index: 1003;
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  white-space: nowrap;
 }
 
-.nav-button:hover {
+.packages-nav-button:hover {
   background: var(--purple);
   color: white;
-  transform: translateY(-2px);
+  transform: translateX(-50%) translateY(-2px);
 }
 
 /* Хедер с лого слева */
@@ -317,6 +334,10 @@ body.light-theme .header {
   transform: scale(1.05);
   border-color: var(--green);
 }
+
+/* ====================== */
+/* ОСНОВНОЙ КОНТЕНТ */
+/* ====================== */
 
 .wrapper {
   max-width: 1100px;
@@ -582,10 +603,13 @@ body.light-theme .future-link-button:hover {
     font-size: 1.3rem;
   }
   
-  .nav-button {
-    left: 70px;
-    padding: 8px 15px;
-    font-size: 0.8rem;
+  /* На мобильных кнопка "Абонементы" адаптируется */
+  .packages-nav-button {
+    top: 15px;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    max-width: 140px;
+    text-align: center;
   }
   
   #countdown-timer {
@@ -628,9 +652,17 @@ body.light-theme .future-link-button:hover {
   .timer-caption {
     font-size: 0.9rem;
   }
+  
+  /* На очень маленьких экранах скрываем кнопку "Абонементы" */
+  .packages-nav-button {
+    display: none;
+  }
 }
 
-/* Карточки */
+/* ====================== */
+/* КАРТОЧКИ АБОНЕМЕНТОВ */
+/* ====================== */
+
 .card {
   position: relative;
   padding: 32px 28px;
@@ -726,7 +758,10 @@ body.light-theme .select {
   transform: scale(1.02);
 }
 
-/* Оплата */
+/* ====================== */
+/* ОПЛАТА */
+/* ====================== */
+
 .payment {
   text-align: center;
   max-width: 600px;
@@ -872,6 +907,10 @@ body.light-theme .back-button {
   text-decoration: underline;
 }
 
+/* ====================== */
+/* ВСПОМОГАТЕЛЬНЫЕ СТИЛИ */
+/* ====================== */
+
 /* tooltip */
 [data-tooltip] {
   position: relative;
@@ -979,7 +1018,7 @@ body.light-theme .gift-notification button {
   100% { transform: translateX(-50%) scale(1); }
 }
 
-/* Кнопка назад в левом углу (для future-packages.html) */
+/* Кнопка назад в левом углу (для других страниц) */
 .back-nav-button {
   position: fixed;
   top: 20px;
@@ -991,7 +1030,7 @@ body.light-theme .gift-notification button {
   color: var(--text);
   text-decoration: none;
   font-weight: 600;
-  z-index: 1001;
+  z-index: 1003;
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
 }
@@ -1004,4 +1043,27 @@ body.light-theme .gift-notification button {
 
 body.light-theme .back-nav-button:hover {
   background: #6c757d;
+}
+
+/* ====================== */
+/* ИСПРАВЛЕНИЯ ДЛЯ ПЛОТНОСТИ СНЕГА */
+/* ====================== */
+
+/* Увеличиваем плотность снега на десктопе */
+@media (min-width: 769px) {
+  .snow-container {
+    /* Больше снежинок через JS */
+  }
+}
+
+/* Убедимся, что снежинки не мешают кликам */
+.snowflake {
+  pointer-events: none !important;
+}
+
+/* Для мобильных - меньше снега */
+@media (max-width: 768px) {
+  .snow-container {
+    /* Меньше снежинок для производительности */
+  }
 }
