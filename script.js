@@ -8,16 +8,23 @@ let hasReward = false;
 let isLightTheme = false;
 let decorativeSnowInterval;
 let characterInterval;
-let isGameActive = true; // Сразу активируем игру
+let isGameActive = true;
+let characterCounter = 0; // Счетчик всех персонажей
 
-// Кликабельные персонажи (5 видов)
+// Кликабельные персонажи (каждый 3-й будет кликабельным)
 const CLICKABLE_CHARACTERS = ['⛄', '🎅', '🎁', '🦌', '🌟'];
+const NON_CLICKABLE_CHARACTERS = ['❄', '✨', '🥶', '🧊', '🍂']; // Некликабельные
 const CHARACTER_NAMES = {
   '⛄': 'Снеговик',
   '🎅': 'Дед Мороз', 
   '🎁': 'Подарок',
   '🦌': 'Олень',
-  '🌟': 'Звезда'
+  '🌟': 'Звезда',
+  '❄': 'Снежинка',
+  '✨': 'Искорка',
+  '🥶': 'Замёрзший',
+  '🧊': 'Лёд',
+  '🍂': 'Осенний лист'
 };
 
 // Прогресс-сообщения
@@ -46,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Создаем эффекты
   createStars();
-  startDecorativeSnow(); // Больше снега!
+  startDecorativeSnow(); // Постоянный снег
   
   // Запускаем таймер
   updateTimer();
@@ -64,9 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
   updateCharacterCounter();
   
   console.log('✅ Инициализация завершена. Игра активна:', isGameActive);
-  
-  // Добавляем кнопку отладки (только для тестирования)
-  addDebugButton();
 });
 
 // ======================
@@ -144,102 +148,104 @@ function updateTimer() {
 }
 
 // ======================
-// ДЕКОРАТИВНЫЙ СНЕГ (БОЛЬШЕ СНЕГА!)
+// ДЕКОРАТИВНЫЙ СНЕГ (ПОСТОЯННО!)
 // ======================
 function createDecorativeSnowflake() {
   if (!document.querySelector('.snow-container')) return;
   
   const snowContainer = document.querySelector('.snow-container');
-  const snowflake = document.createElement('div');
   
-  snowflake.innerHTML = ['❄', '•', '✻', '❉', '❅'][Math.floor(Math.random() * 5)];
-  
-  // Позиция
-  snowflake.style.position = 'absolute';
-  snowflake.style.top = '-10px';
-  snowflake.style.left = Math.random() * 100 + 'vw';
-  
-  // Случайный размер
-  const size = Math.random() * 1.5 + 0.8;
-  snowflake.style.fontSize = size + 'em';
-  snowflake.style.color = 'rgba(180, 220, 255, 0.9)';
-  snowflake.style.zIndex = '1';
-  snowflake.style.pointerEvents = 'none';
-  snowflake.style.userSelect = 'none';
-  snowflake.style.textShadow = '0 0 5px rgba(255, 255, 255, 0.5)';
-  
-  // Анимация
-  const duration = Math.random() * 10 + 8; // 8-18 секунд
-  snowflake.style.animation = `fall ${duration}s linear infinite`;
-  snowflake.style.opacity = Math.random() * 0.6 + 0.4;
-  
-  snowContainer.appendChild(snowflake);
-  
-  // Автоудаление
-  setTimeout(() => {
-    if (snowflake.parentNode) {
-      snowflake.remove();
-    }
-  }, duration * 1000);
+  // Создаем 2-3 снежинки за раз для более плотного снега
+  for (let i = 0; i < Math.floor(Math.random() * 2) + 1; i++) {
+    const snowflake = document.createElement('div');
+    snowflake.className = 'snowflake';
+    
+    // Позиция
+    snowflake.style.left = Math.random() * 100 + 'vw';
+    
+    // Случайный размер
+    const size = Math.random() * 1.5 + 0.8;
+    snowflake.style.fontSize = size + 'em';
+    snowflake.style.color = 'rgba(180, 220, 255, 0.9)';
+    
+    // Анимация
+    const duration = Math.random() * 8 + 5; // 5-13 секунд
+    snowflake.style.animation = `fall ${duration}s linear infinite`;
+    snowflake.style.animationDelay = Math.random() * 2 + 's';
+    snowflake.style.opacity = Math.random() * 0.7 + 0.3;
+    
+    snowflake.innerHTML = ['❄', '•', '✻', '❉', '❅'][Math.floor(Math.random() * 5)];
+    
+    snowContainer.appendChild(snowflake);
+    
+    // Автоудаление
+    setTimeout(() => {
+      if (snowflake.parentNode) {
+        snowflake.remove();
+      }
+    }, duration * 1000);
+  }
 }
 
 function startDecorativeSnow() {
   // Создаем много снежинок сразу
-  for (let i = 0; i < 40; i++) { // Было 20, теперь 40
-    setTimeout(() => createDecorativeSnowflake(), i * 100);
+  for (let i = 0; i < 60; i++) {
+    setTimeout(() => createDecorativeSnowflake(), i * 50);
   }
   
-  // Продолжаем создавать чаще
+  // Продолжаем создавать постоянно
   decorativeSnowInterval = setInterval(() => {
     if (document.hasFocus()) {
       createDecorativeSnowflake();
-      // Создаем 2-3 снежинки за раз
-      if (Math.random() > 0.7) createDecorativeSnowflake();
     }
-  }, 1500); // Было 2000, теперь 1500 мс
+  }, 500); // Каждые 500 мс = постоянно
 }
 
 // ======================
-// ИГРОВЫЕ ПЕРСОНАЖИ (ИСПРАВЛЕНО!)
+// ИГРА: СОЗДАНИЕ ПЕРСОНАЖЕЙ
 // ======================
-function createClickableCharacter() {
-  if (hasReward || isLightTheme || !isGameActive) {
-    console.log('Игра не активна:', {hasReward, isLightTheme, isGameActive});
-    return;
-  }
+function createGameCharacter() {
+  if (hasReward || isLightTheme || !isGameActive) return;
   
-  const characterEmoji = CLICKABLE_CHARACTERS[Math.floor(Math.random() * CLICKABLE_CHARACTERS.length)];
+  characterCounter++;
+  const isClickable = (characterCounter % 3 === 0); // Каждый 3-й кликабельный
+  
+  // Выбираем эмодзи
+  const characterArray = isClickable ? CLICKABLE_CHARACTERS : NON_CLICKABLE_CHARACTERS;
+  const characterEmoji = characterArray[Math.floor(Math.random() * characterArray.length)];
   const characterName = CHARACTER_NAMES[characterEmoji];
   
   const characterElement = document.createElement('div');
-  characterElement.className = 'new-year-character';
+  characterElement.className = `new-year-character ${isClickable ? 'clickable' : 'non-clickable'}`;
   characterElement.innerHTML = `
     ${characterEmoji}
-    <div class="character-tooltip">Кликни! ${characterName}</div>
+    <div class="character-tooltip">${isClickable ? 'Кликни!' : 'Мимо!'} ${characterName}</div>
   `;
   
-  // Позиция (не слишком близко к краям)
+  // Позиция
   characterElement.style.left = Math.random() * 80 + 10 + 'vw';
   
-  // Случайный размер
+  // Размер
   characterElement.style.fontSize = (Math.random() * 20 + 35) + 'px';
   
-  // Данные персонажа
+  // Данные
   characterElement.dataset.emoji = characterEmoji;
   characterElement.dataset.name = characterName;
+  characterElement.dataset.clickable = isClickable.toString();
   
   // Анимация падения
   const duration = Math.random() * 10 + 15; // 15-25 секунд
   characterElement.style.animation = `character-fall ${duration}s linear forwards`;
   
-  // Клик по персонажу
-  characterElement.addEventListener('click', catchCharacter);
+  // Обработчик клика
+  characterElement.addEventListener('click', function(event) {
+    handleCharacterClick(event);
+  });
   
   // Добавляем в контейнер снега
   const snowContainer = document.querySelector('.snow-container');
   if (snowContainer) {
     snowContainer.appendChild(characterElement);
-    console.log('Персонаж создан:', characterName);
   } else {
     console.error('Контейнер для снега не найден!');
   }
@@ -252,26 +258,96 @@ function createClickableCharacter() {
   }, duration * 1000);
 }
 
+function handleCharacterClick(event) {
+  if (hasReward || isLightTheme) return;
+  
+  const character = event.currentTarget;
+  const isClickable = character.dataset.clickable === 'true';
+  const emoji = character.dataset.emoji;
+  const name = character.dataset.name;
+  
+  // Координаты для эффекта
+  const rect = character.getBoundingClientRect();
+  const x = rect.left + rect.width / 2;
+  const y = rect.top + rect.height / 2;
+  
+  // Анимация исчезновения
+  character.style.transform = 'scale(0)';
+  character.style.transition = 'transform 0.3s ease';
+  
+  if (isClickable) {
+    // КЛИКАБЕЛЬНЫЙ: поздравление
+    createClickEffect(x, y, '🎉 С Новым Годом!', '#FFD700');
+    
+    // Увеличиваем счет
+    caughtCharacters++;
+    localStorage.setItem('charactersCaught', caughtCharacters.toString());
+    
+    // Обновляем счетчик
+    updateCharacterCounter();
+    
+    // Проверяем прогресс
+    checkProgress();
+    checkForReward();
+    
+    console.log(`✅ Пойман кликабельный персонаж! Всего: ${caughtCharacters}`);
+  } else {
+    // НЕКЛИКАБЕЛЬНЫЙ: промах
+    createClickEffect(x, y, '❌ Промах!', '#ff4444');
+    console.log('❌ Промах по некликабельному персонажу');
+  }
+  
+  // Удаляем персонаж
+  setTimeout(() => {
+    if (character.parentNode) {
+      character.remove();
+    }
+  }, 300);
+}
+
+// ЭФФЕКТ ПРИ КЛИКЕ
+function createClickEffect(x, y, text, color) {
+  const effect = document.createElement('div');
+  effect.className = 'click-effect';
+  effect.textContent = text;
+  effect.style.left = (x - 50) + 'px';
+  effect.style.top = (y - 20) + 'px';
+  effect.style.color = color;
+  effect.style.fontWeight = 'bold';
+  effect.style.zIndex = '10000';
+  
+  document.body.appendChild(effect);
+  
+  // Анимация
+  setTimeout(() => {
+    effect.style.transform = 'translateY(-30px)';
+    effect.style.opacity = '0';
+  }, 100);
+  
+  setTimeout(() => effect.remove(), 1000);
+}
+
+// ЗАПУСК ИГРЫ С ПЕРСОНАЖАМИ
 function startCharacterGame() {
   if (hasReward || isLightTheme) {
     console.log('Игра не может быть запущена:', {hasReward, isLightTheme});
     return;
   }
   
-  console.log('🎮 Запуск новогодней игры...');
+  console.log('🎮 Запуск игры с персонажами...');
   isGameActive = true;
   
   // Первый персонаж через 2 секунды
   setTimeout(() => {
-    createClickableCharacter();
+    createGameCharacter();
   }, 2000);
   
-  // Затем каждые 12-18 секунд
+  // Затем каждые 3-5 секунд
   characterInterval = setInterval(() => {
     if (isGameActive && !hasReward && !isLightTheme && document.hasFocus()) {
-      createClickableCharacter();
+      createGameCharacter();
     }
-  }, 12000 + Math.random() * 6000);
+  }, 3000 + Math.random() * 2000); // 3-5 секунд
   
   console.log('Игра запущена, интервал установлен');
 }
@@ -288,63 +364,6 @@ function stopCharacterGame() {
   document.querySelectorAll('.new-year-character').forEach(char => {
     char.remove();
   });
-}
-
-function catchCharacter(event) {
-  if (hasReward || isLightTheme) return;
-  
-  const character = event.currentTarget;
-  const emoji = character.dataset.emoji;
-  const name = character.dataset.name;
-  
-  // Координаты для анимации
-  const rect = character.getBoundingClientRect();
-  const x = rect.left + rect.width / 2;
-  const y = rect.top + rect.height / 2;
-  
-  // Анимация исчезновения
-  character.style.transform = 'scale(0)';
-  character.style.transition = 'transform 0.3s ease';
-  
-  // Увеличиваем счет
-  caughtCharacters++;
-  localStorage.setItem('charactersCaught', caughtCharacters.toString());
-  
-  // Создаем эффект "+1"
-  createCatchEffect(x, y, emoji);
-  
-  // Обновляем счетчик
-  updateCharacterCounter();
-  
-  // Проверяем прогресс
-  checkProgress();
-  
-  // Проверяем награду
-  checkForReward();
-  
-  // Удаляем персонаж
-  setTimeout(() => {
-    if (character.parentNode) {
-      character.remove();
-    }
-  }, 300);
-  
-  console.log(`🎯 Пойман ${name}! Всего: ${caughtCharacters}`);
-}
-
-function createCatchEffect(x, y, emoji) {
-  const effect = document.createElement('div');
-  effect.className = 'catch-effect';
-  effect.innerHTML = `${emoji} +1`;
-  effect.style.left = (x - 20) + 'px';
-  effect.style.top = (y - 20) + 'px';
-  effect.style.color = '#FFD700';
-  effect.style.fontWeight = 'bold';
-  effect.style.zIndex = '10000';
-  
-  document.body.appendChild(effect);
-  
-  setTimeout(() => effect.remove(), 1000);
 }
 
 // ======================
@@ -562,7 +581,7 @@ function createStars() {
   
   starsContainer.innerHTML = '';
   
-  for (let i = 0; i < 100; i++) { // Больше звёзд
+  for (let i = 0; i < 100; i++) {
     const star = document.createElement('div');
     star.className = 'star';
     
@@ -627,45 +646,13 @@ document.addEventListener('visibilitychange', function() {
 });
 
 // ======================
-// ФУНКЦИИ ОТЛАДКИ (ТЕСТИРОВАНИЕ)
-// ======================
-function addDebugButton() {
-  // Создаем кнопку отладки (только в development)
-  if (window.location.hostname === 'localhost' || window.location.hostname.includes('github.io')) {
-    const debugDiv = document.createElement('div');
-    debugDiv.className = 'debug-button';
-    debugDiv.innerHTML = `
-      <div style="margin-bottom: 5px;">
-        <button onclick="createClickableCharacter()" style="background: red; color: white; padding: 5px; margin: 2px;">+ Персонаж</button>
-        <button onclick="createDecorativeSnowflake()" style="background: blue; color: white; padding: 5px; margin: 2px;">+ Снег</button>
-      </div>
-      <div style="font-size: 10px;">
-        Персонажей: <span id="debug-chars">0</span><br>
-        Снежинок: <span id="debug-snow">0</span><br>
-        isGameActive: <span id="debug-active">${isGameActive}</span>
-      </div>
-    `;
-    
-    document.body.appendChild(debugDiv);
-    
-    // Обновляем информацию отладки
-    setInterval(() => {
-      const chars = document.querySelectorAll('.new-year-character').length;
-      const snow = document.querySelectorAll('.snowflake').length;
-      document.getElementById('debug-chars').textContent = chars;
-      document.getElementById('debug-snow').textContent = snow;
-      document.getElementById('debug-active').textContent = isGameActive;
-    }, 1000);
-  }
-}
-
-// ======================
-// СБРОС ПРОГРЕССА (для тестирования)
+// СБРОС ПРОГРЕССА (для тестирования - скрыто)
 // ======================
 function resetGameProgress() {
   caughtCharacters = 0;
   hasReward = false;
   isGameActive = true;
+  characterCounter = 0;
   
   localStorage.removeItem('charactersCaught');
   localStorage.removeItem('characterReward');
@@ -680,5 +667,4 @@ function resetGameProgress() {
   }
   
   console.log('Прогресс игры сброшен');
-  alert('Прогресс игры сброшен! Начинаем заново.');
 }
