@@ -1,20 +1,26 @@
 // ======================
-// 1. НАСТРОЙКИ И ДАННЫЕ
+// 1. КОНФИГУРАЦИЯ И ПАМЯТЬ
 // ======================
-let caughtCharacters = 0;
 const CHARACTERS_PER_LEVEL = 10;
 const BONUS_STEP = 200;
 const MAX_BONUS = 1000;
-let currentBonus = 0;
-let isLightTheme = false;
+
+// Список праздничных пожеланий
+const WISHES = [
+    "Удачи!", "Красоты!", "Силы!", "Счастья!", 
+    "Здоровья!", "Успеха!", "Драйва!", "Энергии!",
+    "Побед!", "Радости!", "Спорта!", "Гибкости!"
+];
+
+let caughtCharacters = parseInt(localStorage.getItem('caughtCharacters')) || 0;
+let currentBonus = parseInt(localStorage.getItem('totalBonus')) || 0;
+let isLightTheme = localStorage.getItem('theme') === 'light';
 let currentInstallmentLink = "";
 
-// База ссылок для рассрочки (ОТП Банк)
+// Ссылки ОТП Банка (только для больших тарифов)
 const INSTALLMENT_LINKS = {
     "12": "https://ecom.otpbank.ru/smart-form?config=42943585-8511-400a-a027-49732f1d8fb2", // 96 зан
-    "10": "https://ecom.otpbank.ru/smart-form?config=e0d01fc2-5884-4fb1-b769-c7955a2d3b69", // 64 зан
-    "3_32": "https://ecom.otpbank.ru/smart-form?config=737d0db2-fbf7-4b88-b101-0b563090abaf", // 32 зан
-    "3_16": "https://ecom.otpbank.ru/smart-form?config=cc7cc8cc-603e-434a-9e44-402e68a41b6f"  // 16 зан
+    "10": "https://ecom.otpbank.ru/smart-form?config=e0d01fc2-5884-4fb1-b769-c7955a2d3b69"  // 64 зан
 };
 
 // ======================
@@ -22,33 +28,22 @@ const INSTALLMENT_LINKS = {
 // ======================
 document.addEventListener('DOMContentLoaded', () => {
     checkExpiration();
-    loadSavedData();
-    
-    // Принудительно создаем контейнеры, если их нет
-    if (!document.querySelector('.stars-container')) createContainer('stars-container');
-    if (!document.querySelector('.snow-container')) createContainer('snow-container');
-
+    applyTheme();
     initStars();
     initSnow();
     initTimer();
     setupShopLogic();
     startCharacterGame();
-    updateUI();
-    fixMobileButton(); // Адаптация кнопки "Назад"
+    updateUI(); // Подтягиваем данные из памяти сразу
 });
 
 // ======================
-// 3. МАГАЗИН И РАССРОЧКА
+// 3. МАГАЗИН И ЛОГИКА ТАРИФОВ
 // ======================
 function setupShopLogic() {
     const themeBtn = document.getElementById('theme-toggle');
     if (themeBtn) {
-        themeBtn.onclick = () => {
-            isLightTheme = !isLightTheme;
-            document.body.classList.toggle('light-theme', isLightTheme);
-            localStorage.setItem('theme', isLightTheme ? 'light' : 'dark');
-            initStars(); // Перерисовываем звезды (скрываем их на светлой теме)
-        };
+        themeBtn.onclick = toggleTheme;
     }
 
     document.querySelectorAll('.card').forEach(card => {
@@ -60,22 +55,28 @@ function setupShopLogic() {
                 paymentSection.style.display = 'block';
                 const price = this.getAttribute('data-price');
                 const installments = this.getAttribute('data-installments');
-                const lessons = this.innerText.toLowerCase(); // Проверяем кол-во занятий
-
-                // Умный подбор ссылки
-                if (installments === "12") currentInstallmentLink = INSTALLMENT_LINKS["12"];
-                else if (installments === "10") currentInstallmentLink = INSTALLMENT_LINKS["10"];
-                else if (installments === "3") {
-                    currentInstallmentLink = lessons.includes("32") ? INSTALLMENT_LINKS["3_32"] : INSTALLMENT_LINKS["3_16"];
-                }
+                const title = this.innerText; // Название тарифа
 
                 document.getElementById('selected-price').textContent = Number(price).toLocaleString('ru-RU');
+                
                 const instBtn = document.getElementById('installment-btn');
-                if (instBtn && installments !== 'Нет') {
-                    document.getElementById('months').textContent = installments + ' мес';
-                    instBtn.style.display = 'block';
-                } else if (instBtn) {
-                    instBtn.style.display = 'none';
+                const instNote = document.getElementById('installment-note') || createInstallmentNote();
+
+                // ЛОГИКА ОГРАНИЧЕНИЯ РАССРОЧКИ (16 и 32 занятия)
+                if (title.includes("16") || title.includes("32")) {
+                    if (instBtn) instBtn.style.display = 'none';
+                    instNote.style.display = 'block';
+                    instNote.innerHTML = "💡 Для рассрочки выберите тариф от 64 занятий";
+                } else if (installments && installments !== 'Нет') {
+                    currentInstallmentLink = INSTALLMENT_LINKS[installments] || "";
+                    if (instBtn) {
+                        document.getElementById('months').textContent = installments + ' мес';
+                        instBtn.style.display = 'block';
+                    }
+                    instNote.style.display = 'none';
+                } else {
+                    if (instBtn) instBtn.style.display = 'none';
+                    instNote.style.display = 'none';
                 }
 
                 paymentSection.scrollIntoView({ behavior: 'smooth' });
@@ -84,73 +85,21 @@ function setupShopLogic() {
     });
 }
 
-function openInstallment() {
-    if (currentInstallmentLink) window.open(currentInstallmentLink, '_blank');
-}
-
-function goBack() {
-    const payment = document.getElementById('payment');
-    if (payment) payment.style.display = 'none';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// ======================
-// 4. ДЕКОРАЦИИ (ЗВЕЗДЫ И СНЕГ)
-// ======================
-function initStars() {
-    const container = document.querySelector('.stars-container');
-    if (!container) return;
-    container.innerHTML = '';
-    if (isLightTheme) return; // На светлой теме звезды не нужны
-
-    for (let i = 0; i < 80; i++) {
-        const star = document.createElement('div');
-        star.className = 'star';
-        star.style.cssText = `
-            position: absolute;
-            width: 2px; height: 2px;
-            background: white;
-            border-radius: 50%;
-            left: ${Math.random() * 100}%;
-            top: ${Math.random() * 100}%;
-            opacity: ${Math.random()};
-            animation: twinkle ${2 + Math.random() * 3}s infinite;
-        `;
-        container.appendChild(star);
-    }
-}
-
-function initSnow() {
-    const container = document.querySelector('.snow-container');
-    if (!container) return;
-    
-    // Снег падает чаще (интервал 300мс вместо 800мс)
-    setInterval(() => {
-        const flake = document.createElement('div');
-        flake.className = 'snowflake';
-        flake.innerHTML = '❄';
-        flake.style.cssText = `
-            position: fixed;
-            top: -20px;
-            left: ${Math.random() * 100}vw;
-            z-index: 5;
-            pointer-events: none;
-            color: white;
-            opacity: ${0.3 + Math.random() * 0.7};
-            font-size: ${10 + Math.random() * 15}px;
-            animation: fall ${5 + Math.random() * 5}s linear forwards;
-        `;
-        container.appendChild(flake);
-        setTimeout(() => flake.remove(), 10000);
-    }, 300); 
+function createInstallmentNote() {
+    const note = document.createElement('p');
+    note.id = 'installment-note';
+    note.style.cssText = "color: #e67e22; font-weight: bold; margin-top: 15px; text-align: center;";
+    const container = document.getElementById('payment');
+    if (container) container.appendChild(note);
+    return note;
 }
 
 // ======================
-// 5. ИГРА И UI
+// 4. ИГРОВАЯ МЕХАНИКА
 // ======================
 function startCharacterGame() {
     setInterval(() => {
-        const isBonus = Math.random() > 0.5;
+        const isBonus = Math.random() > 0.4;
         const char = document.createElement('div');
         char.innerHTML = isBonus ? ['⛄', '🎅', '🎁', '🦌', '🌟'][Math.floor(Math.random() * 5)] : '❄';
         char.className = 'game-character';
@@ -162,7 +111,20 @@ function startCharacterGame() {
         });
 
         if (isBonus) {
-            const catchFn = (e) => { e.preventDefault(); e.stopPropagation(); caughtCharacters++; updateUI(); char.remove(); if(caughtCharacters >= 10) processWin(); };
+            const catchFn = (e) => {
+                e.preventDefault(); e.stopPropagation();
+                
+                // Эффект пожелания
+                const randomWish = WISHES[Math.floor(Math.random() * WISHES.length)];
+                showClickEffect(char, `🎉 +1 ${randomWish}`);
+                
+                caughtCharacters++;
+                localStorage.setItem('caughtCharacters', caughtCharacters);
+                
+                char.remove();
+                updateUI();
+                if (caughtCharacters >= CHARACTERS_PER_LEVEL) processWin();
+            };
             char.onmousedown = catchFn;
             char.ontouchstart = catchFn;
         }
@@ -177,10 +139,46 @@ function processWin() {
         if (!localStorage.getItem('bonusStartDate')) localStorage.setItem('bonusStartDate', Date.now());
     }
     localStorage.setItem('totalBonus', currentBonus);
-    updateUI();
-    alert(`🎉 Уровень пройден! Ваша накопленная скидка: ${currentBonus} ₽`);
+    showRewardPopup();
+    
     caughtCharacters = 0;
+    localStorage.setItem('caughtCharacters', caughtCharacters);
     updateUI();
+}
+
+// ======================
+// 5. ИНТЕРФЕЙС И ЭФФЕКТЫ
+// ======================
+function showClickEffect(el, text) {
+    const rect = el.getBoundingClientRect();
+    const eff = document.createElement('div');
+    eff.innerHTML = text;
+    eff.style.cssText = `
+        position: fixed; left: ${rect.left}px; top: ${rect.top}px;
+        color: #FFD700; font-weight: bold; z-index: 15000;
+        font-size: 22px; pointer-events: none; white-space: nowrap;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5); transition: 1.2s;
+    `;
+    document.body.appendChild(eff);
+    setTimeout(() => {
+        eff.style.transform = 'translateY(-100px) scale(1.2)';
+        eff.style.opacity = '0';
+    }, 20);
+    setTimeout(() => eff.remove(), 1200);
+}
+
+function showRewardPopup() {
+    const div = document.createElement('div');
+    div.style.cssText = "position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background: linear-gradient(135deg, #fff, #f9f9f9); padding:40px; border-radius:30px; z-index:20000; text-align:center; box-shadow:0 0 60px rgba(0,0,0,0.6); border:6px solid #FFD700; color:#222; width:90%; max-width:450px;";
+    div.innerHTML = `
+        <h2 style="color:#c0392b; font-size: 28px; margin-bottom:15px;">🎄 ПОЗДРАВЛЯЕМ!</h2>
+        <p style="font-size: 18px;">Вы собрали коллекцию!</p>
+        <div style="font-size: 48px; font-weight: 900; color: #27ae60; margin: 20px 0;">+${BONUS_STEP} ₽</div>
+        <p style="margin-bottom: 25px;">Ваша общая скидка теперь: <strong>${currentBonus} ₽</strong></p>
+        <button id="close-reward" style="padding:15px 30px; background: #c0392b; color:white; border:none; border-radius:50px; cursor:pointer; font-weight:bold; font-size: 18px; box-shadow: 0 4px 15px rgba(192,57,43,0.4);">ИГРАТЬ ДАЛЬШЕ</button>
+    `;
+    document.body.appendChild(div);
+    document.getElementById('close-reward').onclick = () => div.remove();
 }
 
 function updateUI() {
@@ -191,35 +189,55 @@ function updateUI() {
 }
 
 // ======================
-// 6. СЕРВИСНЫЕ ФУНКЦИИ
+// 6. СЛУЖЕБНЫЕ (ТЕМЫ, СНЕГ, ВРЕМЯ)
 // ======================
-function fixMobileButton() {
-    // Удлиняем кнопку "Назад" в блоке оплаты для мобильных
-    const backBtn = document.querySelector('.back-button') || document.querySelector('button[onclick="goBack()"]');
-    if (backBtn) {
-        backBtn.style.minWidth = "280px";
-        backBtn.style.padding = "15px 20px";
+function toggleTheme() {
+    isLightTheme = !isLightTheme;
+    applyTheme();
+    localStorage.setItem('theme', isLightTheme ? 'light' : 'dark');
+    initStars();
+}
+
+function applyTheme() {
+    document.body.classList.toggle('light-theme', isLightTheme);
+}
+
+function initStars() {
+    const container = document.querySelector('.stars-container') || createContainer('stars-container');
+    container.innerHTML = '';
+    if (isLightTheme) return;
+    for (let i = 0; i < 70; i++) {
+        const star = document.createElement('div');
+        star.style.cssText = `position:absolute; width:2px; height:2px; background:white; left:${Math.random()*100}%; top:${Math.random()*100}%; opacity:${Math.random()}; animation:twinkle 3s infinite;`;
+        container.appendChild(star);
     }
+}
+
+function initSnow() {
+    const container = document.querySelector('.snow-container') || createContainer('snow-container');
+    setInterval(() => {
+        const flake = document.createElement('div');
+        flake.innerHTML = '❄';
+        flake.style.cssText = `position:fixed; top:-20px; left:${Math.random()*100}vw; z-index:5; pointer-events:none; color:white; opacity:${0.4+Math.random()*0.6}; font-size:${12+Math.random()*12}px; animation:fall ${6+Math.random()*4}s linear forwards;`;
+        container.appendChild(flake);
+        setTimeout(() => flake.remove(), 10000);
+    }, 400);
 }
 
 function createContainer(cls) {
     const d = document.createElement('div');
     d.className = cls;
     document.body.prepend(d);
+    return d;
 }
 
 function checkExpiration() {
     const s = localStorage.getItem('bonusStartDate');
     if (s && (Date.now() - parseInt(s) > 90 * 24 * 60 * 60 * 1000)) {
         localStorage.clear();
+        caughtCharacters = 0;
         currentBonus = 0;
     }
-}
-
-function loadSavedData() {
-    isLightTheme = localStorage.getItem('theme') === 'light';
-    if (isLightTheme) document.body.classList.add('light-theme');
-    currentBonus = parseInt(localStorage.getItem('totalBonus')) || 0;
 }
 
 function initTimer() {
@@ -235,4 +253,14 @@ function initTimer() {
             t.textContent = `${d}д ${h}ч ${m}м ${s}с`;
         }
     }, 1000);
+}
+
+function openInstallment() {
+    if (currentInstallmentLink) window.open(currentInstallmentLink, '_blank');
+}
+
+function goBack() {
+    const payment = document.getElementById('payment');
+    if (payment) payment.style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
