@@ -1,91 +1,91 @@
 // ======================
-// 1. КОНФИГУРАЦИЯ И ПЕРЕМЕННЫЕ
+// 1. НАСТРОЙКИ И ДАННЫЕ
 // ======================
 let caughtCharacters = 0;
 const CHARACTERS_PER_LEVEL = 10;
 const BONUS_STEP = 200;
 const MAX_BONUS = 1000;
-
 let currentBonus = 0;
 let isLightTheme = false;
-let characterInterval;
-let currentInstallmentLink = null; 
+let currentInstallmentLink = "";
 
-const CLICKABLE = ['⛄', '🎅', '🎁', '🦌', '🌟'];
-const DECOR = ['❄', '✨', '🧊'];
+// База ссылок для рассрочки (ОТП Банк)
+const INSTALLMENT_LINKS = {
+    "12": "https://ecom.otpbank.ru/smart-form?config=42943585-8511-400a-a027-49732f1d8fb2", // 96 зан
+    "10": "https://ecom.otpbank.ru/smart-form?config=e0d01fc2-5884-4fb1-b769-c7955a2d3b69", // 64 зан
+    "3_32": "https://ecom.otpbank.ru/smart-form?config=737d0db2-fbf7-4b88-b101-0b563090abaf", // 32 зан
+    "3_16": "https://ecom.otpbank.ru/smart-form?config=cc7cc8cc-603e-434a-9e44-402e68a41b6f"  // 16 зан
+};
 
 // ======================
-// 2. ИНИЦИАЛИЗАЦИЯ (ЗАПУСК ВСЕХ СИСТЕМ)
+// 2. ИНИЦИАЛИЗАЦИЯ
 // ======================
 document.addEventListener('DOMContentLoaded', () => {
-    checkExpiration(); // Проверка 3 месяцев
-    loadSavedData();   // Загрузка темы и бонусов
-    initStars();       // Небо
-    initSnow();        // Снег
-    initTimer();       // Таймер НГ
-    setupShopLogic();  // Кнопки покупки и ССЫЛКИ
-    startCharacterGame(); // Запуск игры
-    updateUI();        // Обновление счетчиков
+    checkExpiration();
+    loadSavedData();
+    
+    // Принудительно создаем контейнеры, если их нет
+    if (!document.querySelector('.stars-container')) createContainer('stars-container');
+    if (!document.querySelector('.snow-container')) createContainer('snow-container');
+
+    initStars();
+    initSnow();
+    initTimer();
+    setupShopLogic();
+    startCharacterGame();
+    updateUI();
+    fixMobileButton(); // Адаптация кнопки "Назад"
 });
 
 // ======================
-// 3. МАГАЗИН И РАССРОЧКА (ОТП БАНК)
+// 3. МАГАЗИН И РАССРОЧКА
 // ======================
 function setupShopLogic() {
-    // Тема
     const themeBtn = document.getElementById('theme-toggle');
     if (themeBtn) {
         themeBtn.onclick = () => {
             isLightTheme = !isLightTheme;
-            document.body.classList.toggle('light-theme');
+            document.body.classList.toggle('light-theme', isLightTheme);
             localStorage.setItem('theme', isLightTheme ? 'light' : 'dark');
-            initStars();
+            initStars(); // Перерисовываем звезды (скрываем их на светлой теме)
         };
     }
 
-    // Выбор абонемента
     document.querySelectorAll('.card').forEach(card => {
-        card.addEventListener('click', function(e) {
-            // Защита от клика по летящему персонажу
+        card.onclick = function(e) {
             if (e.target.closest('.game-character')) return;
 
             const paymentSection = document.getElementById('payment');
             if (paymentSection) {
                 paymentSection.style.display = 'block';
-
-                // Данные из HTML атрибутов
                 const price = this.getAttribute('data-price');
                 const installments = this.getAttribute('data-installments');
-                const link = this.getAttribute('data-link');
+                const lessons = this.innerText.toLowerCase(); // Проверяем кол-во занятий
 
-                // Цена на экране
-                const priceDisplay = document.getElementById('selected-price');
-                if (priceDisplay) priceDisplay.textContent = Number(price).toLocaleString('ru-RU');
+                // Умный подбор ссылки
+                if (installments === "12") currentInstallmentLink = INSTALLMENT_LINKS["12"];
+                else if (installments === "10") currentInstallmentLink = INSTALLMENT_LINKS["10"];
+                else if (installments === "3") {
+                    currentInstallmentLink = lessons.includes("32") ? INSTALLMENT_LINKS["3_32"] : INSTALLMENT_LINKS["3_16"];
+                }
 
-                // Настройка кнопки рассрочки
+                document.getElementById('selected-price').textContent = Number(price).toLocaleString('ru-RU');
                 const instBtn = document.getElementById('installment-btn');
-                if (instBtn && installments && installments !== 'Нет') {
-                    currentInstallmentLink = link; // Запоминаем конкретную ссылку ОТП
-                    const monthsEl = document.getElementById('months');
-                    if (monthsEl) monthsEl.textContent = installments + ' мес';
+                if (instBtn && installments !== 'Нет') {
+                    document.getElementById('months').textContent = installments + ' мес';
                     instBtn.style.display = 'block';
                 } else if (instBtn) {
                     instBtn.style.display = 'none';
                 }
 
-                paymentSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                paymentSection.scrollIntoView({ behavior: 'smooth' });
             }
-        });
+        };
     });
 }
 
-// Вызывается при нажатии "Оформить рассрочку"
 function openInstallment() {
-    if (currentInstallmentLink) {
-        window.open(currentInstallmentLink, '_blank');
-    } else {
-        alert("Пожалуйста, выберите тариф с рассрочкой");
-    }
+    if (currentInstallmentLink) window.open(currentInstallmentLink, '_blank');
 }
 
 function goBack() {
@@ -95,163 +95,144 @@ function goBack() {
 }
 
 // ======================
-// 4. ЛОГИКА ИГРЫ (НАКОПИТЕЛЬНАЯ)
+// 4. ДЕКОРАЦИИ (ЗВЕЗДЫ И СНЕГ)
 // ======================
-function startCharacterGame() {
-    if (characterInterval) clearInterval(characterInterval);
-    characterInterval = setInterval(() => {
-        const isBonus = Math.random() > 0.5;
-        const emoji = isBonus ? CLICKABLE[Math.floor(Math.random() * CLICKABLE.length)] : DECOR[Math.floor(Math.random() * DECOR.length)];
-        
-        const char = document.createElement('div');
-        char.innerHTML = emoji;
-        char.className = 'game-character';
-        
-        Object.assign(char.style, {
-            position: 'fixed',
-            top: '-60px',
-            left: (Math.random() * 80 + 10) + 'vw',
-            fontSize: '45px',
-            zIndex: '10000',
-            cursor: isBonus ? 'pointer' : 'default',
-            userSelect: 'none',
-            pointerEvents: 'auto',
-            animation: `character-fall ${Math.random() * 3 + 6}s linear forwards`
-        });
-
-        if (isBonus) {
-            const handleAction = (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                catchCharacter(char);
-            };
-            char.addEventListener('mousedown', handleAction);
-            char.addEventListener('touchstart', handleAction, { passive: false });
-        }
-
-        document.body.appendChild(char);
-        setTimeout(() => { if(char.parentNode) char.remove(); }, 9000);
-    }, 3500);
-}
-
-function catchCharacter(char) {
-    caughtCharacters++;
-    showClickEffect(char, "🎉 +1");
-    char.remove();
-    updateUI();
-    if (caughtCharacters >= CHARACTERS_PER_LEVEL) processWin();
-}
-
-function processWin() {
-    if (currentBonus < MAX_BONUS) {
-        currentBonus += BONUS_STEP;
-        // Фиксируем дату начала отсчета 3 месяцев при первой победе
-        if (!localStorage.getItem('bonusStartDate')) {
-            localStorage.setItem('bonusStartDate', Date.now());
-        }
-    }
-    localStorage.setItem('totalBonus', currentBonus);
-    showRewardPopup();
-    caughtCharacters = 0;
-    updateUI();
-}
-
-// ======================
-// 5. ДЕКОР И ИНТЕРФЕЙС
-// ======================
-function updateUI() {
-    const counter = document.getElementById('character-count');
-    if (counter) counter.textContent = caughtCharacters;
-    const bonusDisplay = document.getElementById('current-bonus-display');
-    if (bonusDisplay) bonusDisplay.textContent = currentBonus + " ₽";
-}
-
 function initStars() {
     const container = document.querySelector('.stars-container');
     if (!container) return;
     container.innerHTML = '';
-    if (isLightTheme) return;
-    for (let i = 0; i < 40; i++) {
+    if (isLightTheme) return; // На светлой теме звезды не нужны
+
+    for (let i = 0; i < 80; i++) {
         const star = document.createElement('div');
         star.className = 'star';
-        star.style.left = Math.random() * 100 + '%';
-        star.style.top = Math.random() * 100 + '%';
+        star.style.cssText = `
+            position: absolute;
+            width: 2px; height: 2px;
+            background: white;
+            border-radius: 50%;
+            left: ${Math.random() * 100}%;
+            top: ${Math.random() * 100}%;
+            opacity: ${Math.random()};
+            animation: twinkle ${2 + Math.random() * 3}s infinite;
+        `;
         container.appendChild(star);
     }
 }
 
 function initSnow() {
     const container = document.querySelector('.snow-container');
-    if (container) {
-        container.style.pointerEvents = 'none';
-        setInterval(() => {
-            const flake = document.createElement('div');
-            flake.className = 'snowflake';
-            flake.innerHTML = '❄';
-            flake.style.cssText = `position:fixed; top:-20px; left:${Math.random()*100}vw; animation: fall ${Math.random()*5+5}s linear forwards; pointer-events:none; z-index: 5;`;
-            container.appendChild(flake);
-            setTimeout(() => flake.remove(), 9000);
-        }, 800);
+    if (!container) return;
+    
+    // Снег падает чаще (интервал 300мс вместо 800мс)
+    setInterval(() => {
+        const flake = document.createElement('div');
+        flake.className = 'snowflake';
+        flake.innerHTML = '❄';
+        flake.style.cssText = `
+            position: fixed;
+            top: -20px;
+            left: ${Math.random() * 100}vw;
+            z-index: 5;
+            pointer-events: none;
+            color: white;
+            opacity: ${0.3 + Math.random() * 0.7};
+            font-size: ${10 + Math.random() * 15}px;
+            animation: fall ${5 + Math.random() * 5}s linear forwards;
+        `;
+        container.appendChild(flake);
+        setTimeout(() => flake.remove(), 10000);
+    }, 300); 
+}
+
+// ======================
+// 5. ИГРА И UI
+// ======================
+function startCharacterGame() {
+    setInterval(() => {
+        const isBonus = Math.random() > 0.5;
+        const char = document.createElement('div');
+        char.innerHTML = isBonus ? ['⛄', '🎅', '🎁', '🦌', '🌟'][Math.floor(Math.random() * 5)] : '❄';
+        char.className = 'game-character';
+        
+        Object.assign(char.style, {
+            position: 'fixed', top: '-60px', left: (10 + Math.random() * 80) + 'vw',
+            fontSize: '45px', zIndex: '10000', cursor: 'pointer', pointerEvents: 'auto',
+            animation: `character-fall ${7 + Math.random() * 3}s linear forwards`
+        });
+
+        if (isBonus) {
+            const catchFn = (e) => { e.preventDefault(); e.stopPropagation(); caughtCharacters++; updateUI(); char.remove(); if(caughtCharacters >= 10) processWin(); };
+            char.onmousedown = catchFn;
+            char.ontouchstart = catchFn;
+        }
+        document.body.appendChild(char);
+        setTimeout(() => char.remove(), 10000);
+    }, 3000);
+}
+
+function processWin() {
+    if (currentBonus < MAX_BONUS) {
+        currentBonus += BONUS_STEP;
+        if (!localStorage.getItem('bonusStartDate')) localStorage.setItem('bonusStartDate', Date.now());
+    }
+    localStorage.setItem('totalBonus', currentBonus);
+    updateUI();
+    alert(`🎉 Уровень пройден! Ваша накопленная скидка: ${currentBonus} ₽`);
+    caughtCharacters = 0;
+    updateUI();
+}
+
+function updateUI() {
+    const c = document.getElementById('character-count');
+    if (c) c.textContent = caughtCharacters;
+    const b = document.getElementById('current-bonus-display');
+    if (b) b.textContent = currentBonus + " ₽";
+}
+
+// ======================
+// 6. СЕРВИСНЫЕ ФУНКЦИИ
+// ======================
+function fixMobileButton() {
+    // Удлиняем кнопку "Назад" в блоке оплаты для мобильных
+    const backBtn = document.querySelector('.back-button') || document.querySelector('button[onclick="goBack()"]');
+    if (backBtn) {
+        backBtn.style.minWidth = "280px";
+        backBtn.style.padding = "15px 20px";
     }
 }
 
-function initTimer() {
-    const timerEl = document.getElementById('countdown-timer');
-    const target = new Date('January 1, 2026 00:00:00').getTime();
-    setInterval(() => {
-        const diff = target - Date.now();
-        if (timerEl && diff > 0) {
-            const d = Math.floor(diff / 86400000);
-            const h = Math.floor((diff % 86400000) / 3600000);
-            const m = Math.floor((diff % 3600000) / 60000);
-            const s = Math.floor((diff % 60000) / 1000);
-            timerEl.textContent = `${d}д ${h}ч ${m}м ${s}с`;
-        }
-    }, 1000);
+function createContainer(cls) {
+    const d = document.createElement('div');
+    d.className = cls;
+    document.body.prepend(d);
 }
 
-function showRewardPopup() {
-    const div = document.createElement('div');
-    div.style.cssText = "position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:white; padding:30px; border-radius:20px; z-index:20000; text-align:center; box-shadow:0 0 50px rgba(0,0,0,0.5); border:5px solid #FFD700; color:#222; width:85%; max-width:400px;";
-    div.innerHTML = `
-        <h2 style="color:#e67e22; margin-bottom:10px;">${currentBonus >= MAX_BONUS ? '🔥 МАКСИМАЛЬНАЯ СКИДКА!' : '💰 СКИДКА ВАША!'}</h2>
-        <p style="font-size: 32px; font-weight: bold; margin: 15px 0;">${currentBonus} ₽</p>
-        <p style="font-size: 14px; color: #666; margin-bottom: 20px;">Она применится при оплате абонемента.</p>
-        <button id="close-reward" style="padding:12px 25px; background:#27ae60; color:white; border:none; border-radius:10px; cursor:pointer; font-weight:bold; width: 100%;">СУПЕР!</button>
-    `;
-    document.body.appendChild(div);
-    document.getElementById('close-reward').onclick = () => div.remove();
-}
-
-function showClickEffect(el, text) {
-    const rect = el.getBoundingClientRect();
-    const eff = document.createElement('div');
-    eff.textContent = text;
-    eff.style.cssText = `position:fixed; left:${rect.left}px; top:${rect.top}px; color:#FFD700; font-weight:bold; z-index:15000; transition: 1s; font-size: 24px; pointer-events:none;`;
-    document.body.appendChild(eff);
-    setTimeout(() => { eff.style.transform = 'translateY(-60px)'; eff.style.opacity = '0'; }, 20);
-    setTimeout(() => eff.remove(), 1000);
-}
-
-// ======================
-// 6. ХРАНИЛИЩЕ И СРОКИ
-// ======================
 function checkExpiration() {
-    const startDate = localStorage.getItem('bonusStartDate');
-    if (startDate) {
-        const ninetyDays = 90 * 24 * 60 * 60 * 1000; 
-        if (Date.now() - parseInt(startDate) > ninetyDays) {
-            localStorage.removeItem('totalBonus');
-            localStorage.removeItem('bonusStartDate');
-            currentBonus = 0;
-        }
+    const s = localStorage.getItem('bonusStartDate');
+    if (s && (Date.now() - parseInt(s) > 90 * 24 * 60 * 60 * 1000)) {
+        localStorage.clear();
+        currentBonus = 0;
     }
 }
 
 function loadSavedData() {
-    if (localStorage.getItem('theme') === 'light') {
-        isLightTheme = true;
-        document.body.classList.add('light-theme');
-    }
+    isLightTheme = localStorage.getItem('theme') === 'light';
+    if (isLightTheme) document.body.classList.add('light-theme');
     currentBonus = parseInt(localStorage.getItem('totalBonus')) || 0;
+}
+
+function initTimer() {
+    const t = document.getElementById('countdown-timer');
+    const target = new Date('January 1, 2026 00:00:00').getTime();
+    setInterval(() => {
+        const diff = target - Date.now();
+        if (t && diff > 0) {
+            const d = Math.floor(diff / 86400000);
+            const h = Math.floor((diff % 86400000) / 3600000);
+            const m = Math.floor((diff % 3600000) / 60000);
+            const s = Math.floor((diff % 60000) / 1000);
+            t.textContent = `${d}д ${h}ч ${m}м ${s}с`;
+        }
+    }, 1000);
 }
