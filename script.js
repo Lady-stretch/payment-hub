@@ -3,7 +3,7 @@
 // ======================
 let currentInstallment = null;
 let caughtCharacters = 0;
-const CHARACTERS_FOR_REWARD = 10; // Изменили с 5 на 10
+const CHARACTERS_FOR_REWARD = 10;
 let hasReward = false;
 let isLightTheme = false;
 let decorativeSnowInterval;
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Создаем эффекты
   createStars();
-  startDecorativeSnow(); // Декоративный снег каждые 2 сек
+  startDecorativeSnow();
   
   // Запускаем таймер
   updateTimer();
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ======================
-// ТАЙМЕР ДО НОВОГО ГОДА (УЛУЧШЕННЫЙ)
+// ТАЙМЕР ДО НОВОГО ГОДА
 // ======================
 const END_DATE = new Date('January 1, 2026 00:00:00 GMT+0300');
 
@@ -90,7 +90,6 @@ function updateTimer() {
 
   const format = (num) => num < 10 ? '0' + num : num;
   
-  // Адаптивный таймер для мобильных
   const isMobile = window.innerWidth < 768;
   
   if (isMobile) {
@@ -142,19 +141,17 @@ function updateTimer() {
 }
 
 // ======================
-// ДЕКОРАТИВНЫЙ СНЕГ (каждые 2 секунды)
+// ДЕКОРАТИВНЫЙ СНЕГ
 // ======================
 function createDecorativeSnowflake() {
   if (!document.querySelector('.snow-container')) return;
   
   const snowContainer = document.querySelector('.snow-container');
   const snowflake = document.createElement('div');
-  // УБЕРИТЕ КЛАСС snowflake или оставьте, но проверьте CSS
-  // snowflake.classList.add('snowflake'); // ← ЗАКОММЕНТИРУЙТЕ ЭТУ СТРОКУ
   
   snowflake.innerHTML = ['❄', '•', '✻'][Math.floor(Math.random() * 3)];
   
-  // Позиция
+  // Позиция и стили
   snowflake.style.position = 'absolute';
   snowflake.style.top = '-10px';
   snowflake.style.left = Math.random() * 100 + 'vw';
@@ -179,32 +176,6 @@ function createDecorativeSnowflake() {
     }
   }, duration * 1000);
 }
-  snowflake.innerHTML = ['❄', '•', '✻'][Math.floor(Math.random() * 3)];
-  
-  // Позиция
-  snowflake.style.left = Math.random() * 100 + 'vw';
-  
-  // Случайный размер и скорость
-  const size = Math.random() * 1.2 + 0.8;
-  const duration = Math.random() * 8 + 6; // 6-14 секунд
-  const delay = Math.random() * 2;
-  
-  snowflake.style.fontSize = size + 'em';
-  snowflake.style.animationDuration = duration + 's';
-  snowflake.style.animationDelay = delay + 's';
-  snowflake.style.opacity = Math.random() * 0.5 + 0.3;
-  snowflake.style.zIndex = '1';
-  snowflake.style.pointerEvents = 'none';
-  
-  snowContainer.appendChild(snowflake);
-  
-  // Автоудаление
-  setTimeout(() => {
-    if (snowflake.parentNode) {
-      snowflake.remove();
-    }
-  }, duration * 1000);
-}
 
 function startDecorativeSnow() {
   // Создаем сразу несколько снежинок
@@ -214,14 +185,14 @@ function startDecorativeSnow() {
   
   // Продолжаем создавать каждые 2 секунды
   decorativeSnowInterval = setInterval(() => {
-    if (document.hasFocus()) { // Только если страница активна
+    if (document.hasFocus()) {
       createDecorativeSnowflake();
     }
   }, 2000);
 }
 
 // ======================
-// ИГРОВЫЕ ПЕРСОНАЖИ (каждые 15 секунд)
+// ИГРОВЫЕ ПЕРСОНАЖИ
 // ======================
 function createClickableCharacter() {
   if (hasReward || isLightTheme || !isGameActive) return;
@@ -238,11 +209,7 @@ function createClickableCharacter() {
   
   // Позиция
   characterElement.style.left = Math.random() * 85 + 5 + 'vw';
-  
-  // Случайный размер (35-55px)
   characterElement.style.fontSize = (Math.random() * 20 + 35) + 'px';
-  
-  // Данные персонажа
   characterElement.dataset.emoji = characterEmoji;
   characterElement.dataset.name = characterName;
   
@@ -271,12 +238,12 @@ function startCharacterGame() {
   if (hasReward || isLightTheme) return;
   
   console.log('🎮 Запуск новогодней игры...');
-  isGameActive = true; // ← ПЕРЕД setTimeout!
+  isGameActive = true;
   
-  // Сразу создаем первого персонажа для тестирования
+  // Первый персонаж через 1 секунду
   setTimeout(() => {
     createClickableCharacter();
-  }, 1000); // ← Уменьшил до 1 секунды для теста
+  }, 1000);
   
   // Затем каждые 15-20 секунд
   characterInterval = setInterval(() => {
@@ -284,14 +251,6 @@ function startCharacterGame() {
       createClickableCharacter();
     }
   }, 15000 + Math.random() * 5000);
-}
-  
-  // Затем каждые 15-20 секунд
-  characterInterval = setInterval(() => {
-    if (isGameActive && !hasReward && !isLightTheme && document.hasFocus()) {
-      createClickableCharacter();
-    }
-  }, 15000 + Math.random() * 5000); // 15-20 секунд
 }
 
 function stopCharacterGame() {
@@ -333,7 +292,7 @@ function catchCharacter(event) {
   // Обновляем счетчик
   updateCharacterCounter();
   
-  // Проверяем прогресс и показываем уведомления
+  // Проверяем прогресс
   checkProgress();
   
   // Проверяем награду
@@ -382,7 +341,6 @@ function showProgressNotification(message) {
 }
 
 function checkProgress() {
-  // Показываем сообщения на определённых этапах
   if (PROGRESS_MESSAGES[caughtCharacters]) {
     showProgressNotification(PROGRESS_MESSAGES[caughtCharacters]);
   }
@@ -432,14 +390,12 @@ function updateCharacterCounter() {
       counter.style.display = 'block';
       countSpan.textContent = caughtCharacters;
       
-      // Если награда получена
       if (hasReward) {
         counter.innerHTML = '🎉 Все подарки получены! 🎁';
         counter.style.background = 'linear-gradient(to right, #4CAF50, #45a049)';
         counter.style.color = 'white';
       }
     } else if (!isLightTheme && !hasReward) {
-      // Показываем всегда в темной теме, даже если 0
       counter.style.display = 'block';
       countSpan.textContent = '0';
     } else {
@@ -497,17 +453,13 @@ function toggleTheme() {
   // Очищаем снег и создаем заново
   clearInterval(decorativeSnowInterval);
   document.querySelector('.snow-container').innerHTML = '';
-  
-  // Перезапускаем декоративный снег
   startDecorativeSnow();
   
   // Управляем игрой
   if (isLightTheme) {
-    // В светлой теме останавливаем игру
     stopCharacterGame();
     console.log('☀️ Переключено на светлую тему, игра остановлена');
   } else {
-    // В тёмной теме создаём звёзды и запускаем игру
     createStars();
     if (!hasReward) {
       startCharacterGame();
@@ -519,7 +471,7 @@ function toggleTheme() {
 }
 
 // ======================
-// ЛОГИКА ВЫБОРА ПАКЕТОВ (без изменений)
+// ЛОГИКА ВЫБОРА ПАКЕТОВ
 // ======================
 function selectPackage() {
   document.querySelectorAll('.card').forEach(c => {
@@ -636,18 +588,14 @@ window.addEventListener('resize', updateTimer);
 document.addEventListener('visibilitychange', function() {
   if (document.hidden) {
     isGameActive = false;
-    // Останавливаем интервалы при скрытии
     if (characterInterval) {
       clearInterval(characterInterval);
       characterInterval = null;
     }
   } else if (!isLightTheme && !hasReward) {
-    // При возвращении на вкладку перезапускаем игру
     isGameActive = true;
     if (!characterInterval) {
       startCharacterGame();
     }
-  }
-});
   }
 });
