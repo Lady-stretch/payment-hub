@@ -242,12 +242,20 @@ function startCharacterGame() {
   if (hasReward || isLightTheme) return;
   
   console.log('🎮 Запуск новогодней игры...');
-  isGameActive = true;
+  isGameActive = true; // ← ПЕРЕД setTimeout!
   
-  // Первый персонаж через 3 секунды
+  // Сразу создаем первого персонажа для тестирования
   setTimeout(() => {
-    if (isGameActive) createClickableCharacter();
-  }, 3000);
+    createClickableCharacter();
+  }, 1000); // ← Уменьшил до 1 секунды для теста
+  
+  // Затем каждые 15-20 секунд
+  characterInterval = setInterval(() => {
+    if (isGameActive && !hasReward && !isLightTheme && document.hasFocus()) {
+      createClickableCharacter();
+    }
+  }, 15000 + Math.random() * 5000);
+}
   
   // Затем каждые 15-20 секунд
   characterInterval = setInterval(() => {
