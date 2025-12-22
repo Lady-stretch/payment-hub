@@ -635,11 +635,19 @@ window.addEventListener('resize', updateTimer);
 // ======================
 document.addEventListener('visibilitychange', function() {
   if (document.hidden) {
-    // Вкладка неактивна
     isGameActive = false;
+    // Останавливаем интервалы при скрытии
+    if (characterInterval) {
+      clearInterval(characterInterval);
+      characterInterval = null;
+    }
   } else if (!isLightTheme && !hasReward) {
-    // Вкладка снова активна, перезапускаем игру
+    // При возвращении на вкладку перезапускаем игру
     isGameActive = true;
-    startCharacterGame();
+    if (!characterInterval) {
+      startCharacterGame();
+    }
+  }
+});
   }
 });
