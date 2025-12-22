@@ -149,7 +149,36 @@ function createDecorativeSnowflake() {
   
   const snowContainer = document.querySelector('.snow-container');
   const snowflake = document.createElement('div');
-  snowflake.classList.add('snowflake');
+  // УБЕРИТЕ КЛАСС snowflake или оставьте, но проверьте CSS
+  // snowflake.classList.add('snowflake'); // ← ЗАКОММЕНТИРУЙТЕ ЭТУ СТРОКУ
+  
+  snowflake.innerHTML = ['❄', '•', '✻'][Math.floor(Math.random() * 3)];
+  
+  // Позиция
+  snowflake.style.position = 'absolute';
+  snowflake.style.top = '-10px';
+  snowflake.style.left = Math.random() * 100 + 'vw';
+  snowflake.style.fontSize = (Math.random() * 1.2 + 0.8) + 'em';
+  snowflake.style.color = 'rgba(180, 220, 255, 0.8)';
+  snowflake.style.zIndex = '1';
+  snowflake.style.pointerEvents = 'none';
+  snowflake.style.userSelect = 'none';
+  
+  // Анимация
+  const duration = Math.random() * 8 + 6;
+  snowflake.style.animation = `fall ${duration}s linear infinite`;
+  snowflake.style.animationDelay = Math.random() * 2 + 's';
+  snowflake.style.opacity = Math.random() * 0.5 + 0.3;
+  
+  snowContainer.appendChild(snowflake);
+  
+  // Автоудаление
+  setTimeout(() => {
+    if (snowflake.parentNode) {
+      snowflake.remove();
+    }
+  }, duration * 1000);
+}
   snowflake.innerHTML = ['❄', '•', '✻'][Math.floor(Math.random() * 3)];
   
   // Позиция
