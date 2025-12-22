@@ -8,7 +8,7 @@ let hasReward = false;
 let isLightTheme = false;
 let decorativeSnowInterval;
 let characterInterval;
-let isGameActive = false;
+let isGameActive = true; // Сразу активируем игру
 
 // Кликабельные персонажи (5 видов)
 const CLICKABLE_CHARACTERS = ['⛄', '🎅', '🎁', '🦌', '🌟'];
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Создаем эффекты
   createStars();
-  startDecorativeSnow();
+  startDecorativeSnow(); // Больше снега!
   
   // Запускаем таймер
   updateTimer();
@@ -63,7 +63,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // Показываем счетчик если уже ловили персонажей
   updateCharacterCounter();
   
-  console.log('✅ Инициализация завершена');
+  console.log('✅ Инициализация завершена. Игра активна:', isGameActive);
+  
+  // Добавляем кнопку отладки (только для тестирования)
+  addDebugButton();
 });
 
 // ======================
@@ -141,7 +144,7 @@ function updateTimer() {
 }
 
 // ======================
-// ДЕКОРАТИВНЫЙ СНЕГ
+// ДЕКОРАТИВНЫЙ СНЕГ (БОЛЬШЕ СНЕГА!)
 // ======================
 function createDecorativeSnowflake() {
   if (!document.querySelector('.snow-container')) return;
@@ -149,23 +152,26 @@ function createDecorativeSnowflake() {
   const snowContainer = document.querySelector('.snow-container');
   const snowflake = document.createElement('div');
   
-  snowflake.innerHTML = ['❄', '•', '✻'][Math.floor(Math.random() * 3)];
+  snowflake.innerHTML = ['❄', '•', '✻', '❉', '❅'][Math.floor(Math.random() * 5)];
   
-  // Позиция и стили
+  // Позиция
   snowflake.style.position = 'absolute';
   snowflake.style.top = '-10px';
   snowflake.style.left = Math.random() * 100 + 'vw';
-  snowflake.style.fontSize = (Math.random() * 1.2 + 0.8) + 'em';
-  snowflake.style.color = 'rgba(180, 220, 255, 0.8)';
+  
+  // Случайный размер
+  const size = Math.random() * 1.5 + 0.8;
+  snowflake.style.fontSize = size + 'em';
+  snowflake.style.color = 'rgba(180, 220, 255, 0.9)';
   snowflake.style.zIndex = '1';
   snowflake.style.pointerEvents = 'none';
   snowflake.style.userSelect = 'none';
+  snowflake.style.textShadow = '0 0 5px rgba(255, 255, 255, 0.5)';
   
   // Анимация
-  const duration = Math.random() * 8 + 6;
+  const duration = Math.random() * 10 + 8; // 8-18 секунд
   snowflake.style.animation = `fall ${duration}s linear infinite`;
-  snowflake.style.animationDelay = Math.random() * 2 + 's';
-  snowflake.style.opacity = Math.random() * 0.5 + 0.3;
+  snowflake.style.opacity = Math.random() * 0.6 + 0.4;
   
   snowContainer.appendChild(snowflake);
   
@@ -178,24 +184,29 @@ function createDecorativeSnowflake() {
 }
 
 function startDecorativeSnow() {
-  // Создаем сразу несколько снежинок
-  for (let i = 0; i < 20; i++) {
-    setTimeout(() => createDecorativeSnowflake(), i * 200);
+  // Создаем много снежинок сразу
+  for (let i = 0; i < 40; i++) { // Было 20, теперь 40
+    setTimeout(() => createDecorativeSnowflake(), i * 100);
   }
   
-  // Продолжаем создавать каждые 2 секунды
+  // Продолжаем создавать чаще
   decorativeSnowInterval = setInterval(() => {
     if (document.hasFocus()) {
       createDecorativeSnowflake();
+      // Создаем 2-3 снежинки за раз
+      if (Math.random() > 0.7) createDecorativeSnowflake();
     }
-  }, 2000);
+  }, 1500); // Было 2000, теперь 1500 мс
 }
 
 // ======================
-// ИГРОВЫЕ ПЕРСОНАЖИ
+// ИГРОВЫЕ ПЕРСОНАЖИ (ИСПРАВЛЕНО!)
 // ======================
 function createClickableCharacter() {
-  if (hasReward || isLightTheme || !isGameActive) return;
+  if (hasReward || isLightTheme || !isGameActive) {
+    console.log('Игра не активна:', {hasReward, isLightTheme, isGameActive});
+    return;
+  }
   
   const characterEmoji = CLICKABLE_CHARACTERS[Math.floor(Math.random() * CLICKABLE_CHARACTERS.length)];
   const characterName = CHARACTER_NAMES[characterEmoji];
@@ -207,14 +218,18 @@ function createClickableCharacter() {
     <div class="character-tooltip">Кликни! ${characterName}</div>
   `;
   
-  // Позиция
-  characterElement.style.left = Math.random() * 85 + 5 + 'vw';
+  // Позиция (не слишком близко к краям)
+  characterElement.style.left = Math.random() * 80 + 10 + 'vw';
+  
+  // Случайный размер
   characterElement.style.fontSize = (Math.random() * 20 + 35) + 'px';
+  
+  // Данные персонажа
   characterElement.dataset.emoji = characterEmoji;
   characterElement.dataset.name = characterName;
   
-  // Анимация падения (15-25 секунд)
-  const duration = Math.random() * 10 + 15;
+  // Анимация падения
+  const duration = Math.random() * 10 + 15; // 15-25 секунд
   characterElement.style.animation = `character-fall ${duration}s linear forwards`;
   
   // Клик по персонажу
@@ -224,6 +239,9 @@ function createClickableCharacter() {
   const snowContainer = document.querySelector('.snow-container');
   if (snowContainer) {
     snowContainer.appendChild(characterElement);
+    console.log('Персонаж создан:', characterName);
+  } else {
+    console.error('Контейнер для снега не найден!');
   }
   
   // Автоматическое удаление после падения
@@ -235,25 +253,31 @@ function createClickableCharacter() {
 }
 
 function startCharacterGame() {
-  if (hasReward || isLightTheme) return;
+  if (hasReward || isLightTheme) {
+    console.log('Игра не может быть запущена:', {hasReward, isLightTheme});
+    return;
+  }
   
   console.log('🎮 Запуск новогодней игры...');
   isGameActive = true;
   
-  // Первый персонаж через 1 секунду
+  // Первый персонаж через 2 секунды
   setTimeout(() => {
     createClickableCharacter();
-  }, 1000);
+  }, 2000);
   
-  // Затем каждые 15-20 секунд
+  // Затем каждые 12-18 секунд
   characterInterval = setInterval(() => {
     if (isGameActive && !hasReward && !isLightTheme && document.hasFocus()) {
       createClickableCharacter();
     }
-  }, 15000 + Math.random() * 5000);
+  }, 12000 + Math.random() * 6000);
+  
+  console.log('Игра запущена, интервал установлен');
 }
 
 function stopCharacterGame() {
+  console.log('Игра остановлена');
   isGameActive = false;
   if (characterInterval) {
     clearInterval(characterInterval);
@@ -538,7 +562,7 @@ function createStars() {
   
   starsContainer.innerHTML = '';
   
-  for (let i = 0; i < 80; i++) {
+  for (let i = 0; i < 100; i++) { // Больше звёзд
     const star = document.createElement('div');
     star.className = 'star';
     
@@ -575,6 +599,8 @@ function loadSavedData() {
   if (savedReward === 'true') {
     hasReward = true;
   }
+  
+  console.log('Загружены данные:', {isLightTheme, caughtCharacters, hasReward});
 }
 
 // ======================
@@ -599,3 +625,60 @@ document.addEventListener('visibilitychange', function() {
     }
   }
 });
+
+// ======================
+// ФУНКЦИИ ОТЛАДКИ (ТЕСТИРОВАНИЕ)
+// ======================
+function addDebugButton() {
+  // Создаем кнопку отладки (только в development)
+  if (window.location.hostname === 'localhost' || window.location.hostname.includes('github.io')) {
+    const debugDiv = document.createElement('div');
+    debugDiv.className = 'debug-button';
+    debugDiv.innerHTML = `
+      <div style="margin-bottom: 5px;">
+        <button onclick="createClickableCharacter()" style="background: red; color: white; padding: 5px; margin: 2px;">+ Персонаж</button>
+        <button onclick="createDecorativeSnowflake()" style="background: blue; color: white; padding: 5px; margin: 2px;">+ Снег</button>
+      </div>
+      <div style="font-size: 10px;">
+        Персонажей: <span id="debug-chars">0</span><br>
+        Снежинок: <span id="debug-snow">0</span><br>
+        isGameActive: <span id="debug-active">${isGameActive}</span>
+      </div>
+    `;
+    
+    document.body.appendChild(debugDiv);
+    
+    // Обновляем информацию отладки
+    setInterval(() => {
+      const chars = document.querySelectorAll('.new-year-character').length;
+      const snow = document.querySelectorAll('.snowflake').length;
+      document.getElementById('debug-chars').textContent = chars;
+      document.getElementById('debug-snow').textContent = snow;
+      document.getElementById('debug-active').textContent = isGameActive;
+    }, 1000);
+  }
+}
+
+// ======================
+// СБРОС ПРОГРЕССА (для тестирования)
+// ======================
+function resetGameProgress() {
+  caughtCharacters = 0;
+  hasReward = false;
+  isGameActive = true;
+  
+  localStorage.removeItem('charactersCaught');
+  localStorage.removeItem('characterReward');
+  localStorage.removeItem('testBonusGiven');
+  
+  updateCharacterCounter();
+  
+  // Перезапускаем игру
+  stopCharacterGame();
+  if (!isLightTheme) {
+    startCharacterGame();
+  }
+  
+  console.log('Прогресс игры сброшен');
+  alert('Прогресс игры сброшен! Начинаем заново.');
+}
