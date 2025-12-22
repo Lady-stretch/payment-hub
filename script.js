@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateTimer();
   setInterval(updateTimer, 1000);
   setupEventListeners();
-  startCharacterGame();
+  startCharacterGame(); // Запуск игры персонажей
   updateCharacterCounter();
   
   console.log('✅ Инициализация завершена');
@@ -158,10 +158,10 @@ function startDecorativeSnow() {
 }
 
 // ======================
-// ИГРА: ПЕРСОНАЖИ
+// ИГРА: ПЕРСОНАЖИ (ОБНОВЛЕНО ДЛЯ ТЕСТА)
 // ======================
 function createGameCharacter() {
-  // Исправление: Персонажи будут появляться ВСЕГДА для теста
+  // Мы НЕ блокируем создание, чтобы вы могли видеть персонажей даже после победы
   if (!isGameActive) return;
   
   characterCounter++;
@@ -174,10 +174,11 @@ function createGameCharacter() {
   characterElement.className = `new-year-character ${isClickable ? 'clickable' : 'non-clickable'}`;
   characterElement.innerHTML = `${characterEmoji}<div class="character-tooltip">${isClickable ? 'Кликни!' : 'Мимо!'} ${characterName}</div>`;
   
+  // Позиционирование и ВЫСОКИЙ Z-INDEX
   characterElement.style.left = Math.random() * 80 + 10 + 'vw';
-  characterElement.style.fontSize = (Math.random() * 20 + 35) + 'px';
-  characterElement.style.zIndex = '10000'; // Поверх всего
-  characterElement.style.position = 'fixed';
+  characterElement.style.fontSize = (Math.random() * 10 + 40) + 'px';
+  characterElement.style.zIndex = '10000'; // Поверх всех карточек
+  characterElement.style.position = 'fixed'; // Фиксируем относительно экрана
   
   if (isLightTheme) {
     characterElement.style.filter = 'brightness(0.9)';
@@ -187,16 +188,18 @@ function createGameCharacter() {
   characterElement.dataset.name = characterName;
   characterElement.dataset.clickable = isClickable.toString();
   
-  const duration = Math.random() * 5 + 10;
+  // Ускоренная анимация для заметности (8-12 секунд)
+  const duration = Math.random() * 4 + 8;
   characterElement.style.animation = `character-fall ${duration}s linear forwards`;
   
+  // Обработка клика
   characterElement.addEventListener('click', handleCharacterClick);
   characterElement.addEventListener('touchstart', function(event) {
     event.preventDefault();
     handleCharacterClick(event);
   }, { passive: false });
   
-  // Добавляем в body для обхода проблем с z-index
+  // Добавляем ПРЯМО В BODY, чтобы z-index работал надежно
   document.body.appendChild(characterElement);
   
   setTimeout(() => characterElement.remove(), duration * 1000);
@@ -215,7 +218,7 @@ function handleCharacterClick(event) {
   character.style.transition = 'transform 0.3s ease';
   
   if (isClickable) {
-    createClickEffect(x, y, '🎉 С Новым Годом!', '#FFD700');
+    createClickEffect(x, y, '🎉 +1', '#FFD700');
     caughtCharacters++;
     localStorage.setItem('charactersCaught', caughtCharacters.toString());
     updateCharacterCounter();
@@ -223,8 +226,7 @@ function handleCharacterClick(event) {
     checkForReward();
     console.log(`✅ Пойман ${name}! Всего: ${caughtCharacters}`);
   } else {
-    createClickEffect(x, y, '❌ Промах!', '#ff4444');
-    console.log(`❌ Промах: ${name}`);
+    createClickEffect(x, y, '❌ Мимо!', '#ff4444');
   }
   
   setTimeout(() => character.remove(), 300);
@@ -237,9 +239,8 @@ function createClickEffect(x, y, text, color) {
   effect.style.left = (x - 50) + 'px';
   effect.style.top = (y - 20) + 'px';
   effect.style.color = color;
-  effect.style.fontWeight = 'bold';
-  effect.style.zIndex = '10000';
   effect.style.position = 'fixed';
+  effect.style.zIndex = '10001';
   document.body.appendChild(effect);
   
   setTimeout(() => {
@@ -254,19 +255,15 @@ function createClickEffect(x, y, text, color) {
 // УПРАВЛЕНИЕ ИГРОЙ
 // ======================
 function startCharacterGame() {
-  console.log('🎮 Запуск игры...');
   isGameActive = true;
   if (characterInterval) clearInterval(characterInterval);
   
-  setTimeout(() => {
-    createGameCharacter();
-  }, 1000);
-  
+  // Генерируем персонажа каждые 3.5 секунды
   characterInterval = setInterval(() => {
     if (isGameActive) {
       createGameCharacter();
     }
-  }, 3000 + Math.random() * 2000);
+  }, 3500);
 }
 
 function stopCharacterGame() {
@@ -287,7 +284,7 @@ function showProgressNotification(message) {
   
   notification.innerHTML = message;
   notification.style.display = 'block';
-  notification.style.animation = 'slideDown 0.3s ease, progressPulse 2s infinite';
+  notification.style.animation = 'slideDown 0.3s ease';
   setTimeout(() => notification.style.display = 'none', 3000);
 }
 
@@ -298,25 +295,29 @@ function checkProgress() {
 }
 
 function checkForReward() {
+  // Награда срабатывает только один раз при достижении лимита
   if (!hasReward && caughtCharacters >= CHARACTERS_FOR_REWARD) {
     hasReward = true;
     localStorage.setItem('characterReward', 'true');
     showFinalReward();
     updateCharacterCounter();
-    console.log('🎁 Все подарки собраны!');
   }
 }
 
 function showFinalReward() {
   const rewardElement = document.createElement('div');
   rewardElement.className = 'gift-notification';
-  rewardElement.style.cssText = "position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:white; color:black; padding:30px; border-radius:20px; z-index:20000; text-align:center; box-shadow:0 0 50px rgba(0,0,0,0.5);";
+  rewardElement.style.cssText = `
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    background: white; color: #222; padding: 30px; border-radius: 20px;
+    z-index: 20000; text-align: center; box-shadow: 0 0 100px rgba(0,0,0,0.5);
+    border: 5px solid #2ecc71; width: 90%; max-width: 400px;
+  `;
   rewardElement.innerHTML = `
-    <h3>${FINAL_CONGRATS[0]}</h3>
-    <p>${FINAL_CONGRATS[1]}</p>
-    <p><small>${FINAL_CONGRATS[2]}</small></p>
-    <p style="font-style: italic; margin: 20px 0;">${FINAL_CONGRATS[3]}</p>
-    <button onclick="this.parentElement.remove()" style="padding:10px 20px; background:#2ecc71; color:white; border:none; border-radius:10px; cursor:pointer;">Забрать подарок!</button>
+    <h3 style="color: #27ae60; margin-bottom: 15px;">${FINAL_CONGRATS[0]}</h3>
+    <p style="font-size: 1.2rem; margin-bottom: 10px;">${FINAL_CONGRATS[1]}</p>
+    <p style="color: #666; font-size: 0.9rem;">${FINAL_CONGRATS[2]}</p>
+    <button onclick="this.parentElement.remove()" style="margin-top: 20px; padding: 12px 25px; background: #2ecc71; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold;">Ура, спасибо!</button>
   `;
   document.body.appendChild(rewardElement);
 }
@@ -326,18 +327,17 @@ function updateCharacterCounter() {
   const countSpan = document.getElementById('character-count');
   if (!counter || !countSpan) return;
   
-  counter.style.display = 'block';
   countSpan.textContent = caughtCharacters;
   
   if (hasReward) {
-    counter.innerHTML = '🎉 Все подарки получены! 🎁';
-    counter.style.background = 'linear-gradient(to right, #4CAF50, #45a049)';
+    counter.innerHTML = '🎉 Награда получена! 🎁';
+    counter.style.background = 'linear-gradient(to right, #2ecc71, #27ae60)';
     counter.style.color = 'white';
   }
 }
 
 // ======================
-// ПЕРЕКЛЮЧЕНИЕ ТЕМЫ И ПАКЕТЫ
+// ТЕМЫ И ОПЛАТА
 // ======================
 function setupEventListeners() {
   const themeToggle = document.getElementById('theme-toggle');
@@ -358,15 +358,6 @@ function toggleTheme() {
   isLightTheme = !isLightTheme;
   document.body.classList.toggle('light-theme', isLightTheme);
   localStorage.setItem('theme', isLightTheme ? 'light' : 'dark');
-  
-  clearInterval(decorativeSnowInterval);
-  const snowContainer = document.querySelector('.snow-container');
-  if (snowContainer) snowContainer.innerHTML = '';
-  startDecorativeSnow();
-  
-  const starsContainer = document.querySelector('.stars-container');
-  if (starsContainer) starsContainer.innerHTML = '';
-  if (!isLightTheme) createStars();
 }
 
 function selectPackage() {
@@ -391,15 +382,6 @@ function selectPackage() {
   paymentSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-function openInstallment() {
-  if (currentInstallment) window.open(currentInstallment, '_blank');
-}
-
-function goBack() {
-  document.getElementById('payment').style.display = 'none';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
 // ======================
 // ЗВЁЗДЫ И ЗАГРУЗКА
 // ======================
@@ -408,14 +390,12 @@ function createStars() {
   const starsContainer = document.querySelector('.stars-container');
   if (!starsContainer) return;
   
-  starsContainer.innerHTML = '';
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 80; i++) {
     const star = document.createElement('div');
     star.className = 'star';
     star.style.left = Math.random() * 100 + 'vw';
     star.style.top = Math.random() * 100 + 'vh';
     star.style.width = star.style.height = (Math.random() * 2 + 1) + 'px';
-    star.style.animationDuration = Math.random() * 4 + 2 + 's';
     starsContainer.appendChild(star);
   }
 }
@@ -426,36 +406,15 @@ function loadSavedData() {
     isLightTheme = true;
     document.body.classList.add('light-theme');
   }
+  
   const savedCharacters = localStorage.getItem('charactersCaught');
   if (savedCharacters) caughtCharacters = parseInt(savedCharacters);
+  
   const savedReward = localStorage.getItem('characterReward');
   if (savedReward === 'true') hasReward = true;
 }
 
-// ======================
-// СЛУЖЕБНЫЕ ФУНКЦИИ (ВИДИМОСТЬ И ЗАПУСК)
-// ======================
-window.addEventListener('resize', updateTimer);
-
-document.addEventListener('visibilitychange', function() {
-  if (document.hidden) {
-    isGameActive = false;
-    if (characterInterval) { clearInterval(characterInterval); characterInterval = null; }
-  } else {
-    isGameActive = true;
-    if (!characterInterval) startCharacterGame();
-  }
-});
-
-// АВАРИЙНЫЕ ПРОВЕРКИ
-setTimeout(() => {
-  if (!characterInterval) startCharacterGame();
-}, 5000);
-
-setTimeout(() => {
-  if (isGameActive) {
-    for (let i = 0; i < 2; i++) {
-      setTimeout(createGameCharacter, i * 1000);
-    }
-  }
-}, 10000);
+function goBack() {
+  document.getElementById('payment').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
