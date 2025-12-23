@@ -1,77 +1,83 @@
 // ======================
-// 1. НАСТРОЙКИ И ПАМЯТЬ
+// 1. ПАМЯТЬ И КОНФИГУРАЦИЯ
 // ======================
 const CHARACTERS_PER_LEVEL = 10;
 const BONUS_STEP = 200;
 const MAX_BONUS = 1000;
-const WISHES = ["Удачи!", "Красоты!", "Силы!", "Счастья!", "Энергии!", "Успеха!"];
+const WISHES = ["Удачи!", "Красоты!", "Силы!", "Счастья!", "Побед!", "Энергии!"];
 
 let caughtCharacters = parseInt(localStorage.getItem('caughtCharacters')) || 0;
 let currentBonus = parseInt(localStorage.getItem('totalBonus')) || 0;
 let isLightTheme = localStorage.getItem('theme') === 'light';
-let currentInstallment = ""; // Сюда будет попадать ссылка из data-link
+let currentInstallmentLink = ""; // Глобальная переменная для выбранной ссылки
 
 // ======================
 // 2. ИНИЦИАЛИЗАЦИЯ
 // ======================
 document.addEventListener('DOMContentLoaded', () => {
-    checkExpiration();
     applyTheme();
     initStars();
     initSnow();
     initTimer();
-    setupShopLogic(); // Запуск логики пакетов
+    setupShopLogic(); 
     startCharacterGame();
     updateUI();
 });
 
 // ======================
-// 3. ЛОГИКА ПАКЕТОВ (Универсальная)
+// 3. ЛОГИКА ПАКЕТОВ (ИСПРАВЛЕННАЯ)
 // ======================
 function setupShopLogic() {
-    // Кнопка темы
     const themeBtn = document.getElementById('theme-toggle');
     if (themeBtn) themeBtn.onclick = toggleTheme;
 
-    // Клик по карточкам
     document.querySelectorAll('.card').forEach(card => {
         card.addEventListener('click', function(e) {
-            // Если кликнули по падающему персонажу внутри карточки — не открываем оплату
+            // Если клик по персонажу игры - игнорируем
             if (e.target.closest('.game-character')) return;
 
-            // Визуальное выделение
-            document.querySelectorAll('.card').forEach(c => {
-                c.style.borderColor = '';
-                c.style.borderWidth = '';
-                c.style.borderStyle = '';
-            });
-            this.style.borderColor = '#4a6fa5';
-            this.style.borderWidth = '2px';
-            this.style.borderStyle = 'solid';
+            // Визуальное выделение карточки
+            document.querySelectorAll('.card').forEach(c => c.classList.remove('selected-card'));
+            this.classList.add('selected-card'); 
+            // Примечание: добавьте в CSS .selected-card { border: 2px solid #4a6fa5 !important; }
 
             const paymentSection = document.getElementById('payment');
-            if (!paymentSection) return; // Если на странице нет блока оплаты (как в future-packages)
+            if (!paymentSection) return;
 
             paymentSection.style.display = 'block';
             
-            // Берём данные прямо из HTML-атрибутов нажатой карточки
+            // ЧИТАЕМ ДАННЫЕ ИЗ HTML
             const price = this.getAttribute('data-price');
             const installments = this.getAttribute('data-installments');
-            const link = this.getAttribute('data-link');
+            
+            // ОЧИСТКА ССЫЛКИ (Убираем возможные ошибки копирования)
+            let rawLink = this.getAttribute('data-link') || "";
+            currentInstallmentLink = rawLink.replace(/&quot;/g, '').replace(/"/g, '').trim();
 
-            // Обновляем цену в блоке оплаты
-            document.getElementById('selected-price').textContent = Number(price).toLocaleString('ru-RU');
+            // Обновляем текст цены
+            const priceDisplay = document.getElementById('selected-price');
+            if (priceDisplay) priceDisplay.textContent = Number(price).toLocaleString('ru-RU');
             
-            const installmentBtn = document.getElementById('installment-btn');
-            
-            // Проверка: есть ли рассрочка для этой конкретной карточки
-            if (installments && installments !== 'Нет' && link) {
-                currentInstallment = link; // Запоминаем ссылку из data-link
-                document.getElementById('months').textContent = installments + ' мес';
-                installmentBtn.style.display = 'block';
+            const instBtn = document.getElementById('installment-btn');
+            const instNote = document.getElementById('installment-note') || createInstallmentNote();
+            const monthsDisplay = document.getElementById('months');
+
+            // ЛОГИКА ОТОБРАЖЕНИЯ КНОПКИ РАССРОЧКИ
+            if (installments && installments !== 'Нет' && currentInstallmentLink !== "") {
+                if (instBtn) instBtn.style.display = 'block';
+                if (monthsDisplay) monthsDisplay.textContent = installments + ' мес';
+                instNote.style.display = 'none';
             } else {
-                currentInstallment = "";
-                installmentBtn.style.display = 'none';
+                if (instBtn) instBtn.style.display = 'none';
+                
+                // Если это 16 или 32 занятия (где рассрочки нет)
+                const title = this.innerText;
+                if (title.includes("16") || title.includes("32")) {
+                    instNote.style.display = 'block';
+                    instNote.innerHTML = "💡 Рассрочка доступна для тарифов от 64 занятий";
+                } else {
+                    instNote.style.display = 'none';
+                }
             }
 
             paymentSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -79,26 +85,25 @@ function setupShopLogic() {
     });
 }
 
+// ЭТА ФУНКЦИЯ ОТКРЫВАЕТ БАНК
 function openInstallment() {
-    if (currentInstallment) {
-        window.open(currentInstallment, '_blank');
+    if (currentInstallmentLink && currentInstallmentLink !== "") {
+        console.log("Переход по ссылке:", currentInstallmentLink);
+        window.open(currentInstallmentLink, '_blank');
+    } else {
+        alert("Для данного тарифа ссылка не настроена.");
     }
 }
 
 function goBack() {
-    const paymentSection = document.getElementById('payment');
-    if (paymentSection) paymentSection.style.display = 'none';
-    
-    document.querySelectorAll('.card').forEach(card => {
-        card.style.borderColor = '';
-        card.style.borderWidth = '';
-        card.style.borderStyle = '';
-    });
+    const p = document.getElementById('payment');
+    if (p) p.style.display = 'none';
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('selected-card'));
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // ======================
-// 4. ИГРА И ЭФФЕКТЫ (Ваша стабильная версия)
+// 4. ИГРА И ЭФФЕКТЫ
 // ======================
 function startCharacterGame() {
     setInterval(() => {
@@ -114,7 +119,7 @@ function startCharacterGame() {
         });
 
         if (isBonus) {
-            char.onclick = (e) => {
+            const catchFn = (e) => {
                 e.preventDefault(); e.stopPropagation();
                 showClickEffect(char, `🎉 +1 ${WISHES[Math.floor(Math.random()*WISHES.length)]}`);
                 caughtCharacters++;
@@ -123,6 +128,8 @@ function startCharacterGame() {
                 updateUI();
                 if (caughtCharacters >= CHARACTERS_PER_LEVEL) processWin();
             };
+            char.onclick = catchFn;
+            char.ontouchstart = catchFn;
         }
         document.body.appendChild(char);
         setTimeout(() => char.remove(), 10000);
@@ -136,9 +143,6 @@ function updateUI() {
     if (b) b.textContent = currentBonus + " ₽";
 }
 
-// Вспомогательные функции (тема, снег, таймер и т.д.)
-function toggleTheme() { isLightTheme = !isLightTheme; applyTheme(); localStorage.setItem('theme', isLightTheme ? 'light' : 'dark'); initStars(); }
-function applyTheme() { document.body.classList.toggle('light-theme', isLightTheme); }
 function showClickEffect(el, text) {
     const rect = el.getBoundingClientRect();
     const eff = document.createElement('div');
@@ -148,11 +152,24 @@ function showClickEffect(el, text) {
     setTimeout(() => { eff.style.transform = 'translateY(-100px)'; eff.style.opacity = '0'; }, 20);
     setTimeout(() => eff.remove(), 1200);
 }
+
 function processWin() {
-    if (currentBonus < MAX_BONUS) { currentBonus += BONUS_STEP; if (!localStorage.getItem('bonusStartDate')) localStorage.setItem('bonusStartDate', Date.now()); }
+    if (currentBonus < MAX_BONUS) { currentBonus += BONUS_STEP; }
     localStorage.setItem('totalBonus', currentBonus);
-    alert(`Поздравляем! Вы получили бонус ${BONUS_STEP} ₽. Ваша скидка: ${currentBonus} ₽`);
+    alert(`Поздравляем! Ваша праздничная скидка увеличена до ${currentBonus} ₽`);
     caughtCharacters = 0; localStorage.setItem('caughtCharacters', 0); updateUI();
+}
+
+// Служебные
+function toggleTheme() { isLightTheme = !isLightTheme; applyTheme(); localStorage.setItem('theme', isLightTheme ? 'light' : 'dark'); initStars(); }
+function applyTheme() { document.body.classList.toggle('light-theme', isLightTheme); }
+function createInstallmentNote() {
+    const note = document.createElement('p');
+    note.id = 'installment-note';
+    note.style.cssText = "color: #e67e22; font-weight: bold; margin-top: 15px; text-align: center;";
+    const payBlock = document.getElementById('payment');
+    if (payBlock) payBlock.appendChild(note);
+    return note;
 }
 function initSnow() { const container = document.querySelector('.snow-container'); if (!container) return; setInterval(() => { const f = document.createElement('div'); f.innerHTML = '❄'; f.style.cssText = `position:fixed; top:-20px; left:${Math.random()*100}vw; opacity:${Math.random()}; animation:fall 8s linear forwards; color:white; pointer-events:none; z-index:5;`; container.appendChild(f); setTimeout(()=>f.remove(),8000); }, 400); }
 function initStars() { const container = document.querySelector('.stars-container'); if (!container || isLightTheme) return; container.innerHTML = ''; for (let i=0; i<50; i++) { const s = document.createElement('div'); s.style.cssText = `position:absolute; width:2px; height:2px; background:white; left:${Math.random()*100}%; top:${Math.random()*100}%; opacity:${Math.random()};`; container.appendChild(s); } }
@@ -167,4 +184,3 @@ function initTimer() {
         t.textContent = `${d}д ${h}ч ${m}м ${s}с`;
     }, 1000);
 }
-function checkExpiration() { const s = localStorage.getItem('bonusStartDate'); if (s && (Date.now() - parseInt(s) > 90*24*60*60*1000)) { localStorage.clear(); caughtCharacters = 0; currentBonus = 0; } }
