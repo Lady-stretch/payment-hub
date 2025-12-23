@@ -12,67 +12,96 @@
 
   <link rel="stylesheet" href="style.css">
   <style>
-    /* Стили для страницы 2026 */
+    /* 1. ГЛАВНАЯ НАВИГАЦИОННАЯ КНОПКА (Исправленная) */
+    .back-nav-button {
+        position: relative; /* Убираем фиксированное положение, чтобы не накладывалась на лого */
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin: 20px auto;
+        padding: 14px 28px;
+        min-width: 280px; /* Широкая база для длинного текста */
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-radius: 15px;
+        color: var(--text);
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        z-index: 100;
+    }
+
+    .back-nav-button:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+
+    .nav-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding: 10px;
+    }
+
+    /* 2. БАННЕР 2026 */
     .future-banner {
       background: linear-gradient(135deg, rgba(46, 204, 113, 0.15), rgba(39, 174, 96, 0.1));
       color: var(--text);
-      padding: 25px;
-      border-radius: 15px;
-      margin-bottom: 30px;
+      padding: 30px 20px;
+      border-radius: 20px;
+      margin: 20px 0 40px;
       text-align: center;
       border: 2px solid rgba(46, 204, 113, 0.3);
     }
     
-    .future-banner h2 { color: var(--green); margin-bottom: 15px; }
-    .future-date { font-size: 1.3rem; font-weight: 700; margin-top: 10px; color: var(--green); }
+    .future-banner h2 { color: var(--green); margin-bottom: 10px; font-weight: 800; }
+    .future-date { font-size: 1.4rem; font-weight: 900; color: var(--green); margin-top: 10px; }
     
-    .back-to-main {
-      display: inline-block;
-      margin-top: 30px;
-      padding: 12px 24px;
-      background: var(--purple);
-      color: white;
-      text-decoration: none;
-      border-radius: 10px;
-      font-weight: 600;
-      transition: all 0.3s ease;
-    }
-    
-    .future-card { position: relative; border: 2px solid rgba(46, 204, 113, 0.3) !important; }
+    /* 3. КАРТОЧКИ И КНОПКИ КУПИТЬ */
+    .future-card { position: relative; border: 2px solid rgba(46, 204, 113, 0.2) !important; }
     
     .future-card::before {
       content: "НОВИНКА 2026";
       position: absolute;
-      top: -10px;
+      top: -12px;
       left: 50%;
       transform: translateX(-50%);
       background: var(--green);
       color: white;
-      padding: 4px 12px;
-      border-radius: 8px;
-      font-size: 0.7rem;
-      font-weight: 700;
-      z-index: 2;
+      padding: 5px 15px;
+      border-radius: 10px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      z-index: 5;
+    }
+
+    .card .select {
+        margin: 20px auto 0;
+        display: block;
+        width: 100%;
     }
     
-    .original-price { text-decoration: line-through; color: var(--muted); font-size: 1.1rem; margin-bottom: 5px; }
-    .discount-badge { display: inline-block; background: var(--green); color: white; padding: 3px 8px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; margin-left: 10px; }
-    .trial-card { background: linear-gradient(135deg, rgba(184, 30, 43, 0.1), rgba(184, 30, 43, 0.05)); border: 2px solid var(--red) !important; }
-    .trial-price { font-size: 2.2rem; font-weight: 900; color: var(--red); margin: 15px 0; }
+    .original-price { text-decoration: line-through; color: var(--muted); font-size: 1.1rem; margin-bottom: 5px; opacity: 0.7; }
+    .discount-badge { display: inline-block; background: var(--green); color: white; padding: 4px 10px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; margin-left: 8px; }
     
-    .back-nav-button {
-        position: fixed;
-        top: 20px;
-        left: 20px;
-        z-index: 1000;
-        background: rgba(255,255,255,0.2);
-        padding: 10px 15px;
-        border-radius: 10px;
-        text-decoration: none;
-        color: inherit;
-        backdrop-filter: blur(5px);
-        font-weight: 600;
-        font-size: 0.9rem;
+    .trial-card { background: linear-gradient(135deg, rgba(184, 30, 43, 0.08), rgba(184, 30, 43, 0.04)); border: 2px solid var(--red) !important; }
+    .trial-price { font-size: 2.4rem; font-weight: 900; color: var(--red); margin: 15px 0; }
+    
+    .back-to-main-footer {
+      display: inline-block;
+      margin-top: 40px;
+      padding: 15px 30px;
+      background: var(--purple);
+      color: white;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 700;
+      transition: 0.3s;
     }
   </style>
 </head>
@@ -86,25 +115,27 @@
     <span class="sun-icon">☀️</span>
   </button>
 
-  <a href="index.html" class="back-nav-button">← К абонементам 2025</a>
-
   <header class="header glass">
     <img src="logo_header_final.png" alt="Lady Stretch" class="logo">
   </header>
 
+  <div class="nav-container">
+    <a href="index.html" class="back-nav-button">← К абонементам 2025 года</a>
+  </div>
+
   <main class="wrapper">
     <section class="hero glass">
       <h1 class="hero-title">
-        <span class="green-text">Новые</span>
-        <span class="green-text">абонементы</span> 🎯
+        <span class="green-text">Тарифы</span>
+        <span class="green-text">будущего</span> ✨
       </h1>
-      <p class="hero-subtitle">С 1 января 2026 года</p>
+      <p class="hero-subtitle">Ваши новые возможности в 2026 году</p>
     </section>
 
     <section class="glass future-banner">
-      <h2>🚀 Обновленная система абонементов 2026</h2>
-      <p>Новые форматы с улучшенными условиями и специальными скидками</p>
-      <div class="future-date">Доступны с 1 января 2026 года</div>
+      <h2>🚀 Обновленная программа</h2>
+      <p>С 1 января 2026 года стоимость и наполнение пакетов изменятся.</p>
+      <div class="future-date">Запуск через 1 января</div>
     </section>
 
     <section class="packages">
@@ -158,20 +189,20 @@
       <button class="back-button" onclick="goBack()">← Вернуться к списку</button>
     </section>
 
-    <div style="text-align: center; margin-top: 40px;">
-      <a href="index.html" class="back-to-main">← К абонементам по спец цене 2025 года</a>
+    <div style="text-align: center; margin-bottom: 50px;">
+        <a href="index.html" class="back-to-main-footer">Успеть купить по цене 2025 года</a>
     </div>
 
     <footer class="footer">
-      Новые абонементы доступны с 1 января 2026 года<br>
-      Предзаказ по специальным ценам 2025 года открыт до 31 декабря 2025
+      Новые тарифы вступают в силу с 01.01.2026<br>
+      © Lady Stretch 2025-2026
     </footer>
   </main>
 
   <script src="script.js"></script>
   <script>
     function showComingSoon() {
-      alert('Эти абонементы будут доступны с 1 января 2026 года!\n\nСейчас вы можете приобрести абонементы 2025 года по старым ценам.');
+      alert('Продажи по этим тарифам откроются 1 января 2026 года!\n\nСейчас вы можете зафиксировать старую цену на главной странице.');
     }
   </script>
 </body>
