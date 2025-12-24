@@ -12,40 +12,55 @@
 
   <link rel="stylesheet" href="style.css">
   <style>
-    /* 1. ГЛАВНАЯ НАВИГАЦИОННАЯ КНОПКА (Исправленная) */
+    /* 1. ГЛАВНАЯ НАВИГАЦИОННАЯ КНОПКА (ФИКСИРОВАННАЯ И ПО ЦЕНТРУ) */
     .back-nav-button {
-        position: relative; /* Убираем фиксированное положение, чтобы не накладывалась на лого */
+        position: fixed; 
+        top: 85px;       
+        left: 50%;
+        transform: translateX(-50%); 
+        z-index: 2000;   
+        
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        margin: 20px auto;
-        padding: 14px 28px;
-        min-width: 280px; /* Широкая база для длинного текста */
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border-radius: 15px;
+        
+        width: 90%;
+        max-width: 320px; 
+        padding: 12px 20px;
+        
+        background: rgba(138, 43, 226, 0.25); 
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        
+        border-radius: 12px;
         color: var(--text);
         text-decoration: none;
         font-weight: 700;
-        font-size: 1rem;
+        font-size: 0.9rem;
+        text-align: center;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
         transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        z-index: 100;
+        white-space: nowrap;
     }
 
     .back-nav-button:hover {
-        background: rgba(255, 255, 255, 0.2);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        background: rgba(138, 43, 226, 0.4);
+        transform: translateX(-50%) translateY(-2px);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
     }
 
-    .nav-container {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        padding: 10px;
+    /* Отступ для Hero, чтобы кнопка не закрывала заголовок */
+    .hero {
+        margin-top: 120px !important;
+    }
+
+    @media (max-width: 480px) {
+        .back-nav-button {
+            top: 75px;
+            font-size: 0.8rem;
+            max-width: 280px;
+        }
     }
 
     /* 2. БАННЕР 2026 */
@@ -62,7 +77,7 @@
     .future-banner h2 { color: var(--green); margin-bottom: 10px; font-weight: 800; }
     .future-date { font-size: 1.4rem; font-weight: 900; color: var(--green); margin-top: 10px; }
     
-    /* 3. КАРТОЧКИ И КНОПКИ КУПИТЬ */
+    /* 3. КАРТОЧКИ */
     .future-card { position: relative; border: 2px solid rgba(46, 204, 113, 0.2) !important; }
     
     .future-card::before {
@@ -119,9 +134,7 @@
     <img src="logo_header_final.png" alt="Lady Stretch" class="logo">
   </header>
 
-  <div class="nav-container">
-    <a href="index.html" class="back-nav-button">← К абонементам 2025 года</a>
-  </div>
+  <a href="index.html" class="back-nav-button">← К абонементам 2025 года</a>
 
   <main class="wrapper">
     <section class="hero glass">
@@ -139,10 +152,7 @@
     </section>
 
     <section class="packages">
-      <div class="card glass future-card"
-           data-price="38080"
-           data-link="https://ecom.otpbank.ru/smart-form?config=b0e1d97a-e60c-4559-9fd8-5666fe5f40ed"
-           data-installments="12">
+      <div class="card glass future-card" data-price="38080" data-link="https://ecom.otpbank.ru/smart-form?config=b0e1d97a-e60c-4559-9fd8-5666fe5f40ed" data-installments="12">
         <h3>64 занятия <span class="discount-badge">-15%</span></h3>
         <p class="original-price">44 800 ₽</p>
         <p class="desc">Регулярные тренировки · 12 месяцев<br>+ доступ к онлайн-курсу и тренировкам</p>
@@ -150,10 +160,7 @@
         <button class="select" onclick="showComingSoon()">Скоро доступно</button>
       </div>
 
-      <div class="card glass future-card"
-           data-price="20160"
-           data-link="https://ecom.otpbank.ru/smart-form?config=293fedad-a411-411d-8b5e-0747e82f6c73"
-           data-installments="6">
+      <div class="card glass future-card" data-price="20160" data-link="https://ecom.otpbank.ru/smart-form?config=293fedad-a411-411d-8b5e-0747e82f6c73" data-installments="6">
         <h3>32 занятия <span class="discount-badge">-10%</span></h3>
         <p class="original-price">22 400 ₽</p>
         <p class="desc">Интенсивный старт · 6 месяцев<br>+ курс детокс</p>
@@ -161,9 +168,7 @@
         <button class="select" onclick="showComingSoon()">Скоро доступно</button>
       </div>
 
-      <div class="card glass future-card"
-           data-price="10640"
-           data-installments="Нет">
+      <div class="card glass future-card" data-price="10640" data-installments="Нет">
         <h3>16 занятий <span class="discount-badge">-5%</span></h3>
         <p class="original-price">11 200 ₽</p>
         <p class="desc">Первые шаги · 3 месяца<br>+ 1 месяц онлайн тренировок</p>
@@ -177,16 +182,6 @@
         <p class="trial-price">455 ₽</p>
         <button class="select" onclick="showComingSoon()">Скоро доступно</button>
       </div>
-    </section>
-
-    <section id="payment" class="glass payment" style="display:none; margin-top: 30px;">
-      <a id="sbp-link" href="#" target="_blank" class="pay-main">
-        Оплатить <strong><span id="selected-price"></span> ₽</strong>
-      </a>
-      <button id="installment-btn" class="pay-alt installment-btn" style="display:none;" onclick="openInstallment()">
-        Оформить рассрочку на <span id="months"></span>
-      </button>
-      <button class="back-button" onclick="goBack()">← Вернуться к списку</button>
     </section>
 
     <div style="text-align: center; margin-bottom: 50px;">
