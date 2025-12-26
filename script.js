@@ -6,6 +6,13 @@ const BONUS_STEP = 200;
 const MAX_BONUS = 1000;
 const WISHES = ["Грации!", "Красоты!", "Здоровья!", "Счастья!", "Энергии!", "Гибкости!"];
 
+// Ссылки со скидкой 1000 руб
+const SALE_LINKS = {
+    card: "https://checkout.tochka.com/c86b3625-580b-46a8-93ff-88394a302610",
+    installment96: "https://ecom.otpbank.ru/smart-form?config=4ba599c9-4baa-40c1-8573-6b6945cdb73e",
+    installment64: "https://ecom.otpbank.ru/smart-form?config=c915eef7-212b-4548-9c12-06d8757135d6"
+};
+
 let caughtCharacters = parseInt(localStorage.getItem('caughtCharacters')) || 0;
 let currentBonus = parseInt(localStorage.getItem('totalBonus')) || 0;
 let isLightTheme = localStorage.getItem('theme') === 'light';
@@ -45,10 +52,31 @@ function setupShopLogic() {
             
             const price = this.getAttribute('data-price');
             const installments = this.getAttribute('data-installments');
-            let rawLink = this.getAttribute('data-link') || "";
-            currentInstallmentLink = rawLink.replace(/&quot;/g, '').replace(/"/g, '').trim();
+            const cardTitle = this.querySelector('h3') ? this.querySelector('h3').innerText : "";
 
-            document.getElementById('selected-price').textContent = Number(price).toLocaleString('ru-RU');
+            // ЛОГИКА СКИДКИ: Если набрано 1000 руб
+            const hasMaxBonus = currentBonus >= MAX_BONUS;
+            
+            // 1. Определяем ссылку для рассрочки
+            let finalLink = this.getAttribute('data-link') || "";
+            if (hasMaxBonus) {
+                if (cardTitle.includes("96")) finalLink = SALE_LINKS.installment96;
+                else if (cardTitle.includes("64")) finalLink = SALE_LINKS.installment64;
+            }
+            currentInstallmentLink = finalLink.replace(/&quot;/g, '').replace(/"/g, '').trim();
+
+            // 2. Определяем цену для отображения
+            const displayPrice = hasMaxBonus ? (Number(price) - 1000) : Number(price);
+            document.getElementById('selected-price').textContent = displayPrice.toLocaleString('ru-RU');
+
+            // 3. Подменяем ссылку для оплаты картой (Точка) в кнопке оплаты
+            const cardPayBtn = document.querySelector('.pay-main'); // Ссылка "Оплатить"
+            if (cardPayBtn && hasMaxBonus) {
+                cardPayBtn.href = SALE_LINKS.card;
+            } else if (cardPayBtn) {
+                // Если бонуса нет, возвращаем стандартную логику (например, СБП/Точка без скидки)
+                // Если у вас там статичная ссылка в HTML, она останется, если нет - можно прописать дефолт
+            }
             
             const instBtn = document.getElementById('installment-btn');
             const monthsDisplay = document.getElementById('months');
@@ -69,7 +97,7 @@ function openInstallment() {
     if (currentInstallmentLink) {
         window.open(currentInstallmentLink, '_blank');
     } else {
-        alert("Ссылка для данного тарифа не найдена.");
+        alert("Ссылка для рассрочки не найдена.");
     }
 }
 
@@ -86,7 +114,7 @@ function goBack() {
 
 function startCharacterGame() {
     setInterval(() => {
-        const isBonus = Math.random() > 0.35; // Шанс появления персонажа
+        const isBonus = Math.random() > 0.35; 
         const char = document.createElement('div');
         char.innerHTML = isBonus ? ['⛄', '🎅', '🎁', '🦌', '🌟'][Math.floor(Math.random() * 5)] : '❄';
         char.className = 'game-character';
@@ -120,7 +148,6 @@ function updateUI() {
     const counter = document.getElementById('character-count');
     if (counter) {
         counter.textContent = caughtCharacters;
-        // Эффект пульсации
         counter.style.transition = "0.2s";
         counter.style.transform = "scale(1.4)";
         counter.style.color = "#2ecc71";
@@ -132,14 +159,16 @@ function updateUI() {
 }
 
 function processWin() {
+    let isMaxReached = false;
     if (currentBonus < MAX_BONUS) {
         currentBonus += BONUS_STEP;
         localStorage.setItem('totalBonus', currentBonus);
+    } else {
+        isMaxReached = true;
     }
     
-    launchConfetti(); // Запуск салюта
+    launchConfetti(); 
 
-    // Показываем красивое окно
     const winModal = document.createElement('div');
     winModal.className = 'glass';
     Object.assign(winModal.style, {
@@ -148,23 +177,44 @@ function processWin() {
         boxShadow: '0 0 50px rgba(0,0,0,0.5)', minWidth: '320px', border: '2px solid var(--green)'
     });
     
-    winModal.innerHTML = `
-        <div style="font-size: 50px;">🦢</div>
-        <h2 style="color: var(--green); margin: 15px 0;">Праздник к нам пришел!</h2>
-        <p>Вы собрали 10 подарков! Ваша персональная скидка увеличилась.</p>
-        <div style="font-size: 24px; font-weight: 900; margin: 20px 0; color: var(--green);">Бонус: ${currentBonus} ₽</div>
-        <button id="close-win" class="select" style="width: 200px;">Продолжить</button>
-    `;
+    if (currentBonus < MAX_BONUS) {
+        // Окно промежуточного прогресса
+        winModal.innerHTML = `
+            <div style="font-size: 50px;">🎁</div>
+            <h2 style="color: var(--green); margin: 15px 0;">Отлично!</h2>
+            <p style="font-size: 1.1rem;">+200 бонусов в кармане, давай еще!</p>
+            <div style="font-size: 24px; font-weight: 900; margin: 20px 0; color: var(--green);">Всего: ${currentBonus} ₽</div>
+            <button id="close-win" class="select" style="width: 200px;">Продолжить</button>
+        `;
+    } else {
+        // Окно финальной победы (1000 руб)
+        winModal.innerHTML = `
+            <div style="font-size: 50px;">🎉</div>
+            <h2 style="color: var(--green); margin: 15px 0;">Поздравляем!</h2>
+            <p>Вы набрали максимум бонусов! Скидка активирована.</p>
+            <div style="font-size: 28px; font-weight: 900; margin: 20px 0; color: var(--green);">Скидка: 1 000 ₽</div>
+            <button id="go-to-sale" class="select" style="width: 260px;">Забрать абонемент со скидкой</button>
+        `;
+    }
     
     document.body.appendChild(winModal);
-    document.getElementById('close-win').onclick = () => winModal.remove();
+
+    if (document.getElementById('close-win')) {
+        document.getElementById('close-win').onclick = () => winModal.remove();
+    }
+
+    if (document.getElementById('go-to-sale')) {
+        document.getElementById('go-to-sale').onclick = () => {
+            winModal.remove();
+            document.getElementById('packages').scrollIntoView({ behavior: 'smooth' });
+        };
+    }
 
     caughtCharacters = 0;
     localStorage.setItem('caughtCharacters', 0);
     updateUI();
 }
 
-// Эффект конфетти
 function launchConfetti() {
     for (let i = 0; i < 50; i++) {
         const particle = document.createElement('div');
@@ -245,7 +295,6 @@ function initTimer() {
     }, 1000);
 }
 
-// CSS анимация для падения (добавьте в style.css если её там нет)
 const style = document.createElement('style');
 style.innerHTML = `
 @keyframes character-fall {
