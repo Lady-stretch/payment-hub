@@ -89,7 +89,7 @@ body.light-theme {
   top: -50px;
   font-size: 40px;
   cursor: pointer;
-  z-index: 1000;
+  z-index: 2000;
   animation: character-fall linear forwards !important;
   transition: transform 0.3s ease;
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
@@ -132,7 +132,7 @@ body.light-theme {
   background: var(--glass);
   border: 1px solid var(--border);
   cursor: pointer;
-  z-index: 1003;
+  z-index: 3000;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -140,8 +140,20 @@ body.light-theme {
   backdrop-filter: blur(10px);
   box-shadow: var(--shadow);
   transition: all 0.3s ease;
-  overflow: hidden;
+  overflow: hidden; /* Важно: скрывает улетающую иконку */
 }
+
+/* Анимация разделения иконок Луны и Солнца */
+.theme-toggle span {
+  position: absolute;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s;
+}
+
+.sun-icon { transform: translateY(40px); opacity: 0; }
+.moon-icon { transform: translateY(0); opacity: 1; }
+
+body.light-theme .sun-icon { transform: translateY(0); opacity: 1; }
+body.light-theme .moon-icon { transform: translateY(-40px); opacity: 0; }
 
 .header {
   position: fixed;
@@ -217,13 +229,16 @@ body.light-theme .header { background: rgba(248, 249, 250, 0.9); }
   display: inline-block;
   padding: 12px 24px;
   background: var(--purple);
-  color: white;
+  color: white !important;
   text-decoration: none;
   border-radius: 12px;
   font-weight: 600;
   margin: 5px;
   min-width: 250px;
+  transition: transform 0.2s;
 }
+
+.test-link:hover, .motivation-link:hover { transform: scale(1.02); }
 
 body.light-theme .test-link, body.light-theme .motivation-link { background: #6c757d; }
 
@@ -252,7 +267,6 @@ body.light-theme .test-link, body.light-theme .motivation-link { background: #6c
 }
 
 .card:hover { transform: translateY(-8px); }
-
 .card.hit { border: 2px solid var(--green); }
 
 .price { font-size: 2rem; font-weight: 900; color: var(--green); margin: 15px 0; }
@@ -266,24 +280,20 @@ body.light-theme .test-link, body.light-theme .motivation-link { background: #6c
   font-weight: 700;
   border: none;
   cursor: pointer;
+  transition: background 0.3s;
 }
 
 /* ====================== */
-/* БЛОК КОНТАКТОВ (НОВОЕ) */
+/* БЛОК КОНТАКТОВ */
 /* ====================== */
 
 .contacts-section {
   margin-top: 20px;
 }
 
-.contacts-section h2 {
-  color: var(--green);
-  margin-bottom: 15px;
-}
-
 .address-highlight {
   font-weight: 700;
-  color: var(--text);
+  color: var(--green); /* Исправлено для видимости в обоих темах */
 }
 
 .vk-button {
@@ -308,60 +318,11 @@ body.light-theme .test-link, body.light-theme .motivation-link { background: #6c
   box-shadow: 0 8px 25px rgba(0, 119, 255, 0.4);
 }
 
-.vk-button img {
-  width: 20px;
-  margin-right: 12px;
-  filter: brightness(0) invert(1);
-}
-
-/* ====================== */
-/* ОПЛАТА */
-/* ====================== */
-
-.payment { max-width: 600px; }
-
-.pay-main {
-  display: block;
-  background: linear-gradient(to right, #2e7d32, #4caf50);
-  color: white;
-  padding: 18px;
-  border-radius: 14px;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 1.3rem;
-  margin-bottom: 15px;
-}
-
-.installment-btn {
-  width: 100%;
-  background: linear-gradient(to right, #ff9800, #ffb74d);
-  color: white;
-  padding: 16px;
-  border-radius: 14px;
-  border: none;
-  font-weight: 700;
-  margin-bottom: 15px;
-  cursor: pointer;
-}
-
-.qr-image {
-  width: 180px;
-  height: 180px;
-  border-radius: 12px;
-  margin: 15px auto;
-  display: block;
-  border: 5px solid white;
-}
-
-/* ====================== */
 /* АДАПТИВНОСТЬ */
-/* ====================== */
-
 @media (max-width: 768px) {
   .packages { grid-template-columns: 1fr; }
   .hero-title { font-size: 2.5rem; }
   .character-counter { top: 80px; right: 10px; font-size: 0.8rem; min-width: 120px; }
-  .packages-button { font-size: 0.8rem; padding: 8px 15px; }
 }
 
 /* ФУТЕР */
@@ -373,28 +334,3 @@ body.light-theme .test-link, body.light-theme .motivation-link { background: #6c
 }
 
 .green-link { color: var(--green); text-decoration: none; font-weight: 600; }
-
-/* УВЕДОМЛЕНИЯ ИГРЫ */
-.gift-notification {
-  position: fixed;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  background: linear-gradient(135deg, #2ecc71, #27ae60);
-  padding: 40px;
-  border-radius: 25px;
-  z-index: 10000;
-  text-align: center;
-  color: white;
-  box-shadow: 0 0 100px rgba(0,0,0,0.5);
-}
-
-.gift-notification button {
-  background: white;
-  color: #2ecc71;
-  padding: 12px 30px;
-  border-radius: 10px;
-  border: none;
-  font-weight: 700;
-  margin-top: 20px;
-  cursor: pointer;
-}
