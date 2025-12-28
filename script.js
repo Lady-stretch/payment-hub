@@ -1,5 +1,5 @@
 // ==========================================
-// 1. КОНФИГУРАЦИЯ И ПАМЯТЬ
+// 1. КОНФИГУРАЦИЯ И СОСТОЯНИЕ
 // ==========================================
 const CHARACTERS_PER_LEVEL = 10;
 const BONUS_STEP = 200;
@@ -18,7 +18,7 @@ let isLightTheme = localStorage.getItem('theme') === 'light';
 let currentInstallmentLink = ""; 
 
 // ==========================================
-// 2. ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ
+// 2. ИНИЦИАЛИЗАЦИЯ
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
     applyTheme();
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ==========================================
-// 3. ЛОГИКА АБОНЕМЕНТОВ
+// 3. ЛОГИКА МАГАЗИНА И ОПЛАТЫ
 // ==========================================
 function setupShopLogic() {
     const themeBtn = document.getElementById('theme-toggle');
@@ -41,38 +41,42 @@ function setupShopLogic() {
         card.addEventListener('click', function(e) {
             if (e.target.closest('.game-character')) return;
 
-            document.querySelectorAll('.card').forEach(c => c.style.border = "none");
-            this.style.border = "2px solid #4a6fa5";
+            // Выделение карточки
+            document.querySelectorAll('.card').forEach(c => {
+                c.style.border = "none";
+                c.classList.remove('selected-card');
+            });
+            this.classList.add('selected-card');
+            this.style.border = "3px solid var(--green)";
 
             const paymentSection = document.getElementById('payment');
-            if (!paymentSection) return;
             paymentSection.style.display = 'block';
             
             const price = this.getAttribute('data-price');
             const installments = this.getAttribute('data-installments');
-            const cardTitle = this.querySelector('h3').innerText;
             const hasMaxBonus = currentBonus >= MAX_BONUS;
+            const title = this.querySelector('h3').innerText;
 
-            // Ссылки
+            // Установка ссылок
             let finalLink = this.getAttribute('data-link') || "";
             if (hasMaxBonus) {
-                if (cardTitle.includes("96")) finalLink = SALE_LINKS.installment96;
-                else if (cardTitle.includes("64")) finalLink = SALE_LINKS.installment64;
+                if (title.includes("96")) finalLink = SALE_LINKS.installment96;
+                else if (title.includes("64")) finalLink = SALE_LINKS.installment64;
                 document.getElementById('sbp-link').href = SALE_LINKS.card;
             } else {
                 document.getElementById('sbp-link').href = "https://qr.nspk.ru/AS2A006F0RCJU7V991SBLV4AACJGFT2P?type=01&bank=100000000004&crc=A93E";
             }
-            currentInstallmentLink = finalLink.replace(/&quot;/g, '').replace(/"/g, '').trim();
+            currentInstallmentLink = finalLink;
 
-            // Цена
+            // Форматирование цены (с пробелом перед ₽)
             const displayPrice = hasMaxBonus ? (Number(price) - 1000) : Number(price);
             document.getElementById('selected-price').textContent = displayPrice.toLocaleString('ru-RU');
 
+            // Кнопка рассрочки
             const instBtn = document.getElementById('installment-btn');
-            const monthsDisplay = document.getElementById('months');
-            if (installments && installments !== 'Нет' && currentInstallmentLink !== "") {
+            if (installments && installments !== 'Нет' && currentInstallmentLink) {
                 instBtn.style.display = 'block';
-                monthsDisplay.textContent = installments + ' мес';
+                document.getElementById('months').textContent = installments + ' мес';
             } else {
                 instBtn.style.display = 'none';
             }
@@ -82,20 +86,90 @@ function setupShopLogic() {
     });
 }
 
-function openInstallment() { if (currentInstallmentLink) window.open(currentInstallmentLink, '_blank'); }
+function openInstallment() {
+    if (currentInstallmentLink) window.open(currentInstallmentLink, '_blank');
+}
 
 function goBack() {
     document.getElementById('payment').style.display = 'none';
-    document.querySelectorAll('.card').forEach(c => c.style.border = "none");
-    document.getElementById('packages').scrollIntoView({ behavior: 'smooth' });
+    document.querySelectorAll('.card').forEach(c => {
+        c.style.border = "none";
+        c.classList.remove('selected-card');
+    });
+    window.scrollTo({ top: document.getElementById('packages').offsetTop - 100, behavior: 'smooth' });
 }
 
 // ==========================================
-// 4. НОВОГОДНЯЯ ИГРА И ЭФФЕКТЫ
+// 4. ТАЙМЕР И ТЕМА
 // ==========================================
+function initTimer() {
+    const t = document.getElementById('countdown-timer');
+    if (!t) return;
+    const target = new Date('January 1, 2026 00:00:00').getTime();
+    
+    setInterval(() => {
+        const diff = target - Date.now();
+        if (diff <= 0) { t.textContent = "С НОВЫМ ГОДОМ! 🎉"; return; }
+        
+        const d = Math.floor(diff/86400000);
+        const h = Math.floor((diff%86400000)/3600000);
+        const m = Math.floor((diff%3600000)/60000);
+        const s = Math.floor((diff%60000)/1000);
+        
+        const p = (n) => n < 10 ? '0'+n : n;
+        t.textContent = `${p(d)}д : ${p(h)}ч : ${p(m)}м : ${p(s)}с`;
+    }, 1000);
+}
+
+function applyTheme() {
+    document.body.classList.toggle('light-theme', isLightTheme);
+    const btn = document.getElementById('theme-toggle');
+    if (btn) btn.innerHTML = isLightTheme ? '☀️' : '🌙';
+}
+
+function toggleTheme() {
+    isLightTheme = !isLightTheme;
+    localStorage.setItem('theme', isLightTheme ? 'light' : 'dark');
+    applyTheme();
+    initStars();
+}
+
+// ==========================================
+// 5. ИГРА И ЭФФЕКТЫ (СНЕГ, ЗВЕЗДЫ, ГЕРОИ)
+// ==========================================
+function initStars() { 
+    const container = document.querySelector('.stars-container'); 
+    if (!container) return; 
+    container.innerHTML = ''; 
+    if (isLightTheme) return;
+    for (let i=0; i<150; i++) { 
+        const s = document.createElement('div'); 
+        const size = Math.random() * 3 + 'px';
+        s.style.cssText = `position:absolute; width:${size}; height:${size}; background:white; left:${Math.random()*100}%; top:${Math.random()*100}%; opacity:${Math.random()}; border-radius:50%; pointer-events:none;`; 
+        container.appendChild(s); 
+    } 
+}
+
+function initSnow() {
+    const container = document.querySelector('.snow-container');
+    if (!container) return;
+    setInterval(() => {
+        const flake = document.createElement('div');
+        flake.innerHTML = '❄';
+        flake.style.cssText = `
+            position: fixed; top: -20px; left: ${Math.random() * 100}vw;
+            opacity: ${Math.random()}; font-size: ${10 + Math.random() * 20}px;
+            color: white; pointer-events: none; z-index: 5;
+            animation: fall ${5 + Math.random() * 10}s linear forwards;
+        `;
+        container.appendChild(flake);
+        setTimeout(() => flake.remove(), 10000);
+    }, 300);
+}
+
 function startCharacterGame() {
     setInterval(() => {
-        const isBonus = Math.random() > 0.35; 
+        const isBonus = Math.random() > 0.4;
         const char = document.createElement('div');
         char.innerHTML = isBonus ? ['⛄', '🎅', '🎁', '🦌', '🌟'][Math.floor(Math.random() * 5)] : '❄';
         char.className = 'game-character';
@@ -103,91 +177,68 @@ function startCharacterGame() {
         Object.assign(char.style, {
             position: 'fixed', top: '-60px', left: (10 + Math.random() * 80) + 'vw',
             fontSize: '45px', zIndex: '10000', cursor: 'pointer', userSelect: 'none',
-            animation: `character-fall ${7 + Math.random() * 3}s linear forwards`
+            animation: `fall ${6 + Math.random() * 4}s linear forwards`
         });
 
-        if (isBonus) {
-            const handleCatch = (e) => {
-                e.preventDefault(); e.stopPropagation();
+        const catchFn = (e) => {
+            e.preventDefault();
+            if (isBonus) {
                 showClickEffect(char, `✨ +1 ${WISHES[Math.floor(Math.random()*WISHES.length)]}`);
                 caughtCharacters++;
                 localStorage.setItem('caughtCharacters', caughtCharacters);
-                char.remove();
                 updateUI();
                 if (caughtCharacters >= CHARACTERS_PER_LEVEL) processWin();
-            };
-            char.onclick = handleCatch;
-            char.ontouchstart = handleCatch;
-        }
+            }
+            char.remove();
+        };
+
+        char.onclick = catchFn;
+        char.ontouchstart = catchFn;
         document.body.appendChild(char);
         setTimeout(() => char.remove(), 10000);
     }, 2500);
 }
 
-function updateUI() { if (document.getElementById('character-count')) document.getElementById('character-count').textContent = caughtCharacters; }
+function showClickEffect(el, text) {
+    const rect = el.getBoundingClientRect();
+    const eff = document.createElement('div');
+    eff.innerHTML = text;
+    eff.style.cssText = `
+        position: fixed; left: ${rect.left}px; top: ${rect.top}px;
+        color: #FFD700; font-weight: 900; z-index: 15000; font-size: 22px;
+        pointer-events: none; transition: 1.5s; text-shadow: 0 0 10px rgba(0,0,0,0.5);
+    `;
+    document.body.appendChild(eff);
+    setTimeout(() => {
+        eff.style.transform = 'translateY(-120px) scale(1.2)';
+        eff.style.opacity = '0';
+    }, 50);
+    setTimeout(() => eff.remove(), 1500);
+}
 
 function processWin() {
     if (currentBonus < MAX_BONUS) {
         currentBonus += BONUS_STEP;
         localStorage.setItem('totalBonus', currentBonus);
     }
-    alert(currentBonus >= MAX_BONUS ? "ПОЗДРАВЛЯЕМ! Скидка 1000₽ активирована!" : `Отлично! +200 бонусов. Всего: ${currentBonus}₽`);
+    alert(currentBonus >= MAX_BONUS ? "ПОЗДРАВЛЯЕМ! Скидка 1000₽ на абонемент ваша!" : `Супер! Собрано 10 героев. Ваш бонус: ${currentBonus}₽`);
     caughtCharacters = 0;
     localStorage.setItem('caughtCharacters', 0);
     updateUI();
 }
 
-// ==========================================
-// 5. ТЕМА, СНЕГ И ТАЙМЕР
-// ==========================================
-function initStars() { 
-    const container = document.querySelector('.stars-container'); 
-    if (!container) return; 
-    container.innerHTML = ''; 
-    if (isLightTheme) return;
-    for (let i=0; i<150; i++) { // ИСПРАВЛЕНО: 150 ЗВЕЗД
-        const s = document.createElement('div'); 
-        s.style.cssText = `position:absolute; width:2px; height:2px; background:white; left:${Math.random()*100}%; top:${Math.random()*100}%; opacity:${Math.random()}; border-radius:50%;`; 
-        container.appendChild(s); 
-    } 
+function updateUI() {
+    const el = document.getElementById('character-count');
+    if (el) el.textContent = caughtCharacters;
 }
 
-function initSnow() { 
-    const container = document.querySelector('.snow-container'); 
-    setInterval(() => { 
-        const f = document.createElement('div'); 
-        f.innerHTML = '❄'; 
-        f.style.cssText = `position:fixed; top:-20px; left:${Math.random()*100}vw; opacity:${Math.random()}; animation:character-fall 8s linear forwards; color:white; pointer-events:none; z-index:5;`; 
-        container.appendChild(f); 
-        setTimeout(()=>f.remove(), 8000); 
-    }, 400); 
-}
-
-function initTimer() {
-    const t = document.getElementById('countdown-timer');
-    const target = new Date('January 1, 2026 00:00:00').getTime();
-    setInterval(() => {
-        const diff = target - Date.now();
-        if (diff <= 0) { t.textContent = "С НОВЫМ ГОДОМ! 🎉"; return; }
-        const d = Math.floor(diff/86400000), h = Math.floor((diff%86400000)/3600000), m = Math.floor((diff%3600000)/60000), s = Math.floor((diff%60000)/1000);
-        const pad = (n) => n < 10 ? '0'+n : n;
-        t.textContent = `${pad(d)}д : ${pad(h)}ч : ${pad(m)}м : ${pad(s)}с`; // ИСПРАВЛЕНО: ФОРМАТ ТАЙМЕРА
-    }, 1000);
-}
-
-function applyTheme() { document.body.classList.toggle('light-theme', isLightTheme); }
-function toggleTheme() { isLightTheme = !isLightTheme; applyTheme(); localStorage.setItem('theme', isLightTheme ? 'light' : 'dark'); initStars(); }
-
-function showClickEffect(el, text) {
-    const rect = el.getBoundingClientRect();
-    const eff = document.createElement('div');
-    eff.innerHTML = text;
-    eff.style.cssText = `position: fixed; left: ${rect.left}px; top: ${rect.top}px; color: #FFD700; font-weight: bold; z-index: 15000; font-size: 20px; pointer-events: none; transition: 1.2s;`;
-    document.body.appendChild(eff);
-    setTimeout(() => { eff.style.transform = 'translateY(-100px)'; eff.style.opacity = '0'; }, 20);
-    setTimeout(() => eff.remove(), 1200);
-}
-
-const style = document.createElement('style');
-style.innerHTML = `@keyframes character-fall { 0% { transform: translateY(0) rotate(0deg); } 100% { transform: translateY(110vh) rotate(360deg); } }`;
-document.head.appendChild(style);
+// Общая анимация падения
+const styleSheet = document.createElement('style');
+styleSheet.innerHTML = `
+    @keyframes fall {
+        0% { transform: translateY(0) rotate(0deg); }
+        100% { transform: translateY(110vh) rotate(360deg); }
+    }
+    .selected-card { box-shadow: 0 0 25px var(--green); transform: translateY(-5px); transition: 0.3s; }
+`;
+document.head.appendChild(styleSheet);
