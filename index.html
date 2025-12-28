@@ -2,56 +2,18 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Lady Stretch Сыктывкар | Новогоднее настроение 2026</title>
+  <title>Lady Stretch Сыктывкар | Мягий фитнес и растяжка</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 
-  <meta name="description" content="Студия растяжки Lady Stretch в Сыктывкаре. Собери бонусы в игре и получи скидку 1000₽!">
+  <meta name="description" content="Студия растяжки Lady Stretch в Сыктывкаре (ул. Советская, 3 и ул. Коммунистическая, 77/2). Собери бонусы в игре и получи скидку 1000₽ на абонемент!">
+  <meta name="keywords" content="растяжка сыктывкар, lady stretch сыктывкар, фитнес сыктывкар, йога сыктывкар, шпагат сыктывкар">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Great+Vibes&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css">
-  <style>
-    /* Улучшенный таймер */
-    #countdown-timer {
-      font-size: clamp(1.8rem, 6vw, 3rem);
-      font-weight: 900;
-      color: var(--green);
-      letter-spacing: 2px;
-      margin-bottom: 8px;
-      text-shadow: 0 0 20px rgba(46, 204, 113, 0.4);
-    }
-    .timer-caption { opacity: 0.8; font-weight: 700; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; }
-
-    /* Звезды */
-    .star {
-      position: absolute;
-      background: white;
-      border-radius: 50%;
-      animation: twinkle var(--duration) infinite ease-in-out;
-    }
-    @keyframes twinkle { 0%, 100% { opacity: 0.2; transform: scale(1); } 50% { opacity: 1; transform: scale(1.3); } }
-
-    /* Кнопки возврата */
-    .back-to-catalog-btn {
-      background: none;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      padding: 12px 24px;
-      border-radius: 12px;
-      font-size: 0.95rem;
-      cursor: pointer;
-      margin-top: 25px;
-      transition: all 0.3s ease;
-      width: 100%;
-      max-width: 300px;
-    }
-    .back-to-catalog-btn:hover { background: var(--glass); color: var(--text); border-color: var(--text); }
-    
-    .selected-card { border: 3px solid var(--green) !important; transform: translateY(-5px); box-shadow: 0 10px 30px rgba(46, 204, 113, 0.2); }
-  </style>
 </head>
 
 <body>
@@ -60,7 +22,7 @@
   
   <div id="character-counter" class="character-counter">
     🎁 Поймано: <span id="character-count">0</span>/10
-    <div class="counter-hint">Ловите подарки для скидки!</div>
+    <div class="counter-hint">Ловите падающих персонажей!</div>
   </div>
 
   <button id="theme-toggle" class="theme-toggle">
@@ -80,17 +42,29 @@
         <span class="green-text">настроение</span> 🎄
       </h1>
       <p class="hero-subtitle">С наступающим Новым годом!</p>
+      <div class="game-hint">
+        🎮 Ловите падающих новогодних персонажей и получайте праздничные подарки!
+      </div>
+    </section>
+
+    <section class="glass info">
+      <p>Lady Stretch — это мини-группы, внимательное сопровождение тренера и спокойный, осознанный фитнес.</p>
+      <div class="test-section">
+        <p><strong>Фитнес — это инвестиция в здоровье на всю жизнь</strong></p>
+        <a href="fitness-test.html" class="test-link">Пройти фитнес-тест (6 вопросов) →</a>
+        <a href="fitness-motivation.html" class="motivation-link">Для чего нужен фитнес? →</a>
+      </div>
     </section>
 
     <section class="glass timer" style="display: flex; flex-direction: column; align-items: center; padding: 40px 20px;">
-      <div id="countdown-timer">00д : 00ч : 00м : 00с</div>
-      <p class="timer-caption">До Нового года осталось</p>
+      <div id="countdown-timer" style="font-size: clamp(1.8rem, 6vw, 3rem); font-weight: 900; color: var(--green); letter-spacing: 2px;">00д : 00ч : 00м : 00с</div>
+      <p class="timer-caption" style="opacity: 0.8; font-weight: 700; text-transform: uppercase; font-size: 0.85rem; margin-top: 10px;">До Нового года осталось</p>
     </section>
 
     <section class="glass future-link-section">
       <h3>А что будет в 2026 году?</h3>
-      <p>С 1 января изменятся тарифы. Успейте купить по ценам 2025 года!</p>
-      <a href="future-packages.html" class="test-link" style="background: var(--green); margin-top: 15px; display: inline-block;">Посмотреть абонементы 2026 года →</a>
+      <p>Уже с 1 января появятся новые улучшенные абонементы с дополнительными возможностями</p>
+      <a href="future-packages.html" class="test-link" style="background: var(--purple); margin-top: 15px; display: inline-block;">Посмотреть абонементы 2026 года →</a>
     </section>
 
     <section id="packages" class="packages">
@@ -124,7 +98,7 @@
     </section>
 
     <section id="payment" class="glass payment" style="display:none; scroll-margin-top: 120px;">
-      <a id="sbp-link" href="#" target="_blank" class="pay-main" style="gap: 10px;">
+      <a id="sbp-link" href="#" target="_blank" class="pay-main">
         Оплатить СБП или картой&nbsp;&nbsp;<strong><span id="selected-price"></span>&nbsp;₽</strong>
       </a>
 
@@ -136,16 +110,37 @@
         Онлайн-оплата картой
       </button>
 
-      <div style="text-align: center;">
-        <button class="back-to-catalog-btn" onclick="goBack()">← Вернуться к выбору абонемента</button>
+      <div class="qr-section">
+        <h4>Или отсканируйте QR-код СБП</h4>
+        <img src="qr_code.png" alt="QR-код" class="qr-image">
+      </div>
+
+      <div style="text-align: center; margin-top: 20px;">
+        <button onclick="goBack()" style="background:none; border:none; color:var(--muted); text-decoration:underline; cursor:pointer; font-size: 1rem;">
+          ← Вернуться к выбору абонемента
+        </button>
       </div>
     </section>
 
-    <footer class="footer">
-      <div style="margin-bottom: 25px;">
-        <a href="future-packages.html" style="color: var(--green); font-weight: 800; text-decoration: none; border: 2px solid var(--green); padding: 12px 25px; border-radius: 12px; display: inline-block;">Цены и абонементы 2026 года →</a>
+    <section class="glass contacts-section" style="margin-top: 40px; text-align: center;">
+        <h2 style="color: var(--green); margin-bottom: 20px;">Ждем вас в студиях:</h2>
+        <div style="margin-bottom: 25px;">
+            <p>📍 <span class="address-highlight">г. Сыктывкар, ул. Советская, д. 3</span></p>
+            <p>📍 <span class="address-highlight">г. Сыктывкар, ул. Коммунистическая, д. 77/2</span></p>
+        </div>
+        <div style="margin-bottom: 25px;">
+            <p>Свяжитесь с нами: <a href="tel:+79087155557" style="color: var(--text); font-weight: 800; text-decoration: none;">+7 (908) 715-55-57</a></p>
+        </div>
+        <a href="https://vk.com/im?entrypoint=community_page&media=&sel=-221142875" target="_blank" class="vk-button" style="display: inline-flex; align-items: center; background: #0077FF; color: white; padding: 15px 30px; border-radius: 12px; text-decoration: none; font-weight: 700;">
+            Написать в ВКонтакте
+        </a>
+    </section>
+
+    <footer class="footer" style="text-align: center; padding: 40px 20px;">
+      <div style="margin-bottom: 20px;">
+        <a href="future-packages.html" style="color: var(--green); font-weight: 800; text-decoration: none;">Посмотреть абонементы 2026 года →</a>
       </div>
-      <p>© Lady Stretch Сыктывкар 2025-2026</p>
+      © Lady Stretch Сыктывкар 2025
     </footer>
   </main>
 
