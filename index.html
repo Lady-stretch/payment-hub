@@ -155,14 +155,14 @@
          href="https://qr.nspk.ru/AS2A006F0RCJU7V991SBLV4AACJGFT2P?type=01&bank=100000000004&crc=A93E"
          target="_blank"
          class="pay-main">
-        Оплатить СБП или картой <strong><span id="selected-price"></span> ₽</strong>
+        Оплатить СБП или картой&nbsp;<strong><span id="selected-price"></span>&nbsp;₽</strong>
       </a>
 
       <button id="installment-btn"
               class="pay-alt installment-btn"
               style="display:none;"
               onclick="openInstallment()">
-        Оформить рассрочку на <span id="months"></span>
+        Оформить рассрочку на&nbsp;<span id="months"></span>
       </button>
 
       <button class="pay-alt card-pay-button"
@@ -175,7 +175,9 @@
         <img src="qr_code.png" alt="QR-код" class="qr-image">
       </div>
 
-      <button class="back-button" onclick="goBack()">← Выбрать другой формат</button>
+      <button class="back-button" onclick="goBack()" style="background:none; border:none; color:var(--muted); cursor:pointer; margin-top:15px; text-decoration:underline; width:100%;">
+        ← Выбрать другой формат
+      </button>
     </section>
 
     <section class="glass contacts-section" style="margin-top: 40px; text-align: center; padding: 30px 20px;">
@@ -204,8 +206,8 @@
 
     <footer class="footer">
       Мини-группы до 10 человек · Индивидуальный подход · г. Сыктывкар
-      <div class="footer-links">
-        <a href="future-packages.html" class="green-link">Посмотреть абонементы 2026 года →</a>
+      <div class="footer-links" style="margin-top: 10px;">
+        <a href="future-packages.html" class="green-link" style="color: var(--green); text-decoration: none; font-weight: 700;">Посмотреть абонементы 2026 года →</a>
       </div>
     </footer>
   </main>
