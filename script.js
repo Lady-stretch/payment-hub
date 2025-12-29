@@ -1,10 +1,10 @@
 // ==========================================
-// 1. КОНСТАНТЫ И СОСТОЯНИЕ
+// 1. НАСТРОЙКИ И СОСТОЯНИЕ
 // ==========================================
 const CHARACTERS_PER_LEVEL = 10;
 const BONUS_STEP = 200;
 const MAX_BONUS = 1000;
-const WISHES = ["Грации!", "Красоты!", "Здоровья!", "Счастья!", "Энергии!", "Гибкости!", "Любви!", "Шпагата!"];
+const WISHES = ["Шпагата!", "Грации!", "Красоты!", "Здоровья!", "Счастья!", "Энергии!", "Гибкости!", "Любви!"];
 
 const SALE_LINKS = {
     card: "https://checkout.tochka.com/c86b3625-580b-46a8-93ff-88394a302610",
@@ -18,7 +18,7 @@ let isLightTheme = localStorage.getItem('theme') === 'light';
 let currentInstallmentLink = ""; 
 
 // ==========================================
-// 2. ИНИЦИАЛИЗАЦИЯ
+// 2. ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
     applyTheme();
@@ -42,10 +42,9 @@ function initStars() {
     for (let i = 0; i < 150; i++) { 
         const s = document.createElement('div'); 
         const size = Math.random() * 3 + 'px';
-        const duration = 2 + Math.random() * 4 + 's';
+        const duration = 2 + Math.random() * 3 + 's';
         const delay = Math.random() * 5 + 's';
         
-        s.className = 'star';
         s.style.cssText = `
             position: absolute; width: ${size}; height: ${size}; background: white; 
             left: ${Math.random() * 100}%; top: ${Math.random() * 100}%; 
@@ -65,25 +64,24 @@ function initSnow() {
         flake.innerHTML = '❄';
         const size = 10 + Math.random() * 20 + 'px';
         const duration = 5 + Math.random() * 8 + 's';
-        const drift = (Math.random() - 0.5) * 200 + 'px';
 
         flake.style.cssText = `
             position: fixed; top: -20px; left: ${Math.random() * 100}vw;
             opacity: ${Math.random()}; font-size: ${size};
             color: white; pointer-events: none; z-index: 5;
-            transition: transform ${duration}s linear;
-            animation: snow-fall ${duration}s linear forwards;
+            animation: fall ${duration}s linear forwards;
         `;
         container.appendChild(flake);
         setTimeout(() => flake.remove(), 10000);
-    }, 400);
+    }, 450);
 }
 
 // ==========================================
-// 4. ТАЙМЕР
+// 4. ЛЕДЯНОЙ ТАЙМЕР
 // ==========================================
 function initTimer() {
     const t = document.getElementById('countdown-timer');
+    if (!t) return;
     const target = new Date('January 1, 2026 00:00:00').getTime();
     
     setInterval(() => {
@@ -101,7 +99,7 @@ function initTimer() {
 }
 
 // ==========================================
-// 5. ИГРОВАЯ ЛОГИКА
+// 5. ИГРА (ПАДАЮЩИЕ ПЕРСОНАЖИ)
 // ==========================================
 function startCharacterGame() {
     setInterval(() => {
@@ -110,17 +108,16 @@ function startCharacterGame() {
         char.innerHTML = isBonus ? ['⛄', '🎅', '🎁', '🦌', '🌟'][Math.floor(Math.random() * 5)] : '❄';
         char.className = 'game-character';
         
-        const startLeft = (10 + Math.random() * 80) + 'vw';
         const duration = 6 + Math.random() * 4;
 
         Object.assign(char.style, {
-            position: 'fixed', top: '-60px', left: startLeft,
-            fontSize: '45px', zIndex: '10000', cursor: 'pointer', userSelect: 'none',
+            position: 'fixed', top: '-60px', left: (10 + Math.random() * 80) + 'vw',
+            fontSize: '45px', zIndex: '20000', cursor: 'pointer', userSelect: 'none',
             animation: `fall ${duration}s linear forwards`
         });
 
         const catchFn = (e) => {
-            e.preventDefault(); e.stopPropagation();
+            e.preventDefault();
             if (isBonus) {
                 showClickEffect(char, `✨ +1 ${WISHES[Math.floor(Math.random()*WISHES.length)]}`);
                 caughtCharacters++;
@@ -134,8 +131,7 @@ function startCharacterGame() {
         char.onclick = catchFn;
         char.ontouchstart = catchFn;
         document.body.appendChild(char);
-        setTimeout(() => char.remove(), 10000);
-    }, 2500);
+    }, 2400);
 }
 
 function showClickEffect(el, txt) {
@@ -144,12 +140,12 @@ function showClickEffect(el, txt) {
     eff.innerHTML = txt;
     eff.style.cssText = `
         position: fixed; left: ${rect.left}px; top: ${rect.top}px;
-        color: #FFD700; font-weight: 900; z-index: 15000; font-size: 22px;
-        text-shadow: 0 0 10px rgba(0,0,0,0.5); pointer-events: none; transition: 1.5s;
+        color: #FFD700; font-weight: 900; z-index: 25000; font-size: 24px;
+        text-shadow: 0 0 10px rgba(0,0,0,0.8); pointer-events: none; transition: 1.5s ease-out;
     `;
     document.body.appendChild(eff);
     setTimeout(() => {
-        eff.style.transform = 'translateY(-120px) scale(1.3)';
+        eff.style.transform = 'translateY(-120px) scale(1.4)';
         eff.style.opacity = '0';
     }, 50);
     setTimeout(() => eff.remove(), 1500);
@@ -161,18 +157,13 @@ function processWin() {
         localStorage.setItem('totalBonus', currentBonus);
     }
 
-    const end = Date.now() + 3000;
-    (function frame() {
-        confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#2ecc71', '#ffffff', '#e74c3c'] });
-        confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#2ecc71', '#ffffff', '#e74c3c'] });
-        if (Date.now() < end) requestAnimationFrame(frame);
-    }());
+    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#2ecc71', '#ffffff', '#e74c3c'] });
 
     const modal = document.getElementById('win-modal');
     const winText = document.getElementById('win-text');
     winText.innerHTML = currentBonus >= MAX_BONUS ? 
-        `МАКСИМАЛЬНЫЙ БОНУС!<br><br><strong>Скидка 1000₽ АКТИВИРОВАНА</strong>` : 
-        `Вам начислено <strong>200₽</strong>!<br>Текущий бонус: <strong>${currentBonus}₽</strong>`;
+        `МАКСИМАЛЬНЫЙ БОНУС СОБРАН!<br><br><strong>Скидка 1000₽ АКТИВИРОВАНА</strong> на покупку абонемента!` : 
+        `Вы поймали 10 героев!<br>Начислено <strong>200₽</strong>!<br>Текущий бонус: <strong>${currentBonus}₽</strong>`;
     
     modal.style.display = 'flex';
     caughtCharacters = 0;
@@ -181,15 +172,14 @@ function processWin() {
 }
 
 // ==========================================
-// 6. ОПЛАТА И НАВИГАЦИЯ
+// 6. МАГАЗИН И ЛОГИКА ОПЛАТЫ
 // ==========================================
 function setupShopLogic() {
     const themeBtn = document.getElementById('theme-toggle');
     if (themeBtn) themeBtn.onclick = toggleTheme;
 
     document.querySelectorAll('.card').forEach(card => {
-        card.addEventListener('click', function(e) {
-            if (e.target.closest('.game-character')) return;
+        card.addEventListener('click', function() {
             document.querySelectorAll('.card').forEach(c => c.style.border = "none");
             this.style.border = "3px solid var(--green)";
 
@@ -201,15 +191,16 @@ function setupShopLogic() {
             const hasMax = currentBonus >= MAX_BONUS;
             const title = this.querySelector('h3').innerText;
 
-            let finalLink = this.getAttribute('data-link') || "";
+            // Логика подмены ссылок
+            let finalInstLink = this.getAttribute('data-link') || "";
             if (hasMax) {
-                if (title.includes("96")) finalLink = SALE_LINKS.installment96;
-                else if (title.includes("64")) finalLink = SALE_LINKS.installment64;
+                if (title.includes("96")) finalInstLink = SALE_LINKS.installment96;
+                else if (title.includes("64")) finalInstLink = SALE_LINKS.installment64;
                 document.getElementById('sbp-link').href = SALE_LINKS.card;
             } else {
                 document.getElementById('sbp-link').href = "https://qr.nspk.ru/AS2A006F0RCJU7V991SBLV4AACJGFT2P?type=01&bank=100000000004&crc=A93E";
             }
-            currentInstallmentLink = finalLink;
+            currentInstallmentLink = finalInstLink;
 
             const dispPrice = hasMax ? (Number(price) - 1000) : Number(price);
             document.getElementById('selected-price').textContent = dispPrice.toLocaleString('ru-RU');
@@ -227,11 +218,9 @@ function setupShopLogic() {
 }
 
 function closeWinModal() { document.getElementById('win-modal').style.display = 'none'; }
-function goBack() { 
-    document.getElementById('payment').style.display = 'none'; 
-    window.scrollTo({ top: document.getElementById('packages').offsetTop - 100, behavior: 'smooth' });
-}
-function applyTheme() { document.body.classList.toggle('light-theme', isLightTheme); }
+function goBack() { document.getElementById('payment').style.display = 'none'; window.scrollTo({top: document.getElementById('packages').offsetTop - 100, behavior: 'smooth'});}
+function openInstallment() { if (currentInstallmentLink) window.open(currentInstallmentLink, '_blank'); }
+function applyTheme() { document.body.classList.toggle('light-theme', isLightTheme); document.getElementById('theme-toggle').innerHTML = isLightTheme ? '☀️' : '🌙'; }
 function toggleTheme() { isLightTheme = !isLightTheme; applyTheme(); localStorage.setItem('theme', isLightTheme ? 'light' : 'dark'); initStars(); }
 function updateUI() { const el = document.getElementById('character-count'); if(el) el.textContent = caughtCharacters; }
 
@@ -241,4 +230,6 @@ function updateUI() { const el = document.getElementById('character-count'); if(
 const styleTag = document.createElement('style');
 styleTag.innerHTML = `
     @keyframes fall { 0% { transform: translateY(0) rotate(0deg); } 100% { transform: translateY(110vh) rotate(360deg); } }
-    @keyframes
+    @keyframes twinkle { 0%, 100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 1; transform: scale(1.2); } }
+`;
+document.head.appendChild(styleTag);
