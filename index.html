@@ -10,33 +10,33 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
-    /* Стили для подсказки по игре */
+    /* Подсказка в Hero */
     .game-instruction {
-      background: rgba(46, 204, 113, 0.2);
-      border-left: 4px solid var(--green);
+      background: rgba(46, 204, 113, 0.15);
+      border: 1px dashed var(--green);
       padding: 15px;
       margin: 20px 0;
-      border-radius: 8px;
+      border-radius: 12px;
       font-weight: 600;
-      animation: pulse 2s infinite;
+      line-height: 1.4;
+      animation: pulse 2s infinite ease-in-out;
     }
     @keyframes pulse {
-      0% { opacity: 0.8; }
-      50% { opacity: 1; transform: scale(1.02); }
-      100% { opacity: 0.8; }
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.02); opacity: 1; }
     }
     
-    /* Праздничное окно победы */
+    /* Модальное окно победы */
     #win-modal {
       display: none;
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.85);
-      z-index: 20000;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 30000;
       align-items: center;
       justify-content: center;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(15px);
       padding: 20px;
     }
     .modal-content {
@@ -44,14 +44,16 @@
       padding: 40px;
       text-align: center;
       border: 2px solid var(--green);
-      position: relative;
-      animation: modalPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      background: var(--glass);
+      border-radius: 24px;
+      animation: modalPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     @keyframes modalPop {
-      from { transform: scale(0.5); opacity: 0; }
+      from { transform: scale(0.3); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
     }
-    .back-nav-container { margin-top: 30px; text-align: center; }
+
+    .back-nav-container { margin-top: 30px; }
     .back-to-catalog-btn {
       display: inline-flex;
       align-items: center;
@@ -67,7 +69,6 @@
       text-transform: uppercase;
       font-size: 0.85rem;
     }
-    .back-to-catalog-btn:hover { background: var(--border); transform: translateY(-2px); }
   </style>
 </head>
 <body>
@@ -91,7 +92,7 @@
       <p class="hero-subtitle">С наступающим Новым годом!</p>
       
       <div class="game-instruction">
-        🎮 <strong>Играйте с нами:</strong> Ловите падающих новогодних персонажей (дед мороз, олени, подарки) и соберите скидку 1000₽ на свой абонемент!
+        🎮 <strong>Инструкция:</strong> Нажимайте на падающих персонажей (⛄, 🎅, 🎁), чтобы собирать бонусы. Каждые 10 пойманных героев дают +200₽ к скидке!
       </div>
     </section>
 
@@ -104,7 +105,7 @@
     </section>
 
     <section class="glass timer" style="text-align: center; padding: 40px 20px;">
-      <div id="countdown-timer" style="font-size: clamp(1.8rem, 6vw, 3rem); font-weight: 900; color: var(--green);">00д : 00ч : 00м : 00с</div>
+      <div id="countdown-timer" style="font-size: clamp(1.8rem, 6vw, 3rem); font-weight: 900; color: var(--green); letter-spacing: 2px;">00д : 00ч : 00м : 00с</div>
       <p style="opacity: 0.7; font-weight: 700; text-transform: uppercase; margin-top: 10px;">До Нового года осталось</p>
     </section>
 
@@ -128,7 +129,7 @@
       </div>
     </section>
 
-    <section id="payment" class="glass payment" style="display:none; margin-top: 40px;">
+    <section id="payment" class="glass payment" style="display:none; margin-top: 40px; scroll-margin-top: 100px;">
       <a id="sbp-link" href="#" target="_blank" class="pay-main">
         Оплатить СБП или картой&nbsp;&nbsp;<strong><span id="selected-price"></span>&nbsp;₽</strong>
       </a>
