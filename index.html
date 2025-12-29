@@ -7,20 +7,21 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
-    /* ЛЕДЯНОЙ ТАЙМЕР */
+    /* ЛЕДЯНОЙ ТАЙМЕР — ТОТ САМЫЙ ЭФФЕКТ */
     #countdown-timer {
       font-size: clamp(1.8rem, 6vw, 3.5rem);
       font-weight: 900;
       color: #e0f7fa;
       text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff, 0 0 40px #00b0ff, 0 0 80px #00b0ff;
       letter-spacing: 3px;
-      font-family: 'Inter', sans-serif;
       margin: 20px 0;
+      font-family: 'Inter', sans-serif;
     }
 
+    /* ВОССТАНОВЛЕННАЯ НАДПИСЬ ИНСТРУКЦИИ */
     .game-instruction {
       background: rgba(46, 204, 113, 0.15);
       border: 1px dashed var(--green);
@@ -31,26 +32,24 @@
       line-height: 1.5;
       animation: pulse 2s infinite ease-in-out;
     }
-
     @keyframes pulse {
       0%, 100% { transform: scale(1); opacity: 0.9; }
-      50% { transform: scale(1.01); opacity: 1; }
+      50% { transform: scale(1.02); opacity: 1; }
     }
 
-    /* ОКНО ПОБЕДЫ */
+    /* МОДАЛКА ПОБЕДЫ */
     #win-modal {
       display: none;
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
       background: rgba(0, 0, 0, 0.9);
-      z-index: 40000;
+      z-index: 50000;
       align-items: center;
       justify-content: center;
       backdrop-filter: blur(15px);
       padding: 20px;
     }
-
     .modal-content {
       max-width: 400px;
       padding: 40px;
@@ -58,24 +57,13 @@
       border: 2px solid var(--green);
       background: var(--glass);
       border-radius: 30px;
-      box-shadow: 0 0 50px rgba(46, 204, 113, 0.3);
+      box-shadow: 0 0 50px rgba(0, 229, 255, 0.2);
     }
-
-    .back-to-catalog-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: var(--glass);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 16px 30px;
-      border-radius: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      width: 100%;
-      justify-content: center;
-      text-transform: uppercase;
-      transition: 0.3s;
+    
+    .character-counter {
+      position: fixed; top: 20px; left: 20px; z-index: 10000;
+      background: var(--glass); padding: 10px 20px; border-radius: 50px;
+      font-weight: 900; border: 1px solid var(--green);
     }
   </style>
 </head>
@@ -83,7 +71,7 @@
   <div class="snow-container"></div>
   <div class="stars-container"></div>
   
-  <div id="character-counter" class="character-counter" style="position: fixed; top: 20px; left: 20px; z-index: 10000; background: var(--glass); padding: 10px 20px; border-radius: 50px; font-weight: 900; border: 1px solid var(--green);">
+  <div id="character-counter" class="character-counter">
     🎁 Поймано: <span id="character-count">0</span>/10
   </div>
 
@@ -97,18 +85,55 @@
   <main class="wrapper">
     <section class="hero glass">
       <h1 class="hero-title"><span class="green-text">Новогоднее</span> настроение 🎄</h1>
-      <p class="hero-subtitle">С наступающим Новым годом!</p>
-      
       <div class="game-instruction">
-        🎮 <strong>КВЕСТ:</strong> Нажимай на падающих персонажей (⛄, 🎅, 🎁). Каждые 10 пойманных героев дают <strong>+200₽</strong> к твоей скидке. Собери максимум 1000₽!
+        🎮 <strong>КВЕСТ:</strong> Лови падающих персонажей (⛄, 🎅, 🎁). Каждые 10 пойманных героев дают <strong>+200₽</strong> к твоей скидке. Собери 1000₽ и купи абонемент по супер-цене!
       </div>
     </section>
 
-    <section class="glass timer-wrapper" style="text-align: center; padding: 50px 20px; margin-top: 30px;">
-      <h3 style="text-transform: uppercase; letter-spacing: 2px; opacity: 0.8; font-size: 0.9rem;">До главной ночи года:</h3>
+    <section class="glass timer-wrapper" style="text-align: center; padding: 50px 20px;">
+      <h3 style="text-transform: uppercase; letter-spacing: 2px; opacity: 0.8; font-size: 0.8rem;">До Нового года осталось:</h3>
       <div id="countdown-timer">00д : 00ч : 00м : 00с</div>
-      <p style="margin-top: 15px; font-weight: 600; color: var(--green);">Успей забрать абонемент по старой цене!</p>
     </section>
 
-    <section id="packages" class="packages" style="margin-top: 40px;">
-      <div class="card glass" data-price="37440" data-link="
+    <section id="packages" class="packages">
+      <div class="card glass" data-price="37440" data-link="https://ecom.otpbank.ru/smart-form?config=42943585-8511-400a-a027-49732f1d8fb2" data-installments="12">
+        <h3>96 занятий</h3><p class="price">37 440 ₽</p><button class="select">Выбрать формат</button>
+      </div>
+      <div class="card glass hit" data-price="33280" data-link="https://ecom.otpbank.ru/smart-form?config=e0d01fc2-5884-4fb1-b769-c7955a2d3b69" data-installments="10">
+        <h3>64 занятия</h3><p class="price">33 280 ₽</p><button class="select">Выбрать формат</button>
+      </div>
+      <div class="card glass" data-price="18720" data-installments="Нет">
+        <h3>32 занятия</h3><p class="price">18 720 ₽</p><button class="select">Выбрать формат</button>
+      </div>
+      <div class="card glass" data-price="9880" data-installments="Нет">
+        <h3>16 занятий</h3><p class="price">9 880 ₽</p><button class="select">Выбрать формат</button>
+      </div>
+    </section>
+
+    <section id="payment" class="glass payment" style="display:none; margin-top: 40px;">
+      <a id="sbp-link" href="#" target="_blank" class="pay-main">
+        Оплатить СБП&nbsp;&nbsp;<strong><span id="selected-price"></span>&nbsp;₽</strong>
+      </a>
+      <button id="installment-btn" class="installment-btn" style="display:none;" onclick="openInstallment()">Оформить рассрочку на <span id="months"></span></button>
+      <button class="back-to-catalog-btn" style="margin-top:20px; width:100%;" onclick="goBack()">← К выбору абонемента</button>
+    </section>
+
+    <footer class="footer glass" style="margin-top: 50px; text-align: center; padding: 30px;">
+      <a href="https://vk.com/im?sel=-221142875" target="_blank" style="color: #0077FF; font-weight: 800; text-decoration: none;">Написать нам в ВК →</a>
+      <p style="margin-top: 20px; opacity: 0.5;">© Lady Stretch 2025</p>
+    </footer>
+  </main>
+
+  <div id="win-modal">
+    <div class="modal-content">
+      <div style="font-size: 70px; margin-bottom: 20px;">🎁</div>
+      <h2 style="color: var(--green);">УРА! ПОДАРОК!</h2>
+      <p id="win-text" style="font-size: 1.1rem; margin: 20px 0;"></p>
+      <button onclick="closeWinModal()" style="background: var(--green); color: white; border: none; padding: 15px 40px; border-radius: 12px; font-weight: 800; cursor: pointer; width: 100%;">ЗАБРАТЬ</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
