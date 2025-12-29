@@ -1,258 +1,305 @@
 // ==========================================
-// 1. КОНСТАНТЫ И НАСТРОЙКИ
+// 1. КОНФИГУРАЦИЯ И ПАМЯТЬ
 // ==========================================
 const CHARACTERS_PER_LEVEL = 10;
 const BONUS_STEP = 200;
 const MAX_BONUS = 1000;
+const WISHES = ["Грации!", "Красоты!", "Здоровья!", "Счастья!", "Энергии!", "Гибкости!"];
 
-// Тот самый список пожеланий
-const WISHES = [
-    "Шпагата!", "Грации!", "Красоты!", 
-    "Здоровья!", "Счастья!", "Энергии!", 
-    "Гибкости!", "Любви!", "Уверенности!"
-];
-
-// Ссылки на оплату (Обычные и со скидкой 1000р)
-const PAY_LINKS = {
-    sbp_default: "https://qr.nspk.ru/AS2A006F0RCJU7V991SBLV4AACJGFT2P?type=01&bank=100000000004&crc=A93E",
-    sbp_sale: "https://checkout.tochka.com/c86b3625-580b-46a8-93ff-88394a302610",
-    installment96_sale: "https://ecom.otpbank.ru/smart-form?config=4ba599c9-4baa-40c1-8573-6b6945cdb73e",
-    installment64_sale: "https://ecom.otpbank.ru/smart-form?config=c915eef7-212b-4548-9c12-06d8757135d6"
+// Ссылки со скидкой 1000 руб
+const SALE_LINKS = {
+    card: "https://checkout.tochka.com/c86b3625-580b-46a8-93ff-88394a302610",
+    installment96: "https://ecom.otpbank.ru/smart-form?config=4ba599c9-4baa-40c1-8573-6b6945cdb73e",
+    installment64: "https://ecom.otpbank.ru/smart-form?config=c915eef7-212b-4548-9c12-06d8757135d6"
 };
 
-// Состояние (берем из памяти браузера)
 let caughtCharacters = parseInt(localStorage.getItem('caughtCharacters')) || 0;
 let currentBonus = parseInt(localStorage.getItem('totalBonus')) || 0;
-let currentInstallmentLink = "";
+let isLightTheme = localStorage.getItem('theme') === 'light';
+let currentInstallmentLink = ""; 
 
 // ==========================================
-// 2. ИНИЦИАЛИЗАЦИЯ
+// 2. ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
-    initStars(150); // 150 мерцающих звезд
-    initSnow();     // Падающий снег
-    initTimer();    // Ледяной таймер
-    initGame();     // Запуск появления героев
-    setupShop();    // Логика выбора абонементов
-    updateUI();     // Обновление счетчика на экране
+    applyTheme();
+    initStars();
+    initSnow();
+    initTimer();
+    setupShopLogic(); 
+    startCharacterGame();
+    updateUI();
 });
 
 // ==========================================
-// 3. ВИЗУАЛЬНЫЕ ЭФФЕКТЫ
+// 3. ЛОГИКА АБОНЕМЕНТОВ
 // ==========================================
-function initStars(count) {
-    const container = document.querySelector('.stars-container');
-    if (!container) return;
-    for (let i = 0; i < count; i++) {
-        const star = document.createElement('div');
-        const size = Math.random() * 3 + 'px';
-        star.style.cssText = `
-            position: absolute;
-            width: ${size}; height: ${size};
-            background: white;
-            left: ${Math.random() * 100}%;
-            top: ${Math.random() * 100}%;
-            border-radius: 50%;
-            opacity: ${Math.random()};
-            animation: twinkle ${2 + Math.random() * 3}s infinite ease-in-out;
-        `;
-        container.appendChild(star);
-    }
-}
+function setupShopLogic() {
+    const themeBtn = document.getElementById('theme-toggle');
+    if (themeBtn) themeBtn.onclick = toggleTheme;
 
-function initSnow() {
-    const container = document.querySelector('.snow-container');
-    setInterval(() => {
-        const flake = document.createElement('div');
-        flake.innerHTML = '❄';
-        flake.style.cssText = `
-            position: fixed; top: -20px;
-            left: ${Math.random() * 100}vw;
-            color: white; opacity: ${Math.random()};
-            font-size: ${10 + Math.random() * 20}px;
-            z-index: 5; pointer-events: none;
-            animation: fall ${5 + Math.random() * 5}s linear forwards;
-        `;
-        container.appendChild(flake);
-        setTimeout(() => flake.remove(), 8000);
-    }, 400);
-}
+    document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('click', function(e) {
+            if (e.target.closest('.game-character')) return;
 
-function initTimer() {
-    const timerDisplay = document.getElementById('countdown-timer');
-    const targetDate = new Date('January 1, 2026 00:00:00').getTime();
+            document.querySelectorAll('.card').forEach(c => c.style.border = "none");
+            this.style.border = "2px solid #4a6fa5";
 
-    function update() {
-        const now = new Date().getTime();
-        const diff = targetDate - now;
-        if (diff <= 0) {
-            timerDisplay.textContent = "С НОВЫМ ГОДОМ! 🎉";
-            return;
-        }
-        const d = Math.floor(diff / 86400000);
-        const h = Math.floor((diff % 86400000) / 3600000);
-        const m = Math.floor((diff % 3600000) / 60000);
-        const s = Math.floor((diff % 60000) / 1000);
-        const pad = (n) => n < 10 ? '0' + n : n;
-        timerDisplay.textContent = `${pad(d)}д : ${pad(h)}ч : ${pad(m)}м : ${pad(s)}с`;
-    }
-    setInterval(update, 1000);
-    update();
-}
+            const paymentSection = document.getElementById('payment');
+            if (!paymentSection) return;
 
-// ==========================================
-// 4. ИГРОВАЯ ЛОГИКА
-// ==========================================
-function initGame() {
-    setInterval(() => {
-        const isHero = Math.random() > 0.3; // 70% шанс появления героя, 30% снежинки
-        const char = document.createElement('div');
-        char.innerHTML = isHero ? ['⛄', '🎅', '🎁', '🦌', '🌟'][Math.floor(Math.random() * 5)] : '❄️';
-        char.style.cssText = `
-            position: fixed; top: -60px;
-            left: ${10 + Math.random() * 80}vw;
-            font-size: 45px; z-index: 20000;
-            cursor: pointer; user-select: none;
-            animation: fall 7s linear forwards;
-        `;
+            paymentSection.style.display = 'block';
+            
+            const price = this.getAttribute('data-price');
+            const installments = this.getAttribute('data-installments');
+            const cardTitle = this.querySelector('h3') ? this.querySelector('h3').innerText : "";
 
-        char.onclick = (e) => {
-            if (isHero) {
-                catchHero(char);
-            } else {
-                char.style.opacity = '0.3'; // Просто снежинка
+            // ЛОГИКА СКИДКИ: Если набрано 1000 руб
+            const hasMaxBonus = currentBonus >= MAX_BONUS;
+            
+            // 1. Определяем ссылку для рассрочки
+            let finalLink = this.getAttribute('data-link') || "";
+            if (hasMaxBonus) {
+                if (cardTitle.includes("96")) finalLink = SALE_LINKS.installment96;
+                else if (cardTitle.includes("64")) finalLink = SALE_LINKS.installment64;
             }
-        };
-        document.body.appendChild(char);
-    }, 2200);
+            currentInstallmentLink = finalLink.replace(/&quot;/g, '').replace(/"/g, '').trim();
+
+            // 2. Определяем цену для отображения
+            const displayPrice = hasMaxBonus ? (Number(price) - 1000) : Number(price);
+            document.getElementById('selected-price').textContent = displayPrice.toLocaleString('ru-RU');
+
+            // 3. Подменяем ссылку для оплаты картой (Точка) в кнопке оплаты
+            const cardPayBtn = document.querySelector('.pay-main'); // Ссылка "Оплатить"
+            if (cardPayBtn && hasMaxBonus) {
+                cardPayBtn.href = SALE_LINKS.card;
+            } else if (cardPayBtn) {
+                // Если бонуса нет, возвращаем стандартную логику (например, СБП/Точка без скидки)
+                // Если у вас там статичная ссылка в HTML, она останется, если нет - можно прописать дефолт
+            }
+            
+            const instBtn = document.getElementById('installment-btn');
+            const monthsDisplay = document.getElementById('months');
+
+            if (installments && installments !== 'Нет' && currentInstallmentLink !== "") {
+                if (instBtn) instBtn.style.display = 'block';
+                if (monthsDisplay) monthsDisplay.textContent = installments + ' мес';
+            } else {
+                if (instBtn) instBtn.style.display = 'none';
+            }
+
+            paymentSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    });
 }
 
-function catchHero(element) {
-    const rect = element.getBoundingClientRect();
-    const wish = WISHES[Math.floor(Math.random() * WISHES.length)];
-    
-    // Эффект вылетающего текста
-    const text = document.createElement('div');
-    text.innerHTML = `✨ +1 ${wish}`;
-    text.style.cssText = `
-        position: fixed; left: ${rect.left}px; top: ${rect.top}px;
-        color: #FFD700; font-weight: 900; font-size: 24px;
-        z-index: 21000; transition: 1.5s; pointer-events: none;
-        text-shadow: 0 0 10px #000;
-    `;
-    document.body.appendChild(text);
-    setTimeout(() => {
-        text.style.transform = 'translateY(-120px) scale(1.4)';
-        text.style.opacity = '0';
-    }, 50);
-    setTimeout(() => text.remove(), 1500);
-
-    caughtCharacters++;
-    localStorage.setItem('caughtCharacters', caughtCharacters);
-    updateUI();
-
-    if (caughtCharacters >= CHARACTERS_PER_LEVEL) {
-        applyBonus();
+function openInstallment() {
+    if (currentInstallmentLink) {
+        window.open(currentInstallmentLink, '_blank');
+    } else {
+        alert("Ссылка для рассрочки не найдена.");
     }
-    element.remove();
 }
 
-function applyBonus() {
+function goBack() {
+    const p = document.getElementById('payment');
+    if (p) p.style.display = 'none';
+    document.querySelectorAll('.card').forEach(c => c.style.border = "none");
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ==========================================
+// 4. НОВОГОДНЯЯ ИГРА И ЭФФЕКТЫ
+// ==========================================
+
+function startCharacterGame() {
+    setInterval(() => {
+        const isBonus = Math.random() > 0.35; 
+        const char = document.createElement('div');
+        char.innerHTML = isBonus ? ['⛄', '🎅', '🎁', '🦌', '🌟'][Math.floor(Math.random() * 5)] : '❄';
+        char.className = 'game-character';
+        
+        Object.assign(char.style, {
+            position: 'fixed', top: '-60px', left: (10 + Math.random() * 80) + 'vw',
+            fontSize: '45px', zIndex: '10000', cursor: 'pointer',
+            userSelect: 'none',
+            animation: `character-fall ${7 + Math.random() * 3}s linear forwards`
+        });
+
+        if (isBonus) {
+            const handleCatch = (e) => {
+                e.preventDefault(); e.stopPropagation();
+                showClickEffect(char, `✨ +1 ${WISHES[Math.floor(Math.random()*WISHES.length)]}`);
+                caughtCharacters++;
+                localStorage.setItem('caughtCharacters', caughtCharacters);
+                char.remove();
+                updateUI();
+                if (caughtCharacters >= CHARACTERS_PER_LEVEL) processWin();
+            };
+            char.onclick = handleCatch;
+            char.ontouchstart = handleCatch;
+        }
+        document.body.appendChild(char);
+        setTimeout(() => char.remove(), 10000);
+    }, 2500);
+}
+
+function updateUI() {
+    const counter = document.getElementById('character-count');
+    if (counter) {
+        counter.textContent = caughtCharacters;
+        counter.style.transition = "0.2s";
+        counter.style.transform = "scale(1.4)";
+        counter.style.color = "#2ecc71";
+        setTimeout(() => {
+            counter.style.transform = "scale(1)";
+            counter.style.color = "";
+        }, 200);
+    }
+}
+
+function processWin() {
+    let isMaxReached = false;
     if (currentBonus < MAX_BONUS) {
         currentBonus += BONUS_STEP;
         localStorage.setItem('totalBonus', currentBonus);
-    }
-
-    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-
-    const modal = document.getElementById('win-modal');
-    const winText = document.getElementById('win-text');
-    
-    if (currentBonus >= MAX_BONUS) {
-        winText.innerHTML = "ВЫ СОБРАЛИ МАКСИМАЛЬНУЮ СКИДКУ!<br><br><strong>Скидка 1000₽</strong> активирована для всех абонементов!";
     } else {
-        winText.innerHTML = `Вы поймали 10 героев!<br>Ваша скидка выросла на 200₽.<br>Текущий бонус: <strong>${currentBonus}₽</strong>`;
+        isMaxReached = true;
     }
     
-    modal.style.display = 'flex';
+    launchConfetti(); 
+
+    const winModal = document.createElement('div');
+    winModal.className = 'glass';
+    Object.assign(winModal.style, {
+        position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+        zIndex: '30000', padding: '40px', textAlign: 'center', borderRadius: '20px',
+        boxShadow: '0 0 50px rgba(0,0,0,0.5)', minWidth: '320px', border: '2px solid var(--green)'
+    });
+    
+    if (currentBonus < MAX_BONUS) {
+        // Окно промежуточного прогресса
+        winModal.innerHTML = `
+            <div style="font-size: 50px;">🎁</div>
+            <h2 style="color: var(--green); margin: 15px 0;">Отлично!</h2>
+            <p style="font-size: 1.1rem;">+200 бонусов в кармане, давай еще!</p>
+            <div style="font-size: 24px; font-weight: 900; margin: 20px 0; color: var(--green);">Всего: ${currentBonus} ₽</div>
+            <button id="close-win" class="select" style="width: 200px;">Продолжить</button>
+        `;
+    } else {
+        // Окно финальной победы (1000 руб)
+        winModal.innerHTML = `
+            <div style="font-size: 50px;">🎉</div>
+            <h2 style="color: var(--green); margin: 15px 0;">Поздравляем!</h2>
+            <p>Вы набрали максимум бонусов! Скидка активирована.</p>
+            <div style="font-size: 28px; font-weight: 900; margin: 20px 0; color: var(--green);">Скидка: 1 000 ₽</div>
+            <button id="go-to-sale" class="select" style="width: 260px;">Забрать абонемент со скидкой</button>
+        `;
+    }
+    
+    document.body.appendChild(winModal);
+
+    if (document.getElementById('close-win')) {
+        document.getElementById('close-win').onclick = () => winModal.remove();
+    }
+
+    if (document.getElementById('go-to-sale')) {
+        document.getElementById('go-to-sale').onclick = () => {
+            winModal.remove();
+            document.getElementById('packages').scrollIntoView({ behavior: 'smooth' });
+        };
+    }
+
     caughtCharacters = 0;
     localStorage.setItem('caughtCharacters', 0);
     updateUI();
 }
 
-// ==========================================
-// 5. МАГАЗИН И ОПЛАТА
-// ==========================================
-function setupShop() {
-    document.querySelectorAll('.card').forEach(card => {
-        card.addEventListener('click', function() {
-            // Визуальное выделение
-            document.querySelectorAll('.card').forEach(c => c.style.border = "none");
-            this.style.border = "3px solid var(--green)";
+function launchConfetti() {
+    for (let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.style.cssText = `
+            position: fixed; left: 50vw; top: 50vh;
+            width: 10px; height: 10px;
+            background: ${['#f1c40f', '#e74c3c', '#2ecc71', '#3498db', '#9b59b6'][Math.floor(Math.random()*5)]};
+            border-radius: 50%; z-index: 25000; pointer-events: none;
+        `;
+        document.body.appendChild(particle);
+        
+        const angle = Math.random() * Math.PI * 2;
+        const velocity = 5 + Math.random() * 10;
+        const vx = Math.cos(angle) * velocity;
+        const vy = Math.sin(angle) * velocity;
+        
+        let posX = 50, posY = 50;
+        let life = 100;
 
-            const price = parseInt(this.getAttribute('data-price'));
-            const installments = this.getAttribute('data-installments');
-            const title = this.querySelector('h3').innerText;
-            const hasMaxBonus = currentBonus >= MAX_BONUS;
+        const move = setInterval(() => {
+            posX += vx; posY += vy;
+            life -= 2;
+            particle.style.transform = `translate(${posX-50}vw, ${posY-50}vh)`;
+            particle.style.opacity = life / 100;
+            if (life <= 0) { clearInterval(move); particle.remove(); }
+        }, 20);
+    }
+}
 
-            // Показываем блок оплаты
-            const paymentSection = document.getElementById('payment');
-            paymentSection.style.display = 'block';
-
-            // Расчет итоговой цены
-            const finalPrice = hasMaxBonus ? (price - 1000) : price;
-            document.getElementById('selected-price').textContent = finalPrice.toLocaleString('ru-RU');
-
-            // Управление ссылками и QR-кодом
-            const qrBlock = document.getElementById('qr-block');
-            const sbpLink = document.getElementById('sbp-link');
-
-            if (hasMaxBonus) {
-                qrBlock.style.display = 'none'; // Убираем старый QR, так как ссылка новая
-                sbpLink.href = PAY_LINKS.sbp_sale;
-                
-                // Ссылки на рассрочку со скидкой
-                if (title.includes("96")) currentInstallmentLink = PAY_LINKS.installment96_sale;
-                else if (title.includes("64")) currentInstallmentLink = PAY_LINKS.installment64_sale;
-                else currentInstallmentLink = "";
-            } else {
-                qrBlock.style.display = 'block'; // Показываем QR оплаты на месте
-                sbpLink.href = PAY_LINKS.sbp_default;
-                currentInstallmentLink = this.getAttribute('data-link') || "";
-            }
-
-            // Кнопка рассрочки
-            const instBtn = document.getElementById('installment-btn');
-            if (installments !== "Нет" && currentInstallmentLink !== "") {
-                instBtn.style.display = 'block';
-                document.getElementById('months').textContent = installments + ' мес';
-            } else {
-                instBtn.style.display = 'none';
-            }
-
-            paymentSection.scrollIntoView({ behavior: 'smooth' });
-        });
-    });
+function showClickEffect(el, text) {
+    const rect = el.getBoundingClientRect();
+    const eff = document.createElement('div');
+    eff.innerHTML = text;
+    eff.style.cssText = `position: fixed; left: ${rect.left}px; top: ${rect.top}px; color: #FFD700; font-weight: bold; z-index: 15000; font-size: 20px; pointer-events: none; transition: 1.2s; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);`;
+    document.body.appendChild(eff);
+    setTimeout(() => { eff.style.transform = 'translateY(-100px)'; eff.style.opacity = '0'; }, 20);
+    setTimeout(() => eff.remove(), 1200);
 }
 
 // ==========================================
-// 6. ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
+// 5. ТЕМА, СНЕГ И ТАЙМЕР
 // ==========================================
-function closeWinModal() { document.getElementById('win-modal').style.display = 'none'; }
-function goBack() { document.getElementById('payment').style.display = 'none'; }
-function openInstallment() { if (currentInstallmentLink) window.open(currentInstallmentLink, '_blank'); }
-function updateUI() { document.getElementById('character-count').textContent = caughtCharacters; }
+function toggleTheme() { isLightTheme = !isLightTheme; applyTheme(); localStorage.setItem('theme', isLightTheme ? 'light' : 'dark'); initStars(); }
+function applyTheme() { document.body.classList.toggle('light-theme', isLightTheme); }
 
-// Стили анимаций
+function initSnow() { 
+    const container = document.querySelector('.snow-container'); 
+    if (!container) return; 
+    setInterval(() => { 
+        const f = document.createElement('div'); 
+        f.innerHTML = '❄'; 
+        f.style.cssText = `position:fixed; top:-20px; left:${Math.random()*100}vw; opacity:${Math.random()}; animation:fall 8s linear forwards; color:white; pointer-events:none; z-index:5;`; 
+        container.appendChild(f); 
+        setTimeout(()=>f.remove(), 8000); 
+    }, 400); 
+}
+
+function initStars() { 
+    const container = document.querySelector('.stars-container'); 
+    if (!container || isLightTheme) return; 
+    container.innerHTML = ''; 
+    for (let i=0; i<50; i++) { 
+        const s = document.createElement('div'); 
+        s.style.cssText = `position:absolute; width:2px; height:2px; background:white; left:${Math.random()*100}%; top:${Math.random()*100}%; opacity:${Math.random()};`; 
+        container.appendChild(s); 
+    } 
+}
+
+function initTimer() {
+    const t = document.getElementById('countdown-timer');
+    if (!t) return;
+    const target = new Date('January 1, 2026 00:00:00').getTime();
+    setInterval(() => {
+        const diff = target - Date.now();
+        if (diff <= 0) { t.textContent = "С НОВЫМ ГОДОМ! 🎉"; return; }
+        const d = Math.floor(diff/86400000), h = Math.floor((diff%86400000)/3600000), m = Math.floor((diff%3600000)/60000), s = Math.floor((diff%60000)/1000);
+        t.textContent = `${d}д ${h}ч ${m}м ${s}с`;
+    }, 1000);
+}
+
 const style = document.createElement('style');
 style.innerHTML = `
-    @keyframes fall {
-        0% { transform: translateY(0) rotate(0deg); }
-        100% { transform: translateY(110vh) rotate(360deg); }
-    }
-    @keyframes twinkle {
-        0%, 100% { opacity: 0.3; transform: scale(1); }
-        50% { opacity: 1; transform: scale(1.2); }
-    }
+@keyframes character-fall {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(110vh) rotate(360deg); }
+}
 `;
 document.head.appendChild(style);
