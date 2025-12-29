@@ -13,9 +13,9 @@ let caughtCharacters = parseInt(localStorage.getItem('caughtCharacters')) || 0;
 let currentBonus = parseInt(localStorage.getItem('totalBonus')) || 0;
 
 document.addEventListener('DOMContentLoaded', () => {
-    initStars(); // 150 мерцающих звезд
-    initSnow(); // Снег
-    initTimer(); // Ледяной таймер
+    initStars(); 
+    initSnow(); 
+    initTimer(); 
     setupShopLogic(); 
     startCharacterGame();
     updateUI();
@@ -94,12 +94,14 @@ function processWin() {
     }
     confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
     const modal = document.getElementById('win-modal');
-    document.getElementById('win-text').innerHTML = `Вы поймали 10 героев! Бонус: ${currentBonus}₽`;
+    document.getElementById('win-text').innerHTML = `Поймано 10 героев! Ваша скидка: ${currentBonus}₽`;
     modal.style.display = 'flex';
     caughtCharacters = 0;
     localStorage.setItem('caughtCharacters', 0);
     updateUI();
 }
+
+let currentInstallmentLink = "";
 
 function setupShopLogic() {
     document.querySelectorAll('.card').forEach(card => {
@@ -114,11 +116,15 @@ function setupShopLogic() {
             const hasMax = currentBonus >= MAX_BONUS;
             const title = this.querySelector('h3').innerText;
 
+            const qrSection = document.getElementById('qr-section');
+
             if (hasMax) {
+                qrSection.style.display = 'none'; // Убираем QR если максимальная скидка (новая ссылка)
                 if (title.includes("96")) currentInstallmentLink = SALE_LINKS.installment96;
                 else if (title.includes("64")) currentInstallmentLink = SALE_LINKS.installment64;
                 document.getElementById('sbp-link').href = SALE_LINKS.card;
             } else {
+                qrSection.style.display = 'block';
                 document.getElementById('sbp-link').href = "https://qr.nspk.ru/AS2A006F0RCJU7V991SBLV4AACJGFT2P?type=01&bank=100000000004&crc=A93E";
             }
             
