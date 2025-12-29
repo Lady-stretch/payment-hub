@@ -22,6 +22,33 @@
 
   <link rel="stylesheet" href="style.css">
   <style>
+    /* ЛЕДЯНОЙ НЕОНОВЫЙ ТАЙМЕР */
+#countdown-timer {
+    font-family: 'Inter', sans-serif; /* Оставляем Inter как базу для веса */
+    font-size: clamp(2rem, 8vw, 4rem); /* Делаем его крупным и адаптивным */
+    font-weight: 900;
+    color: #ffffff;
+    text-align: center;
+    letter-spacing: 2px;
+    /* Эффект многослойного льда и неона */
+    text-shadow: 
+        0 0 10px #fff, 
+        0 0 20px #00e5ff, 
+        0 0 40px #00e5ff, 
+        0 0 70px #00b0ff;
+    margin: 15px 0;
+    display: block;
+    line-height: 1.2;
+}
+
+/* Дополнительный блеск для подписи под таймером */
+.timer-caption {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.9;
+    color: #a5f3ff; /* Светло-голубой оттенок льда */
+}
     /* Стиль для выделенной карточки */
     .selected-card {
       border: 2px solid #4a6fa5 !important;
