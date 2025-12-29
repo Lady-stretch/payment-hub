@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
-    /* ВОЗВРАЩАЕМ ЛЕДЯНОЙ ТАЙМЕР */
+    /* ЛЕДЯНОЙ ТАЙМЕР */
     #countdown-timer {
       font-size: clamp(1.8rem, 6vw, 3.5rem);
       font-weight: 900;
@@ -19,60 +19,51 @@
       font-family: 'Inter', sans-serif;
     }
 
-    /* ИСПРАВЛЯЕМ КНОПКУ ВК (делаем её КНОПКОЙ, а не ссылкой) */
-    .vk-button-fixed {
+    /* ФИКСИРОВАННЫЙ СЧЕТЧИК (не мешает контенту) */
+    .character-counter {
+      position: fixed;
+      top: 85px; /* Сразу под хедером */
+      right: 15px;
+      z-index: 1000;
+      background: rgba(0, 0, 0, 0.85);
+      padding: 10px 18px;
+      border-radius: 12px;
+      border: 1px solid #2ecc71;
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.9rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+
+    /* КНОПКА ВК — ТЕПЕРЬ ЗАМЕТНАЯ */
+    .vk-btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       background: #0077FF;
       color: white !important;
-      padding: 16px 30px;
-      border-radius: 14px;
+      padding: 18px 35px;
+      border-radius: 16px;
       text-decoration: none;
       font-weight: 800;
-      gap: 10px;
-      margin-top: 20px;
-      width: auto;
-      min-width: 250px;
-      box-shadow: 0 4px 15px rgba(0, 119, 255, 0.3);
+      margin-top: 25px;
+      width: 100%;
+      max-width: 320px;
+      box-shadow: 0 5px 20px rgba(0, 119, 255, 0.4);
     }
 
-    /* ИСПРАВЛЯЕМ ВЕРХНЮЮ КНОПКУ (чтобы не была на всю длину) */
-    .packages-button {
-      width: auto !important;
-      padding: 10px 20px !important;
-      display: inline-block !important;
-    }
+    /* КНОПКА АБОНЕМЕНТЫ В ХЕДЕРЕ */
+    .packages-button { width: auto !important; padding: 10px 15px !important; }
 
-    /* ИСПРАВЛЯЕМ СЧЕТЧИК (чтобы не перекрывал абонементы) */
-    .character-counter {
-      position: sticky; /* Меняем fixed на sticky, чтобы он не летал поверх контента */
-      top: 10px;
-      margin-bottom: 10px;
-      display: inline-block;
-      z-index: 1000;
-      background: rgba(0, 0, 0, 0.8);
-      padding: 8px 20px;
-      border-radius: 50px;
-      border: 1px solid #2ecc71;
-      color: #fff;
-      font-weight: 900;
-    }
-
-    .game-instruction {
-      background: rgba(46, 204, 113, 0.15);
-      border: 1px dashed #2ecc71;
+    /* QR-КОД */
+    .qr-container {
+      margin: 30px 0;
       padding: 20px;
-      margin: 20px 0;
-      border-radius: 16px;
-      font-weight: 600;
+      background: white;
+      border-radius: 20px;
+      display: inline-block;
     }
-
-    #win-modal {
-      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.9); z-index: 50000; align-items: center; justify-content: center;
-      backdrop-filter: blur(15px);
-    }
+    .qr-container img { width: 200px; height: 200px; display: block; }
   </style>
 </head>
 <body>
@@ -84,22 +75,20 @@
     <a href="#packages" class="packages-button">Абонементы</a>
   </header>
 
-  <main class="wrapper">
-    <center>
-      <div id="character-counter" class="character-counter">
-        🎁 Поймано: <span id="character-count">0</span>/10
-      </div>
-    </center>
+  <div id="character-counter" class="character-counter">
+    🎁 Собрано: <span id="character-count">0</span>/10
+  </div>
 
+  <main class="wrapper">
     <section class="hero glass">
       <h1 class="hero-title"><span class="green-text">Новогоднее</span> настроение 🎄</h1>
-      <div class="game-instruction">
-        🎮 <strong>КВЕСТ:</strong> Лови ⛄, 🎅, 🎁. Каждые 10 героев = <strong>+200₽</strong> к скидке. Собери 1000₽!
+      <div class="game-instruction" style="background: rgba(46, 204, 113, 0.1); border: 1px dashed #2ecc71; padding: 20px; border-radius: 15px; margin: 20px 0; font-weight: 600;">
+        🎮 <strong>КВЕСТ:</strong> Лови ⛄, 🎅, 🎁. Каждые 10 героев дают <strong>+200₽</strong> к скидке. Собери 1000₽ и купи выгодно!
       </div>
     </section>
 
     <section class="glass" style="text-align: center; padding: 40px 20px;">
-      <h3 style="opacity: 0.8; font-size: 0.8rem;">До Нового года:</h3>
+      <h3 style="opacity: 0.8; font-size: 0.8rem; text-transform: uppercase;">До Нового года осталось:</h3>
       <div id="countdown-timer">00д : 00ч : 00м : 00с</div>
     </section>
 
@@ -118,28 +107,43 @@
       </div>
     </section>
 
-    <section id="payment" class="glass payment" style="display:none; margin-top: 40px;">
+    <section id="payment" class="glass payment" style="display:none; margin-top: 40px; text-align: center;">
+      <div id="qr-section">
+        <p style="font-weight: 800; margin-bottom: 10px;">ОПЛАТА ЧЕРЕЗ СБП (QR-КОД):</p>
+        <div class="qr-container">
+          <img src="qr_sbp.png" alt="QR Код на оплату">
+        </div>
+      </div>
+      
       <a id="sbp-link" href="#" target="_blank" class="pay-main">
         Оплатить СБП&nbsp;&nbsp;<strong><span id="selected-price"></span>&nbsp;₽</strong>
       </a>
-      <button id="installment-btn" class="installment-btn" style="display:none;" onclick="openInstallment()">Рассрочка на <span id="months"></span></button>
-      <button class="back-to-catalog-btn" style="margin-top:20px; width:100%; cursor:pointer;" onclick="goBack()">← К выбору</button>
+      
+      <button id="installment-btn" class="installment-btn" style="display:none; margin-top:15px;" onclick="openInstallment()">Рассрочка на <span id="months"></span></button>
+      <button class="back-to-catalog-btn" style="margin-top:20px; width:100%; cursor:pointer;" onclick="goBack()">← К выбору абонемента</button>
     </section>
 
-    <footer style="text-align: center; padding: 50px 0;">
-      <a href="https://vk.com/im?sel=-221142875" target="_blank" class="vk-button-fixed">
-        Написать нам в ВК
+    <footer class="glass" style="margin-top: 50px; text-align: center; padding: 40px 20px;">
+      <p style="font-weight: 700; font-size: 1.1rem; color: var(--green);">ЖДЕМ ВАС В СТУДИЯХ:</p>
+      <p style="margin-top: 10px; line-height: 1.6;">
+        📍 ул. Советская, д. 3<br>
+        📍 ул. Коммунистическая, д. 77/2
+      </p>
+      
+      <a href="https://vk.com/im?sel=-221142875" target="_blank" class="vk-btn">
+        Написать нам в VK
       </a>
-      <p style="margin-top: 30px; opacity: 0.4;">© Lady Stretch 2025</p>
+      
+      <p style="margin-top: 40px; opacity: 0.4; font-size: 0.8rem;">© Lady Stretch Сыктывкар 2025</p>
     </footer>
   </main>
 
-  <div id="win-modal">
-    <div class="modal-content glass">
+  <div id="win-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); z-index: 50000; align-items: center; justify-content: center; backdrop-filter: blur(15px);">
+    <div class="modal-content glass" style="max-width: 400px; padding: 40px; text-align: center; border: 2px solid #2ecc71; border-radius: 24px;">
       <div style="font-size: 60px;">🎁</div>
-      <h2 style="color: #2ecc71;">ОТЛИЧНО!</h2>
-      <p id="win-text"></p>
-      <button onclick="closeWinModal()" style="background:#2ecc71; color:white; border:none; padding:15px; border-radius:12px; width:100%; cursor:pointer; font-weight:800;">ПРОДОЛЖИТЬ</button>
+      <h2 style="color: #2ecc71;">ПОДАРОК!</h2>
+      <p id="win-text" style="margin: 20px 0;"></p>
+      <button onclick="closeWinModal()" style="background:#2ecc71; color:white; border:none; padding:15px; border-radius:12px; width:100%; cursor:pointer; font-weight:800;">ЗАБРАТЬ</button>
     </div>
   </div>
 
