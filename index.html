@@ -4,66 +4,74 @@
   <meta charset="UTF-8">
   <title>Lady Stretch Сыктывкар | Новогодняя Распродажа</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
-    /* ЛЕДЯНОЙ ТАЙМЕР — ТОТ САМЫЙ ЭФФЕКТ */
+    /* ВОЗВРАЩАЕМ ЛЕДЯНОЙ ТАЙМЕР */
     #countdown-timer {
       font-size: clamp(1.8rem, 6vw, 3.5rem);
       font-weight: 900;
-      color: #e0f7fa;
-      text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff, 0 0 40px #00b0ff, 0 0 80px #00b0ff;
+      color: #ffffff;
+      text-shadow: 0 0 10px #fff, 0 0 20px #00e5ff, 0 0 40px #00e5ff;
       letter-spacing: 3px;
-      margin: 20px 0;
       font-family: 'Inter', sans-serif;
     }
 
-    /* ВОССТАНОВЛЕННАЯ НАДПИСЬ ИНСТРУКЦИИ */
+    /* ИСПРАВЛЯЕМ КНОПКУ ВК (делаем её КНОПКОЙ, а не ссылкой) */
+    .vk-button-fixed {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #0077FF;
+      color: white !important;
+      padding: 16px 30px;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: 800;
+      gap: 10px;
+      margin-top: 20px;
+      width: auto;
+      min-width: 250px;
+      box-shadow: 0 4px 15px rgba(0, 119, 255, 0.3);
+    }
+
+    /* ИСПРАВЛЯЕМ ВЕРХНЮЮ КНОПКУ (чтобы не была на всю длину) */
+    .packages-button {
+      width: auto !important;
+      padding: 10px 20px !important;
+      display: inline-block !important;
+    }
+
+    /* ИСПРАВЛЯЕМ СЧЕТЧИК (чтобы не перекрывал абонементы) */
+    .character-counter {
+      position: sticky; /* Меняем fixed на sticky, чтобы он не летал поверх контента */
+      top: 10px;
+      margin-bottom: 10px;
+      display: inline-block;
+      z-index: 1000;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 8px 20px;
+      border-radius: 50px;
+      border: 1px solid #2ecc71;
+      color: #fff;
+      font-weight: 900;
+    }
+
     .game-instruction {
       background: rgba(46, 204, 113, 0.15);
-      border: 1px dashed var(--green);
+      border: 1px dashed #2ecc71;
       padding: 20px;
       margin: 20px 0;
       border-radius: 16px;
       font-weight: 600;
-      line-height: 1.5;
-      animation: pulse 2s infinite ease-in-out;
-    }
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); opacity: 0.9; }
-      50% { transform: scale(1.02); opacity: 1; }
     }
 
-    /* МОДАЛКА ПОБЕДЫ */
     #win-modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.9);
-      z-index: 50000;
-      align-items: center;
-      justify-content: center;
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.9); z-index: 50000; align-items: center; justify-content: center;
       backdrop-filter: blur(15px);
-      padding: 20px;
-    }
-    .modal-content {
-      max-width: 400px;
-      padding: 40px;
-      text-align: center;
-      border: 2px solid var(--green);
-      background: var(--glass);
-      border-radius: 30px;
-      box-shadow: 0 0 50px rgba(0, 229, 255, 0.2);
-    }
-    
-    .character-counter {
-      position: fixed; top: 20px; left: 20px; z-index: 10000;
-      background: var(--glass); padding: 10px 20px; border-radius: 50px;
-      font-weight: 900; border: 1px solid var(--green);
     }
   </style>
 </head>
@@ -71,27 +79,27 @@
   <div class="snow-container"></div>
   <div class="stars-container"></div>
   
-  <div id="character-counter" class="character-counter">
-    🎁 Поймано: <span id="character-count">0</span>/10
-  </div>
-
-  <button id="theme-toggle" class="theme-toggle">🌙</button>
-
   <header class="header glass">
     <img src="logo_header_final.png" alt="Lady Stretch" class="logo">
     <a href="#packages" class="packages-button">Абонементы</a>
   </header>
 
   <main class="wrapper">
+    <center>
+      <div id="character-counter" class="character-counter">
+        🎁 Поймано: <span id="character-count">0</span>/10
+      </div>
+    </center>
+
     <section class="hero glass">
       <h1 class="hero-title"><span class="green-text">Новогоднее</span> настроение 🎄</h1>
       <div class="game-instruction">
-        🎮 <strong>КВЕСТ:</strong> Лови падающих персонажей (⛄, 🎅, 🎁). Каждые 10 пойманных героев дают <strong>+200₽</strong> к твоей скидке. Собери 1000₽ и купи абонемент по супер-цене!
+        🎮 <strong>КВЕСТ:</strong> Лови ⛄, 🎅, 🎁. Каждые 10 героев = <strong>+200₽</strong> к скидке. Собери 1000₽!
       </div>
     </section>
 
-    <section class="glass timer-wrapper" style="text-align: center; padding: 50px 20px;">
-      <h3 style="text-transform: uppercase; letter-spacing: 2px; opacity: 0.8; font-size: 0.8rem;">До Нового года осталось:</h3>
+    <section class="glass" style="text-align: center; padding: 40px 20px;">
+      <h3 style="opacity: 0.8; font-size: 0.8rem;">До Нового года:</h3>
       <div id="countdown-timer">00д : 00ч : 00м : 00с</div>
     </section>
 
@@ -114,22 +122,24 @@
       <a id="sbp-link" href="#" target="_blank" class="pay-main">
         Оплатить СБП&nbsp;&nbsp;<strong><span id="selected-price"></span>&nbsp;₽</strong>
       </a>
-      <button id="installment-btn" class="installment-btn" style="display:none;" onclick="openInstallment()">Оформить рассрочку на <span id="months"></span></button>
-      <button class="back-to-catalog-btn" style="margin-top:20px; width:100%;" onclick="goBack()">← К выбору абонемента</button>
+      <button id="installment-btn" class="installment-btn" style="display:none;" onclick="openInstallment()">Рассрочка на <span id="months"></span></button>
+      <button class="back-to-catalog-btn" style="margin-top:20px; width:100%; cursor:pointer;" onclick="goBack()">← К выбору</button>
     </section>
 
-    <footer class="footer glass" style="margin-top: 50px; text-align: center; padding: 30px;">
-      <a href="https://vk.com/im?sel=-221142875" target="_blank" style="color: #0077FF; font-weight: 800; text-decoration: none;">Написать нам в ВК →</a>
-      <p style="margin-top: 20px; opacity: 0.5;">© Lady Stretch 2025</p>
+    <footer style="text-align: center; padding: 50px 0;">
+      <a href="https://vk.com/im?sel=-221142875" target="_blank" class="vk-button-fixed">
+        Написать нам в ВК
+      </a>
+      <p style="margin-top: 30px; opacity: 0.4;">© Lady Stretch 2025</p>
     </footer>
   </main>
 
   <div id="win-modal">
-    <div class="modal-content">
-      <div style="font-size: 70px; margin-bottom: 20px;">🎁</div>
-      <h2 style="color: var(--green);">УРА! ПОДАРОК!</h2>
-      <p id="win-text" style="font-size: 1.1rem; margin: 20px 0;"></p>
-      <button onclick="closeWinModal()" style="background: var(--green); color: white; border: none; padding: 15px 40px; border-radius: 12px; font-weight: 800; cursor: pointer; width: 100%;">ЗАБРАТЬ</button>
+    <div class="modal-content glass">
+      <div style="font-size: 60px;">🎁</div>
+      <h2 style="color: #2ecc71;">ОТЛИЧНО!</h2>
+      <p id="win-text"></p>
+      <button onclick="closeWinModal()" style="background:#2ecc71; color:white; border:none; padding:15px; border-radius:12px; width:100%; cursor:pointer; font-weight:800;">ПРОДОЛЖИТЬ</button>
     </div>
   </div>
 
