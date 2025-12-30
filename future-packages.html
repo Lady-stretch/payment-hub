@@ -1,145 +1,186 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>Lady Stretch | Абонементы 2026</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Great+Vibes&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Абонементы 2026 | Lady Stretch Сыктывкар</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <meta name="description" content="Новые тарифы и абонементы Lady Stretch в Сыктывкаре на 2026 год.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Great+Vibes&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* СОХРАНЯЕМ ТВОИ ОРИГИНАЛЬНЫЕ СТИЛИ */
+    .back-nav-button {
+        position: fixed; top: 85px; left: 50%; transform: translateX(-50%);
+        z-index: 2000; display: inline-flex; align-items: center; justify-content: center;
+        width: 90%; max-width: 320px; padding: 12px 20px;
+        background: rgba(138, 43, 226, 0.25); border: 1px solid rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+        border-radius: 12px; color: var(--text); text-decoration: none;
+        font-weight: 700; font-size: 0.9rem; text-align: center;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); transition: all 0.3s ease; white-space: nowrap;
+    }
+    .back-nav-button:hover { background: rgba(138, 43, 226, 0.4); transform: translateX(-50%) translateY(-2px); }
+    .hero { margin-top: 120px !important; }
+    .future-banner {
+      background: linear-gradient(135deg, rgba(46, 204, 113, 0.15), rgba(39, 174, 96, 0.1));
+      color: var(--text); padding: 30px 20px; border-radius: 20px; margin: 20px 0 40px; text-align: center; border: 2px solid rgba(46, 204, 113, 0.3);
+    }
+    .future-banner h2 { color: var(--green); margin-bottom: 10px; font-weight: 800; }
+    .future-date { font-size: 1.4rem; font-weight: 900; color: var(--green); margin-top: 10px; }
+    .future-card { position: relative; border: 2px solid rgba(46, 204, 113, 0.2) !important; }
+    .future-card::before {
+      content: "НОВИНКА 2026"; position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--green); color: white; padding: 5px 15px; border-radius: 10px; font-size: 0.75rem; font-weight: 800; z-index: 5;
+    }
+    .original-price { text-decoration: line-through; color: var(--muted); font-size: 1.1rem; margin-bottom: 5px; opacity: 0.7; }
+    .discount-badge { display: inline-block; background: var(--green); color: white; padding: 4px 10px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; margin-left: 8px; }
+    .trial-card { background: linear-gradient(135deg, rgba(184, 30, 43, 0.08), rgba(184, 30, 43, 0.04)); border: 2px solid var(--red) !important; }
+    .trial-price { font-size: 2.4rem; font-weight: 900; color: var(--red); margin: 15px 0; }
+    .back-to-main-footer { display: inline-block; margin-top: 40px; padding: 15px 30px; background: var(--purple); color: white; text-decoration: none; border-radius: 12px; font-weight: 700; transition: 0.3s; }
+    .vk-button { display: inline-flex; align-items: center; justify-content: center; background: #0077FF; color: white !important; text-decoration: none; padding: 15px 30px; border-radius: 12px; font-weight: 700; width: 100%; max-width: 300px; margin-top: 15px; border: none; }
+  </style>
 </head>
 
 <body>
-  <div class="snow-container"></div>
-  <div class="stars-container"></div>
+  <div class="snow-container"></div>
+  <div class="stars-container"></div>
 
-  <header class="header glass">
-    <img src="logo_header_final.png" alt="Lady Stretch" class="logo">
-    <a href="index.html" class="packages-button">В 2025 год</a>
-  </header>
+  <button id="theme-toggle" class="theme-toggle">
+    <span class="moon-icon">🌙</span>
+    <span class="sun-icon">☀️</span>
+  </button>
 
-  <main class="wrapper">
-    <section class="hero glass">
-      <h1 class="hero-title">
-        <span class="green-text">Тарифы</span>
-        <span class="green-text">2026</span> 💎
-      </h1>
-      <p class="hero-subtitle">Обновленные программы для вашей гибкости</p>
-    </section>
+  <header class="header glass">
+    <img src="logo_header_final.png" alt="Lady Stretch" class="logo">
+  </header>
 
-    <section id="packages" class="packages">
-            <div class="card glass hit" 
-           data-price="38080" 
-           data-installments="10" 
-           data-inst-link="https://ecom.otpbank.ru/smart-form?config=94200518-c1a6-4497-b21b-29371599ea92">
-        <h3>64 занятия</h3>
-        <p class="desc">Максимальный результат · 12 месяцев</p>
-        <p class="price">38 080 ₽</p>
-        <button class="select" onclick="handlePackageClick(this)">Скоро в продаже</button>
-      </div>
+  <a href="index.html" id="top-back-btn" class="back-nav-button">← К абонементам 2025 года</a>
 
-            <div class="card glass" 
-           data-price="20160" 
-           data-installments="6" 
-           data-inst-link="https://ecom.otpbank.ru/smart-form?config=293fedad-a411-411d-8b5e-0747e82f6c73">
-        <h3>32 занятия</h3>
-        <p class="desc">Золотой стандарт · 6 месяцев</p>
-        <p class="price">20 160 ₽</p>
-        <button class="select" onclick="handlePackageClick(this)">Скоро в продаже</button>
-      </div>
+  <main class="wrapper">
+    <section class="hero glass">
+      <h1 class="hero-title">
+        <span class="green-text">Тарифы</span>
+        <span class="green-text">будущего</span> ✨
+      </h1>
+      <p class="hero-subtitle">Ваши новые возможности в 2026 году</p>
+    </section>
 
-            <div class="card glass" data-price="10640" data-installments="Нет">
-        <h3>16 занятий</h3>
-        <p class="desc">Уверенный старт · 3 месяца</p>
-        <p class="price">10 640 ₽</p>
-        <button class="select" onclick="handlePackageClick(this)">Скоро в продаже</button>
-      </div>
+    <section id="banner-2026" class="glass future-banner">
+      <h2>🚀 Обновленная программа</h2>
+      <p>С 1 января 2026 года стоимость и наполнение пакетов изменятся.</p>
+      <div class="future-date">Запуск - 1 января</div>
+    </section>
 
-            <div class="card glass" data-price="455" data-installments="Нет">
-        <h3>Пробное занятие</h3>
-        <p class="desc">Знакомство со студией</p>
-        <p class="price">455 ₽</p>
-        <button class="select" onclick="handlePackageClick(this)">Записаться</button>
-      </div>
-    </section>
+    <section class="packages">
+      <div class="card glass future-card" data-price="38080" data-inst="10" data-link="https://ecom.otpbank.ru/smart-form?config=94200518-c1a6-4497-b21b-29371599ea92">
+        <h3>64 занятия <span class="discount-badge">-15%</span></h3>
+        <p class="original-price">44 800 ₽</p>
+        <p class="desc">Регулярные тренировки · 12 месяцев</p>
+        <p class="price" style="color: var(--green);">38 080 ₽</p>
+        <button class="select btn-2026" onclick="handleFutureClick(this)">Скоро доступно</button>
+      </div>
 
-        <section id="payment" class="glass payment" style="display:none;">
-      <a id="card-pay-link" href="https://checkout.tochka.com/b880ee38-1c68-4215-85e8-1ca8081ec51a" target="_blank" class="pay-main">
-        Картой/СБП&nbsp;&nbsp;<strong><span id="selected-price-display"></span> ₽</strong>
-      </a>
+      <div class="card glass future-card" data-price="20160" data-inst="6" data-link="https://ecom.otpbank.ru/smart-form?config=293fedad-a411-411d-8b5e-0747e82f6c73">
+        <h3>32 занятия <span class="discount-badge">-10%</span></h3>
+        <p class="original-price">22 400 ₽</p>
+        <p class="desc">Интенсивный старт · 6 месяцев</p>
+        <p class="price" style="color: var(--green);">20 160 ₽</p>
+        <button class="select btn-2026" onclick="handleFutureClick(this)">Скоро доступно</button>
+      </div>
 
-      <button id="installment-btn-2026" class="pay-alt installment-btn" style="display:none;" onclick="openInstallment2026()">
-        Оформить рассрочку на <span id="months-2026"></span>
-      </button>
+      <div class="card glass future-card" data-price="10640">
+        <h3>16 занятий <span class="discount-badge">-5%</span></h3>
+        <p class="original-price">11 200 ₽</p>
+        <p class="desc">Первые шаги · 3 месяца</p>
+        <p class="price" style="color: var(--green);">10 640 ₽</p>
+        <button class="select btn-2026" onclick="handleFutureClick(this)">Скоро доступно</button>
+      </div>
 
-      <a href="https://qr.nspk.ru/BS1A007OR8OER0HI93BB3HANHVBFQUT7?type=01&bank=100000000284&crc=27EB" target="_blank" class="pay-alt card-pay-button" style="text-decoration: none; display: flex; align-items: center; justify-content: center;">
-        Онлайн-оплата СБП
-      </a>
+      <div class="card glass trial-card" data-price="455">
+        <h3>Пробное занятие</h3>
+        <p class="desc">Знакомство со студией · 1 занятие</p>
+        <p class="trial-price">455 ₽</p>
+        <button class="select btn-2026" onclick="handleFutureClick(this)">Скоро доступно</button>
+      </div>
+    </section>
 
-      <div class="qr-section">
-        <h4>Сканируйте QR-код 2026</h4>
-        <img src="qr_code.png" alt="QR-код" class="qr-image">
-      </div>
+    <section id="payment-2026" class="glass payment" style="display:none; margin-top: 30px;">
+        <a href="https://checkout.tochka.com/b880ee38-1c68-4215-85e8-1ca8081ec51a" target="_blank" class="pay-main">
+            Оплатить картой <strong><span id="p-price"></span> ₽</strong>
+        </a>
+        <button id="p-inst" class="installment-btn" style="display:none;" onclick="openInst()">
+            Рассрочка на <span id="p-months"></span>
+        </button>
+        <a href="https://qr.nspk.ru/BS1A007OR8OER0HI93BB3HANHVBFQUT7?type=01&bank=100000000284&crc=27EB" target="_blank" class="card-pay-button" style="text-decoration:none; display:block; margin-top:10px; text-align:center;">
+            Оплатить через СБП
+        </a>
+        <div class="qr-section">
+            <img src="qr_code.png" alt="QR" class="qr-image">
+        </div>
+        <button class="back-button" onclick="this.parentElement.style.display='none'">← Назад к тарифам</button>
+    </section>
 
-      <button class="back-button" onclick="closePayment()">← Выбрать другой формат</button>
-    </section>
-  </main>
+    <div id="bottom-back-container" style="text-align: center; margin-bottom: 20px;">
+        <a href="index.html" class="back-to-main-footer">Успеть купить по цене 2025 года</a>
+    </div>
 
-  <script src="script.js"></script>
-  <script>
-    let currentInstUrl = "";
+    <section class="glass contacts-section" style="text-align: center; padding: 30px 20px; margin-bottom: 40px;">
+        <h2 style="color: var(--green); margin-bottom: 20px;">Наши студии в Сыктывкаре:</h2>
+        <p>📍 ул. Советская, д. 3</p>
+        <p>📍 ул. Коммунистическая, д. 77/2</p>
+        <p style="margin-top: 15px;">Тел: <strong>+7 (908) 715-55-57</strong></p>
+        <a href="https://vk.com/im?entrypoint=community_page&media=&sel=-221142875" target="_blank" class="vk-button">Написать в ВКонтакте</a>
+    </section>
 
-    function isIt2026() {
-        return Date.now() >= new Date('January 1, 2026 00:00:00').getTime();
-    }
+    <footer class="footer">
+      Новые тарифы вступают в силу с 01.01.2026<br>
+      © Lady Stretch Сыктывкар 2025-2026
+    </footer>
+  </main>
 
-    function handlePackageClick(btn) {
-        if (!isIt2026()) {
-            alert('Продажи по этим тарифам откроются 1 января 2026 года!');
-            return;
-        }
+  <script src="script.js"></script>
+  <script>
+    let activeInst = "";
+    const is2026 = () => Date.now() >= new Date('January 1, 2026 00:00:00').getTime();
 
-        const card = btn.closest('.card');
-        const price = card.getAttribute('data-price');
-        const inst = card.getAttribute('data-installments');
-        currentInstUrl = card.getAttribute('data-inst-link') || "";
+    function handleFutureClick(btn) {
+        if (!is2026()) {
+            alert('Продажи по этим тарифам откроются 1 января 2026 года!\n\nСейчас вы можете купить абонемент по старой цене на главной странице.');
+            return;
+        }
+        const card = btn.closest('.card');
+        const price = card.dataset.price;
+        const inst = card.dataset.inst;
+        activeInst = card.dataset.link || "";
 
-        // Убираем рамки у всех и выделяем текущую
-        document.querySelectorAll('.card').forEach(c => c.style.border = "none");
-        card.style.border = "2px solid #4a6fa5";
+        document.getElementById('payment-2026').style.display = 'block';
+        document.getElementById('p-price').textContent = Number(price).toLocaleString('ru-RU');
+        
+        const instBtn = document.getElementById('p-inst');
+        if (inst && activeInst) {
+            instBtn.style.display = 'block';
+            document.getElementById('p-months').textContent = inst + ' мес.';
+        } else {
+            instBtn.style.display = 'none';
+        }
+        document.getElementById('payment-2026').scrollIntoView({behavior:'smooth'});
+    }
 
-        const paySection = document.getElementById('payment');
-        paySection.style.display = 'block';
-        
-        document.getElementById('selected-price-display').textContent = Number(price).toLocaleString('ru-RU');
-        
-        const instBtn = document.getElementById('installment-btn-2026');
-        if (inst !== "Нет" && currentInstUrl !== "") {
-            instBtn.style.display = 'block';
-            document.getElementById('months-2026').textContent = inst + ' мес.';
-        } else {
-            instBtn.style.display = 'none';
-        }
+    function openInst() { if(activeInst) window.open(activeInst, '_blank'); }
 
-        paySection.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function openInstallment2026() {
-        if (currentInstUrl) window.open(currentInstUrl, '_blank');
-    }
-
-    function closePayment() {
-        document.getElementById('payment').style.display = 'none';
-        document.querySelectorAll('.card').forEach(c => c.style.border = "none");
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        if (isIt2026()) {
-            document.querySelectorAll('.select').forEach(b => b.textContent = 'Выбрать формат');
-        }
-    });
-  </script>
+    document.addEventListener('DOMContentLoaded', () => {
+        if (is2026()) {
+            document.querySelectorAll('.btn-2026').forEach(b => b.textContent = 'Выбрать');
+            document.getElementById('top-back-btn').style.display = 'none';
+            document.getElementById('bottom-back-container').style.display = 'none';
+            document.getElementById('banner-2026').innerHTML = "<h2>🎄 С Новым 2026 Годом!</h2><p>Новые тарифы активированы и доступны к покупке.</p>";
+        }
+    });
+  </script>
 </body>
 </html>
