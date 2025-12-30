@@ -18,6 +18,13 @@ let currentBonus = parseInt(localStorage.getItem('totalBonus')) || 0;
 let isLightTheme = localStorage.getItem('theme') === 'light';
 let currentInstallmentLink = ""; 
 
+// ТОЧКА ПЕРЕХОДА: 1 января 2026 года
+const targetDate = new Date('January 1, 2026 00:00:00').getTime();
+
+function isIt2026() {
+    return Date.now() >= targetDate;
+}
+
 // ==========================================
 // 2. ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ
 // ==========================================
@@ -29,6 +36,11 @@ document.addEventListener('DOMContentLoaded', () => {
     setupShopLogic(); 
     startCharacterGame();
     updateUI();
+    
+    // Если пользователь зашел на сайт, когда 2026 уже наступил
+    if (isIt2026()) {
+        applyNewYearUI();
+    }
 });
 
 // ==========================================
@@ -40,10 +52,21 @@ function setupShopLogic() {
 
     document.querySelectorAll('.card').forEach(card => {
         card.addEventListener('click', function(e) {
+            // Блокировка тарифов 2025 года, если уже 2026
+            if (isIt2026() && !window.location.href.includes('future-packages.html')) {
+                alert('С Новым годом! Продажи по тарифам 2025 года завершены. Ознакомьтесь с новыми предложениями 2026 года.');
+                window.location.href = 'future-packages.html';
+                return;
+            }
+
             if (e.target.closest('.game-character')) return;
 
-            document.querySelectorAll('.card').forEach(c => c.style.border = "none");
+            document.querySelectorAll('.card').forEach(c => {
+                c.style.border = "none";
+                c.classList.remove('selected-card');
+            });
             this.style.border = "2px solid #4a6fa5";
+            this.classList.add('selected-card');
 
             const paymentSection = document.getElementById('payment');
             if (!paymentSection) return;
@@ -54,10 +77,8 @@ function setupShopLogic() {
             const installments = this.getAttribute('data-installments');
             const cardTitle = this.querySelector('h3') ? this.querySelector('h3').innerText : "";
 
-            // ЛОГИКА СКИДКИ: Если набрано 1000 руб
             const hasMaxBonus = currentBonus >= MAX_BONUS;
             
-            // 1. Определяем ссылку для рассрочки
             let finalLink = this.getAttribute('data-link') || "";
             if (hasMaxBonus) {
                 if (cardTitle.includes("96")) finalLink = SALE_LINKS.installment96;
@@ -65,17 +86,13 @@ function setupShopLogic() {
             }
             currentInstallmentLink = finalLink.replace(/&quot;/g, '').replace(/"/g, '').trim();
 
-            // 2. Определяем цену для отображения
             const displayPrice = hasMaxBonus ? (Number(price) - 1000) : Number(price);
-            document.getElementById('selected-price').textContent = displayPrice.toLocaleString('ru-RU');
+            const priceEl = document.getElementById('selected-price');
+            if (priceEl) priceEl.textContent = displayPrice.toLocaleString('ru-RU');
 
-            // 3. Подменяем ссылку для оплаты картой (Точка) в кнопке оплаты
-            const cardPayBtn = document.querySelector('.pay-main'); // Ссылка "Оплатить"
+            const cardPayBtn = document.querySelector('.pay-main');
             if (cardPayBtn && hasMaxBonus) {
                 cardPayBtn.href = SALE_LINKS.card;
-            } else if (cardPayBtn) {
-                // Если бонуса нет, возвращаем стандартную логику (например, СБП/Точка без скидки)
-                // Если у вас там статичная ссылка в HTML, она останется, если нет - можно прописать дефолт
             }
             
             const instBtn = document.getElementById('installment-btn');
@@ -104,12 +121,76 @@ function openInstallment() {
 function goBack() {
     const p = document.getElementById('payment');
     if (p) p.style.display = 'none';
-    document.querySelectorAll('.card').forEach(c => c.style.border = "none");
+    document.querySelectorAll('.card').forEach(c => {
+        c.style.border = "none";
+        c.classList.remove('selected-card');
+    });
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // ==========================================
-// 4. НОВОГОДНЯЯ ИГРА И ЭФФЕКТЫ
+// 4. ТАЙМЕР И ПРАЗДНИК (АВТОМАТИКА)
+// ==========================================
+let holidayTriggered = false;
+
+function applyNewYearUI() {
+    // 1. Меняем тексты на главной
+    const title = document.querySelector('.hero-title');
+    const subtitle = document.querySelector('.hero-subtitle');
+    const timerCaption = document.querySelector('.timer-caption');
+    const futureSection = document.querySelector('.future-link-section');
+    
+    if (title) title.innerHTML = '<span class="green-text">С Новым</span> <span class="green-text">2026 Годом!</span> 🎄';
+    if (subtitle) subtitle.textContent = 'С Новым счастьем! Мир фитнеса и грации ждет вас в этом году.';
+    if (timerCaption) timerCaption.textContent = 'Ура! Праздник наступил!';
+    
+    // 2. Блокируем карточки 2025 визуально
+    document.querySelectorAll('.packages .card').forEach(card => {
+        if (!window.location.href.includes('future-packages.html')) {
+            card.classList.add('card-expired');
+            const btn = card.querySelector('.select');
+            if (btn) btn.textContent = 'Предложение истекло';
+        }
+    });
+
+    // 3. Акцентируем внимание на 2026 год
+    if (futureSection) {
+        futureSection.style.border = "3px solid var(--green)";
+        futureSection.style.background = "rgba(46, 204, 113, 0.1)";
+    }
+
+    // 4. Конфетти (только если еще не запускали в этой сессии)
+    if (!holidayTriggered) {
+        launchConfetti();
+        holidayTriggered = true;
+    }
+}
+
+function initTimer() {
+    const t = document.getElementById('countdown-timer');
+    if (!t) return;
+    
+    const timerInterval = setInterval(() => {
+        const diff = targetDate - Date.now();
+        
+        if (diff <= 0) {
+            t.textContent = "С НОВЫМ ГОДОМ! 🎉";
+            t.classList.add('holiday-mode');
+            applyNewYearUI();
+            clearInterval(timerInterval);
+            return;
+        }
+        
+        const d = Math.floor(diff/86400000), 
+              h = Math.floor((diff%86400000)/3600000), 
+              m = Math.floor((diff%3600000)/60000), 
+              s = Math.floor((diff%60000)/1000);
+        t.textContent = `${d}д ${h}ч ${m}м ${s}с`;
+    }, 1000);
+}
+
+// ==========================================
+// 5. НОВОГОДНЯЯ ИГРА И ЭФФЕКТЫ
 // ==========================================
 
 function startCharacterGame() {
@@ -159,12 +240,9 @@ function updateUI() {
 }
 
 function processWin() {
-    let isMaxReached = false;
     if (currentBonus < MAX_BONUS) {
         currentBonus += BONUS_STEP;
         localStorage.setItem('totalBonus', currentBonus);
-    } else {
-        isMaxReached = true;
     }
     
     launchConfetti(); 
@@ -178,7 +256,6 @@ function processWin() {
     });
     
     if (currentBonus < MAX_BONUS) {
-        // Окно промежуточного прогресса
         winModal.innerHTML = `
             <div style="font-size: 50px;">🎁</div>
             <h2 style="color: var(--green); margin: 15px 0;">Отлично!</h2>
@@ -187,7 +264,6 @@ function processWin() {
             <button id="close-win" class="select" style="width: 200px;">Продолжить</button>
         `;
     } else {
-        // Окно финальной победы (1000 руб)
         winModal.innerHTML = `
             <div style="font-size: 50px;">🎉</div>
             <h2 style="color: var(--green); margin: 15px 0;">Поздравляем!</h2>
@@ -198,15 +274,12 @@ function processWin() {
     }
     
     document.body.appendChild(winModal);
-
-    if (document.getElementById('close-win')) {
-        document.getElementById('close-win').onclick = () => winModal.remove();
-    }
-
+    if (document.getElementById('close-win')) document.getElementById('close-win').onclick = () => winModal.remove();
     if (document.getElementById('go-to-sale')) {
         document.getElementById('go-to-sale').onclick = () => {
             winModal.remove();
-            document.getElementById('packages').scrollIntoView({ behavior: 'smooth' });
+            const pkgs = document.getElementById('packages');
+            if (pkgs) pkgs.scrollIntoView({ behavior: 'smooth' });
         };
     }
 
@@ -255,7 +328,7 @@ function showClickEffect(el, text) {
 }
 
 // ==========================================
-// 5. ТЕМА, СНЕГ И ТАЙМЕР
+// 6. ТЕМА, СНЕГ И ЗВЕЗДЫ
 // ==========================================
 function toggleTheme() { isLightTheme = !isLightTheme; applyTheme(); localStorage.setItem('theme', isLightTheme ? 'light' : 'dark'); initStars(); }
 function applyTheme() { document.body.classList.toggle('light-theme', isLightTheme); }
@@ -274,7 +347,10 @@ function initSnow() {
 
 function initStars() { 
     const container = document.querySelector('.stars-container'); 
-    if (!container || isLightTheme) return; 
+    if (!container || isLightTheme) {
+        if (container) container.innerHTML = '';
+        return; 
+    }
     container.innerHTML = ''; 
     for (let i=0; i<50; i++) { 
         const s = document.createElement('div'); 
@@ -283,23 +359,11 @@ function initStars() {
     } 
 }
 
-function initTimer() {
-    const t = document.getElementById('countdown-timer');
-    if (!t) return;
-    const target = new Date('January 1, 2026 00:00:00').getTime();
-    setInterval(() => {
-        const diff = target - Date.now();
-        if (diff <= 0) { t.textContent = "С НОВЫМ ГОДОМ! 🎉"; return; }
-        const d = Math.floor(diff/86400000), h = Math.floor((diff%86400000)/3600000), m = Math.floor((diff%3600000)/60000), s = Math.floor((diff%60000)/1000);
-        t.textContent = `${d}д ${h}ч ${m}м ${s}с`;
-    }, 1000);
-}
-
-const style = document.createElement('style');
-style.innerHTML = `
+const fallAnim = document.createElement('style');
+fallAnim.innerHTML = `
 @keyframes character-fall {
     0% { transform: translateY(0) rotate(0deg); }
     100% { transform: translateY(110vh) rotate(360deg); }
 }
 `;
-document.head.appendChild(style);
+document.head.appendChild(fallAnim);
