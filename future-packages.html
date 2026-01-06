@@ -7,176 +7,189 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   
   <style>
-    :root { --bg: #0f051d; --purple: #5D3E8E; --pink: #FFD1DC; --gold: #D4AF37; }
+    :root { --bg: #0f051d; --purple: #5D3E8E; --pink: #FFD1DC; --gold: #D4AF37; --blue: #0088cc; }
     * { box-sizing: border-box; }
     body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: #fff; overflow-x: hidden; }
 
-    /* ФОН */
-    .stars-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%); }
-    .star-static { position: absolute; background: white; border-radius: 50%; opacity: 0.3; }
-
-    /* ИГРОВАЯ ЗОНА */
-    #game-container { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-    .ui-layer { z-index: 10; text-align: center; pointer-events: none; }
-    .counter { font-size: 1rem; letter-spacing: 3px; color: var(--pink); margin-bottom: 10px; }
-    h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; margin: 0; }
-
-    /* ПАДАЮЩИЕ ПРЕДСКАЗАНИЯ */
-    .falling-star {
-      position: absolute; width: 50px; height: 50px; cursor: pointer;
-      display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
-      user-select: none; transition: transform 0.2s; z-index: 5;
+    /* HEADER */
+    header {
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+      padding: 15px 30px; display: flex; justify-content: space-between; align-items: center;
+      background: rgba(15, 5, 29, 0.85); backdrop-filter: blur(15px);
     }
+    .logo img { height: 28px; width: auto; filter: brightness(0) invert(1); }
+    .nav-link { text-decoration: none; color: var(--pink); font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; }
 
-    /* ОПРОС */
-    #quiz-container { display: none; text-align: center; max-width: 500px; padding: 30px; background: rgba(255,255,255,0.05); backdrop-filter: blur(15px); border-radius: 20px; border: 1px solid var(--pink); z-index: 20; }
-    .quiz-btn {
-      display: block; width: 100%; padding: 15px; margin: 10px 0;
-      background: none; border: 1px solid var(--pink); color: #fff;
-      cursor: pointer; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; transition: 0.3s;
-    }
-    .quiz-btn:hover { background: var(--pink); color: #000; }
+    /* ФОН СО ЗВЕЗДАМИ */
+    .stars-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: #090A0F; }
+    .falling-item { position: absolute; cursor: pointer; font-size: 1.8rem; z-index: 5; filter: drop-shadow(0 0 10px var(--pink)); user-select: none; }
 
-    /* РЕКОМЕНДАЦИЯ */
-    #recommendation { display: none; z-index: 20; text-align: center; }
-    .coach-text { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--pink); margin-bottom: 30px; }
-
-    /* БЛОК С ТАРИФАМИ */
-    #packages-section { display: none; padding: 100px 20px 60px; animation: fadeIn 1s; }
-    .bonus-card { background: var(--gold); color: #000; padding: 15px; border-radius: 50px; font-weight: 800; font-size: 0.7rem; margin-bottom: 40px; display: inline-block; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1100px; margin: 0 auto; }
-    .card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 40px 30px; position: relative; }
-    .card.recommended { border: 2px solid var(--gold); transform: scale(1.05); }
-    .card.recommended::after { content: "РЕКОМЕНДУЕМ"; position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #000; padding: 5px 15px; font-size: 0.6rem; font-weight: 800; }
+    /* ВОРОНКА ОПРОСА */
+    #main-container { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 100px 20px; }
     
-    .price { font-size: 2.5rem; font-weight: 800; margin: 20px 0; }
-    .btn-buy { display: block; padding: 15px; background: var(--pink); color: #000; text-decoration: none; font-weight: 700; font-size: 0.7rem; text-transform: uppercase; margin-bottom: 10px; }
-    .btn-link { display: block; padding: 15px; border: 1px solid var(--pink); color: var(--pink); text-decoration: none; font-weight: 700; font-size: 0.7rem; text-transform: uppercase; }
+    .quiz-card {
+      background: rgba(255,255,255,0.03); backdrop-filter: blur(20px);
+      padding: 40px; border-radius: 30px; border: 1px solid rgba(255,210,220,0.2);
+      max-width: 500px; width: 100%; z-index: 50; animation: fadeIn 0.8s ease;
+    }
+    .step-indicator { color: var(--pink); font-size: 0.7rem; letter-spacing: 3px; margin-bottom: 20px; display: block; }
+    .quiz-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; margin: 0 0 25px 0; line-height: 1.2; }
+    
+    .quiz-option {
+      display: block; width: 100%; padding: 16px; margin: 10px 0;
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,210,220,0.3); color: #fff;
+      border-radius: 12px; cursor: pointer; text-align: left; font-size: 0.9rem; transition: 0.3s;
+    }
+    .quiz-option:hover { background: var(--pink); color: #000; border-color: var(--pink); }
 
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    /* ПРЕДСКАЗАНИЯ (ВСПЛЫВАЮЩИЕ) */
+    .prediction-toast {
+      position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+      background: var(--purple); padding: 15px 25px; border-radius: 50px;
+      border: 1px solid var(--pink); font-family: 'Cormorant Garamond', serif;
+      z-index: 100; animation: slideUp 3s forwards; display: none;
+    }
+
+    /* РЕЗУЛЬТАТ */
+    #result-screen { display: none; text-align: center; max-width: 600px; }
+    .coach-avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--pink); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 2rem; }
+
+    /* ТАРИФЫ */
+    #packages-grid { display: none; padding: 120px 20px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
+    .card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.1); padding: 35px 25px; transition: 0.4s; position: relative; }
+    .card.recommended { border: 2px solid var(--gold); transform: scale(1.03); background: rgba(212, 175, 55, 0.05); }
+    .card.recommended::before { content: "ВАШ ИДЕАЛЬНЫЙ ТАРИФ"; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #000; padding: 4px 12px; font-size: 0.6rem; font-weight: 900; border-radius: 4px; }
+    
+    .btn-pay { display: block; padding: 16px; background: var(--pink); color: #000; text-decoration: none; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; margin-bottom: 10px; text-align: center; }
+    .btn-tg { display: block; padding: 16px; background: var(--blue); color: #fff; text-decoration: none; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; text-align: center; }
+    
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideUp { 0% { opacity: 0; transform: translate(-50%, 20px); } 10% { opacity: 1; transform: translate(-50%, 0); } 90% { opacity: 1; } 100% { opacity: 0; } }
   </style>
 </head>
 <body>
 
-  <div class="stars-bg" id="static-stars"></div>
+  <header>
+    <div class="logo"><img src="logo_header_final.png" alt="Lady Stretch"></div>
+    <a href="index.html" class="nav-link">← Назад</a>
+  </header>
 
-  <section id="game-container">
-    <div class="ui-layer" id="game-ui">
-      <div class="counter">СОБРАНО ИСКР: <span id="score">0</span> / 20</div>
-      <h1>Поймай магию 2026</h1>
-      <p style="opacity: 0.6; font-size: 0.8rem; letter-spacing: 2px;">СОБЕРИ ВСЕ СИМВОЛЫ, ЧТОБЫ УЗНАТЬ СВОЙ БОНУС</p>
+  <div class="stars-bg" id="stars-f"></div>
+  <div id="toast" class="prediction-toast"></div>
+
+  <main id="main-container">
+    <div class="quiz-card" id="step-1">
+      <span class="step-indicator">ШАГ 1 / 2</span>
+      <h2 class="quiz-title">Какую главную цель вы ставите перед собой в 2026 году?</h2>
+      <button class="quiz-option" onclick="nextStep(2, 'health')">✨ Здоровье спины и красивая осанка</button>
+      <button class="quiz-option" onclick="nextStep(2, 'fit')">💃 Быстрое похудение и рельеф</button>
+      <button class="quiz-option" onclick="nextStep(2, 'flex')">🌸 Женственность, гибкость и легкость</button>
     </div>
 
-    <div id="quiz-container">
-      <h2 style="font-family: 'Cormorant Garamond', serif;">Твой выбор на 2026 год?</h2>
-      <p style="font-size: 0.8rem; opacity: 0.7; margin-bottom: 20px;">Выберите цель тренировок, чтобы тренер подобрал программу</p>
-      <button class="quiz-btn" onclick="showResult('Здоровье')">Здоровье и Осанка</button>
-      <button class="quiz-btn" onclick="showResult('Похудение')">Быстро похудеть</button>
-      <button class="quiz-btn" onclick="showResult('Легкость')">Легкость и гибкость</button>
+    <div class="quiz-card" id="step-2" style="display:none;">
+      <span class="step-indicator">ШАГ 2 / 2</span>
+      <h2 class="quiz-title">Как часто вы готовы уделять время тренировкам?</h2>
+      <button class="quiz-option" onclick="calculate('studio')">🏢 2-3 раза в неделю в студии</button>
+      <button class="quiz-option" onclick="calculate('hybrid')">🏠 Хочу совмещать: зал + дома</button>
+      <button class="quiz-option" onclick="calculate('online')">⏳ Мало времени, удобно только онлайн</button>
     </div>
 
-    <div id="recommendation">
-      <div class="coach-text" id="coach-msg"></div>
-      <button class="btn-buy" style="display:inline-block; padding: 20px 40px;" onclick="showPackages()">Перейти к выбору</button>
+    <div id="result-screen">
+      <div class="coach-avatar">🧘‍♀️</div>
+      <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2rem;">Ваша персональная стратегия готова!</h2>
+      <p id="coach-advice" style="opacity: 0.8; line-height: 1.6; margin-bottom: 40px;"></p>
+      <button class="btn-pay" style="display:inline-block; padding: 20px 60px;" onclick="showPrices()">Посмотреть тарифы</button>
     </div>
-  </section>
+  </main>
 
-  <section id="packages-section">
-    <div class="bonus-card">🎁 СКРИНШОТ ЭКРАНА = +2 ЗАНЯТИЯ В ПОДАРОК!</div>
+  <section id="packages-grid">
+    <center><div style="background: var(--gold); color:#000; padding:10px 20px; border-radius:50px; display:inline-block; font-weight:800; font-size:0.7rem; margin-bottom:40px;">🎁 ЗАБЕРИТЕ +2 ЗАНЯТИЯ (СДЕЛАЙТЕ СКРИНШОТ ЭКРАНА)</div></center>
+    
     <div class="grid">
       <div class="card" id="card-64">
-        <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 2rem;">64 занятия</h3>
-        <div class="price">38 080 ₽</div>
-        <p style="opacity: 0.6; font-size: 0.8rem; margin-bottom: 20px;">Для тех, кто идет к глобальной цели</p>
-        <a href="https://checkout.tochka.com/b880ee38-1c68-4215-85e8-1ca8081ec51a" class="btn-buy">Оплатить картой</a>
-        <a href="https://ecom.otpbank.ru/smart-form?config=20f5d944-cf78-4d48-99b7-b7c791aff1ba" class="btn-link">Рассрочка на 12 мес</a>
+        <h3>64 занятия</h3>
+        <div style="font-size: 2.2rem; font-weight: 900; margin: 15px 0;">38 080 ₽</div>
+        <p style="font-size: 0.8rem; opacity: 0.6; margin-bottom: 20px;">Лучший выбор для тех, кто хочет результат "под ключ" в зале.</p>
+        <a href="https://checkout.tochka.com/b880ee38-1c68-4215-85e8-1ca8081ec51a" class="btn-pay">Оплатить 2026</a>
+        <a href="https://ecom.otpbank.ru/smart-form?config=20f5d944-cf78-4d48-99b7-b7c791aff1ba" style="color:var(--pink); font-size:0.7rem; text-decoration:none; font-weight:700;">РАССРОЧКА 0% НА 12 МЕС.</a>
       </div>
+
       <div class="card" id="card-32">
-        <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 2rem;">32 занятия</h3>
-        <div class="price">20 160 ₽</div>
-        <p style="opacity: 0.6; font-size: 0.8rem; margin-bottom: 20px;">Золотая середина для результата</p>
-        <a href="https://checkout.tochka.com/b880ee38-1c68-4215-85e8-1ca8081ec51a" class="btn-buy">Оплатить картой</a>
-        <a href="https://ecom.otpbank.ru/smart-form?config=0d5d1d9f-2491-464b-b356-bea9d09bc09e" class="btn-link">Рассрочка на 6 мес</a>
+        <h3>32 занятия</h3>
+        <div style="font-size: 2.2rem; font-weight: 900; margin: 15px 0;">20 160 ₽</div>
+        <p style="font-size: 0.8rem; opacity: 0.6; margin-bottom: 20px;">Оптимально для поддержания здоровья и гибкости в студии.</p>
+        <a href="https://checkout.tochka.com/b880ee38-1c68-4215-85e8-1ca8081ec51a" class="btn-pay">Оплатить 2026</a>
+        <a href="https://ecom.otpbank.ru/smart-form?config=0d5d1d9f-2491-464b-b356-bea9d09bc09e" style="color:var(--pink); font-size:0.7rem; text-decoration:none; font-weight:700;">РАССРОЧКА 0% НА 6 МЕС.</a>
       </div>
-      <div class="card" id="card-16">
-        <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 2rem;">16 занятий</h3>
-        <div class="price">10 640 ₽</div>
-        <p style="opacity: 0.6; font-size: 0.8rem; margin-bottom: 20px;">Мягкое знакомство и поддержка тонуса</p>
-        <a href="https://checkout.tochka.com/b880ee38-1c68-4215-85e8-1ca8081ec51a" class="btn-buy">Оплатить картой</a>
+
+      <div class="card" id="card-online">
+        <h3>Lady Stretch Online</h3>
+        <div style="font-size: 2.2rem; font-weight: 900; margin: 15px 0;">4 900 ₽ <span style="font-size:0.8rem; opacity:0.5;">/мес</span></div>
+        <p style="font-size: 0.8rem; opacity: 0.6; margin-bottom: 20px;">Доступ в закрытый ТГ-канал. Тренировки по 30-40 мин в любое время.</p>
+        <a href="https://t.me/your_bot_link" class="btn-tg">ПОДПИСАТЬСЯ В TELEGRAM</a>
+        <p style="font-size: 0.6rem; margin-top: 10px; color: var(--blue);">* Идеально как дополнение к залу или замена при занятом графике</p>
       </div>
     </div>
   </section>
 
   <script>
-    let score = 0;
-    const gameContainer = document.getElementById('game-container');
-    const symbols = ['✨', '⭐', '🌸', '💫', '🔮'];
+    let userGoal = '';
+    const predictions = [
+      "2026 — год твоего преображения!", "Твое тело станет твоим союзником.",
+      "Шпагат ближе, чем ты думаешь.", "Гибкость ума начинается с гибкости тела.",
+      "Каждая тренировка — вклад в твое долголетие.", "В 2026 ты будешь сиять!"
+    ];
 
-    // Создаем фон
-    for(let i=0; i<100; i++) {
-      let s = document.createElement('div');
-      s.className = 'star-static';
-      s.style.width = s.style.height = Math.random()*3+'px';
-      s.style.left = Math.random()*100+'%'; s.style.top = Math.random()*100+'%';
-      document.getElementById('static-stars').appendChild(s);
-    }
-
-    // Логика падения звезд
-    function createFallingStar() {
-      if(score >= 20) return;
-      const star = document.createElement('div');
-      star.className = 'falling-star';
-      star.innerText = symbols[Math.floor(Math.random()*symbols.length)];
-      star.style.left = Math.random() * (window.innerWidth - 50) + 'px';
-      star.style.top = '-50px';
+    // Летающие элементы
+    function spawnStar() {
+      const el = document.createElement('div');
+      el.className = 'falling-item';
+      el.innerText = ['✨','🐍','🌸'][Math.floor(Math.random()*3)];
+      el.style.left = Math.random()*90+'%';
+      el.style.top = '-50px';
+      document.body.appendChild(el);
       
-      let duration = Math.random() * 3000 + 2000;
-      let anim = star.animate([
-        { top: '-50px', opacity: 1 },
-        { top: window.innerHeight + 'px', opacity: 0 }
-      ], { duration: duration });
-
-      star.onclick = () => {
-        score++;
-        document.getElementById('score').innerText = score;
-        star.remove();
-        if(score === 20) startQuiz();
+      let anim = el.animate([{top: '-50px'}, {top: window.innerHeight+'px'}], {duration: 6000});
+      el.onclick = () => {
+        const toast = document.getElementById('toast');
+        toast.innerText = predictions[Math.floor(Math.random()*predictions.length)];
+        toast.style.display = 'block';
+        setTimeout(()=> toast.style.display='none', 3000);
+        el.remove();
       };
+      anim.onfinish = () => el.remove();
+    }
+    setInterval(spawnStar, 2000);
 
-      gameContainer.appendChild(star);
-      anim.onfinish = () => star.remove();
+    function nextStep(step, val) {
+      userGoal = val;
+      document.getElementById('step-1').style.display = 'none';
+      document.getElementById('step-2').style.display = 'block';
     }
 
-    let gameTimer = setInterval(createFallingStar, 600);
+    function calculate(type) {
+      document.getElementById('step-2').style.display = 'none';
+      const screen = document.getElementById('result-screen');
+      const advice = document.getElementById('coach-advice');
+      screen.style.display = 'block';
 
-    function startQuiz() {
-      clearInterval(gameTimer);
-      document.getElementById('game-ui').style.display = 'none';
-      document.getElementById('quiz-container').style.display = 'block';
-    }
-
-    function showResult(goal) {
-      document.getElementById('quiz-container').style.display = 'none';
-      const msg = document.getElementById('coach-msg');
-      const rec = document.getElementById('recommendation');
-      rec.style.display = 'block';
-
-      if(goal === 'Здоровье') {
-        msg.innerHTML = "Ваш фитнес-тренер рекомендует:<br><strong>Пакет 32 занятия</strong><br><span style='font-size:1rem'>Это оптимальный темп для укрепления спины.</span>";
+      if(type === 'online') {
+        advice.innerHTML = "Учитывая ваш плотный график, я рекомендую наш <strong>Online-формат в Telegram</strong>. Вы сможете тренироваться даже по 20 минут утром, не теряя прогресс, когда не успеваете в зал.";
+        document.getElementById('card-online').classList.add('recommended');
+      } else if(type === 'hybrid') {
+        advice.innerHTML = "Для вас идеален <strong>гибридный подход</strong>: 32 занятия в зале для техники + Online подписка для домашних зарядок. Это даст 100% результат в 2026 году!";
         document.getElementById('card-32').classList.add('recommended');
-      } else if(goal === 'Похудение') {
-        msg.innerHTML = "Ваш фитнес-тренер рекомендует:<br><strong>Пакет 64 занятия</strong><br><span style='font-size:1rem'>Для стабильного результата и интенсивной работы.</span>";
-        document.getElementById('card-64').classList.add('recommended');
       } else {
-        msg.innerHTML = "Ваш фитнес-тренер рекомендует:<br><strong>Пакет 16 занятий</strong><br><span style='font-size:1rem'>Отличный старт для легкости и растяжки.</span>";
-        document.getElementById('card-16').classList.add('recommended');
+        advice.innerHTML = "Ваш выбор — основательный подход. Рекомендую <strong>64 занятия</strong>. Это гарантирует глубокую проработку мышц и закрепление результата на весь год.";
+        document.getElementById('card-64').classList.add('recommended');
       }
     }
 
-    function showPackages() {
-      document.getElementById('game-container').style.display = 'none';
-      document.getElementById('packages-section').style.display = 'block';
-      window.scrollTo(0, 0);
+    function showPrices() {
+      document.getElementById('main-container').style.display = 'none';
+      document.getElementById('packages-grid').style.display = 'block';
+      window.scrollTo(0,0);
     }
   </script>
 </body>
