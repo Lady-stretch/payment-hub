@@ -11,12 +11,41 @@
     :root { --bg: #0f051d; --pink: #FFD1DC; --gold: #D4AF37; --blue: #0088cc; }
     body { background: var(--bg); color: #fff; overflow-x: hidden; margin: 0; font-family: 'Inter', sans-serif; }
 
+    /* ШАПКА: ЛОГО - ЦЕНТР - НАЗАД */
     header {
       position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
-      padding: 15px 30px; display: flex; justify-content: space-between; align-items: center;
-      background: rgba(15, 5, 29, 0.9); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding: 0 20px;
+      display: flex; 
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(15, 5, 29, 0.9); 
+      backdrop-filter: blur(15px); 
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      height: 70px;
     }
-    .logo img { height: 26px; filter: brightness(0) invert(1); }
+
+    .header-left, .header-right { flex: 1; display: flex; align-items: center; }
+    .header-right { justify-content: flex-end; }
+    
+    .header-center {
+      color: var(--pink); 
+      font-family: 'Cormorant Gramamond', serif; 
+      font-size: 1.2rem; 
+      font-style: italic; 
+      letter-spacing: 1px;
+      white-space: nowrap;
+      text-align: center;
+    }
+
+    .logo img { height: 22px; width: auto; filter: brightness(0) invert(1); }
+
+    .nav-back {
+      text-decoration: none; color: #fff; font-size: 0.7rem; 
+      text-transform: uppercase; letter-spacing: 1px;
+      border: 1px solid rgba(255, 209, 220, 0.3);
+      padding: 8px 15px; border-radius: 50px; transition: 0.3s;
+    }
+    .nav-back:hover { background: var(--pink); color: #000; border-color: var(--pink); }
 
     /* МАГИЯ */
     .falling-item { 
@@ -27,7 +56,7 @@
       position: absolute; background: var(--pink); color: #000;
       padding: 10px 15px; border-radius: 12px; font-size: 0.8rem; font-weight: 700;
       pointer-events: none; z-index: 100; animation: fadeUp 2.5s forwards;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3); text-align: center; width: 140px;
     }
 
     @keyframes fadeUp {
@@ -70,14 +99,23 @@
       background: var(--gold); color: #000; padding: 40px; border-radius: 25px; z-index: 2000;
       text-align: center; width: 90%; max-width: 400px; box-shadow: 0 0 100px rgba(0,0,0,0.8);
     }
+
+    @media (max-width: 480px) {
+      .header-center { font-size: 0.9rem; }
+      .nav-back { font-size: 0.6rem; padding: 5px 12px; }
+      .logo img { height: 18px; }
+    }
   </style>
 </head>
 <body>
 
   <header>
-    <div class="logo"><img src="logo_header_final.png" alt="Lady Stretch"></div>
-    <div style="color: var(--pink); font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-style: italic; letter-spacing: 1px;">
-        Сделай свой выбор!
+    <div class="header-left">
+      <div class="logo"><img src="logo_header_final.png" alt="Lady Stretch"></div>
+    </div>
+    <div class="header-center">Сделай свой выбор!</div>
+    <div class="header-right">
+      <a href="index.html" class="nav-back">← Назад</a>
     </div>
   </header>
 
@@ -86,7 +124,7 @@
   <div id="bonus-modal">
     <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2rem; margin-bottom: 10px;">МАГИЯ 2026 СОБРАНА!</h2>
     <div style="font-size: 1.8rem; font-weight: 900; margin-bottom: 15px;">ПРИЗ: +2 ЗАНЯТИЯ</div>
-    <p style="font-size: 0.8rem; line-height: 1.4; margin-bottom: 20px;">Сделайте скриншот этого окна и покажите администратору при покупке любого абонемента.</p>
+    <p style="font-size: 0.8rem; line-height: 1.4; margin-bottom: 20px;">Сделайте скриншот и покажите администратору при покупке любого абонемента.</p>
     <button onclick="closeBonus()" style="background:#000; color:#fff; padding:12px 30px; border:none; cursor:pointer; font-weight:700; border-radius:50px;">ПРОДОЛЖИТЬ</button>
   </div>
 
@@ -128,7 +166,7 @@
 
       <div class="card" id="c-online">
         <h3>Lady Stretch Online</h3>
-        <div style="font-size: 2.2rem; font-weight: 900; margin: 15px 0;">990 ₽ <span style="font-size:0.8rem; font-weight:400;">/мес</span></div>
+        <div style="font-size: 2.2rem; font-weight: 900; margin: 15px 0;">999 ₽ <span style="font-size:0.8rem; font-weight:400;">/мес</span></div>
         <p style="font-size: 0.75rem; opacity: 0.7; margin-bottom: 20px;">Тренировки в закрытом ТГ-канале. Занимайтесь в любое время и в любом месте.</p>
         <a href="https://t.me/fitness11_online_bot" style="display:block; background:var(--blue); color:#fff; text-align:center; padding:18px; text-decoration:none; font-weight:800; text-transform:uppercase; font-size:0.75rem;">Вступить в ТГ-клуб</a>
       </div>
@@ -156,10 +194,10 @@
       el.className = 'falling-item';
       el.innerText = ['✨','🐍','🌸','💎'][Math.floor(Math.random()*4)];
       el.style.left = Math.random()*90+'%';
-      el.style.top = '-50px';
+      el.style.top = '75px'; // Начинаем ниже шапки
       document.body.appendChild(el);
       
-      let anim = el.animate([{top: '-50px'}, {top: window.innerHeight+'px'}], {duration: 9000});
+      let anim = el.animate([{top: '75px'}, {top: window.innerHeight+'px'}], {duration: 9000});
       
       el.onclick = (e) => {
         score++;
@@ -169,8 +207,8 @@
         const bubble = document.createElement('div');
         bubble.className = 'pred-bubble';
         bubble.innerText = predictions[Math.floor(Math.random()*predictions.length)];
-        bubble.style.left = (e.pageX - 75) + 'px';
-        bubble.style.top = (e.pageY - 40) + 'px';
+        bubble.style.left = (e.pageX - 70) + 'px';
+        bubble.style.top = (e.pageY - 50) + 'px';
         document.body.appendChild(bubble);
         setTimeout(() => bubble.remove(), 2500);
 
@@ -189,10 +227,10 @@
         
         if(!tempGoal) {
             tempGoal = val;
-            title.innerText = "Где вам удобнее тренироваться?";
+            title.innerText = "В каком формате удобнее тренироваться?";
             box.innerHTML = `
-                <button class="quiz-option" onclick="handleChoice('studio')">🏢 Только в студии</button>
-                <button class="quiz-option" onclick="handleChoice('online')">⏳ Только онлайн (Telegram)</button>
+                <button class="quiz-option" onclick="handleChoice('studio')">🏢 2-3 раза в неделю, в студии</button>
+                <button class="quiz-option" onclick="handleChoice('online')">⏳ Совсем нет времени, удобнее дома</button>
                 <button class="quiz-option" onclick="handleChoice('hybrid')">🏠 Гибрид: Зал + Дома</button>
             `;
         } else {
