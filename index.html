@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>LADY STRETCH | Сыктывкар</title>
+  <title>LADY STRETCH | SYKTYVKAR</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -10,114 +10,75 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   
   <style>
-    :root {
-      --bg: #FFFFFF;
-      --text: #000000;
-      --accent: #1A1A1A;
-    }
-
+    :root { --bg: #ffffff; --text: #000000; }
     * { box-sizing: border-box; }
     body { 
-      margin: 0; 
-      font-family: 'Inter', sans-serif; 
-      background: var(--bg); 
-      color: var(--text);
-      text-align: center; /* Центрируем всё */
+      margin: 0; font-family: 'Inter', sans-serif; 
+      background: var(--bg); color: var(--text); 
+      overflow-x: hidden; text-align: center;
     }
 
     /* HEADER: Лого слева, Меню справа */
     header {
-      position: fixed;
-      top: 0; left: 0; width: 100%;
-      z-index: 1000;
-      padding: 20px 50px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(0,0,0,0.05);
+      position: fixed; top: 0; left: 0; width: 100%;
+      z-index: 1000; padding: 20px 50px;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(15px);
     }
-
-    .logo img { height: 40px; display: block; }
+    .logo img { height: 35px; width: auto; }
     .menu-btn { 
       background: none; border: none; font-size: 0.7rem; 
       letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
-      font-weight: 600;
+      font-weight: 600; border-bottom: 1px solid #000; padding-bottom: 2px;
     }
 
-    /* HERO */
+    /* HERO СЕКЦИЯ */
     .hero {
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-      background: #000;
-      color: #fff;
+      height: 100vh; display: flex; align-items: center; justify-content: center;
+      position: relative; background: #000; color: #fff;
     }
-
     .hero video {
-      position: absolute;
-      top: 50%; left: 50%;
-      min-width: 100%; min-height: 100%;
-      transform: translate(-50%, -50%);
-      opacity: 0.6;
-      object-fit: cover;
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      object-fit: cover; opacity: 0.5; z-index: 1;
     }
-
-    .hero-content { position: relative; z-index: 2; padding: 0 20px; }
+    .hero-content { position: relative; z-index: 2; max-width: 800px; padding: 0 20px; }
     .hero h1 { 
-      font-family: 'Cormorant Garamond', serif; 
-      font-size: clamp(2.5rem, 8vw, 5rem); 
-      text-transform: uppercase; 
-      margin: 0 0 20px;
-      letter-spacing: 4px;
+      font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 8vw, 5.5rem); 
+      text-transform: uppercase; margin: 20px 0; letter-spacing: 6px; font-weight: 400;
     }
+    .hero p { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 4px; opacity: 0.8; }
 
     /* КНОПКИ */
-    .btn-group { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+    .btn-wrap { display: flex; gap: 20px; justify-content: center; margin-top: 40px; flex-wrap: wrap; }
     .btn {
-      padding: 18px 35px;
-      text-decoration: none;
-      font-size: 0.75rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      font-weight: 600;
-      transition: 0.4s;
-      border-radius: 0;
+      padding: 20px 40px; text-decoration: none; font-size: 0.7rem;
+      letter-spacing: 2px; text-transform: uppercase; font-weight: 600;
+      transition: 0.3s; border: 1px solid transparent;
     }
-    .btn-white { background: #fff; color: #000; }
-    .btn-outline { border: 1px solid #fff; color: #fff; }
-    .btn-dark { background: #000; color: #fff; margin: 40px auto; display: inline-block; }
+    .btn-fill { background: #fff; color: #000; }
+    .btn-fill:hover { background: #000; color: #fff; border-color: #fff; }
+    .btn-line { border: 1px solid #fff; color: #fff; }
+    .btn-line:hover { background: #fff; color: #000; }
 
-    /* СЕКЦИИ-ТИЗЕРЫ */
-    section { padding: 120px 20px; border-bottom: 1px solid #f0f0f0; }
-    .container { max-width: 800px; margin: 0 auto; }
-    
-    h2 { 
-      font-family: 'Cormorant Garamond', serif; 
-      font-size: 2.5rem; 
-      text-transform: uppercase; 
-      margin-bottom: 20px;
-    }
+    /* СЕКЦИИ ТИЗЕРЫ */
+    section { padding: 120px 20px; max-width: 900px; margin: 0 auto; }
+    .tag { font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; color: #888; display: block; margin-bottom: 20px; }
+    h2 { font-family: 'Cormorant Garamond', serif; font-size: 3rem; text-transform: uppercase; margin-bottom: 30px; font-weight: 400; }
+    .desc { font-size: 1.1rem; line-height: 1.6; color: #444; margin-bottom: 40px; }
 
-    .subtitle { 
-      font-size: 0.9rem; 
-      text-transform: uppercase; 
-      letter-spacing: 3px; 
-      color: #888; 
-      margin-bottom: 40px; 
-      display: block;
-    }
+    .btn-black { background: #000; color: #fff; display: inline-block; }
 
     /* ТЕСТ (ИНЛАЙН) */
-    #quiz-box { background: #fdfdfd; padding: 50px; border: 1px solid #eee; }
+    .quiz-container { background: #f9f9f9; padding: 60px 20px; border-radius: 4px; }
+    .quiz-option { 
+      display: block; width: 100%; max-width: 400px; margin: 10px auto;
+      padding: 15px; border: 1px solid #ddd; background: #fff; cursor: pointer;
+      text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; transition: 0.2s;
+    }
+    .quiz-option:hover { border-color: #000; background: #f0f0f0; }
 
     @media (max-width: 768px) {
-      header { padding: 15px 20px; }
+      header { padding: 15px 25px; }
       .btn { width: 100%; }
     }
   </style>
@@ -125,52 +86,50 @@
 <body>
 
   <header>
-    <div class="logo">
-      <img src="logo_header_final.png" alt="LADY STRETCH">
-    </div>
-    <button class="menu-btn" onclick="alert('Здесь будет меню')">MENU // МЕНЮ</button>
+    <div class="logo"><img src="logo_header_final.png" alt="LADY STRETCH"></div>
+    <button class="menu-btn">MENU</button>
   </header>
 
-  <section class="hero" style="padding: 0; max-width: 100%; border: none;">
+  <section class="hero" style="max-width:100%; padding:0;">
     <video autoplay muted loop playsinline>
       <source src="hero-video.mp4" type="video/mp4">
     </video>
     <div class="hero-content">
-      <span style="letter-spacing: 5px; text-transform: uppercase; font-size: 0.8rem;">Сыктывкар</span>
-      <h1>Бережная растяжка</h1>
-      <div class="btn-group">
-        <a href="https://vk.me/public221142875" class="btn btn-white">Начать тренировки</a>
-        <a href="future-packages.html" class="btn btn-outline">Абонементы 2026</a>
+      <p>Est. 2026 // Сыктывкар</p>
+      <h1>Раскрой свою энергию</h1>
+      <div class="btn-wrap">
+        <a href="https://vk.me/public221142875" class="btn btn-fill">Начать тренировки</a>
+        <a href="future-packages.html" class="btn btn-line">Абонементы</a>
       </div>
     </div>
   </section>
 
   <section>
-    <div class="container">
-      <span class="subtitle">Experience</span>
-      <h2>Направления занятий</h2>
-      <p>От классического пилатеса до полетов в гамаках. Найдите свою идеальную практику в Lady Stretch.</p>
-      <a href="directions.html" class="btn btn-dark">Смотреть все направления</a>
-    </div>
+    <span class="tag">Directions</span>
+    <h2>Ваше тело — ваш путь</h2>
+    <p class="desc">От мягкой растяжки в гамаках до интенсивного пилатеса. Мы создали пространство, где каждая тренировка — это диалог с собой.</p>
+    <a href="fitness-motivation.html" class="btn btn-black">Посмотреть направления</a>
   </section>
 
-  <section id="quiz-section">
-    <div class="container" id="quiz-box">
-      <span class="subtitle">Personal Test</span>
-      <h2>Какой вы тип сегодня?</h2>
-      <p id="q-text">Пройдите тест, чтобы мы подобрали идеальную нагрузку под ваше самочувствие.</p>
+  <section>
+    <div class="quiz-container" id="quiz-wrap">
+      <span class="tag">Personal Quiz</span>
+      <h2 id="q-title">С чего начать?</h2>
+      <p id="q-text">Ответьте на один вопрос, чтобы мы подобрали идеальный старт.</p>
       <div id="q-options">
-        <button class="btn btn-dark" onclick="startQuiz()">Пройти тест</button>
+        <button class="quiz-option" onclick="runQuiz('power')">Хочу подтянутое тело</button>
+        <button class="quiz-option" onclick="runQuiz('relax')">Хочу избавиться от стресса</button>
+        <button class="quiz-option" onclick="runQuiz('health')">Хочу здоровую спину</button>
       </div>
     </div>
   </section>
 
-  <section style="background: #000; color: #fff;">
-    <div class="container">
-      <span class="subtitle" style="color: #666;">Interactivity</span>
-      <h2 style="color: #fff;">Поймай свою энергию</h2>
-      <p>Внутри раздела с абонементами мы спрятали предсказания на 2026 год. Сможете поймать символ года?</p>
-      <a href="future-packages.html" class="btn btn-white">Играть и смотреть цены</a>
+  <section style="background: #000; color: #fff; max-width: 100%;">
+    <div style="max-width: 900px; margin: 0 auto;">
+      <span class="tag" style="color: #666;">Interactivity</span>
+      <h2 style="color: #fff;">Магия 2026</h2>
+      <p class="desc" style="color: #ccc;">Поймайте символ года и получите персональное предсказание вместе с доступом к новым ценам.</p>
+      <a href="future-packages.html" class="btn btn-fill">Узнать предсказание</a>
     </div>
   </section>
 
@@ -179,22 +138,15 @@
   </footer>
 
   <script>
-    // Простая логика теста (для примера)
-    function startQuiz() {
-      const box = document.getElementById('q-options');
-      document.getElementById('q-text').innerText = "Вопрос 1: Какую цель вы ставите?";
-      box.innerHTML = `
-        <button class="btn btn-dark" style="margin: 10px;" onclick="finishQuiz('Расслабление')">Релакс</button>
-        <button class="btn btn-dark" style="margin: 10px;" onclick="finishQuiz('Тонус')">Сила и гибкость</button>
-      `;
-    }
-
-    function finishQuiz(type) {
-      document.getElementById('quiz-box').innerHTML = `
-        <h2>Ваш результат: ${type}</h2>
-        <p>Мы рекомендуем начать с направления Sky Stretching. Напишите нам, чтобы получить скидку на пробное!</p>
-        <a href="https://vk.me/public221142875" class="btn btn-dark">Получить бонус в ВК</a>
-      `;
+    function runQuiz(type) {
+      const titles = {
+        'power': 'Ваш выбор: Сила и Тонус',
+        'relax': 'Ваш выбор: Релакс и Гибкость',
+        'health': 'Ваш выбор: Здоровье и Осанка'
+      };
+      document.getElementById('q-title').innerText = titles[type];
+      document.getElementById('q-text').innerText = "Отличный выбор! Напишите нам в ВК 'ХОЧУ ТРЕНИРОВКУ', чтобы забронировать место со скидкой 50%.";
+      document.getElementById('q-options').innerHTML = `<a href="https://vk.me/public221142875" class="btn btn-black">Написать администратору</a>`;
     }
   </script>
 
