@@ -12,10 +12,10 @@
   <style>
     :root { 
       --bg: #ffffff; 
-      --text: #2D1B3E; /* Темно-фиолетовый вместо черного */
-      --main-purple: #5D3E8E; /* Основной фиолетовый */
-      --light-pink: #FFF0F2; /* Нежно-розовый для блоков */
-      --accent-pink: #FFD1DC; /* Акцентный розовый */
+      --text: #2D1B3E; 
+      --main-purple: #5D3E8E; 
+      --light-pink: #FFF0F2; 
+      --accent-pink: #FFD1DC; 
     }
 
     * { box-sizing: border-box; }
@@ -25,7 +25,7 @@
       overflow-x: hidden; text-align: center;
     }
 
-    /* HEADER: Лого слева, Меню справа */
+    /* HEADER */
     header {
       position: fixed; top: 0; left: 0; width: 100%;
       z-index: 1000; padding: 20px 50px;
@@ -33,12 +33,45 @@
       background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(15px);
       border-bottom: 1px solid var(--light-pink);
     }
-    .logo img { height: 35px; width: auto; }
+    
+    /* Округление логотипа */
+    .logo img { 
+      height: 35px; 
+      width: auto; 
+      border-radius: 8px; /* Мягкое округление */
+    }
+
     .menu-btn { 
       background: none; border: none; font-size: 0.75rem; 
       letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
       font-weight: 600; color: var(--main-purple);
       border-bottom: 1px solid var(--main-purple); padding-bottom: 2px;
+      z-index: 1100; /* Чтобы была над оверлеем */
+    }
+
+    /* ПОЛНОЭКРАННОЕ МЕНЮ */
+    .menu-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: var(--main-purple);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      z-index: 1050;
+      transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+      transform: translateY(-100%); /* Прячем сверху */
+    }
+    .menu-overlay.active { transform: translateY(0); }
+
+    .menu-overlay a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem; color: #fff; text-decoration: none;
+      margin: 20px 0; text-transform: uppercase; letter-spacing: 5px;
+      transition: 0.3s;
+    }
+    .menu-overlay a:hover { color: var(--accent-pink); }
+
+    .close-menu {
+      position: absolute; top: 25px; right: 50px;
+      color: #fff; background: none; border: none; font-size: 0.75rem;
+      letter-spacing: 2px; cursor: pointer; text-transform: uppercase;
     }
 
     /* HERO СЕКЦИЯ */
@@ -93,14 +126,23 @@
       header { padding: 15px 25px; }
       .btn { width: 100%; }
       h2 { font-size: 2.2rem; }
+      .menu-overlay a { font-size: 2rem; }
+      .close-menu { right: 25px; }
     }
   </style>
 </head>
 <body>
 
+  <div class="menu-overlay" id="fullMenu">
+    <button class="close-menu" onclick="toggleMenu()">закрыть [x]</button>
+    <a href="directions.html" onclick="toggleMenu()">Направления</a>
+    <a href="future-packages.html" onclick="toggleMenu()">Абонементы 2026</a>
+    <a href="https://vk.me/public221142875" onclick="toggleMenu()" style="font-size: 1rem; margin-top: 50px;">Записаться в ВК</a>
+  </div>
+
   <header>
     <div class="logo"><img src="logo_header_final.png" alt="LADY STRETCH"></div>
-    <button class="menu-btn" onclick="location.href='fitness-motivation.html'">MENU</button>
+    <button class="menu-btn" onclick="toggleMenu()">MENU</button>
   </header>
 
   <section class="hero" style="max-width:100%; padding:0;">
@@ -122,7 +164,7 @@
     <span class="tag">Направления</span>
     <h2>Ваше тело — ваш путь</h2>
     <p class="desc">От мягкой растяжки в гамаках до интенсивного пилатеса. Мы создали пространство, где каждая тренировка — это диалог с собой в атмосфере заботы и красоты.</p>
-    <a href="fitness-motivation.html" class="btn btn-purple">Посмотреть направления</a>
+    <a href="directions.html" class="btn btn-purple">Посмотреть направления</a>
   </section>
 
   <section>
@@ -133,7 +175,7 @@
       <div id="q-options">
         <button class="quiz-option" onclick="runQuiz('power')">Хочу подтянутое тело</button>
         <button class="quiz-option" onclick="runQuiz('relax')">Хочу избавиться от стресса</button>
-        <button class="quiz-option" onclick="runQuiz('health')">Хочу здоровую спину</button>
+        <button class="quiz-option" onclick="health')">Хочу здоровую спину</button>
       </div>
     </div>
   </section>
@@ -152,6 +194,11 @@
   </footer>
 
   <script>
+    // Логика открытия/закрытия меню
+    function toggleMenu() {
+      document.getElementById('fullMenu').classList.toggle('active');
+    }
+
     function runQuiz(type) {
       const titles = {
         'power': 'Ваш выбор: Сила и Тонус',
