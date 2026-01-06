@@ -13,7 +13,7 @@
     :root {
       --bg: #FFFFFF;
       --text: #000000;
-      --light-gray: #F9F9F9;
+      --accent: #1A1A1A;
     }
 
     * { box-sizing: border-box; }
@@ -22,187 +22,181 @@
       font-family: 'Inter', sans-serif; 
       background: var(--bg); 
       color: var(--text);
-      line-height: 1.5;
+      text-align: center; /* Центрируем всё */
     }
 
-    /* HEADER: Фиксированный и стильный */
+    /* HEADER: Лого слева, Меню справа */
     header {
       position: fixed;
-      top: 0; width: 100%;
+      top: 0; left: 0; width: 100%;
       z-index: 1000;
-      padding: 20px 40px;
+      padding: 20px 50px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid rgba(0,0,0,0.05);
     }
 
-    .logo { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 1.5rem; letter-spacing: 2px; }
-    .nav-info { font-size: 0.7rem; letter-spacing: 1px; text-transform: uppercase; text-align: right; }
+    .logo img { height: 40px; display: block; }
+    .menu-btn { 
+      background: none; border: none; font-size: 0.7rem; 
+      letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
+      font-weight: 600;
+    }
 
-    /* HERO: Видео на весь экран */
+    /* HERO */
     .hero {
       height: 100vh;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       position: relative;
       overflow: hidden;
       background: #000;
+      color: #fff;
     }
 
     .hero video {
       position: absolute;
       top: 50%; left: 50%;
       min-width: 100%; min-height: 100%;
-      width: auto; height: auto;
       transform: translate(-50%, -50%);
-      opacity: 0.7;
+      opacity: 0.6;
       object-fit: cover;
     }
 
-    .hero-overlay {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      color: #fff;
-      padding: 0 20px;
+    .hero-content { position: relative; z-index: 2; padding: 0 20px; }
+    .hero h1 { 
+      font-family: 'Cormorant Garamond', serif; 
+      font-size: clamp(2.5rem, 8vw, 5rem); 
+      text-transform: uppercase; 
+      margin: 0 0 20px;
+      letter-spacing: 4px;
     }
 
-    .hero-overlay h1 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3rem, 10vw, 6rem);
-      margin: 0;
-      letter-spacing: 5px;
+    /* КНОПКИ */
+    .btn-group { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      padding: 18px 35px;
+      text-decoration: none;
+      font-size: 0.75rem;
+      letter-spacing: 2px;
       text-transform: uppercase;
+      font-weight: 600;
+      transition: 0.4s;
+      border-radius: 0;
     }
+    .btn-white { background: #fff; color: #000; }
+    .btn-outline { border: 1px solid #fff; color: #fff; }
+    .btn-dark { background: #000; color: #fff; margin: 40px auto; display: inline-block; }
 
-    .hero-overlay p {
-      font-size: 1rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      margin-top: 10px;
-      font-weight: 300;
-    }
-
-    /* СЕКЦИИ: Общие стили */
-    section { padding: 100px 20px; max-width: 1100px; margin: 0 auto; }
+    /* СЕКЦИИ-ТИЗЕРЫ */
+    section { padding: 120px 20px; border-bottom: 1px solid #f0f0f0; }
+    .container { max-width: 800px; margin: 0 auto; }
+    
     h2 { 
       font-family: 'Cormorant Garamond', serif; 
       font-size: 2.5rem; 
       text-transform: uppercase; 
-      text-align: center; 
-      margin-bottom: 60px;
-      letter-spacing: 2px;
+      margin-bottom: 20px;
     }
 
-    /* НАПРАВЛЕНИЯ: Список вместо сетки */
-    .direction-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 30px 0;
-      border-bottom: 1px solid #EEE;
+    .subtitle { 
+      font-size: 0.9rem; 
+      text-transform: uppercase; 
+      letter-spacing: 3px; 
+      color: #888; 
+      margin-bottom: 40px; 
+      display: block;
     }
-    .direction-row h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; margin: 0; text-transform: uppercase; }
-    .direction-row p { max-width: 500px; font-size: 0.9rem; color: #666; margin: 0; }
 
-    /* КВИЗ: Акцентный блок */
-    .quiz-block {
-      background: var(--light-gray);
-      padding: 60px;
-      text-align: center;
-      border-radius: 2px;
-    }
-    .btn {
-      display: inline-block;
-      padding: 18px 40px;
-      background: #000;
-      color: #fff;
-      text-decoration: none;
-      font-size: 0.8rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-top: 30px;
-      transition: 0.3s;
-    }
-    .btn:hover { background: #333; }
-
-    /* БОТ: Карточка */
-    .bot-section { text-align: center; background: #000; color: #fff; padding: 80px 20px; margin: 100px 0; }
-    .bot-section h2 { color: #fff; margin-bottom: 20px; }
-    .price { font-size: 2rem; display: block; margin-bottom: 30px; font-family: 'Cormorant Garamond', serif; }
-
-    footer { padding: 40px; text-align: center; font-size: 0.7rem; letter-spacing: 1px; opacity: 0.5; text-transform: uppercase; }
+    /* ТЕСТ (ИНЛАЙН) */
+    #quiz-box { background: #fdfdfd; padding: 50px; border: 1px solid #eee; }
 
     @media (max-width: 768px) {
-      .direction-row { flex-direction: column; text-align: center; gap: 15px; }
       header { padding: 15px 20px; }
-      .nav-info { display: none; }
+      .btn { width: 100%; }
     }
   </style>
 </head>
 <body>
 
   <header>
-    <div class="logo">LADY STRETCH</div>
-    <div class="nav-info">
-      Сыктывкар<br>
-      Советская 3 • Коммунистическая 77/2
+    <div class="logo">
+      <img src="logo_header_final.png" alt="LADY STRETCH">
     </div>
+    <button class="menu-btn" onclick="alert('Здесь будет меню')">MENU // МЕНЮ</button>
   </header>
 
-  <section class="hero" style="padding: 0; max-width: 100%;">
+  <section class="hero" style="padding: 0; max-width: 100%; border: none;">
     <video autoplay muted loop playsinline>
       <source src="hero-video.mp4" type="video/mp4">
     </video>
-    <div class="hero-overlay">
-      <p>Студия бережной растяжки</p>
-      <h1>Сыктывкар</h1>
-      <a href="https://t.me/fitness11_online_bot" class="btn" style="background: #fff; color: #000;">Начать тренировки</a>
-    </div>
-  </section>
-
-  <section id="directions">
-    <h2>Направления</h2>
-    
-    <div class="direction-row">
-      <h3>Pilates</h3>
-      <p>Работа с глубокими мышцами, осанкой и дыханием. Формируем сильный корсет и узкую талию без осевых нагрузок.</p>
-    </div>
-
-    <div class="direction-row">
-      <h3>Sky Stretching</h3>
-      <p>Растяжка в гамаках. Декомпрессия позвоночника и полное расслабление в невесомости.</p>
-    </div>
-
-    <div class="direction-row">
-      <h3>Здоровая спина</h3>
-      <p>Комплекс упражнений для снятия зажимов в шее и пояснице. Идеально при сидячем образе жизни.</p>
+    <div class="hero-content">
+      <span style="letter-spacing: 5px; text-transform: uppercase; font-size: 0.8rem;">Сыктывкар</span>
+      <h1>Бережная растяжка</h1>
+      <div class="btn-group">
+        <a href="https://vk.me/public221142875" class="btn btn-white">Начать тренировки</a>
+        <a href="future-packages.html" class="btn btn-outline">Абонементы 2026</a>
+      </div>
     </div>
   </section>
 
   <section>
-    <div class="quiz-block">
-      <h2>Какой вид тренировок<br>вам подходит?</h2>
-      <p>Пройдите короткий тест из 10 вопросов, чтобы получить индивидуальный план и бонус на первое посещение.</p>
-      <a href="#" class="btn" onclick="alert('Тест запускается...'); return false;">Пройти тест</a>
+    <div class="container">
+      <span class="subtitle">Experience</span>
+      <h2>Направления занятий</h2>
+      <p>От классического пилатеса до полетов в гамаках. Найдите свою идеальную практику в Lady Stretch.</p>
+      <a href="directions.html" class="btn btn-dark">Смотреть все направления</a>
     </div>
   </section>
 
-  <section class="bot-section">
-    <p style="letter-spacing: 4px; font-size: 0.7rem;">TELEGRAM BOT</p>
-    <h2>Студия в кармане</h2>
-    <span class="price">990 ₽ / МЕСЯЦ</span>
-    <p>Тренируйтесь дома с нашими экспертами. Программа «Детокс» и контроль питания.</p>
-    <a href="https://t.me/fitness11_online_bot" class="btn" style="background: #fff; color: #000;">Запустить бота</a>
+  <section id="quiz-section">
+    <div class="container" id="quiz-box">
+      <span class="subtitle">Personal Test</span>
+      <h2>Какой вы тип сегодня?</h2>
+      <p id="q-text">Пройдите тест, чтобы мы подобрали идеальную нагрузку под ваше самочувствие.</p>
+      <div id="q-options">
+        <button class="btn btn-dark" onclick="startQuiz()">Пройти тест</button>
+      </div>
+    </div>
   </section>
 
-  <footer>
-    © 2026 LADY STRETCH SYKTYVKAR. ВСЕ ПРАВА ЗАЩИЩЕНЫ.
+  <section style="background: #000; color: #fff;">
+    <div class="container">
+      <span class="subtitle" style="color: #666;">Interactivity</span>
+      <h2 style="color: #fff;">Поймай свою энергию</h2>
+      <p>Внутри раздела с абонементами мы спрятали предсказания на 2026 год. Сможете поймать символ года?</p>
+      <a href="future-packages.html" class="btn btn-white">Играть и смотреть цены</a>
+    </div>
+  </section>
+
+  <footer style="padding: 60px 0; font-size: 0.7rem; letter-spacing: 2px; opacity: 0.4;">
+    LADY STRETCH SYKTYVKAR // 2026
   </footer>
+
+  <script>
+    // Простая логика теста (для примера)
+    function startQuiz() {
+      const box = document.getElementById('q-options');
+      document.getElementById('q-text').innerText = "Вопрос 1: Какую цель вы ставите?";
+      box.innerHTML = `
+        <button class="btn btn-dark" style="margin: 10px;" onclick="finishQuiz('Расслабление')">Релакс</button>
+        <button class="btn btn-dark" style="margin: 10px;" onclick="finishQuiz('Тонус')">Сила и гибкость</button>
+      `;
+    }
+
+    function finishQuiz(type) {
+      document.getElementById('quiz-box').innerHTML = `
+        <h2>Ваш результат: ${type}</h2>
+        <p>Мы рекомендуем начать с направления Sky Stretching. Напишите нам, чтобы получить скидку на пробное!</p>
+        <a href="https://vk.me/public221142875" class="btn btn-dark">Получить бонус в ВК</a>
+      `;
+    }
+  </script>
 
 </body>
 </html>
