@@ -2,184 +2,195 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Абонементы 2026 | Lady Stretch Сыктывкар</title>
+  <title>Магия 2026 | Lady Stretch Сыктывкар</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <meta name="description" content="Новые тарифы и абонементы Lady Stretch в Сыктывкаре на 2026 год.">
-
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Great+Vibes&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  
   <style>
-    /* СОХРАНЯЕМ ТВОИ ОРИГИНАЛЬНЫЕ СТИЛИ */
-    .back-nav-button {
-        position: fixed; top: 85px; left: 50%; transform: translateX(-50%);
-        z-index: 2000; display: inline-flex; align-items: center; justify-content: center;
-        width: 90%; max-width: 320px; padding: 12px 20px;
-        background: rgba(138, 43, 226, 0.25); border: 1px solid rgba(255, 255, 255, 0.3);
-        backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-        border-radius: 12px; color: var(--text); text-decoration: none;
-        font-weight: 700; font-size: 0.9rem; text-align: center;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); transition: all 0.3s ease; white-space: nowrap;
+    :root { 
+      --bg: #1A0B2E; /* Глубокий ночной фиолетовый */
+      --main-purple: #5D3E8E; 
+      --accent-pink: #FFD1DC; 
+      --white: #ffffff;
     }
-    .back-nav-button:hover { background: rgba(138, 43, 226, 0.4); transform: translateX(-50%) translateY(-2px); }
-    .hero { margin-top: 120px !important; }
-    .future-banner {
-      background: linear-gradient(135deg, rgba(46, 204, 113, 0.15), rgba(39, 174, 96, 0.1));
-      color: var(--text); padding: 30px 20px; border-radius: 20px; margin: 20px 0 40px; text-align: center; border: 2px solid rgba(46, 204, 113, 0.3);
+
+    * { box-sizing: border-box; }
+    body { 
+      margin: 0; font-family: 'Inter', sans-serif; 
+      background: var(--bg); color: var(--white); 
+      overflow-x: hidden; text-align: center;
+      min-height: 100vh;
     }
-    .future-banner h2 { color: var(--green); margin-bottom: 10px; font-weight: 800; }
-    .future-date { font-size: 1.4rem; font-weight: 900; color: var(--green); margin-top: 10px; }
-    .future-card { position: relative; border: 2px solid rgba(46, 204, 113, 0.2) !important; }
-    .future-card::before {
-      content: "НОВИНКА 2026"; position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
-      background: var(--green); color: white; padding: 5px 15px; border-radius: 10px; font-size: 0.75rem; font-weight: 800; z-index: 5;
+
+    /* HEADER */
+    header {
+      position: fixed; top: 0; left: 0; width: 100%;
+      z-index: 1000; padding: 20px 50px;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(26, 11, 46, 0.8); backdrop-filter: blur(15px);
     }
-    .original-price { text-decoration: line-through; color: var(--muted); font-size: 1.1rem; margin-bottom: 5px; opacity: 0.7; }
-    .discount-badge { display: inline-block; background: var(--green); color: white; padding: 4px 10px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; margin-left: 8px; }
-    .trial-card { background: linear-gradient(135deg, rgba(184, 30, 43, 0.08), rgba(184, 30, 43, 0.04)); border: 2px solid var(--red) !important; }
-    .trial-price { font-size: 2.4rem; font-weight: 900; color: var(--red); margin: 15px 0; }
-    .back-to-main-footer { display: inline-block; margin-top: 40px; padding: 15px 30px; background: var(--purple); color: white; text-decoration: none; border-radius: 12px; font-weight: 700; transition: 0.3s; }
-    .vk-button { display: inline-flex; align-items: center; justify-content: center; background: #0077FF; color: white !important; text-decoration: none; padding: 15px 30px; border-radius: 12px; font-weight: 700; width: 100%; max-width: 300px; margin-top: 15px; border: none; }
+    .logo img { height: 30px; filter: brightness(0) invert(1); }
+    .nav-link { 
+      text-decoration: none; color: var(--accent-pink); 
+      font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 600;
+    }
+
+    /* GAME CANVAS */
+    #game-container {
+      position: relative; height: 60vh; width: 100%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding-top: 100px;
+    }
+    .game-instruction {
+      font-family: 'Cormorant Garamond', serif; font-size: 2rem;
+      margin-bottom: 20px; color: var(--accent-pink);
+    }
+    #energy-orb {
+      width: 80px; height: 80px;
+      background: radial-gradient(circle, #fff, var(--accent-pink), var(--main-purple));
+      border-radius: 50%; position: absolute;
+      cursor: pointer; box-shadow: 0 0 30px var(--accent-pink);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.6rem; color: var(--bg); font-weight: 800;
+      transition: transform 0.1s; z-index: 10;
+    }
+
+    /* ПРЕДСКАЗАНИЕ */
+    #prediction-box {
+      display: none; padding: 40px 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px dashed var(--accent-pink);
+      max-width: 600px; margin: 20px auto; border-radius: 20px;
+      animation: fadeIn 1s;
+    }
+    #prediction-text { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-style: italic; }
+
+    /* КАРТОЧКИ АБОНЕМЕНТОВ */
+    .packages-hidden { display: none; opacity: 0; transition: 1s; padding: 40px 20px; }
+    .packages-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px; max-width: 1100px; margin: 0 auto;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 40px 30px; border: 1px solid rgba(255, 210, 220, 0.2);
+      backdrop-filter: blur(5px); position: relative;
+    }
+    .card h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--accent-pink); margin: 0; }
+    .price { font-size: 2rem; font-weight: 800; margin: 20px 0; color: #fff; }
+    .old-price { text-decoration: line-through; opacity: 0.5; font-size: 0.9rem; }
+    
+    .btn-pay {
+      display: block; width: 100%; padding: 15px;
+      background: var(--accent-pink); color: var(--bg);
+      text-decoration: none; font-weight: 700; text-transform: uppercase;
+      font-size: 0.75rem; letter-spacing: 1px; transition: 0.3s;
+    }
+    .btn-pay:hover { background: #fff; transform: scale(1.02); }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 768px) {
+      header { padding: 15px 20px; }
+      #energy-orb { width: 60px; height: 60px; }
+    }
   </style>
 </head>
-
 <body>
-  <div class="snow-container"></div>
-  <div class="stars-container"></div>
 
-  <button id="theme-toggle" class="theme-toggle">
-    <span class="moon-icon">🌙</span>
-    <span class="sun-icon">☀️</span>
-  </button>
-
-  <header class="header glass">
-    <img src="logo_header_final.png" alt="Lady Stretch" class="logo">
+  <header>
+    <div class="logo"><img src="logo_header_final.png" alt="LADY STRETCH"></div>
+    <a href="index.html" class="nav-link">← Назад</a>
   </header>
 
-  <a href="index.html" id="top-back-btn" class="back-nav-button">← К абонементам 2025 года</a>
+  <div id="game-container">
+    <div class="game-instruction" id="instr">Поймай искру своей энергии 2026</div>
+    <div id="energy-orb">TAP</div>
+  </div>
 
-  <main class="wrapper">
-    <section class="hero glass">
-      <h1 class="hero-title">
-        <span class="green-text">Тарифы</span>
-        <span class="green-text">будущего</span> ✨
-      </h1>
-      <p class="hero-subtitle">Ваши новые возможности в 2026 году</p>
-    </section>
+  <div id="prediction-box">
+    <span style="text-transform: uppercase; font-size: 0.7rem; letter-spacing: 3px; color: var(--accent-pink);">Твое предсказание:</span>
+    <p id="prediction-text"></p>
+  </div>
 
-    <section id="banner-2026" class="glass future-banner">
-      <h2>🚀 Обновленная программа</h2>
-      <p>С 1 января 2026 года стоимость и наполнение пакетов изменятся.</p>
-      <div class="future-date">Запуск - 1 января</div>
-    </section>
-
-    <section class="packages">
-      <div class="card glass future-card" data-price="38080" data-inst="10" data-link="https://ecom.otpbank.ru/smart-form?config=94200518-c1a6-4497-b21b-29371599ea92">
-        <h3>64 занятия <span class="discount-badge">-15%</span></h3>
-        <p class="original-price">44 800 ₽</p>
-        <p class="desc">Регулярные тренировки · 12 месяцев</p>
-        <p class="price" style="color: var(--green);">38 080 ₽</p>
-        <button class="select btn-2026" onclick="handleFutureClick(this)">Скоро доступно</button>
+  <div class="packages-hidden" id="packages-section">
+    <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; margin-bottom: 40px;">Тарифы будущего</h2>
+    
+    <div class="packages-grid">
+      <div class="card">
+        <h3>64 занятия</h3>
+        <p class="old-price">44 800 ₽</p>
+        <div class="price">38 080 ₽</div>
+        <p style="font-size: 0.8rem; opacity: 0.7; margin-bottom: 25px;">Год заботы о себе · Рассрочка 0%</p>
+        <a href="https://checkout.tochka.com/..." class="btn-pay">Забронировать</a>
       </div>
 
-      <div class="card glass future-card" data-price="20160" data-inst="6" data-link="https://ecom.otpbank.ru/smart-form?config=293fedad-a411-411d-8b5e-0747e82f6c73">
-        <h3>32 занятия <span class="discount-badge">-10%</span></h3>
-        <p class="original-price">22 400 ₽</p>
-        <p class="desc">Интенсивный старт · 6 месяцев</p>
-        <p class="price" style="color: var(--green);">20 160 ₽</p>
-        <button class="select btn-2026" onclick="handleFutureClick(this)">Скоро доступно</button>
+      <div class="card">
+        <h3>32 занятия</h3>
+        <p class="old-price">22 400 ₽</p>
+        <div class="price">20 160 ₽</div>
+        <p style="font-size: 0.8rem; opacity: 0.7; margin-bottom: 25px;">6 месяцев преображения</p>
+        <a href="https://checkout.tochka.com/..." class="btn-pay">Забронировать</a>
       </div>
 
-      <div class="card glass future-card" data-price="10640">
-        <h3>16 занятий <span class="discount-badge">-5%</span></h3>
-        <p class="original-price">11 200 ₽</p>
-        <p class="desc">Первые шаги · 3 месяца</p>
-        <p class="price" style="color: var(--green);">10 640 ₽</p>
-        <button class="select btn-2026" onclick="handleFutureClick(this)">Скоро доступно</button>
+      <div class="card" style="border-color: var(--accent-pink);">
+        <h3 style="color: #fff;">16 занятий</h3>
+        <p class="old-price">11 200 ₽</p>
+        <div class="price">10 640 ₽</div>
+        <p style="font-size: 0.8rem; opacity: 0.7; margin-bottom: 25px;">Идеальный старт</p>
+        <a href="https://checkout.tochka.com/..." class="btn-pay">Забронировать</a>
       </div>
-
-      <div class="card glass trial-card" data-price="455">
-        <h3>Пробное занятие</h3>
-        <p class="desc">Знакомство со студией · 1 занятие</p>
-        <p class="trial-price">455 ₽</p>
-        <button class="select btn-2026" onclick="handleFutureClick(this)">Скоро доступно</button>
-      </div>
-    </section>
-
-    <section id="payment-2026" class="glass payment" style="display:none; margin-top: 30px;">
-        <a href="https://checkout.tochka.com/b880ee38-1c68-4215-85e8-1ca8081ec51a" target="_blank" class="pay-main">
-            Оплатить картой <strong><span id="p-price"></span> ₽</strong>
-        </a>
-        <button id="p-inst" class="installment-btn" style="display:none;" onclick="openInst()">
-            Рассрочка на <span id="p-months"></span>
-        </button>
-        <a href="https://qr.nspk.ru/BS1A007OR8OER0HI93BB3HANHVBFQUT7?type=01&bank=100000000284&crc=27EB" target="_blank" class="card-pay-button" style="text-decoration:none; display:block; margin-top:10px; text-align:center;">
-            Оплатить через СБП
-        </a>
-        <div class="qr-section">
-            <img src="qr_code.png" alt="QR" class="qr-image">
-        </div>
-        <button class="back-button" onclick="this.parentElement.style.display='none'">← Назад к тарифам</button>
-    </section>
-
-    <div id="bottom-back-container" style="text-align: center; margin-bottom: 20px;">
-        <a href="index.html" class="back-to-main-footer">Успеть купить по цене 2025 года</a>
     </div>
 
-    <section class="glass contacts-section" style="text-align: center; padding: 30px 20px; margin-bottom: 40px;">
-        <h2 style="color: var(--green); margin-bottom: 20px;">Наши студии в Сыктывкаре:</h2>
-        <p>📍 ул. Советская, д. 3</p>
-        <p>📍 ул. Коммунистическая, д. 77/2</p>
-        <p style="margin-top: 15px;">Тел: <strong>+7 (908) 715-55-57</strong></p>
-        <a href="https://vk.com/im?entrypoint=community_page&media=&sel=-221142875" target="_blank" class="vk-button">Написать в ВКонтакте</a>
-    </section>
+    <p style="margin-top: 50px; opacity: 0.5; font-size: 0.8rem;">Абонементы по этим ценам активируются с 01.01.2026</p>
+  </div>
 
-    <footer class="footer">
-      Новые тарифы вступают в силу с 01.01.2026<br>
-      © Lady Stretch Сыктывкар 2025-2026
-    </footer>
-  </main>
-
-  <script src="script.js"></script>
   <script>
-    let activeInst = "";
-    const is2026 = () => Date.now() >= new Date('January 1, 2026 00:00:00').getTime();
+    const orb = document.getElementById('energy-orb');
+    const container = document.getElementById('game-container');
+    const predictions = [
+      "В 2026 году твое тело скажет тебе 'спасибо' за гибкость.",
+      "Твоя энергия притянет новые возможности этой весной.",
+      "Расслабление — твой ключ к успеху в новом году.",
+      "Шпагат — это только начало твоего большого пути.",
+      "В 2026 ты почувствуешь невесомость не только в гамаке, но и в жизни.",
+      "Твоя уверенность вырастет вместе с каждым занятием.",
+      "Маленькие шаги в студии приведут к большим победам в карьере.",
+      "Твое тело — твой храм. В 2026 в нем будет царить гармония.",
+      "Ожидай приятного знакомства на тренировке в марте.",
+      "Твоя осанка заставит мир обернуться тебе вслед."
+    ];
 
-    function handleFutureClick(btn) {
-        if (!is2026()) {
-            alert('Продажи по этим тарифам откроются 1 января 2026 года!\n\nСейчас вы можете купить абонемент по старой цене на главной странице.');
-            return;
-        }
-        const card = btn.closest('.card');
-        const price = card.dataset.price;
-        const inst = card.dataset.inst;
-        activeInst = card.dataset.link || "";
+    let moveInterval;
 
-        document.getElementById('payment-2026').style.display = 'block';
-        document.getElementById('p-price').textContent = Number(price).toLocaleString('ru-RU');
-        
-        const instBtn = document.getElementById('p-inst');
-        if (inst && activeInst) {
-            instBtn.style.display = 'block';
-            document.getElementById('p-months').textContent = inst + ' мес.';
-        } else {
-            instBtn.style.display = 'none';
-        }
-        document.getElementById('payment-2026').scrollIntoView({behavior:'smooth'});
+    function moveOrb() {
+      const x = Math.random() * (container.clientWidth - 80);
+      const y = Math.random() * (container.clientHeight - 80);
+      orb.style.left = x + 'px';
+      orb.style.top = y + 'px';
     }
 
-    function openInst() { if(activeInst) window.open(activeInst, '_blank'); }
+    moveInterval = setInterval(moveOrb, 1000);
 
-    document.addEventListener('DOMContentLoaded', () => {
-        if (is2026()) {
-            document.querySelectorAll('.btn-2026').forEach(b => b.textContent = 'Выбрать');
-            document.getElementById('top-back-btn').style.display = 'none';
-            document.getElementById('bottom-back-container').style.display = 'none';
-            document.getElementById('banner-2026').innerHTML = "<h2>🎄 С Новым 2026 Годом!</h2><p>Новые тарифы активированы и доступны к покупке.</p>";
-        }
+    orb.addEventListener('click', () => {
+      clearInterval(moveInterval);
+      orb.style.display = 'none';
+      document.getElementById('instr').style.display = 'none';
+      
+      // Показываем предсказание
+      const randomText = predictions[Math.floor(Math.random() * predictions.length)];
+      document.getElementById('prediction-text').innerText = randomText;
+      document.getElementById('prediction-box').style.display = 'block';
+      
+      // Показываем цены
+      const packSection = document.getElementById('packages-section');
+      packSection.style.display = 'block';
+      setTimeout(() => packSection.style.opacity = '1', 100);
+      
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     });
   </script>
 </body>
