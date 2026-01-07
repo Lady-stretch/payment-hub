@@ -5,9 +5,13 @@
   <title>LADY STRETCH | ФИТНЕС | СЫКТЫВКАР</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
+  <!-- Мета-теги для поиска (SEO) 2026 -->
+  <meta name="description" content="Студия бережной растяжки LADY STRETCH в Сыктывкаре. Запишитесь на пробную тренировку со скидкой 65%.">
+  <meta name="keywords" content="растяжка сыктывкар, фитнес для женщин, lady stretch, шпагат, пилатес сыктывкар">
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="fonts.googleapis.com" rel="stylesheet">
   
   <style>
     :root { 
@@ -34,11 +38,10 @@
       border-bottom: 1px solid var(--light-pink);
     }
     
-    /* Округление логотипа */
     .logo img { 
       height: 35px; 
       width: auto; 
-      border-radius: 8px; /* Мягкое округление */
+      border-radius: 8px; 
     }
 
     .menu-btn { 
@@ -46,17 +49,16 @@
       letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
       font-weight: 600; color: var(--main-purple);
       border-bottom: 1px solid var(--main-purple); padding-bottom: 2px;
-      z-index: 1100; /* Чтобы была над оверлеем */
+      z-index: 1100;
     }
 
-    /* ПОЛНОЭКРАННОЕ МЕНЮ */
     .menu-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: var(--main-purple);
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       z-index: 1050;
       transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);
-      transform: translateY(-100%); /* Прячем сверху */
+      transform: translateY(-100%);
     }
     .menu-overlay.active { transform: translateY(0); }
 
@@ -74,7 +76,6 @@
       letter-spacing: 2px; cursor: pointer; text-transform: uppercase;
     }
 
-    /* HERO СЕКЦИЯ */
     .hero {
       height: 100vh; display: flex; align-items: center; justify-content: center;
       position: relative; background: var(--main-purple); color: #fff;
@@ -91,7 +92,6 @@
     }
     .hero p { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 4px; opacity: 0.9; }
 
-    /* КНОПКИ */
     .btn-wrap { display: flex; gap: 20px; justify-content: center; margin-top: 40px; flex-wrap: wrap; }
     .btn {
       padding: 20px 40px; text-decoration: none; font-size: 0.7rem;
@@ -103,7 +103,6 @@
     .btn-line { border: 1px solid #fff; color: #fff; }
     .btn-line:hover { background: #fff; color: var(--main-purple); }
 
-    /* СЕКЦИИ ТИЗЕРЫ */
     section { padding: 120px 20px; max-width: 900px; margin: 0 auto; }
     .tag { font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; color: var(--main-purple); display: block; margin-bottom: 20px; font-weight: 600; }
     h2 { font-family: 'Cormorant Garamond', serif; font-size: 3rem; text-transform: uppercase; margin-bottom: 30px; font-weight: 400; color: var(--text); }
@@ -112,7 +111,6 @@
     .btn-purple { background: var(--main-purple); color: #fff; display: inline-block; }
     .btn-purple:hover { background: #4a3172; transform: translateY(-2px); }
 
-    /* ТЕСТ (ИНЛАЙН) */
     .quiz-container { background: var(--light-pink); padding: 60px 20px; border-radius: 20px; }
     .quiz-option { 
       display: block; width: 100%; max-width: 400px; margin: 12px auto;
@@ -137,7 +135,7 @@
     <button class="close-menu" onclick="toggleMenu()">закрыть [x]</button>
     <a href="directions.html" onclick="toggleMenu()">Направления</a>
     <a href="future-packages.html" onclick="toggleMenu()">Абонементы 2026</a>
-    <a href="https://vk.me/public221142875" onclick="toggleMenu()" style="font-size: 1rem; margin-top: 50px;">Записаться в ВК</a>
+    <a href="vk.me" onclick="toggleMenu()" style="font-size: 1rem; margin-top: 50px;">Записаться в ВК</a>
   </div>
 
   <header>
@@ -154,7 +152,7 @@
       <h1>Бережная растяжка</h1>
       <p>Раскрой свою энергию</p>
       <div class="btn-wrap">
-        <a href="https://vk.me/public221142875" class="btn btn-fill">Начать тренировки</a>
+        <a href="vk.me" class="btn btn-fill">Начать тренировки</a>
         <a href="future-packages.html" class="btn btn-line">Абонементы</a>
       </div>
     </div>
@@ -175,7 +173,8 @@
       <div id="q-options">
         <button class="quiz-option" onclick="runQuiz('power')">Хочу подтянутое тело</button>
         <button class="quiz-option" onclick="runQuiz('relax')">Хочу избавиться от стресса</button>
-        <button class="quiz-option" onclick="health')">Хочу здоровую спину</button>
+        <!-- Исправлена ошибка с вызовом функции ниже -->
+        <button class="quiz-option" onclick="runQuiz('health')">Хочу здоровую спину</button>
       </div>
     </div>
   </section>
@@ -194,7 +193,6 @@
   </footer>
 
   <script>
-    // Логика открытия/закрытия меню
     function toggleMenu() {
       document.getElementById('fullMenu').classList.toggle('active');
     }
@@ -208,7 +206,7 @@
       document.getElementById('q-title').innerText = titles[type];
       document.getElementById('q-title').style.color = 'var(--main-purple)';
       document.getElementById('q-text').innerText = "Отличный выбор! Напишите нам в ВК 'ХОЧУ ТРЕНИРОВКУ', чтобы забронировать место на пробное занятие со скидкой 65%.";
-      document.getElementById('q-options').innerHTML = `<a href="https://vk.me/public221142875" class="btn btn-purple">Написать администратору</a>`;
+      document.getElementById('q-options').innerHTML = `<a href="vk.me" class="btn btn-purple">Написать администратору</a>`;
     }
   </script>
 
