@@ -5,7 +5,7 @@
   <title>LADY STRETCH | ФИТНЕС | СЫКТЫВКАР</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <!-- Мета-теги для поиска (SEO) 2026 -->
+  <!-- SEO Мета-теги 2026 -->
   <meta name="description" content="Студия бережной растяжки LADY STRETCH в Сыктывкаре. Запишитесь на пробную тренировку со скидкой 65%.">
   <meta name="keywords" content="растяжка сыктывкар, фитнес для женщин, lady stretch, шпагат, пилатес сыктывкар">
   
@@ -52,6 +52,7 @@
       z-index: 1100;
     }
 
+    /* ПОЛНОЭКРАННОЕ МЕНЮ */
     .menu-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: var(--main-purple);
@@ -64,8 +65,8 @@
 
     .menu-overlay a {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 3rem; color: #fff; text-decoration: none;
-      margin: 20px 0; text-transform: uppercase; letter-spacing: 5px;
+      font-size: 2.5rem; color: #fff; text-decoration: none;
+      margin: 15px 0; text-transform: uppercase; letter-spacing: 5px;
       transition: 0.3s;
     }
     .menu-overlay a:hover { color: var(--accent-pink); }
@@ -76,6 +77,7 @@
       letter-spacing: 2px; cursor: pointer; text-transform: uppercase;
     }
 
+    /* HERO */
     .hero {
       height: 100vh; display: flex; align-items: center; justify-content: center;
       position: relative; background: var(--main-purple); color: #fff;
@@ -92,50 +94,47 @@
     }
     .hero p { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 4px; opacity: 0.9; }
 
+    /* КНОПКИ */
     .btn-wrap { display: flex; gap: 20px; justify-content: center; margin-top: 40px; flex-wrap: wrap; }
     .btn {
       padding: 20px 40px; text-decoration: none; font-size: 0.7rem;
       letter-spacing: 2px; text-transform: uppercase; font-weight: 600;
-      transition: 0.3s; border: 1px solid transparent;
+      transition: 0.3s; border: 1px solid transparent; display: inline-block;
     }
     .btn-fill { background: #fff; color: var(--main-purple); }
     .btn-fill:hover { background: var(--accent-pink); color: var(--main-purple); }
     .btn-line { border: 1px solid #fff; color: #fff; }
     .btn-line:hover { background: #fff; color: var(--main-purple); }
+    .btn-purple { background: var(--main-purple); color: #fff; }
+    .btn-purple:hover { background: #4a3172; transform: translateY(-2px); }
 
-    section { padding: 120px 20px; max-width: 900px; margin: 0 auto; }
+    /* СЕКЦИИ */
+    section { padding: 100px 20px; max-width: 900px; margin: 0 auto; }
     .tag { font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; color: var(--main-purple); display: block; margin-bottom: 20px; font-weight: 600; }
     h2 { font-family: 'Cormorant Garamond', serif; font-size: 3rem; text-transform: uppercase; margin-bottom: 30px; font-weight: 400; color: var(--text); }
     .desc { font-size: 1.1rem; line-height: 1.6; color: #5a4b6e; margin-bottom: 40px; }
 
-    .btn-purple { background: var(--main-purple); color: #fff; display: inline-block; }
-    .btn-purple:hover { background: #4a3172; transform: translateY(-2px); }
-
     .quiz-container { background: var(--light-pink); padding: 60px 20px; border-radius: 20px; }
-    .quiz-option { 
-      display: block; width: 100%; max-width: 400px; margin: 12px auto;
-      padding: 18px; border: 1px solid var(--accent-pink); background: #fff; cursor: pointer;
-      text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; transition: 0.3s;
-      color: var(--main-purple); border-radius: 10px;
-    }
-    .quiz-option:hover { border-color: var(--main-purple); background: var(--accent-pink); }
 
+    /* АДАПТИВНОСТЬ */
     @media (max-width: 768px) {
       header { padding: 15px 25px; }
-      .btn { width: 100%; }
+      .btn { width: 100%; text-align: center; }
       h2 { font-size: 2.2rem; }
-      .menu-overlay a { font-size: 2rem; }
-      .close-menu { right: 25px; }
+      .menu-overlay a { font-size: 1.8rem; }
     }
   </style>
 </head>
 <body>
 
+  <!-- МЕНЮ -->
   <div class="menu-overlay" id="fullMenu">
     <button class="close-menu" onclick="toggleMenu()">закрыть [x]</button>
+    <a href="index.html" onclick="toggleMenu()">Главная</a>
     <a href="directions.html" onclick="toggleMenu()">Направления</a>
+    <a href="test.html" onclick="toggleMenu()">Фитнес-тест</a>
     <a href="future-packages.html" onclick="toggleMenu()">Абонементы 2026</a>
-    <a href="vk.me" onclick="toggleMenu()" style="font-size: 1rem; margin-top: 50px;">Записаться в ВК</a>
+    <a href="vk.me" target="_blank" style="font-size: 1rem; margin-top: 40px; color: var(--accent-pink);">Записаться в ВК</a>
   </div>
 
   <header>
@@ -143,6 +142,7 @@
     <button class="menu-btn" onclick="toggleMenu()">MENU</button>
   </header>
 
+  <!-- HERO -->
   <section class="hero" style="max-width:100%; padding:0;">
     <video autoplay muted loop playsinline>
       <source src="hero-video.mp4" type="video/mp4">
@@ -153,60 +153,46 @@
       <p>Раскрой свою энергию</p>
       <div class="btn-wrap">
         <a href="vk.me" class="btn btn-fill">Начать тренировки</a>
-        <a href="future-packages.html" class="btn btn-line">Абонементы</a>
+        <a href="test.html" class="btn btn-line">Пройти тест</a>
       </div>
     </div>
   </section>
 
+  <!-- НАПРАВЛЕНИЯ -->
   <section>
     <span class="tag">Направления</span>
     <h2>Ваше тело — ваш путь</h2>
-    <p class="desc">От мягкой растяжки в гамаках до интенсивного пилатеса. Мы создали пространство, где каждая тренировка — это диалог с собой в атмосфере заботы и красоты.</p>
-    <a href="directions.html" class="btn btn-purple">Посмотреть направления</a>
+    <p class="desc">От мягкой растяжки в гамаках до интенсивного пилатеса. Мы создали пространство в Сыктывкаре, где каждая тренировка — это диалог с собой.</p>
+    <a href="directions.html" class="btn btn-purple">Посмотреть все направления</a>
   </section>
 
+  <!-- КВИЗ (ИНТЕГРАЦИЯ С ТЕСТОМ) -->
   <section>
-    <div class="quiz-container" id="quiz-wrap">
+    <div class="quiz-container">
       <span class="tag">Personal Quiz</span>
-      <h2 id="q-title">С чего начать?</h2>
-      <p id="q-text">Ответьте на один вопрос, чтобы мы подобрали идеальный старт для вашего преображения.</p>
-      <div id="q-options">
-        <button class="quiz-option" onclick="runQuiz('power')">Хочу подтянутое тело</button>
-        <button class="quiz-option" onclick="runQuiz('relax')">Хочу избавиться от стресса</button>
-        <!-- Исправлена ошибка с вызовом функции ниже -->
-        <button class="quiz-option" onclick="runQuiz('health')">Хочу здоровую спину</button>
-      </div>
+      <h2>С чего начать?</h2>
+      <p class="desc">Пройдите наш интерактивный тест из 10 вопросов, чтобы получить бонус к абонементу и подобрать идеальный старт.</p>
+      <a href="test.html" class="btn btn-purple">Начать тест</a>
     </div>
   </section>
 
-  <section style="background: var(--main-purple); color: #fff; max-width: 100%; border-radius: 40px 40px 0 0;">
-    <div style="max-width: 900px; margin: 0 auto;">
+  <!-- ПОСЛЕДНИЙ БЛОК (С ЗАКРУГЛЕНИЕМ СВЕРХУ И СНИЗУ) -->
+  <section style="background: var(--main-purple); color: #fff; max-width: 100%; border-radius: 40px; margin-bottom: 40px;">
+    <div style="max-width: 900px; margin: 0 auto; padding: 40px 0;">
       <span class="tag" style="color: var(--accent-pink);">Interactivity</span>
       <h2 style="color: #fff;">Магия 2026</h2>
-      <p class="desc" style="color: #e0d5f0;">Поймайте символ года и получите персональное предсказание вместе с доступом к специальным ценам на абонементы.</p>
+      <p class="desc" style="color: #e0d5f0;">Поймайте символ года в нашей мини-игре и получите персональное предсказание вместе с доступом к секретным ценам.</p>
       <a href="future-packages.html" class="btn btn-fill">Узнать предсказание</a>
     </div>
   </section>
 
-  <footer style="padding: 60px 0; font-size: 0.7rem; letter-spacing: 2px; opacity: 0.6; color: var(--main-purple);">
+  <footer style="padding: 40px 0; font-size: 0.7rem; letter-spacing: 2px; opacity: 0.6; color: var(--main-purple);">
     LADY STRETCH SYKTYVKAR // 2026
   </footer>
 
   <script>
     function toggleMenu() {
       document.getElementById('fullMenu').classList.toggle('active');
-    }
-
-    function runQuiz(type) {
-      const titles = {
-        'power': 'Ваш выбор: Сила и Тонус',
-        'relax': 'Ваш выбор: Релакс и Гибкость',
-        'health': 'Ваш выбор: Здоровье и Осанка'
-      };
-      document.getElementById('q-title').innerText = titles[type];
-      document.getElementById('q-title').style.color = 'var(--main-purple)';
-      document.getElementById('q-text').innerText = "Отличный выбор! Напишите нам в ВК 'ХОЧУ ТРЕНИРОВКУ', чтобы забронировать место на пробное занятие со скидкой 65%.";
-      document.getElementById('q-options').innerHTML = `<a href="vk.me" class="btn btn-purple">Написать администратору</a>`;
     }
   </script>
 
