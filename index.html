@@ -5,9 +5,9 @@
   <title>LADY STRETCH | ФИТНЕС | СЫКТЫВКАР</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <!-- SEO Мета-теги 2026 -->
-  <meta name="description" content="Студия бережной растяжки LADY STRETCH в Сыктывкаре. Запишитесь на пробную тренировку со скидкой 65%.">
-  <meta name="keywords" content="растяжка сыктывкар, фитнес для женщин, lady stretch, шпагат, пилатес сыктывкар">
+  <!-- SEO 2026 -->
+  <meta name="description" content="Студия бережной растяжки LADY STRETCH в Сыктывкаре. Запишитесь на тренировку.">
+  <meta name="keywords" content="растяжка сыктывкар, фитнес lady stretch, шпагат, пилатес">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,7 +29,6 @@
       overflow-x: hidden; text-align: center;
     }
 
-    /* HEADER */
     header {
       position: fixed; top: 0; left: 0; width: 100%;
       z-index: 1000; padding: 20px 50px;
@@ -38,11 +37,7 @@
       border-bottom: 1px solid var(--light-pink);
     }
     
-    .logo img { 
-      height: 35px; 
-      width: auto; 
-      border-radius: 8px; 
-    }
+    .logo img { height: 35px; width: auto; border-radius: 8px; }
 
     .menu-btn { 
       background: none; border: none; font-size: 0.75rem; 
@@ -52,7 +47,6 @@
       z-index: 1100;
     }
 
-    /* ПОЛНОЭКРАННОЕ МЕНЮ */
     .menu-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: var(--main-purple);
@@ -62,22 +56,13 @@
       transform: translateY(-100%);
     }
     .menu-overlay.active { transform: translateY(0); }
-
     .menu-overlay a {
       font-family: 'Cormorant Garamond', serif;
       font-size: 2.5rem; color: #fff; text-decoration: none;
       margin: 15px 0; text-transform: uppercase; letter-spacing: 5px;
       transition: 0.3s;
     }
-    .menu-overlay a:hover { color: var(--accent-pink); }
 
-    .close-menu {
-      position: absolute; top: 25px; right: 50px;
-      color: #fff; background: none; border: none; font-size: 0.75rem;
-      letter-spacing: 2px; cursor: pointer; text-transform: uppercase;
-    }
-
-    /* HERO */
     .hero {
       height: 100vh; display: flex; align-items: center; justify-content: center;
       position: relative; background: var(--main-purple); color: #fff;
@@ -87,54 +72,35 @@
       object-fit: cover; opacity: 0.4; z-index: 1;
     }
     .hero-content { position: relative; z-index: 2; max-width: 800px; padding: 0 20px; }
-    .hero h1 { 
-      font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 8vw, 5.5rem); 
-      text-transform: uppercase; margin: 20px 0; letter-spacing: 6px; font-weight: 400;
-      line-height: 1.1;
-    }
-    .hero p { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 4px; opacity: 0.9; }
+    .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 8vw, 5.5rem); text-transform: uppercase; margin: 20px 0; letter-spacing: 6px; line-height: 1.1; }
 
-    /* КНОПКИ */
-    .btn-wrap { display: flex; gap: 20px; justify-content: center; margin-top: 40px; flex-wrap: wrap; }
-    .btn {
-      padding: 20px 40px; text-decoration: none; font-size: 0.7rem;
-      letter-spacing: 2px; text-transform: uppercase; font-weight: 600;
-      transition: 0.3s; border: 1px solid transparent; display: inline-block;
-    }
+    .btn-wrap { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-top: 40px; }
+    .btn { padding: 20px 40px; text-decoration: none; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; transition: 0.3s; display: inline-block; min-width: 280px; }
     .btn-fill { background: #fff; color: var(--main-purple); }
-    .btn-fill:hover { background: var(--accent-pink); color: var(--main-purple); }
     .btn-line { border: 1px solid #fff; color: #fff; }
-    .btn-line:hover { background: #fff; color: var(--main-purple); }
     .btn-purple { background: var(--main-purple); color: #fff; }
-    .btn-purple:hover { background: #4a3172; transform: translateY(-2px); }
 
-    /* СЕКЦИИ */
-    section { padding: 100px 20px; max-width: 900px; margin: 0 auto; }
+    section { padding: 80px 20px; max-width: 1100px; margin: 0 auto; }
+    h2 { font-family: 'Cormorant Garamond', serif; font-size: 3rem; text-transform: uppercase; margin-bottom: 30px; color: var(--text); }
     .tag { font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; color: var(--main-purple); display: block; margin-bottom: 20px; font-weight: 600; }
-    h2 { font-family: 'Cormorant Garamond', serif; font-size: 3rem; text-transform: uppercase; margin-bottom: 30px; font-weight: 400; color: var(--text); }
-    .desc { font-size: 1.1rem; line-height: 1.6; color: #5a4b6e; margin-bottom: 40px; }
+    
+    .footer-link { color: inherit; text-decoration: none; display: block; margin-bottom: 8px; transition: 0.3s; }
+    .footer-link:hover { color: var(--main-purple); }
 
-    .quiz-container { background: var(--light-pink); padding: 60px 20px; border-radius: 20px; }
-
-    /* АДАПТИВНОСТЬ */
     @media (max-width: 768px) {
       header { padding: 15px 25px; }
-      .btn { width: 100%; text-align: center; }
-      h2 { font-size: 2.2rem; }
-      .menu-overlay a { font-size: 1.8rem; }
+      .btn { width: 100%; }
     }
   </style>
 </head>
 <body>
 
-  <!-- МЕНЮ -->
   <div class="menu-overlay" id="fullMenu">
-    <button class="close-menu" onclick="toggleMenu()">закрыть [x]</button>
+    <button style="position: absolute; top: 25px; right: 50px; color: #fff; background: none; border: none; cursor: pointer;" onclick="toggleMenu()">ЗАКРЫТЬ [X]</button>
     <a href="index.html" onclick="toggleMenu()">Главная</a>
     <a href="directions.html" onclick="toggleMenu()">Направления</a>
     <a href="test.html" onclick="toggleMenu()">Фитнес-тест</a>
     <a href="future-packages.html" onclick="toggleMenu()">Абонементы 2026</a>
-    <a href="vk.me" target="_blank" style="font-size: 1rem; margin-top: 40px; color: var(--accent-pink);">Записаться в ВК</a>
   </div>
 
   <header>
@@ -142,58 +108,90 @@
     <button class="menu-btn" onclick="toggleMenu()">MENU</button>
   </header>
 
-  <!-- HERO -->
   <section class="hero" style="max-width:100%; padding:0;">
-    <video autoplay muted loop playsinline>
-      <source src="hero-video.mp4" type="video/mp4">
-    </video>
+    <video autoplay muted loop playsinline><source src="hero-video.mp4" type="video/mp4"></video>
     <div class="hero-content">
       <p>Est. 2026 // Сыктывкар</p>
       <h1>Бережная растяжка</h1>
-      <p>Раскрой свою энергию</p>
       <div class="btn-wrap">
-        <a href="vk.me" class="btn btn-fill">Начать тренировки</a>
+        <a href="vk.com" class="btn btn-fill">Начать тренировки</a>
         <a href="test.html" class="btn btn-line">Пройти тест</a>
+        <a href="future-packages.html" style="color: #fff; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; text-decoration: underline;">Абонементы 2026</a>
       </div>
     </div>
   </section>
 
-  <!-- НАПРАВЛЕНИЯ -->
   <section>
     <span class="tag">Направления</span>
     <h2>Ваше тело — ваш путь</h2>
-    <p class="desc">От мягкой растяжки в гамаках до интенсивного пилатеса. Мы создали пространство в Сыктывкаре, где каждая тренировка — это диалог с собой.</p>
-    <a href="directions.html" class="btn btn-purple">Посмотреть все направления</a>
+    <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 40px;">От мягкой растяжки в гамаках до интенсивного пилатеса. Мы создали пространство в Сыктывкаре, где каждая тренировка — это забота о себе.</p>
+    <a href="directions.html" class="btn btn-purple">Все направления</a>
   </section>
 
-  <!-- КВИЗ (ИНТЕГРАЦИЯ С ТЕСТОМ) -->
-  <section>
-    <div class="quiz-container">
-      <span class="tag">Personal Quiz</span>
-      <h2>С чего начать?</h2>
-      <p class="desc">Пройдите наш интерактивный тест из 10 вопросов, чтобы получить бонус к абонементу и подобрать идеальный старт.</p>
-      <a href="test.html" class="btn btn-purple">Начать тест</a>
+  <!-- КОНТАКТЫ И КАРТА -->
+  <section id="location">
+    <span class="tag">Контакты</span>
+    <h2>Где мы находимся</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px; text-align: left;">
+      <div style="border-radius: 20px; overflow: hidden; height: 350px; border: 1px solid var(--light-pink);">
+        <iframe src="yandex.ru" width="100%" height="100%" frameborder="0"></iframe>
+      </div>
+      <div style="padding: 20px; background: var(--light-pink); border-radius: 20px;">
+        <h4 style="color: var(--main-purple);">LADY STRETCH</h4>
+        <p>г. Сыктывкар, (уточните адрес)</p>
+        <p>Тел: <a href="tel:+79087155557" style="text-decoration: none; color: var(--main-purple); font-weight: 600;">+7 908 715-55-57</a></p>
+        <hr style="border: 0; border-top: 1px solid var(--accent-pink); margin: 20px 0;">
+        <p style="font-size: 0.9rem;">Рейтинг на Яндекс Картах: ★ 5.0</p>
+        <a href="yandex.ru" target="_blank" class="btn btn-purple" style="min-width: 200px; padding: 15px;">Оставить отзыв</a>
+      </div>
     </div>
   </section>
 
-  <!-- ПОСЛЕДНИЙ БЛОК (С ЗАКРУГЛЕНИЕМ СВЕРХУ И СНИЗУ) -->
-  <section style="background: var(--main-purple); color: #fff; max-width: 100%; border-radius: 40px; margin-bottom: 40px;">
-    <div style="max-width: 900px; margin: 0 auto; padding: 40px 0;">
-      <span class="tag" style="color: var(--accent-pink);">Interactivity</span>
-      <h2 style="color: #fff;">Магия 2026</h2>
-      <p class="desc" style="color: #e0d5f0;">Поймайте символ года в нашей мини-игре и получите персональное предсказание вместе с доступом к секретным ценам.</p>
-      <a href="future-packages.html" class="btn btn-fill">Узнать предсказание</a>
-    </div>
+  <!-- ПРЕДСКАЗАНИЕ -->
+  <section style="background: var(--main-purple); color: #fff; max-width: 95%; border-radius: 40px; margin: 40px auto;">
+    <span class="tag" style="color: var(--accent-pink); padding-top: 40px;">Interactivity</span>
+    <h2 style="color: #fff;">Магия 2026</h2>
+    <p style="margin-bottom: 40px; opacity: 0.9;">Поймайте символ года и получите персональное предсказание.</p>
+    <a href="future-packages.html" class="btn btn-fill" style="margin-bottom: 40px;">Узнать предсказание</a>
   </section>
 
-  <footer style="padding: 40px 0; font-size: 0.7rem; letter-spacing: 2px; opacity: 0.6; color: var(--main-purple);">
-    LADY STRETCH SYKTYVKAR // 2026
+  <!-- ФУТЕР -->
+  <footer style="background: var(--light-pink); padding: 60px 20px; border-radius: 40px 40px 0 0; text-align: left;">
+    <div style="max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px;">
+      
+      <div>
+        <img src="logo_header_final.png" style="height: 30px; margin-bottom: 20px;">
+        <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+          <a href="vk.com" target="_blank"><img src="upload.wikimedia.org" width="24"></a>
+          <a href="t.me" target="_blank"><img src="upload.wikimedia.org" width="24"></a>
+          <a href="max.ru" target="_blank"><img src="max.ru" width="24" style="border-radius: 50%;"></a>
+        </div>
+        <p style="font-size: 0.8rem;">+7 908 715-55-57</p>
+      </div>
+
+      <div>
+        <h4 style="font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--main-purple);">Документы</h4>
+        <a href="#" class="footer-link" style="font-size: 0.8rem;">Политика конфиденциальности</a>
+        <a href="#" class="footer-link" style="font-size: 0.8rem;">Договор оферты</a>
+        <a href="#" class="footer-link" style="font-size: 0.8rem;">Согласие на ОПД</a>
+        <a href="#" class="footer-link" style="font-size: 0.8rem;">Правила студии</a>
+      </div>
+
+      <div>
+        <h4 style="font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--main-purple);">Вакансии</h4>
+        <a href="vk.com" class="footer-link" style="font-size: 0.8rem;">Фитнес-тренер</a>
+        <a href="vk.com" class="footer-link" style="font-size: 0.8rem;">Администратор</a>
+      </div>
+
+      <div style="font-size: 0.7rem; color: #7a6b8e;">
+        <h4 style="font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--main-purple);">Реквизиты</h4>
+        ИП Худяков Николай Сергеевич<br>ИНН 111801576622<br>ОГРН 323110000009152
+      </div>
+    </div>
   </footer>
 
   <script>
-    function toggleMenu() {
-      document.getElementById('fullMenu').classList.toggle('active');
-    }
+    function toggleMenu() { document.getElementById('fullMenu').classList.toggle('active'); }
   </script>
 
 </body>
