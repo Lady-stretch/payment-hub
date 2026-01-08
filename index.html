@@ -2,12 +2,8 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>LADY STRETCH | ФИТНЕС | СЫКТЫВКАР</title>
+  <title>LADY STRETCH | СЫКТЫВКАР</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <!-- SEO 2026 -->
-  <meta name="description" content="Студия бережной растяжки LADY STRETCH в Сыктывкаре. Запишитесь на тренировку.">
-  <meta name="keywords" content="растяжка сыктывкар, фитнес lady stretch, шпагат, пилатес">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,11 +11,8 @@
   
   <style>
     :root { 
-      --bg: #ffffff; 
-      --text: #2D1B3E; 
-      --main-purple: #5D3E8E; 
-      --light-pink: #FFF0F2; 
-      --accent-pink: #FFD1DC; 
+      --bg: #ffffff; --text: #2D1B3E; --main-purple: #5D3E8E; 
+      --light-pink: #FFF0F2; --accent-pink: #FFD1DC; 
     }
 
     * { box-sizing: border-box; }
@@ -37,59 +30,53 @@
       border-bottom: 1px solid var(--light-pink);
     }
     
-    .logo img { height: 35px; width: auto; border-radius: 8px; }
+    .logo img { height: 35px; border-radius: 8px; }
 
     .menu-btn { 
       background: none; border: none; font-size: 0.75rem; 
       letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
       font-weight: 600; color: var(--main-purple);
-      border-bottom: 1px solid var(--main-purple); padding-bottom: 2px;
-      z-index: 1100;
+      border-bottom: 1px solid var(--main-purple);
     }
 
     .menu-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: var(--main-purple);
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      z-index: 1050;
-      transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+      z-index: 1050; transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);
       transform: translateY(-100%);
     }
     .menu-overlay.active { transform: translateY(0); }
     .menu-overlay a {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2.5rem; color: #fff; text-decoration: none;
-      margin: 15px 0; text-transform: uppercase; letter-spacing: 5px;
-      transition: 0.3s;
+      font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; 
+      color: #fff; text-decoration: none; margin: 15px 0; text-transform: uppercase;
     }
 
     .hero {
       height: 100vh; display: flex; align-items: center; justify-content: center;
       position: relative; background: var(--main-purple); color: #fff;
     }
-    .hero video {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      object-fit: cover; opacity: 0.4; z-index: 1;
-    }
+    .hero video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.4; z-index: 1; }
     .hero-content { position: relative; z-index: 2; max-width: 800px; padding: 0 20px; }
-    .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 8vw, 5.5rem); text-transform: uppercase; margin: 20px 0; letter-spacing: 6px; line-height: 1.1; }
+    .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 8vw, 5rem); text-transform: uppercase; letter-spacing: 6px; }
 
-    .btn-wrap { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-top: 40px; }
-    .btn { padding: 20px 40px; text-decoration: none; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; transition: 0.3s; display: inline-block; min-width: 280px; }
+    .btn-wrap { display: flex; gap: 20px; justify-content: center; margin-top: 40px; flex-wrap: wrap; }
+    .btn { padding: 20px 40px; text-decoration: none; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; transition: 0.3s; }
     .btn-fill { background: #fff; color: var(--main-purple); }
     .btn-line { border: 1px solid #fff; color: #fff; }
-    .btn-purple { background: var(--main-purple); color: #fff; }
+    .btn-purple { background: var(--main-purple); color: #fff; display: inline-block; }
 
-    section { padding: 80px 20px; max-width: 1100px; margin: 0 auto; }
-    h2 { font-family: 'Cormorant Garamond', serif; font-size: 3rem; text-transform: uppercase; margin-bottom: 30px; color: var(--text); }
-    .tag { font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; color: var(--main-purple); display: block; margin-bottom: 20px; font-weight: 600; }
-    
-    .footer-link { color: inherit; text-decoration: none; display: block; margin-bottom: 8px; transition: 0.3s; }
-    .footer-link:hover { color: var(--main-purple); }
+    section { padding: 80px 20px; max-width: 900px; margin: 0 auto; }
+    .tag { font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; color: var(--main-purple); font-weight: 700; margin-bottom: 15px; display: block; }
+    h2 { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; text-transform: uppercase; margin-bottom: 25px; }
+
+    .footer-link { color: inherit; text-decoration: none; display: block; margin-bottom: 8px; font-size: 0.8rem; }
+    .social-btn { font-size: 0.7rem; border: 1px solid var(--main-purple); padding: 5px 10px; text-decoration: none; color: var(--main-purple); border-radius: 5px; }
 
     @media (max-width: 768px) {
       header { padding: 15px 25px; }
       .btn { width: 100%; }
+      .btn-wrap { flex-direction: column; }
     }
   </style>
 </head>
@@ -115,8 +102,7 @@
       <h1>Бережная растяжка</h1>
       <div class="btn-wrap">
         <a href="vk.com" class="btn btn-fill">Начать тренировки</a>
-        <a href="test.html" class="btn btn-line">Пройти тест</a>
-        <a href="future-packages.html" style="color: #fff; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; text-decoration: underline;">Абонементы 2026</a>
+        <a href="future-packages.html" class="btn btn-line">Абонементы 2026</a>
       </div>
     </div>
   </section>
@@ -124,67 +110,57 @@
   <section>
     <span class="tag">Направления</span>
     <h2>Ваше тело — ваш путь</h2>
-    <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 40px;">От мягкой растяжки в гамаках до интенсивного пилатеса. Мы создали пространство в Сыктывкаре, где каждая тренировка — это забота о себе.</p>
-    <a href="directions.html" class="btn btn-purple">Все направления</a>
+    <p style="line-height: 1.6; margin-bottom: 30px;">От мягкой растяжки в гамаках до интенсивного пилатеса. Мы создали пространство в Сыктывкаре, где каждая тренировка — это диалог с собой.</p>
+    <a href="directions.html" class="btn btn-purple">Посмотреть направления</a>
   </section>
 
-  <!-- КОНТАКТЫ И КАРТА -->
-  <section id="location">
-    <span class="tag">Контакты</span>
-    <h2>Где мы находимся</h2>
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px; text-align: left;">
-      <div style="border-radius: 20px; overflow: hidden; height: 350px; border: 1px solid var(--light-pink);">
-        <iframe src="yandex.ru" width="100%" height="100%" frameborder="0"></iframe>
-      </div>
-      <div style="padding: 20px; background: var(--light-pink); border-radius: 20px;">
-        <h4 style="color: var(--main-purple);">LADY STRETCH</h4>
-        <p>г. Сыктывкар, (уточните адрес)</p>
-        <p>Тел: <a href="tel:+79087155557" style="text-decoration: none; color: var(--main-purple); font-weight: 600;">+7 908 715-55-57</a></p>
-        <hr style="border: 0; border-top: 1px solid var(--accent-pink); margin: 20px 0;">
-        <p style="font-size: 0.9rem;">Рейтинг на Яндекс Картах: ★ 5.0</p>
-        <a href="yandex.ru" target="_blank" class="btn btn-purple" style="min-width: 200px; padding: 15px;">Оставить отзыв</a>
-      </div>
+  <section>
+    <div style="background: var(--light-pink); padding: 50px 30px; border-radius: 30px;">
+      <span class="tag">Personal Quiz</span>
+      <h2 style="font-size: 2.2rem;">С чего начать?</h2>
+      <p style="margin-bottom: 30px;">Пройдите тест из 10 вопросов, чтобы получить бонус и подобрать идеальную программу.</p>
+      <a href="test.html" class="btn btn-purple">Пройти фитнес-тест</a>
     </div>
   </section>
 
-  <!-- ПРЕДСКАЗАНИЕ -->
-  <section style="background: var(--main-purple); color: #fff; max-width: 95%; border-radius: 40px; margin: 40px auto;">
-    <span class="tag" style="color: var(--accent-pink); padding-top: 40px;">Interactivity</span>
-    <h2 style="color: #fff;">Магия 2026</h2>
-    <p style="margin-bottom: 40px; opacity: 0.9;">Поймайте символ года и получите персональное предсказание.</p>
-    <a href="future-packages.html" class="btn btn-fill" style="margin-bottom: 40px;">Узнать предсказание</a>
+  <!-- КОМПАКТНАЯ МАГИЯ 2026 -->
+  <section style="max-width: 95%;">
+    <div style="background: var(--main-purple); color: #fff; padding: 40px 20px; border-radius: 40px;">
+      <span class="tag" style="color: var(--accent-pink);">Interactivity</span>
+      <h2 style="color: #fff; font-size: 2.2rem; margin-bottom: 15px;">Магия 2026</h2>
+      <p style="margin-bottom: 25px; opacity: 0.9; font-size: 0.95rem;">Поймайте символ года и получите персональное предсказание.</p>
+      <a href="future-packages.html" class="btn btn-fill">Узнать предсказание</a>
+    </div>
   </section>
 
-  <!-- ФУТЕР -->
-  <footer style="background: var(--light-pink); padding: 60px 20px; border-radius: 40px 40px 0 0; text-align: left;">
-    <div style="max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px;">
+  <footer style="background: var(--light-pink); padding: 50px 20px; border-radius: 40px 40px 0 0; text-align: left; margin-top: 40px;">
+    <div style="max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px;">
       
       <div>
-        <img src="logo_header_final.png" style="height: 30px; margin-bottom: 20px;">
-        <div style="display: flex; gap: 15px; margin-bottom: 20px;">
-          <a href="vk.com" target="_blank"><img src="upload.wikimedia.org" width="24"></a>
-          <a href="t.me" target="_blank"><img src="upload.wikimedia.org" width="24"></a>
-          <a href="max.ru" target="_blank"><img src="max.ru" width="24" style="border-radius: 50%;"></a>
+        <img src="logo_header_final.png" style="height: 25px; margin-bottom: 15px;">
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px;">
+          <a href="vk.com" class="social-btn">ВКонтакте</a>
+          <a href="t.me" class="social-btn">Telegram</a>
+          <a href="max.ru" class="social-btn">MAX</a>
         </div>
-        <p style="font-size: 0.8rem;">+7 908 715-55-57</p>
+        <p style="font-size: 0.75rem;">+7 908 715-55-57</p>
       </div>
 
       <div>
-        <h4 style="font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--main-purple);">Документы</h4>
-        <a href="#" class="footer-link" style="font-size: 0.8rem;">Политика конфиденциальности</a>
-        <a href="#" class="footer-link" style="font-size: 0.8rem;">Договор оферты</a>
-        <a href="#" class="footer-link" style="font-size: 0.8rem;">Согласие на ОПД</a>
-        <a href="#" class="footer-link" style="font-size: 0.8rem;">Правила студии</a>
+        <h4 style="font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: var(--main-purple); margin-bottom: 15px;">Документы</h4>
+        <a href="#" class="footer-link">Политика конфиденциальности</a>
+        <a href="#" class="footer-link">Договор оферты</a>
+        <a href="#" class="footer-link">Согласие на ОПД</a>
       </div>
 
       <div>
-        <h4 style="font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--main-purple);">Вакансии</h4>
-        <a href="vk.com" class="footer-link" style="font-size: 0.8rem;">Фитнес-тренер</a>
-        <a href="vk.com" class="footer-link" style="font-size: 0.8rem;">Администратор</a>
+        <h4 style="font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: var(--main-purple); margin-bottom: 15px;">Вакансии</h4>
+        <a href="vk.com" class="footer-link">Фитнес-тренер</a>
+        <a href="vk.com" class="footer-link">Администратор</a>
       </div>
 
-      <div style="font-size: 0.7rem; color: #7a6b8e;">
-        <h4 style="font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--main-purple);">Реквизиты</h4>
+      <div style="font-size: 0.65rem; color: #7a6b8e; line-height: 1.6;">
+        <h4 style="font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: var(--main-purple); margin-bottom: 15px;">Реквизиты</h4>
         ИП Худяков Николай Сергеевич<br>ИНН 111801576622<br>ОГРН 323110000009152
       </div>
     </div>
