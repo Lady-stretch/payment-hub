@@ -4,9 +4,15 @@
   <meta charset="UTF-8">
   <title>LADY STRETCH | ФИТНЕС | СЫКТЫВКАР</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Теги 2026 -->
+  <meta name="description" content="Студия бережной растяжки LADY STRETCH в Сыктывкаре. Запишитесь на тренировку.">
+  <meta name="keywords" content="растяжка сыктывкар, фитнес lady stretch, шпагат, пилатес">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="fonts.googleapis.com" rel="stylesheet">
+  
   <style>
     :root { --bg: #ffffff; --text: #2D1B3E; --main-purple: #5D3E8E; --light-pink: #FFF0F2; --accent-pink: #FFD1DC; }
     * { box-sizing: border-box; }
@@ -33,6 +39,7 @@
     .footer-top-line { display: flex; align-items: center; gap: 20px; margin-bottom: 25px; border-bottom: 1px solid rgba(93, 62, 142, 0.1); padding-bottom: 15px; }
     .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
     .footer-link { color: inherit; text-decoration: none; display: block; margin-bottom: 5px; font-size: 0.8rem; opacity: 0.8; }
+    .social-svg { width: 24px; height: 24px; transition: 0.3s; }
     .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--main-purple); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1050; transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1); transform: translateY(-100%); }
     .menu-overlay.active { transform: translateY(0); }
     .menu-overlay a { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: #fff; text-decoration: none; margin: 12px 0; text-transform: uppercase; letter-spacing: 4px; }
@@ -61,7 +68,7 @@
       <h1>Бережная растяжка</h1>
       <p class="hero-sub">Раскрой свою энергию</p>
       <div class="btn-wrap">
-        <a href="vk.me" target="_blank" class="btn btn-fill">Начать тренировки</a>
+        <a href="clck.ru" target="_blank" class="btn btn-fill">Начать тренировки</a>
         <a href="future-packages.html" class="btn btn-line">Абонементы 2026</a>
       </div>
     </div>
@@ -94,14 +101,17 @@
       <div class="footer-top-line">
         <img src="logo_header_final.png" style="height: 28px;">
         <div style="display: flex; gap: 18px; align-items: center; border-left: 1px solid var(--accent-pink); padding-left: 15px;">
-          <a href="vk.me" target="_blank">
-            <svg width="24" height="24" viewBox="0 0 24 24" style="fill: #0077FF;"><path d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14c5.6 0 6.93-1.33 6.93-6.93V8.93C22 3.33 20.67 2 15.07 2zm3.1 13.08c0 .12-.04.22-.11.3-.08.08-.19.12-.32.12h-1.5c-.32 0-.6-.11-.84-.33-.24-.22-.44-.52-.61-.88-.23-.49-.46-.86-.68-1.12-.22-.26-.45-.39-.68-.39-.1 0-.19.02-.28.07-.09.05-.16.12-.21.21-.1.17-.15.42-.15.76v.88c0 .2-.06.36-.17.47s-.27.17-.47.17h-.8c-.78 0-1.48-.24-2.11-.73-.63-.49-1.16-1.16-1.59-2.02-.44-.86-.87-1.89-1.28-3.08-.05-.14-.02-.26.08-.36.1-.1.24-.15.42-.15h1.56c.16 0 .29.05.38.16.09.11.14.24.15.4.15.54.34 1.05.58 1.54.24.49.5.91.77 1.25.27.34.52.51.74.51.08 0 .15-.02.2-.07.05-.05.08-.11.1-.19.04-.21.06-.55.06-1.01V9.5c-.01-.35-.1-.61-.26-.78-.16-.17-.4-.28-.7-.34-.1-.02-.15-.08-.15-.17 0-.08.04-.15.13-.21.19-.13.48-.2.88-.2h1.54c.26 0 .46.06.6.18.14.12.21.32.21.61v2.33c0 .16.02.28.06.35.04.07.1.11.18.11.1 0 .23-.08.38-.23.15-.15.34-.39.56-.72.22-.33.45-.75.68-1.27.06-.14.16-.25.29-.33.13-.08.28-.12.45-.12h1.61c.19 0 .34.05.45.14.11.09.15.22.11.38-.19.72-.47 1.34-.84 1.87-.37.53-.74.92-1.1 1.16-.1.08-.15.16-.15.25 0 .07.04.14.11.22.18.2.4.48.65.84s.46.73.61 1.09c.1.25.15.48.15.7z"/></svg>
+          <!-- VK -->
+          <a href="clck.ru" target="_blank">
+            <svg class="social-svg" viewBox="0 0 24 24" style="fill: #0077FF;"><path d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14c5.6 0 6.93-1.33 6.93-6.93V8.93C22 3.33 20.67 2 15.07 2zm3.1 13.08c0 .12-.04.22-.11.3-.08.08-.19.12-.32.12h-1.5c-.32 0-.6-.11-.84-.33-.24-.22-.44-.52-.61-.88-.23-.49-.46-.86-.68-1.12-.22-.26-.45-.39-.68-.39-.1 0-.19.02-.28.07-.09.05-.16.12-.21.21-.1.17-.15.42-.15.76v.88c0 .2-.06.36-.17.47s-.27.17-.47.17h-.8c-.78 0-1.48-.24-2.11-.73-.63-.49-1.16-1.16-1.59-2.02-.44-.86-.87-1.89-1.28-3.08-.05-.14-.02-.26.08-.36.1-.1.24-.15.42-.15h1.56c.16 0 .29.05.38.16.09.11.14.24.15.4.15.54.34 1.05.58 1.54.24.49.5.91.77 1.25.27.34.52.51.74.51.08 0 .15-.02.2-.07.05-.05.08-.11.1-.19.04-.21.06-.55.06-1.01V9.5c-.01-.35-.1-.61-.26-.78-.16-.17-.4-.28-.7-.34-.1-.02-.15-.08-.15-.17 0-.08.04-.15.13-.21.19-.13.48-.2.88-.2h1.54c.26 0 .46.06.6.18.14.12.21.32.21.61v2.33c0 .16.02.28.06.35.04.07.1.11.18.11.1 0 .23-.08.38-.23.15-.15.34-.39.56-.72.22-.33.45-.75.68-1.27.06-.14.16-.25.29-.33.13-.08.28-.12.45-.12h1.61c.19 0 .34.05.45.14.11.09.15.22.11.38-.19.72-.47 1.34-.84 1.87-.37.53-.74.92-1.1 1.16-.1.08-.15.16-.15.25 0 .07.04.14.11.22.18.2.4.48.65.84s.46.73.61 1.09c.1.25.15.48.15.7z"/></svg>
           </a>
+          <!-- TG -->
           <a href="t.me" target="_blank">
-            <svg width="24" height="24" viewBox="0 0 24 24" style="fill: #229ED9;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.11.02-1.93 1.23-5.46 3.62-.51.35-.98.53-1.39.52-.46-.01-1.33-.26-1.98-.48-.8-.27-1.43-.42-1.37-.89.03-.25.38-.51 1.07-.78 4.2-1.82 7-3.03 8.41-3.63 4.02-1.71 4.86-2.01 5.4-2.02.12 0 .38.03.55.17.14.12.18.28.2.4z"/></svg>
+            <svg class="social-svg" viewBox="0 0 24 24" style="fill: #229ED9;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.11.02-1.93 1.23-5.46 3.62-.51.35-.98.53-1.39.52-.46-.01-1.33-.26-1.98-.48-.8-.27-1.43-.42-1.37-.89.03-.25.38-.51 1.07-.78 4.2-1.82 7-3.03 8.41-3.63 4.02-1.71 4.86-2.01 5.4-2.02.12 0 .38.03.55.17.14.12.18.28.2.4z"/></svg>
           </a>
-          <a href="max.ru" target="_blank">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg>
+          <!-- MAX -->
+          <a href="clck.ru" target="_blank">
+            <svg class="social-svg" viewBox="0 0 24 24" fill="none" stroke="#8A2BE2" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg>
           </a>
         </div>
       </div>
@@ -114,8 +124,8 @@
         </div>
         <div>
           <h4 style="font-size: 0.65rem; color: var(--main-purple); margin-bottom: 10px;">Карьера</h4>
-          <a href="vk.me" class="footer-link">Фитнес-тренер</a>
-          <a href="vk.me" class="footer-link">Администратор</a>
+          <a href="clck.ru" target="_blank" class="footer-link">Фитнес-тренер</a>
+          <a href="clck.ru" target="_blank" class="footer-link">Администратор</a>
         </div>
         <div style="font-size: 0.7rem; color: #7a6b8e; line-height: 1.4;">
           <h4 style="font-size: 0.65rem; color: var(--main-purple); margin-bottom: 10px;">Реквизиты</h4>
