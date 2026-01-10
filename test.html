@@ -2,118 +2,104 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Фитнес-тест | Lady Stretch</title>
+  <title>Фитнес-тест | Lady Stretch Сыктывкар</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="fonts.googleapis.com" rel="stylesheet">
 
-  <link rel="stylesheet" href="style.css">
   <style>
-    /* Исправление логотипа с белым фоном */
-    .logo-img {
-      height: 40px;
-      width: auto;
-      mix-blend-mode: screen; /* Убирает белый фон на темном фоне */
-      display: block;
+    :root { 
+      --bg: #1a1a1a; 
+      --text: #ffffff; 
+      --main-purple: #8a2be2; 
+      --accent-pink: #FFD1DC; 
+      --glass: rgba(255, 255, 255, 0.05);
     }
 
-    .test-container {
-      max-width: 700px;
-      margin: 20px auto;
-      padding: 20px;
+    * { box-sizing: border-box; }
+    body { 
+      margin: 0; font-family: 'Inter', sans-serif; 
+      background: var(--bg); color: var(--text); 
+      overflow-x: hidden;
     }
 
-    .test-progress {
-      background: rgba(255,255,255,0.05);
-      padding: 15px;
-      border-radius: 15px;
-      margin-bottom: 25px;
-      border: 1px solid rgba(255,255,255,0.1);
+    /* HEADER */
+    header {
+      position: fixed; top: 0; left: 0; width: 100%;
+      z-index: 1000; padding: 15px 40px;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(15px);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
     }
+    
+    .nav-back {
+      text-decoration: none; color: #fff; font-size: 0.8rem;
+      letter-spacing: 1px; text-transform: uppercase; font-weight: 600;
+      opacity: 0.8; transition: 0.3s;
+    }
+    .nav-back:hover { opacity: 1; color: var(--accent-pink); }
 
-    .progress-bar {
-      height: 8px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 10px;
-      margin: 10px 0;
-      overflow: hidden;
-    }
+    .logo-img { height: 32px; mix-blend-mode: screen; }
 
-    .progress-fill {
-      height: 100%;
-      background: #2ecc71;
-      width: 10%;
-      transition: width 0.3s ease;
-    }
+    /* CONTAINER */
+    .wrapper { padding-top: 100px; padding-bottom: 60px; }
+    .glass { background: var(--glass); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 20px; }
+    
+    .test-container { max-width: 700px; margin: 0 auto; padding: 30px; text-align: center; }
 
-    .question-card {
-      display: none;
-      animation: fadeIn 0.4s ease forwards;
-    }
+    .test-progress { margin-bottom: 30px; }
+    .progress-bar { height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; margin: 15px 0; overflow: hidden; }
+    .progress-fill { height: 100%; background: #2ecc71; width: 10%; transition: width 0.4s ease; }
 
-    .question-card.active {
-      display: block;
-    }
+    .question-card { display: none; text-align: left; animation: fadeIn 0.4s ease forwards; }
+    .question-card.active { display: block; }
+    .question-card h3 { font-size: 1.5rem; margin-bottom: 20px; color: #fff; }
 
     .option {
-      padding: 15px 20px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 12px;
-      margin-bottom: 10px;
-      cursor: pointer;
-      transition: 0.3s;
+      padding: 18px 25px; background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+      margin-bottom: 12px; cursor: pointer; transition: 0.3s;
     }
-
-    .option:hover { background: rgba(255,255,255,0.1); }
-    .option.selected { border-color: #8a2be2; background: rgba(138, 43, 226, 0.1); }
+    .option:hover { background: rgba(255,255,255,0.1); border-color: var(--accent-pink); }
+    .option.selected { border-color: var(--main-purple); background: rgba(138, 43, 226, 0.2); }
     
     .explanation {
-      display: none;
-      margin-top: 15px;
-      padding: 15px;
-      background: rgba(46, 204, 113, 0.1);
-      border-radius: 10px;
-      border-left: 4px solid #2ecc71;
+      display: none; margin-top: 15px; padding: 15px;
+      background: rgba(46, 204, 113, 0.1); border-radius: 10px;
+      border-left: 4px solid #2ecc71; font-size: 0.9rem;
     }
 
-    .nav-buttons {
-      display: flex;
-      gap: 10px;
-      margin-top: 25px;
+    .btn-next {
+      width: 100%; padding: 18px; margin-top: 20px;
+      border-radius: 12px; border: none; background: var(--main-purple);
+      color: white; font-weight: bold; cursor: pointer; transition: 0.3s;
+      text-transform: uppercase; letter-spacing: 1px;
     }
+    .btn-next:disabled { opacity: 0.3; cursor: not-allowed; }
+    .btn-next:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4); }
 
-    .btn {
-      flex: 1;
-      padding: 15px;
-      border-radius: 10px;
-      border: none;
-      font-weight: bold;
-      cursor: pointer;
+    .result-card { display: none; padding: 20px; }
+    .result-card h2 { font-size: 2rem; margin-bottom: 10px; }
+    .score-big { font-size: 4rem; font-weight: 900; color: #2ecc71; margin: 20px 0; }
+
+    footer { 
+      margin-top: 60px; padding: 40px 20px; background: rgba(0,0,0,0.3); 
+      text-align: left; font-size: 0.75rem; border-top: 1px solid rgba(255,255,255,0.05); 
     }
+    .footer-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; }
+    .social-svg { width: 22px; fill: #fff; transition: 0.3s; margin-right: 15px; }
 
-    .btn-next { background: #8a2be2; color: white; }
-    .btn-next:disabled { opacity: 0.5; cursor: not-allowed; }
-
-    .result-card {
-      display: none;
-      text-align: center;
-      padding: 30px;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
-<body class="dark-theme">
+<body>
 
-  <header class="header glass" style="display: flex; justify-content: center; padding: 15px;">
+  <header>
+    <a href="index.html" class="nav-back">← На главную</a>
     <img src="logo_header_final.png" alt="Lady Stretch" class="logo-img">
+    <div style="width: 80px;"></div> <!-- Отступ для баланса -->
   </header>
 
   <main class="wrapper">
@@ -121,20 +107,21 @@
       
       <div id="test-content">
         <div class="test-progress">
-          <div style="display: flex; justify-content: space-between;">
+          <div style="display: flex; justify-content: space-between; font-size: 0.8rem; opacity: 0.7;">
             <span>Вопрос <b id="q-num">1</b> из 10</span>
-            <span>Верно: <b id="score-num">0</b></span>
+            <span>Правильно: <b id="score-num">0</b></span>
           </div>
           <div class="progress-bar"><div class="progress-fill" id="p-fill"></div></div>
         </div>
 
         <div id="questions-wrapper">
+          <!-- Вопросы 1-3 -->
           <div class="question-card active" data-q="1">
             <h3>1. Для чего в первую очередь нужен фитнес?</h3>
             <div class="option" onclick="pick(1, false, this)">Для похудения</div>
             <div class="option" onclick="pick(1, false, this)">Для красивого тела</div>
             <div class="option" onclick="pick(1, true, this)">Для здоровья и долголетия</div>
-            <div class="explanation">Фитнес — это инструмент для поддержания здоровья и качества жизни. Похудение — приятный бонус!</div>
+            <div class="explanation">Фитнес — это инструмент для здоровья. Похудение — приятный бонус!</div>
           </div>
 
           <div class="question-card" data-q="2">
@@ -153,80 +140,95 @@
             <div class="explanation">Пилатес создает "мышечный корсет", который держит вашу спину ровной.</div>
           </div>
 
+          <!-- Вопросы 4-10 -->
           <div class="question-card" data-q="4">
             <h3>4. Зачем нужна растяжка?</h3>
-            <div class="option" onclick="pick(4, false, this)">Чтобы сесть на шпагат за 1 день</div>
             <div class="option" onclick="pick(4, true, this)">Для подвижности суставов и снятия зажимов</div>
-            <div class="option" onclick="pick(4, false, this)">Для гибкости "на показ"</div>
-            <div class="explanation">Растяжка убирает скованность после рабочего дня и делает движения легкими.</div>
+            <div class="option" onclick="pick(4, false, this)">Чтобы сесть на шпагат за 1 день</div>
+            <div class="explanation">Растяжка убирает скованность и делает движения легкими.</div>
           </div>
 
           <div class="question-card" data-q="5">
             <h3>5. Что важнее: регулярность или интенсивность?</h3>
-            <div class="option" onclick="pick(5, false, this)">Интенсивность — на износ!</div>
             <div class="option" onclick="pick(5, true, this)">Регулярность — по чуть-чуть, но часто</div>
-            <div class="option" onclick="pick(5, false, this)">Только тренировки по 3 часа</div>
-            <div class="explanation">Привычка заниматься 2-3 раза в неделю полезнее, чем один "героический" поход в зал раз в месяц.</div>
+            <div class="option" onclick="pick(5, false, this)">Интенсивность на износ</div>
+            <div class="explanation">Привычка заниматься 2-3 раза в неделю полезнее разовых подвигов.</div>
           </div>
 
           <div class="question-card" data-q="6">
             <h3>6. Фитнес — это:</h3>
-            <div class="option" onclick="pick(6, false, this)">Наказание за еду</div>
             <div class="option" onclick="pick(6, true, this)">Инвестиция в себя</div>
-            <div class="option" onclick="pick(6, false, this)">Модная обязанность</div>
-            <div class="explanation">Это способ сказать своему телу "спасибо" за то, что оно у вас есть.</div>
+            <div class="option" onclick="pick(6, false, this)">Наказание за еду</div>
+            <div class="explanation">Это способ поблагодарить свое тело за то, что оно у вас есть.</div>
           </div>
 
           <div class="question-card" data-q="7">
             <h3>7. Что такое МФР?</h3>
-            <div class="option" onclick="pick(7, false, this)">Марафон по бегу</div>
             <div class="option" onclick="pick(7, true, this)">Техника самомассажа роллами</div>
-            <div class="option" onclick="pick(7, false, this)">Диета</div>
-            <div class="explanation">Миофасциальный релиз помогает расслабить мышцы не хуже массажиста!</div>
+            <div class="option" onclick="pick(7, false, this)">Марафон по бегу</div>
+            <div class="explanation">МФР расслабляет мышцы не хуже профессионального массажиста!</div>
           </div>
 
           <div class="question-card" data-q="8">
             <h3>8. Можно ли стать гибким после 30-40 лет?</h3>
             <div class="option" onclick="pick(8, true, this)">Да, тело пластично в любом возрасте</div>
-            <div class="option" onclick="pick(8, false, this)">Нет, поздно начинать</div>
-            <div class="option" onclick="pick(8, false, this)">Только если была база</div>
-            <div class="explanation">Гибкость — это навык. При бережном подходе она развивается в любом возрасте.</div>
+            <div class="option" onclick="pick(8, false, this)">Нет, уже поздно</div>
+            <div class="explanation">Гибкость — это навык, который развивается в любом возрасте при бережном подходе.</div>
           </div>
 
           <div class="question-card" data-q="9">
             <h3>9. Как фитнес влияет на стресс?</h3>
-            <div class="option" onclick="pick(9, false, this)">Утомляет еще больше</div>
             <div class="option" onclick="pick(9, true, this)">Снижает стресс (выработка эндорфинов)</div>
-            <div class="option" onclick="pick(9, false, this)">Никак</div>
-            <div class="explanation">Движение — лучший способ переработать накопленный за день адреналин и кортизол.</div>
+            <div class="option" onclick="pick(9, false, this)">Никак не влияет</div>
+            <div class="explanation">Движение — лучший способ «сжечь» накопленный за день кортизол.</div>
           </div>
 
           <div class="question-card" data-q="10">
             <h3>10. Какое время идеально для спорта?</h3>
             <div class="option" onclick="pick(10, true, this)">Когда вам комфортно</div>
             <div class="option" onclick="pick(10, false, this)">Только в 6 утра</div>
-            <div class="option" onclick="pick(10, false, this)">Только ночью</div>
-            <div class="explanation">Слушайте свои биоритмы. Лучшая тренировка — та, на которую вы пришли!</div>
+            <div class="explanation">Лучшая тренировка — та, на которую вы пришли! Слушайте свои биоритмы.</div>
           </div>
         </div>
 
-        <div class="nav-buttons">
-          <button class="btn btn-next" id="next-btn" disabled onclick="nextStep()">Далее →</button>
-        </div>
+        <button class="btn-next" id="next-btn" disabled onclick="nextStep()">Далее →</button>
       </div>
 
+      <!-- РЕЗУЛЬТАТ -->
       <div id="result-card" class="result-card">
         <h2 id="res-title">Тест пройден!</h2>
-        <p style="font-size: 2rem; color: #2ecc71;"><span id="final-score">0</span> / 10</p>
-        <p id="res-text"></p>
-        <div style="background: rgba(255,215,0,0.1); padding: 15px; border-radius: 10px; margin: 20px 0;">
-          🎁 <b>Бонус:</b> +1 к новогодней игре! (Сохранено)
+        <div class="score-big"><span id="final-score">0</span>/10</div>
+        <p id="res-text" style="margin-bottom: 30px; opacity: 0.9;"></p>
+        
+        <div style="background: rgba(255,215,0,0.1); padding: 20px; border-radius: 15px; margin-bottom: 30px; border: 1px solid rgba(255,215,0,0.2);">
+          🎁 <b>Ваш бонус:</b> +1 к новогодней игре за прохождение теста!
         </div>
-        <a href="index.html" class="btn btn-next" style="text-decoration: none; display: block;">Вернуться на главную</a>
+
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <a href="clck.ru" target="_blank" class="btn-next" style="text-decoration: none;">Записаться в ВК со скидкой</a>
+          <a href="index.html" style="color: #aaa; text-decoration: none; font-size: 0.8rem; margin-top: 10px;">Вернуться на главную</a>
+        </div>
       </div>
 
     </div>
   </main>
+
+  <!-- ФУТЕР ТЕСТА -->
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+          <a href="clck.ru" target="_blank"><svg class="social-svg" viewBox="0 0 24 24" style="fill: #0077FF;"><path d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14c5.6 0 6.93-1.33 6.93-6.93V8.93C22 3.33 20.67 2 15.07 2zm3.1 13.08c0 .12-.04.22-.11.3-.08.08-.19.12-.32.12h-1.5c-.32 0-.6-.11-.84-.33-.24-.22-.44-.52-.61-.88-.23-.49-.46-.86-.68-1.12-.22-.26-.45-.39-.68-.39-.1 0-.19.02-.28.07-.09.05-.16.12-.21.21-.1.17-.15.42-.15.76v.88c0 .2-.06.36-.17.47s-.27.17-.47.17h-.8c-.78 0-1.48-.24-2.11-.73-.63-.49-1.16-1.16-1.59-2.02-.44-.86-.87-1.89-1.28-3.08-.05-.14-.02-.26.08-.36.1-.1.24-.15.42-.15h1.56c.16 0 .29.05.38.16.09.11.14.24.15.4.15.54.34 1.05.58 1.54.24.49.5.91.77 1.25.27.34.52.51.74.51.08 0 .15-.02.2-.07.05-.05.08-.11.1-.19.04-.21.06-.55.06-1.01V9.5c-.01-.35-.1-.61-.26-.78-.16-.17-.4-.28-.7-.34-.1-.02-.15-.08-.15-.17 0-.08.04-.15.13-.21.19-.13.48-.2.88-.2h1.54c.26 0 .46.06.6.18.14.12.21.32.21.61v2.33c0 .16.02.28.06.35.04.07.1.11.18.11.1 0 .23-.08.38-.23.15-.15.34-.39.56-.72.22-.33.45-.75.68-1.27.06-.14.16-.25.29-.33.13-.08.28-.12.45-.12h1.61c.19 0 .34.05.45.14.11.09.15.22.11.38-.19.72-.47 1.34-.84 1.87-.37.53-.74.92-1.1 1.16-.1.08-.15.16-.15.25 0 .07.04.14.11.22.18.2.4.48.65.84s.46.73.61 1.09c.1.25.15.48.15.7z"/></svg></a>
+          <a href="t.me" target="_blank"><svg class="social-svg" viewBox="0 0 24 24" style="fill: #229ED9;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.11.02-1.93 1.23-5.46 3.62-.51.35-.98.53-1.39.52-.46-.01-1.33-.26-1.98-.48-.8-.27-1.43-.42-1.37-.89.03-.25.38-.51 1.07-.78 4.2-1.82 7-3.03 8.41-3.63 4.02-1.71 4.86-2.01 5.4-2.02.12 0 .38.03.55.17.14.12.18.28.2.4z"/></svg></a>
+          <a href="clck.ru" target="_blank"><svg class="social-svg" viewBox="0 0 24 24" fill="none" stroke="#8a2be2" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg></a>
+        </div>
+        <p>ИП Худяков Николай Сергеевич<br>ИНН 111801576622</p>
+      </div>
+      <div style="text-align: right; opacity: 0.6;">
+        © 2026 LADY STRETCH<br>Сыктывкар
+      </div>
+    </div>
+  </footer>
 
   <script>
     let currentQ = 1;
@@ -237,12 +239,13 @@
       if (answered) return;
       answered = true;
 
-      // Выделяем выбранный
+      // Визуальный выбор
+      const options = el.parentElement.querySelectorAll('.option');
+      options.forEach(opt => opt.classList.remove('selected'));
       el.classList.add('selected');
       
-      // Показываем объяснение
-      const card = document.querySelector(`[data-q="${q}"]`);
-      const expl = card.querySelector('.explanation');
+      // Показ объяснения
+      const expl = el.parentElement.querySelector('.explanation');
       expl.style.display = 'block';
 
       if (isCorrect) {
@@ -271,8 +274,7 @@
 
     function showResults() {
       document.getElementById('test-content').style.display = 'none';
-      const resCard = document.getElementById('result-card');
-      resCard.style.display = 'block';
+      document.getElementById('result-card').style.display = 'block';
       document.getElementById('final-score').innerText = score;
 
       let msg = "";
@@ -282,7 +284,7 @@
       
       document.getElementById('res-text').innerText = msg;
 
-      // Логика бонуса
+      // Сохранение бонуса в память браузера
       let caught = parseInt(localStorage.getItem('charactersCaught') || '0');
       if (!localStorage.getItem('bonus_test_done')) {
         localStorage.setItem('charactersCaught', caught + 1);
