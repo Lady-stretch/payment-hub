@@ -9,8 +9,7 @@
   
   <!-- ФАВИКОН -->
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
-  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-  
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">  
   <style>
     /* Переопределяем переменные для темной темы Футуры */
     :root { --bg-fut: #0f051d; --pink: #FFD1DC; --gold: #D4AF37; --blue: #0088cc; }
@@ -34,9 +33,9 @@
     .fut-logo-wrap { display: flex; align-items: center; }
     .fut-logo-wrap img { 
       height: 32px; width: auto; 
-      filter: brightness(0) invert(1); 
       border-radius: 8px; /* Округление как на главной */
       display: block;
+      /* Фильтр УДАЛЁН — логотип отображается как в файле */
     }
 
     .header-center {
@@ -48,7 +47,7 @@
     .nav-back {
       text-decoration: none; color: #fff; font-size: 0.7rem; 
       text-transform: uppercase; letter-spacing: 1px;
-      border: 1px solid rgba(255, 209, 220, 0.3);
+      border: 1px solid rgba(255,210,220,0.3);
       padding: 8px 15px; border-radius: 50px; transition: 0.3s;
     }
     .nav-back:hover { background: var(--pink); color: #000; border-color: var(--pink); }
