@@ -140,5 +140,124 @@
     </div>
   </footer>
   <script>function toggleMenu() { document.getElementById('fullMenu').classList.toggle('active'); }</script>
+<!-- Lady Stretch AI Assistant Widget -->
+<div id="ls-ai-widget">
+  <style>
+    #ls-ai-button {
+      position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px;
+      background: #5D3E8E; color: white; border: none; border-radius: 50%;
+      font-size: 24px; cursor: pointer; box-shadow: 0 4px 12px rgba(93,62,142,0.3);
+      z-index: 1000; transition: all 0.3s ease; display: flex;
+      align-items: center; justify-content: center; animation: pulse 2s infinite;
+    }
+    #ls-ai-button:hover { transform: scale(1.1); background: #8a2be2; }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(138,43,226,0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(138,43,226,0); }
+      100% { box-shadow: 0 0 0 0 rgba(138,43,226,0); }
+    }
+    #ls-ai-chat {
+      display: none; position: fixed; bottom: 90px; right: 20px; width: 340px;
+      max-height: 500px; background: white; border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15); overflow: hidden; z-index: 999;
+      font-family: 'Inter', sans-serif; border: 1px solid #eee;
+    }
+    #ls-ai-header {
+      background: #5D3E8E; color: white; padding: 15px; font-size: 14px;
+      text-align: center; font-weight: 600;
+    }
+    #ls-ai-messages {
+      height: 300px; overflow-y: auto; padding: 15px; background: #f9f9f9;
+      font-size: 14px; line-height: 1.5;
+    }
+    .msg {
+      margin-bottom: 12px; max-width: 80%;
+    }
+    .msg-user {
+      color: #2D1B3E; align-self: flex-end; background: #E0D5EB;
+      padding: 10px 14px; border-radius: 18px; margin-left: auto;
+    }
+    .msg-assistant {
+      color: #2D1B3E; align-self: flex-start; background: #FFF0F2;
+      padding: 10px 14px; border-radius: 18px;
+    }
+    #ls-ai-input-area {
+      display: flex; padding: 10px; background: white; border-top: 1px solid #eee;
+    }
+    #ls-ai-input {
+      flex: 1; padding: 10px 14px; border: 1px solid #ddd;
+      border-radius: 20px; font-size: 14px; outline: none;
+    }
+    #ls-ai-send {
+      background: #5D3E8E; color: white; border: none; width: 40px; height: 40px;
+      border-radius: 50%; margin-left: 8px; cursor: pointer; font-size: 16px;
+    }
+    #ls-ai-send:hover { background: #8a2be2; }
+  </style>
+
+  <button id="ls-ai-button">💬</button>
+
+  <div id="ls-ai-chat">
+    <div id="ls-ai-header">Lady Stretch Assistant</div>
+    <div id="ls-ai-messages">
+      <div class="msg msg-assistant">Привет! Я — ваш помощник в Lady Stretch. Чем могу помочь? 😊</div>
+    </div>
+    <div id="ls-ai-input-area">
+      <input type="text" id="ls-ai-input" placeholder="Напишите вопрос..." />
+      <button id="ls-ai-send">➤</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // 🌐 URL вашего API Gateway
+  const API_URL = 'https://d5d8t5f83og17j8u7ue7.y5sm01em.apigw.yandexcloud.net/ask';
+
+  const button = document.getElementById('ls-ai-button');
+  const chat = document.getElementById('ls-ai-chat');
+  const messages = document.getElementById('ls-ai-messages');
+  const input = document.getElementById('ls-ai-input');
+  const sendBtn = document.getElementById('ls-ai-send');
+
+  button.onclick = () => {
+    chat.style.display = chat.style.display === 'block' ? 'none' : 'block';
+    if (chat.style.display === 'block') {
+      input.focus();
+    }
+  };
+
+  sendBtn.onclick = async () => {
+    const text = input.value.trim();
+    if (!text) return;
+
+    addMessage(text, 'user');
+    input.value = '';
+
+    try {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text })
+      });
+      const data = await response.json();
+      const answer = data.answer || 'Извините, не могу ответить.';
+      addMessage(answer, 'assistant');
+    } catch (err) {
+      addMessage('Ошибка подключения. Попробуйте позже.', 'assistant');
+    }
+  };
+
+  input.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') sendBtn.click();
+  });
+
+  function addMessage(text, sender) {
+    const msg = document.createElement('div');
+    msg.className = `msg msg-${sender}`;
+    msg.textContent = text;
+    messages.appendChild(msg);
+    messages.scrollTop = messages.scrollHeight;
+  }
+</script>
 </body>
 </html>
