@@ -140,10 +140,9 @@
     </div>
   </footer>
   <script>function toggleMenu() { document.getElementById('fullMenu').classList.toggle('active'); }</script>
-<!-- Lady Stretch AI Assistant: Glass Edition 2026 -->
+<!-- Lady Stretch AI Assistant: Glass Edition Final Fix 2026 -->
 <div id="ls-ai-widget">
   <style>
-    /* Кнопка-пузырь */
     #ls-ai-button {
       position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px;
       background: #5D3E8E; color: white; border: none; border-radius: 50%;
@@ -152,76 +151,61 @@
       transition: all 0.3s ease;
     }
 
-    /* ОКНО ЧАТА - ЭФФЕКТ ЖИДКОЕ СТЕКЛО */
     #ls-ai-chat {
       display: none; position: fixed; bottom: 90px; right: 20px; width: 350px;
-      max-height: 550px; 
-      background: rgba(255, 255, 255, 0.75); /* Прозрачность */
-      backdrop-filter: blur(15px); /* Размытие фона */
-      -webkit-backdrop-filter: blur(15px);
-      border-radius: 22px;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.15); 
-      overflow: hidden; z-index: 1000;
-      font-family: 'Inter', sans-serif; 
-      border: 1px solid rgba(255, 255, 255, 0.4); 
-      flex-direction: column;
+      max-height: 550px; background: rgba(255, 255, 255, 0.85); 
+      backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+      border-radius: 22px; box-shadow: 0 15px 35px rgba(0,0,0,0.15); 
+      overflow: hidden; z-index: 1000; font-family: 'Inter', sans-serif; 
+      border: 1px solid rgba(255, 255, 255, 0.4); flex-direction: column;
     }
 
-    /* ШАПКА - ИДЕАЛЬНАЯ ЦЕНТРОВКА */
     #ls-ai-header {
       background: #5D3E8E; color: white; padding: 15px; 
-      display: grid; grid-template-columns: 40px 1fr 40px; 
-      align-items: center;
+      display: flex; justify-content: space-between; align-items: center;
     }
+
+    /* Иконка ВК - цветная и понятная */
+    .vk-link-top {
+      display: flex; align-items: center; justify-content: center;
+      background: #0077FF; border-radius: 50%; width: 32px; height: 32px;
+      transition: transform 0.2s;
+    }
+    .vk-link-top:hover { transform: scale(1.1); }
+    .vk-link-top img { width: 18px; height: 18px; filter: brightness(0) invert(1); }
+
     #ls-ai-header span { 
-      grid-column: 2; text-align: center; 
-      font-weight: 600; font-size: 13px; letter-spacing: 1px;
-      text-transform: uppercase;
+      font-weight: 600; font-size: 12px; letter-spacing: 1px;
+      text-transform: uppercase; flex-grow: 1; text-align: center;
     }
 
-    /* КНОПКА ВК */
-    .vk-link { 
-      grid-column: 1; display: flex; align-items: center; justify-content: center;
-      transition: opacity 0.3s;
-    }
-    .vk-link:hover { opacity: 0.8; }
-    .vk-link img { width: 22px; height: 22px; filter: brightness(0) invert(1); }
-
-    /* СООБЩЕНИЯ - РАВНОМЕРНОЕ РАСПРЕДЕЛЕНИЕ */
     #ls-ai-messages {
       height: 380px; overflow-y: auto; padding: 18px; 
-      background: rgba(249, 249, 249, 0.4);
+      background: rgba(249, 249, 249, 0.3);
       display: flex; flex-direction: column; gap: 12px;
     }
+    
     .msg { 
       padding: 12px 16px; border-radius: 18px; font-size: 14px; 
-      max-width: 82%; line-height: 1.5; 
-      text-align: left; /* Текст всегда равномерно слева */
-      word-wrap: break-word;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      max-width: 82%; line-height: 1.5; text-align: left; 
+      word-wrap: break-word; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     }
     .msg-user { 
-      background: #5D3E8E; color: white; 
-      align-self: flex-end; /* Пользователь справа */
+      background: #5D3E8E; color: white; align-self: flex-end; 
       border-bottom-right-radius: 4px;
     }
     .msg-assistant { 
-      background: white; color: #2D1B3E; 
-      align-self: flex-start; /* ИИ слева */
-      border-bottom-left-radius: 4px;
-      border: 1px solid rgba(93, 62, 142, 0.1);
+      background: white; color: #2D1B3E; align-self: flex-start; 
+      border-bottom-left-radius: 4px; border: 1px solid rgba(93, 62, 142, 0.1);
     }
 
-    /* ПОЛЕ ВВОДА */
     #ls-ai-input-area { 
-      display: flex; padding: 15px; 
-      background: rgba(255, 255, 255, 0.6); 
-      border-top: 1px solid rgba(0,0,0,0.05); 
-      align-items: center;
+      display: flex; padding: 15px; background: white; 
+      border-top: 1px solid rgba(0,0,0,0.05); align-items: center;
     }
     #ls-ai-input {
-      flex: 1; padding: 12px 18px; border: 1px solid rgba(0,0,0,0.1); 
-      border-radius: 25px; font-size: 16px; outline: none; background: white;
+      flex: 1; padding: 12px 18px; border: 1px solid #ddd; 
+      border-radius: 25px; font-size: 16px; outline: none;
     }
     #ls-ai-send {
       background: #5D3E8E; color: white; border: none; width: 45px; height: 45px;
@@ -229,92 +213,96 @@
       align-items: center; justify-content: center; font-size: 18px;
     }
 
-    /* МОБИЛЬНАЯ АДАПТАЦИЯ */
     @media (max-width: 768px) {
       #ls-ai-chat { bottom: 0; right: 0; width: 100%; height: 100%; max-height: 100%; border-radius: 0; }
       #ls-ai-messages { height: calc(100vh - 140px); }
-      #ls-ai-header { padding: 20px 15px; }
     }
   </style>
 
-  <button id="ls-ai-button">💬</button>
+  <button id="ls-ai-button" onclick="toggleLSChat()">💬</button>
 
   <div id="ls-ai-chat">
     <div id="ls-ai-header">
-      <a href="vk.me" target="_blank" class="vk-link">
+      <a href="vk.me" target="_blank" class="vk-link-top" title="Написать администратору в ВК">
         <img src="upload.wikimedia.org" alt="VK">
       </a>
       <span>LADY STRETCH ASSISTANT</span>
-      <div style="cursor:pointer; font-size:28px; grid-column: 3; text-align: right; line-height: 1;" onclick="toggleChat()">×</div>
+      <div style="cursor:pointer; font-size:28px; line-height: 1;" onclick="toggleLSChat()">×</div>
     </div>
-    <div id="ls-ai-messages">
-      <div class="msg msg-assistant">Здравствуйте! 🌸 Я ваш ИИ-помощник. Если захотите задать вопрос лично администратору, нажмите на значок ВК в шапке чата. Чем могу помочь? ✨</div>
+    <div id="ls-ai-messages" id="ls-messages-container">
+      <div class="msg msg-assistant">Здравствуйте! 🌸 Я ваш ИИ-помощник. По любым вопросам вы также можете написать нам в ВК (синяя кнопка сверху). Чем могу помочь? ✨</div>
     </div>
     <div id="ls-ai-input-area">
       <input type="text" id="ls-ai-input" placeholder="Напишите вопрос..." autocomplete="off">
-      <button id="ls-ai-send">➤</button>
+      <button id="ls-ai-send" onclick="sendLSMessage()">➤</button>
     </div>
   </div>
 </div>
 
 <script>
-  (function() {
-    const API_URL = 'd5d8t5f83og17j8u7ue7.y5sm01em.apigw.yandexcloud.net';
-    const chat = document.getElementById('ls-ai-chat');
-    const btn = document.getElementById('ls-ai-button');
-    const input = document.getElementById('ls-ai-input');
-    const messages = document.getElementById('ls-ai-messages');
-    const sendBtn = document.getElementById('ls-ai-send');
+  const lsChatWindow = document.getElementById('ls-ai-chat');
+  const lsChatBtn = document.getElementById('ls-ai-button');
+  const lsChatInput = document.getElementById('ls-ai-input');
+  const lsMessagesArea = document.getElementById('ls-ai-messages');
+  const lsApiUrl = 'd5d8t5f83og17j8u7ue7.y5sm01em.apigw.yandexcloud.net';
 
-    window.toggleChat = function() {
-      const isVisible = chat.style.display === 'flex';
-      chat.style.display = isVisible ? 'none' : 'flex';
-      if (window.innerWidth <= 768) {
-        btn.style.display = isVisible ? 'flex' : 'none';
-      }
-      if (!isVisible) input.focus();
-    };
-
-    btn.onclick = toggleChat;
-
-    async function sendMessage() {
-      const text = input.value.trim();
-      if (!text) return;
-
-      addMessage(text, 'user');
-      input.value = '';
-
-      // Создаем индикатор ожидания
-      const loadingId = 'load-' + Date.now();
-      addMessage('Печатает...', 'assistant', loadingId);
-
-      try {
-        const response = await fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ text })
-        });
-        const data = await response.json();
-        
-        document.getElementById(loadingId).remove();
-        addMessage(data.answer || 'Извините, возникла ошибка.', 'assistant');
-      } catch (err) {
-        if(document.getElementById(loadingId)) document.getElementById(loadingId).remove();
-        addMessage('Ошибка сети. Напишите нам в ВК.', 'assistant');
-      }
+  function toggleLSChat() {
+    const isVisible = lsChatWindow.style.display === 'flex';
+    lsChatWindow.style.display = isVisible ? 'none' : 'flex';
+    if (window.innerWidth <= 768) {
+      lsChatBtn.style.display = isVisible ? 'flex' : 'none';
     }
+    if (!isVisible) lsChatInput.focus();
+  }
 
-    sendBtn.onclick = sendMessage;
-    input.onkeypress = (e) => { if (e.key === 'Enter') sendMessage(); };
+  async function sendLSMessage() {
+    const text = lsChatInput.value.trim();
+    if (!text) return;
 
-    function addMessage(text, sender, id = null) {
-      const msg = document.createElement('div');
-      if (id) msg.id = id;
-      msg.className = `msg msg-${sender}`;
-      msg.textContent = text;
-      messages.appendChild(msg);
-      messages.scrollTop = messages.scrollHeight;
+    addLSMessage(text, 'user');
+    lsChatInput.value = '';
+
+    // Индикатор "Печатает..."
+    const loadingId = 'loading-' + Date.now();
+    addLSMessage('Печатает...', 'assistant', loadingId);
+
+    try {
+      const response = await fetch(lsApiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: text })
+      });
+
+      if (!response.ok) throw new Error('Network error');
+
+      const data = await response.json();
+      const loadingEl = document.getElementById(loadingId);
+      if (loadingEl) loadingEl.remove();
+
+      addLSMessage(data.answer || 'Извините, возникла заминка.', 'assistant');
+    } catch (err) {
+      const loadingEl = document.getElementById(loadingId);
+      if (loadingEl) loadingEl.remove();
+      addLSMessage('Ошибка связи с ИИ. Пожалуйста, напишите нам в ВК или попробуйте позже.', 'assistant');
+      console.error(err);
     }
-  })();
+  }
+
+  function addLSMessage(text, sender, id = null) {
+    const msg = document.createElement('div');
+    if (id) msg.id = id;
+    msg.className = `msg msg-${sender}`;
+    msg.textContent = text;
+    lsMessagesArea.appendChild(msg);
+    lsMessagesArea.scrollTop = lsMessagesArea.scrollHeight;
+  }
+
+  // Обработка Enter
+  lsChatInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      sendLSMessage();
+    }
+  });
 </script>
+
 </html>
