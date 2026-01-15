@@ -142,106 +142,93 @@
   <script>function toggleMenu() { document.getElementById('fullMenu').classList.toggle('active'); }</script>
 <div id="ls-ai-widget">
   <style>
-    /* Кнопка вызова чата */
+    /* Кнопка вызова чата с усиленной пульсацией */
     #ls-ai-button {
-      position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px;
+      position: fixed; bottom: 20px; right: 20px; width: 65px; height: 65px;
       background: #5D3E8E; color: white; border: none; border-radius: 50%;
-      font-size: 24px; cursor: pointer; box-shadow: 0 8px 24px rgba(93,62,142,0.4);
+      font-size: 28px; cursor: pointer; box-shadow: 0 10px 25px rgba(93,62,142,0.5);
       z-index: 1001; display: flex; align-items: center; justify-content: center;
-      transition: transform 0.3s ease; animation: ls-pulse 2s infinite;
+      transition: transform 0.3s ease; animation: ls-pulse-intense 2s infinite;
     }
-    #ls-ai-button:hover { transform: scale(1.1); }
 
-    @keyframes ls-pulse {
-      0% { box-shadow: 0 0 0 0 rgba(93,62,142,0.5); }
-      70% { box-shadow: 0 0 0 15px rgba(93,62,142,0); }
-      100% { box-shadow: 0 0 0 0 rgba(93,62,142,0); }
+    /* Текстовая подсказка (видна только на ПК, чтобы не мешать на мобильных) */
+    #ls-ai-button::after {
+      content: "Задать вопрос ✨";
+      position: absolute; right: 80px; background: white; color: #5D3E8E;
+      padding: 8px 15px; border-radius: 12px; font-size: 14px; font-weight: bold;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1); white-space: nowrap;
+      pointer-events: none; border: 1px solid rgba(93,62,142,0.2);
+    }
+
+    @keyframes ls-pulse-intense {
+      0% { box-shadow: 0 0 0 0 rgba(93,62,142,0.7); transform: scale(1); }
+      70% { box-shadow: 0 0 0 20px rgba(93,62,142,0); transform: scale(1.05); }
+      100% { box-shadow: 0 0 0 0 rgba(93,62,142,0); transform: scale(1); }
     }
 
     /* ОСНОВНОЕ ОКНО (ЖИДКОЕ СТЕКЛО) */
     #ls-ai-chat {
-      display: none; position: fixed; bottom: 90px; right: 20px; width: 360px;
+      display: none; position: fixed; bottom: 100px; right: 20px; width: 360px;
       height: 600px; max-height: 80vh; 
-      /* Эффект стекла */
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(20px) saturate(160%);
-      -webkit-backdrop-filter: blur(20px) saturate(160%);
-      
-      border-radius: 28px;
-      border: 1px solid rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(20px) saturate(170%);
+      -webkit-backdrop-filter: blur(20px) saturate(170%);
+      border-radius: 28px; border: 1px solid rgba(255, 255, 255, 0.5);
       box-shadow: 0 20px 50px rgba(0,0,0,0.15);
       overflow: hidden; z-index: 1000;
       font-family: 'Inter', sans-serif; flex-direction: column;
       transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
     }
 
-    /* ШАПКА: Выравнивание слева */
+    /* ШАПКА */
     #ls-ai-header {
-      background: rgba(93, 62, 142, 0.85);
+      background: rgba(93, 62, 142, 0.9);
       color: white; padding: 18px 22px; font-size: 15px;
-      text-align: left; font-weight: 600; 
-      display: flex; justify-content: space-between; align-items: center;
+      font-weight: 600; display: flex; justify-content: space-between; align-items: center;
     }
 
     /* ОБЛАСТЬ СООБЩЕНИЙ */
     #ls-ai-messages {
       flex: 1; overflow-y: auto; padding: 20px;
       display: flex; flex-direction: column; gap: 12px;
-      background: transparent; /* Чтобы стекло просвечивало */
+      background: transparent;
     }
 
-    /* ПУЗЫРИ СООБЩЕНИЙ */
-    .msg { 
-      padding: 12px 16px; border-radius: 20px; font-size: 14px; 
-      max-width: 85%; line-height: 1.5; word-wrap: break-word; 
-      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
-    }
-    .msg-user { 
-      background: #5D3E8E; color: white; align-self: flex-end; 
-      border-bottom-right-radius: 4px; 
-      text-align: left;
-    }
-    .msg-assistant { 
-      background: white; color: #2D1B3E; align-self: flex-start; 
-      border-bottom-left-radius: 4px;
-      border: 1px solid rgba(0,0,0,0.05);
-      text-align: left;
-    }
+    .msg { padding: 12px 16px; border-radius: 20px; font-size: 14px; max-width: 85%; line-height: 1.5; }
+    .msg-user { background: #5D3E8E; color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+    .msg-assistant { background: white; color: #2D1B3E; align-self: flex-start; border-bottom-left-radius: 4px; border: 1px solid rgba(0,0,0,0.05); }
 
-    /* КНОПКА ВК */
     #ls-ai-vk-help {
       display: flex; align-items: center; justify-content: center; gap: 10px;
       margin: 5px 15px 10px; padding: 12px;
       background: rgba(0, 119, 255, 0.1);
       border: 1px dashed #0077FF; border-radius: 15px;
       color: #0077FF; text-decoration: none; font-size: 13px; font-weight: 600;
-      transition: 0.3s;
     }
-    #ls-ai-vk-help:hover { background: rgba(0, 119, 255, 0.2); transform: translateY(-1px); }
 
     /* ПОЛЕ ВВОДА */
     #ls-ai-input-area { 
-      padding: 15px; background: rgba(255,255,255,0.5); 
+      padding: 15px; background: rgba(255,255,255,0.6); 
       border-top: 1px solid rgba(0,0,0,0.05); 
       display: flex; align-items: center; gap: 10px;
     }
     #ls-ai-input {
       flex: 1; padding: 12px 18px; border: 1px solid rgba(0,0,0,0.1); 
-      border-radius: 25px; font-size: 16px; outline: none;
-      background: white; transition: 0.3s;
+      border-radius: 25px; font-size: 16px; outline: none; background: white;
     }
-    #ls-ai-input:focus { border-color: #5D3E8E; box-shadow: 0 0 0 3px rgba(93,62,142,0.1); }
 
     #ls-ai-send {
       background: #5D3E8E; color: white; border: none; width: 44px; height: 44px;
       border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
-      transition: 0.3s;
     }
-    #ls-ai-send:hover { transform: rotate(15deg) scale(1.1); }
 
-    /* МОБИЛЬНАЯ ВЕРСИЯ */
+    /* АДАПТАЦИЯ ДЛЯ МОБИЛЬНЫХ (Клавиатура) */
     @media (max-width: 768px) {
-      #ls-ai-chat { bottom: 0; right: 0; width: 100%; height: 100%; max-height: 100%; border-radius: 0; }
+      #ls-ai-chat { 
+        bottom: 0; right: 0; width: 100%; height: 100dvh; 
+        max-height: 100dvh; border-radius: 0; 
+      }
+      #ls-ai-button::after { display: none; } /* Скрываем текст на мобилках */
       #ls-ai-button { width: 55px; height: 55px; bottom: 15px; right: 15px; }
     }
   </style>
@@ -262,9 +249,9 @@
     </div>
 
     <a href="https://vk.com/im?entrypoint=community_page&media=&sel=-221142875" target="_blank" id="ls-ai-vk-help">
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="#0077FF"><path d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14c5.6 0 6.93-1.33 6.93-6.93V8.93C22 3.33 20.67 2 15.07 2zm3.1 13.08c0 .12-.04.22-.11.3-.08.08-.19.12-.32.12h-1.5c-.32 0-.6-.11-.84-.33-.24-.22-.44-.52-.61-.88-.23-.49-.46-.86-.68-1.12-.22-.26-.45-.39-.68-.39-.1 0-.19.02-.28.07-.09.05-.16.12-.21.21-.1.17-.15.42-.15.76v.88c0 .2-.06.36-.17.47s-.27.17-.47.17h-.8c-.78 0-1.48-.24-2.11-.73-.63-.49-1.16-1.16-1.59-2.02-.44-.86-.87-1.89-1.28-3.08-.05-.14-.02-.26.08-.36.1-.1.24-.15.42-.15h1.56c.16 0 .29.05.38.16.09.11.14.24.15.4.15.54.34 1.05.58 1.54.24.49.5.91.77 1.25.27.34.52.51.74.51.08 0 .15-.02.2-.07.05-.05.08-.11.1-.19.04-.21.06-.55.06-1.01V9.5c-.01-.35-.1-.61-.26-.78-.16-.17-.4-.28-.7-.34-.1-.02-.15-.08-.15-.17 0-.08.04-.15.13-.21.19-.13.48-.2.88-.2h1.54c.26 0 .46.06.6.18.14.12.21.32.21.61v2.33c0 .16.02.28.06.35.04.07.1.11.18.11.1 0 .23-.08.38-.23.15-.15.34-.39.56-.72.22-.33.45-.75.68-1.27.06-.14.16-.25.29-.33.13-.08.28-.12.45-.12h1.61c.19 0 .34.05.45.14.11.09.15.22.11.38-.19.72-.47 1.34-.84 1.87-.37.53-.74.92-1.1 1.16-.1.08-.15.16-.15.25 0 .07.04.14.11.22.18.2.4.48.65.84s.46.73.61 1.09c.1.25.15.48.15.7z"/></svg>
-  Не ответил ИИ? В чат с администратором
-</a>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="#0077FF"><path d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14c5.6 0 6.93-1.33 6.93-6.93V8.93C22 3.33 20.67 2 15.07 2zm3.1 13.08c0 .12-.04.22-.11.3-.08.08-.19.12-.32.12h-1.5c-.32 0-.6-.11-.84-.33-.24-.22-.44-.52-.61-.88-.23-.49-.46-.86-.68-1.12-.22-.26-.45-.39-.68-.39-.1 0-.19.02-.28.07-.09.05-.16.12-.21.21-.1.17-.15.42-.15.76v.88c0 .2-.06.36-.17.47s-.27.17-.47.17h-.8c-.78 0-1.48-.24-2.11-.73-.63-.49-1.16-1.16-1.59-2.02-.44-.86-.87-1.89-1.28-3.08-.05-.14-.02-.26.08-.36.1-.1.24-.15.42-.15h1.56c.16 0 .29.05.38.16.09.11.14.24.15.4.15.54.34 1.05.58 1.54.24.49.5.91.77 1.25.27.34.52.51.74.51.08 0 .15-.02.2-.07.05-.05.08-.11.1-.19.04-.21.06-.55.06-1.01V9.5c-.01-.35-.1-.61-.26-.78-.16-.17-.4-.28-.7-.34-.1-.02-.15-.08-.15-.17 0-.08.04-.15.13-.21.19-.13.48-.2.88-.2h1.54c.26 0 .46.06.6.18.14.12.21.32.21.61v2.33c0 .16.02.28.06.35.04.07.1.11.18.11.1 0 .23-.08.38-.23.15-.15.34-.39.56-.72.22-.33.45-.75.68-1.27.06-.14.16-.25.29-.33.13-.08.28-.12.45-.12h1.61c.19 0 .34.05.45.14.11.09.15.22.11.38-.19.72-.47 1.34-.84 1.87-.37.53-.74.92-1.1 1.16-.1.08-.15.16-.15.25 0 .07.04.14.11.22.18.2.4.48.65.84s.46.73.61 1.09c.1.25.15.48.15.7z"/></svg>
+      Не ответил ИИ? В чат с администратором
+    </a>
 
     <div id="ls-ai-input-area">
       <input type="text" id="ls-ai-input" placeholder="Ваш вопрос..." autocomplete="off">
@@ -288,10 +275,19 @@
       if (window.innerWidth <= 768) {
         chatBtn.style.display = isVisible ? 'flex' : 'none';
       }
-      if (!isVisible) chatInput.focus();
+      if (!isVisible) {
+          setTimeout(() => chatInput.focus(), 300);
+      }
     };
 
     chatBtn.onclick = toggleChat;
+
+    // Автопрокрутка при появлении клавиатуры
+    chatInput.addEventListener('focus', () => {
+        setTimeout(() => {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }, 300);
+    });
 
     async function sendMessage() {
       const text = chatInput.value.trim();
@@ -311,10 +307,12 @@
         });
 
         const data = await response.json();
-        document.getElementById(loadingId).remove();
-        addMessage(data.answer || 'Извините, не удалось получить ответ. Попробуйте написать нам в ВК!', 'assistant');
+        const loader = document.getElementById(loadingId);
+        if(loader) loader.remove();
+        addMessage(data.answer || 'Извините, напишите нам в ВК!', 'assistant');
       } catch (err) {
-        if(document.getElementById(loadingId)) document.getElementById(loadingId).remove();
+        const loader = document.getElementById(loadingId);
+        if(loader) loader.remove();
         addMessage('Проблемы со связью. Пожалуйста, воспользуйтесь кнопкой ВК выше.', 'assistant');
       }
     }
