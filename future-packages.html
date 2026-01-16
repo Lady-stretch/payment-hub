@@ -8,187 +8,170 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
     :root { --pink: #FFD1DC; --purple: #5D3E8E; --gold: #D4AF37; }
-    body { 
-        background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); 
-        color: #2D1B3E; margin: 0; font-family: 'Inter', sans-serif; min-height: 100vh; overflow-x: hidden;
-    }
+    
+    /* Светлый фон как на главной */
+    body { background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); color: #2D1B3E; margin: 0; font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
     header.fut-header {
       position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
       padding: 0 20px; display: flex; align-items: center; justify-content: space-between;
-      background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+      background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
       border-bottom: 1px solid rgba(93, 62, 142, 0.1); height: 75px; box-sizing: border-box;
     }
 
-    .header-center { color: var(--purple); font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-style: italic; }
+    .header-center { color: var(--purple); font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-style: italic; text-align: center; flex: 2; }
 
-    /* СЕТКА - Исправляем разную высоту */
-    .grid { 
-        display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
-        gap: 20px; max-width: 1200px; margin: 40px auto; padding: 0 20px; align-items: stretch; 
-    }
+    .nav-back { text-decoration: none; color: var(--purple); font-size: 0.7rem; text-transform: uppercase; border: 1px solid var(--purple); padding: 8px 15px; border-radius: 50px; }
 
-    .card { 
-        background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-        border: 1px solid rgba(255,255,255,0.8); padding: 25px; border-radius: 20px;
-        display: flex; flex-direction: column; justify-content: space-between; 
-        box-shadow: 0 10px 25px rgba(0,0,0,0.05); transition: 0.3s; position: relative;
-    }
-    .card.recommended { border: 2px solid var(--gold); background: rgba(255, 250, 240, 0.8); }
-    .card.recommended::before {
-        content: "РЕКОМЕНДУЕМ"; position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
-        background: var(--gold); color: #fff; padding: 2px 12px; font-size: 0.6rem; font-weight: 800; border-radius: 10px;
-    }
-
-    .price-val { font-size: 1.8rem; font-weight: 800; margin: 10px 0; color: #2D1B3E; }
+    /* СЕТКА С ВЫРАВНИВАНИЕМ */
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 1200px; margin: 40px auto; padding: 0 20px; align-items: stretch; }
     
-    .btn-pay {
-        display: block; background: var(--purple); color: #fff; text-align: center; 
-        padding: 14px; text-decoration: none; border-radius: 12px; font-weight: 700; font-size: 0.75rem; margin-top: 15px;
+    /* Стеклянные карточки */
+    .card { 
+      background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.7); padding: 30px; border-radius: 20px; 
+      display: flex; flex-direction: column; justify-content: space-between; 
+      box-shadow: 0 10px 30px rgba(0,0,0,0.03); position: relative;
     }
-    .link-loan {
-        display: block; margin-top: 10px; font-size: 0.65rem; color: var(--purple); 
-        text-align: center; font-weight: 700; text-decoration: none;
-    }
+    .card.recommended { border: 2px solid var(--gold); background: rgba(255, 250, 240, 0.6); }
+    .card.recommended::before { content: "РЕКОМЕНДУЕМ"; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #fff; padding: 3px 12px; font-size: 0.6rem; font-weight: 800; border-radius: 10px; }
+
+    .card h3 { color: var(--purple); font-family: 'Cormorant Garamond', serif; margin-top: 0; }
+    .price-big { font-size: 2.2rem; font-weight: 900; margin: 15px 0; color: #2D1B3E; }
+    
+    .btn-buy { display: block; background: var(--purple); color: #fff; text-align: center; padding: 18px; text-decoration: none; font-weight: 800; text-transform: uppercase; font-size: 0.75rem; border-radius: 10px; }
+    .link-loan { display: block; margin-top: 15px; font-size: 0.65rem; color: var(--purple); text-align: center; font-weight: 700; text-decoration: none; }
 
     /* МАГИЯ */
-    .falling-item { position: absolute; cursor: pointer; font-size: 2rem; z-index: 50; user-select: none; }
-    .pred-bubble {
-      position: absolute; background: var(--purple); color: #fff; padding: 8px 12px;
-      border-radius: 10px; font-size: 0.75rem; z-index: 100; animation: fadeUp 2.5s forwards; width: 130px; text-align: center;
-    }
-    @keyframes fadeUp {
-      0% { opacity: 0; transform: translateY(0); }
-      20% { opacity: 1; transform: translateY(-30px); }
-      100% { opacity: 0; transform: translateY(-60px); }
-    }
+    .falling-item { position: absolute; cursor: pointer; font-size: 2rem; z-index: 50; user-select: none; filter: drop-shadow(0 0 5px var(--pink)); }
+    .pred-bubble { position: absolute; background: var(--purple); color: #fff; padding: 10px 15px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; pointer-events: none; z-index: 100; animation: fadeUp 2.5s forwards; box-shadow: 0 5px 15px rgba(0,0,0,0.1); text-align: center; width: 140px; }
+    @keyframes fadeUp { 0% { opacity: 0; transform: translateY(0); } 20% { opacity: 1; transform: translateY(-30px); } 100% { opacity: 0; transform: translateY(-70px); } }
 
-    #game-stat { position: fixed; top: 90px; right: 20px; background: white; padding: 8px 15px; border-radius: 15px; font-size: 0.7rem; border: 1px solid var(--purple); z-index: 1000; }
-    
-    #bonus-modal {
-      display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-      background: var(--gold); color: #000; padding: 30px; border-radius: 20px; z-index: 2000; text-align: center; width: 85%;
-    }
+    #game-stat { position: fixed; top: 90px; right: 20px; background: #fff; padding: 8px 15px; border-radius: 15px; font-size: 0.65rem; border: 1px solid var(--purple); z-index: 1000; color: var(--purple); }
 
-    .quiz-card { background: rgba(255,255,255,0.6); backdrop-filter: blur(20px); padding: 30px; border-radius: 25px; max-width: 450px; margin: 150px auto; text-align: center; }
-    .quiz-option { display: block; width: 100%; padding: 15px; margin: 10px 0; background: #fff; border: 1px solid #eee; border-radius: 12px; cursor: pointer; text-align: left; transition: 0.3s; }
-    .quiz-option:hover { background: var(--pink); }
+    .quiz-card { background: rgba(255,255,255,0.5); backdrop-filter: blur(20px); padding: 40px 30px; border-radius: 30px; border: 1px solid #fff; max-width: 480px; width: 90%; margin: 150px auto 50px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+    .quiz-option { display: block; width: 100%; padding: 18px; margin: 12px 0; background: #fff; border: 1px solid #eee; color: #2D1B3E; border-radius: 15px; cursor: pointer; text-align: left; font-size: 0.9rem; transition: 0.3s; }
+    .quiz-option:hover { background: var(--pink); transform: translateX(5px); }
+
+    #bonus-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--gold); color: #fff; padding: 40px; border-radius: 25px; z-index: 2000; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 0 50px rgba(0,0,0,0.2); }
   </style>
 </head>
 <body>
 
   <header class="fut-header">
-    <div style="flex:1"><img src="logo_header_final.png" alt="Lady Stretch" style="height:30px;"></div>
-    <div class="header-center">Твой выбор на 2026</div>
-    <div style="flex:1; text-align:right;"><a href="index.html" style="text-decoration:none; color:var(--purple); font-weight:700; font-size:0.8rem;">← Назад</a></div>
+    <div style="flex:1"><img src="logo_header_final.png" alt="Lady Stretch" style="height:32px;"></div>
+    <div class="header-center">Сделай свой выбор!</div>
+    <div style="flex:1; text-align:right;"><a href="index.html" class="nav-back">← Назад</a></div>
   </header>
 
-  <div id="game-stat">✨ МАГИЯ: <span id="score">0</span>/20</div>
+  <div id="game-stat">МАГИЯ: <span id="score">0</span>/20</div>
 
   <div id="bonus-modal">
-    <h2>МАГИЯ 2026 СОБРАНА!</h2>
-    <div style="font-size: 1.5rem; font-weight: 900; margin: 10px 0;">ПРИЗ: +2 ЗАНЯТИЯ</div>
-    <p style="font-size: 0.8rem;">Покажите скриншот администратору!</p>
-    <button onclick="this.parentElement.style.display='none'" style="padding:10px 20px; border-radius:50px; border:none; background:#000; color:#fff; cursor:pointer;">ОТЛИЧНО</button>
+    <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2rem;">МАГИЯ 2026 СОБРАНА!</h2>
+    <div style="font-size: 1.8rem; font-weight: 900; margin-bottom: 15px;">ПРИЗ: +2 ЗАНЯТИЯ</div>
+    <p style="font-size: 0.8rem; margin-bottom: 20px;">Сделайте скриншот для администратора!</p>
+    <button onclick="closeBonus()" style="background:#000; color:#fff; padding:12px 30px; border:none; cursor:pointer; font-weight:700; border-radius:50px;">ПРОДОЛЖИТЬ</button>
   </div>
 
   <main id="quiz-view">
     <div class="quiz-card">
-      <h2 id="q-title" style="font-family: 'Cormorant Garamond', serif;">Какую цель вы ставите на 2026 год?</h2>
+      <h2 id="q-title" style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem;">Какую цель вы ставите на 2026 год?</h2>
       <div id="options-box">
-        <button class="quiz-option" onclick="handleChoice('health')">✨ Здоровая спина и осанка</button>
-        <button class="quiz-option" onclick="handleChoice('fit')">💃 Похудение и тонус</button>
-        <button class="quiz-option" onclick="handleChoice('flex')">🌸 Гибкость и шпагат</button>
+        <button class="quiz-option" onclick="handleChoice('health')">✨ Здоровая спина и красивая осанка</button>
+        <button class="quiz-option" onclick="handleChoice('fit')">💃 Похудение и тонус мышц</button>
+        <button class="quiz-option" onclick="handleChoice('flex')">🌸 Гибкость, шпагат и легкость</button>
       </div>
     </div>
   </main>
 
-  <section id="packages-view" style="display:none; padding-top: 40px;">
-    <center><div id="coach-msg" style="padding: 20px; font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--purple);"></div></center>
+  <section id="packages-view" style="display:none; padding-top: 100px;">
+    <center><div id="coach-msg" style="padding: 20px; font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: var(--purple); max-width: 700px;"></div></center>
     <div class="grid">
-      
       <div class="card" id="c-64">
-        <div><h3>64 занятия</h3><p style="font-size:0.7rem; color:#666;">Максимальный курс преображения</p></div>
+        <div><h3>64 занятия</h3><div class="price-big">38 080 ₽</div></div>
         <div>
-            <div class="price-val">38 080 ₽</div>
-            <a href="https://checkout.tochka.com/b880ee38-1c68-4215-85e8-1ca8081ec51a" class="btn-pay">КУПИТЬ</a>
-            <a href="https://ecom.otpbank.ru/smart-form?config=20f5d944-cf78-4d48-99b7-b7c791aff1ba" class="link-loan">РАССРОЧКА 12 МЕС.</a>
+          <a href="https://checkout.tochka.com/b880ee38-1c68-4215-85e8-1ca8081ec51a" class="btn-buy">Купить абонемент</a>
+          <a href="https://ecom.otpbank.ru/smart-form?config=20f5d944-cf78-4d48-99b7-b7c791aff1ba" class="link-loan">РАССРОЧКА 0% НА 12 МЕС.</a>
         </div>
       </div>
-
       <div class="card" id="c-32">
-        <div><h3>32 занятия</h3><p style="font-size:0.7rem; color:#666;">Золотой стандарт тренировок</p></div>
+        <div><h3>32 занятия</h3><div class="price-big">20 160 ₽</div></div>
         <div>
-            <div class="price-val">20 160 ₽</div>
-            <a href="https://checkout.tochka.com/b880ee38-1c68-4215-85e8-1ca8081ec51a" class="btn-pay">КУПИТЬ</a>
-            <a href="https://ecom.otpbank.ru/smart-form?config=0d5d1d9f-2491-464b-b356-bea9d09bc09e" class="link-loan">РАССРОЧКА 6 МЕС.</a>
+          <a href="https://checkout.tochka.com/b880ee38-1c68-4215-85e8-1ca8081ec51a" class="btn-buy">Купить абонемент</a>
+          <a href="https://ecom.otpbank.ru/smart-form?config=0d5d1d9f-2491-464b-b356-bea9d09bc09e" class="link-loan">РАССРОЧКА 0% НА 6 МЕС.</a>
         </div>
       </div>
-
       <div class="card" id="c-16">
-        <div><h3>16 занятий</h3><p style="font-size:0.7rem; color:#666;">Для мягкого старта</p></div>
-        <div>
-            <div class="price-val">10 640 ₽</div>
-            <a href="https://checkout.tochka.com/b880ee38-1c68-4215-85e8-1ca8081ec51a" class="btn-pay">КУПИТЬ</a>
-        </div>
+        <div><h3>16 занятий</h3><div class="price-big">10 640 ₽</div></div>
+        <a href="https://checkout.tochka.com/b880ee38-1c68-4215-85e8-1ca8081ec51a" class="btn-buy">Купить абонемент</a>
       </div>
-
-      <div class="card" id="c-unlim" style="background: rgba(93, 62, 142, 0.08); border: 2px solid var(--purple);">
-        <div><h3>БЕЗЛИМИТ</h3><p style="font-size:0.7rem; color:#666;">Любые направления без ограничений</p></div>
-        <div>
-            <div class="price-val">8 000 ₽</div>
-            <a href="https://clck.ru/3RDNsC" class="btn-pay" style="background:#2D1B3E;">ВЗЯТЬ БЕЗЛИМИТ</a>
-        </div>
+      <div class="card" id="c-unlimit" style="background: rgba(93, 62, 142, 0.05); border: 1px solid var(--purple);">
+        <div><h3>БЕЗЛИМИТ</h3><div class="price-big">8 000 ₽</div><p style="font-size:0.7rem;">Целый месяц тренировок!</p></div>
+        <a href="https://clck.ru/3RDNsC" class="btn-buy" style="background:#2D1B3E;">Забронировать</a>
       </div>
-
       <div class="card" id="c-online">
-        <div><h3>Lady Online</h3><p style="font-size:0.7rem; color:#666;">Тренировки в закрытом ТГ-канале</p></div>
-        <div>
-            <div class="price-val">999 ₽ <span style="font-size:0.8rem;">/мес</span></div>
-            <a href="https://t.me/fitness11_online_bot" class="btn-pay" style="background:#0088cc;">ВСТУПИТЬ</a>
-        </div>
+        <div><h3>Lady Online</h3><div class="price-big">999 ₽</div><p style="font-size:0.75rem; opacity:0.7;">Тренировки в закрытом ТГ-канале.</p></div>
+        <a href="https://t.me/fitness11_online_bot" class="btn-buy" style="background:#0088cc;">Вступить</a>
       </div>
-
     </div>
   </section>
 
   <script>
     let score = parseInt(localStorage.getItem('magic_score_2026')) || 0;
-    const predictions = ["2026 — год твоей легкости!", "Твое тело скажет спасибо.", "Шпагат станет реальностью!", "Время сиять!", "Твоя энергия на пике!", "Гибкость — твоя суперсила."];
+    let quizDone = localStorage.getItem('quiz_done_2026') === 'true';
+    let tempGoal = "";
+    const predictions = ["2026 — год твоей легкости!", "Твое тело скажет спасибо.", "Шпагат станет реальностью!", "Время вдохновлять.", "Твоя энергия на пике!", "Гибкость — твоя суперсила."];
+    
     document.getElementById('score').innerText = score;
+    if(quizDone) showFinal(localStorage.getItem('last_rec_2026'));
 
     function spawn() {
       if(score >= 20) return;
       const el = document.createElement('div');
       el.className = 'falling-item';
-      el.innerText = ['✨','🌸','💎','💃'][Math.floor(Math.random()*4)];
-      el.style.left = Math.random()*90+'%';
-      el.style.top = '75px';
+      el.innerText = ['✨','🐍','🌸','💎'][Math.floor(Math.random()*4)];
+      el.style.left = Math.random()*90+'%'; el.style.top = '75px';
       document.body.appendChild(el);
-      el.animate([{top: '75px'}, {top: '100vh'}], {duration: 8000}).onfinish = () => el.remove();
+      el.animate([{top: '75px'}, {top: '100vh'}], {duration: 9000}).onfinish = () => el.remove();
       el.onclick = (e) => {
         score++; localStorage.setItem('magic_score_2026', score);
         document.getElementById('score').innerText = score;
-        const b = document.createElement('div');
-        b.className = 'pred-bubble';
+        const b = document.createElement('div'); b.className = 'pred-bubble';
         b.innerText = predictions[Math.floor(Math.random()*predictions.length)];
-        b.style.left = (e.pageX - 60) + 'px'; b.style.top = (e.pageY - 40) + 'px';
-        document.body.appendChild(b);
-        setTimeout(() => b.remove(), 2500);
+        b.style.left = (e.pageX - 70) + 'px'; b.style.top = (e.pageY - 50) + 'px';
+        document.body.appendChild(b); setTimeout(() => b.remove(), 2500);
         el.remove();
         if(score === 20) document.getElementById('bonus-modal').style.display = 'block';
       };
     }
     setInterval(spawn, 3000);
+    function closeBonus() { document.getElementById('bonus-modal').style.display = 'none'; }
 
     function handleChoice(val) {
+      const box = document.getElementById('options-box');
+      const title = document.getElementById('q-title');
+      if(!tempGoal) {
+        tempGoal = val; title.innerText = "Формат тренировок?";
+        box.innerHTML = `<button class="quiz-option" onclick="handleChoice('studio')">🏢 В студии</button><button class="quiz-option" onclick="handleChoice('online')">⏳ Дома (Online)</button><button class="quiz-option" onclick="handleChoice('hybrid')">🏠 Гибрид</button>`;
+      } else {
+        localStorage.setItem('quiz_done_2026', 'true');
+        localStorage.setItem('last_rec_2026', val);
+        showFinal(val);
+      }
+    }
+
+    function showFinal(type) {
       document.getElementById('quiz-view').style.display = 'none';
       document.getElementById('packages-view').style.display = 'block';
       const msg = document.getElementById('coach-msg');
-      msg.innerHTML = "Ваша рекомендация на 2026 год:";
-      if(val === 'health') document.getElementById('c-32').classList.add('recommended');
+      let recName = type === 'online' ? "LADY STRETCH ONLINE" : (type === 'hybrid' ? "32 ЗАНЯТИЯ" : "64 ЗАНЯТИЯ");
+      if(type === 'online') document.getElementById('c-online').classList.add('recommended');
+      else if(type === 'hybrid') document.getElementById('c-32').classList.add('recommended');
       else document.getElementById('c-64').classList.add('recommended');
+      msg.innerHTML = `Ваша рекомендация: <br><strong>${recName}</strong><br><button onclick="resetQuiz()" style="background:none; border:none; color:rgba(0,0,0,0.4); text-decoration:underline; cursor:pointer;">Сначала</button>`;
+      window.scrollTo(0,0);
     }
+    function resetQuiz() { localStorage.removeItem('quiz_done_2026'); location.reload(); }
   </script>
 </body>
 </html>
