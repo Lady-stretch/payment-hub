@@ -28,21 +28,27 @@
     body::before { background: var(--accent-pink); top: 5%; right: -150px; }
     body::after { background: var(--main-purple); bottom: 5%; left: -150px; }
 
-    /* ОБНОВЛЕННЫЙ ХЕДЕР */
+    /* ХЕДЕР С ИСПРАВЛЕННЫМИ ОТСТУПАМИ */
     header {
-      position: fixed; top: 0; width: 100%; z-index: 1000; padding: 15px 40px;
+      position: fixed; top: 0; width: 100%; z-index: 1000; padding: 15px 25px;
       display: flex; justify-content: space-between; align-items: center;
       background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(15px);
       border-bottom: 1px solid var(--accent-pink);
+      box-sizing: border-box;
     }
     .logo-img { height: 28px; }
     .header-slogan { 
       font-family: 'Cormorant Garamond', serif; 
       font-style: italic; font-size: 0.9rem; opacity: 0.5; letter-spacing: 1px;
+      position: absolute; left: 50%; transform: translateX(-50%);
     }
-    .nav-back { text-decoration: none; color: var(--main-purple); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+    .nav-back { 
+      text-decoration: none; color: var(--main-purple); font-size: 0.7rem; 
+      font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+      white-space: nowrap;
+    }
 
-    .wrapper { padding: 140px 20px 60px; display: flex; justify-content: center; }
+    .wrapper { padding: 120px 20px 60px; display: flex; justify-content: center; }
     .test-container { 
       max-width: 650px; width: 100%; padding: 40px; 
       background: var(--glass); border: 1px solid rgba(255,255,255,0.8);
@@ -54,15 +60,15 @@
     .subtitle { text-align: center; font-size: 0.8rem; opacity: 0.6; margin-bottom: 30px; letter-spacing: 1px; }
 
     .progress-bar { height: 4px; background: #eee; border-radius: 10px; margin: 20px 0 40px; overflow: hidden; }
-    .progress-fill { height: 100%; background: var(--main-purple); width: 10%; transition: 0.5s; }
+    .progress-fill { height: 100%; background: var(--main-purple); width: 20%; transition: 0.5s; }
 
     .question-card { display: none; animation: fadeIn 0.5s ease; }
     .question-card.active { display: block; }
 
     .option {
-      padding: 20px; background: rgba(255,255,255,0.5); border: 1px solid #eee;
+      padding: 18px; background: rgba(255,255,255,0.5); border: 1px solid #eee;
       border-radius: 15px; margin-bottom: 12px; cursor: pointer; transition: 0.3s;
-      font-size: 0.95rem;
+      font-size: 0.9rem; line-height: 1.4;
     }
     .option:hover { border-color: var(--main-purple); transform: translateX(5px); background: #fff; }
     .option.selected { background: var(--main-purple); color: white; }
@@ -83,9 +89,9 @@
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
     @media (max-width: 768px) {
-      header { padding: 15px 20px; }
       .header-slogan { display: none; }
-      .test-container { padding: 25px; }
+      .test-container { padding: 25px; border-radius: 30px; }
+      h2 { font-size: 1.8rem; }
     }
   </style>
 </head>
@@ -93,7 +99,7 @@
 
   <header>
     <img src="logo_header_final.png" alt="Lady Stretch" class="logo-img">
-    <div class="header-slogan">Инвестиция в ваше здоровье</div>
+    <div class="header-slogan">Ваш путь к легкости</div>
     <a href="index.html" class="nav-back">← На главную</a>
   </header>
 
@@ -102,23 +108,45 @@
       
       <div id="test-content">
         <h2>Диагностика</h2>
-        <p class="subtitle">Узнайте вектор вашего развития</p>
+        <p class="subtitle">Ответьте на 5 вопросов, чтобы увидеть свой прогноз</p>
         <div class="progress-bar"><div class="progress-fill" id="p-fill"></div></div>
 
         <div id="questions-wrapper">
           <div class="question-card active" data-q="1">
-            <h3>1. Что ваше тело чувствует прямо сейчас?</h3>
-            <div class="option" onclick="pick('spine', this)">Часто ноет спина или шея</div>
-            <div class="option" onclick="pick('relax', this)">Постоянный стресс и зажатость</div>
-            <div class="option" onclick="pick('power', this)">Не хватает тонуса и энергии</div>
-            <div class="option" onclick="pick('expert', this)">Чувствую себя отлично, я в форме!</div>
+            <h3>1. Что ваше тело чувствует чаще всего?</h3>
+            <div class="option" onclick="pick('spine', this)">Напряжение в пояснице или шее</div>
+            <div class="option" onclick="pick('relax', this)">Общую скованность, как будто я «застыла»</div>
+            <div class="option" onclick="pick('power', this)">Нехватку сил и тонуса в мышцах</div>
+            <div class="option" onclick="pick('expert', this)">Я в отличной форме и полна энергии</div>
           </div>
 
           <div class="question-card" data-q="2">
-            <h3>2. Ваше отношение к регулярным нагрузкам?</h3>
-            <div class="option" onclick="pick('spine', this)">Хочу начать, но боюсь сорваться</div>
-            <div class="option" onclick="pick('expert', this)">Занимаюсь постоянно, это мой лайфстайл</div>
-            <div class="option" onclick="pick('relax', this)">Двигаюсь мало, тяжело заставить себя</div>
+            <h3>2. Как вы оцениваете свой уровень энергии утром?</h3>
+            <div class="option" onclick="pick('relax', this)">Тяжело встаю, чувствую себя разбитой</div>
+            <div class="option" onclick="pick('spine', this)">Средне, часто болит спина после сна</div>
+            <div class="option" onclick="pick('expert', this)">Бодро, готова к активному дню</div>
+          </div>
+
+          <div class="question-card" data-q="3">
+            <h3>3. Сколько времени вы проводите в статичном положении?</h3>
+            <div class="option" onclick="pick('spine', this)">Почти весь день (сидячая работа/авто)</div>
+            <div class="option" onclick="pick('relax', this)">Двигаюсь мало, но много нервничаю</div>
+            <div class="option" onclick="pick('expert', this)">Стараюсь много ходить и тренироваться</div>
+          </div>
+
+          <div class="question-card" data-q="4">
+            <h3>4. Насколько легко вам даются простые движения (например, завязать шнурки)?</h3>
+            <div class="option" onclick="pick('spine', this)">Чувствую дискомфорт и натяжение в спине</div>
+            <div class="option" onclick="pick('relax', this)">Тело кажется «деревянным»</div>
+            <div class="option" onclick="pick('expert', this)">Легко, тело очень пластичное</div>
+          </div>
+
+          <div class="question-card" data-q="5">
+            <h3>5. Какая цель для вас сейчас приоритетнее?</h3>
+            <div class="option" onclick="pick('spine', this)">Жизнь без боли и свобода движений</div>
+            <div class="option" onclick="pick('power', this)">Красивое, подтянутое и упругое тело</div>
+            <div class="option" onclick="pick('relax', this)">Внутреннее спокойствие и глубокий релакс</div>
+            <div class="option" onclick="pick('expert', this)">Поддерживать форму и развиваться дальше</div>
           </div>
         </div>
       </div>
@@ -127,19 +155,19 @@
         <h2 id="res-header">Прогноз готов</h2>
         <p id="recommendation-text" style="font-weight: 600; color: var(--main-purple); margin-bottom: 30px;"></p>
 
-        <div class="timeline-box" id="timeline-plus">
+        <div class="timeline-box">
           <h4 style="text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; color: #2ecc71;">Положительный сценарий:</h4>
           <div class="timeline-item" id="t-plus-1"></div>
           <div class="timeline-item" id="t-plus-2"></div>
         </div>
 
-        <div class="timeline-box" id="timeline-minus">
+        <div class="timeline-box">
           <h4 style="text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; color: #cc0000;">Если оставить всё как есть:</h4>
           <div class="timeline-item negative" id="t-minus-1"></div>
           <div class="timeline-item negative" id="t-minus-2"></div>
         </div>
 
-        <a href="https://vk.me/public221142875" class="btn-action">Начать инвестицию в себя</a>
+        <a href="prices.html" class="btn-action">Выбрать свой абонемент</a>
       </div>
 
     </div>
@@ -156,11 +184,11 @@
       el.classList.add('selected');
 
       setTimeout(() => {
-        if (currentQ < 2) {
+        if (currentQ < 5) {
           document.querySelector(`[data-q="${currentQ}"]`).classList.remove('active');
           currentQ++;
           document.querySelector(`[data-q="${currentQ}"]`).classList.add('active');
-          document.getElementById('p-fill').style.width = '100%';
+          document.getElementById('p-fill').style.width = (currentQ * 20) + '%';
         } else {
           showResults();
         }
@@ -172,29 +200,26 @@
       document.getElementById('result-card').style.display = 'block';
 
       let top = Object.keys(counts).reduce((a, b) => counts[a] > counts[b] ? a : b);
-      
-      let rec = "";
-      let tp1 = "", tp2 = "", tm1 = "", tm2 = "";
+      let rec = "", tp1 = "", tp2 = "", tm1 = "", tm2 = "";
 
       if(top === 'expert') {
-        rec = "Вы — настоящий пример для подражания! Чтобы поддерживать этот уровень без травм, вам нужны техники восстановления.";
-        tp1 = "<b>Через 6 месяцев:</b> Вы сохраните идеальный тонус, пока другие тратят время на лечение спины.";
-        tp2 = "<b>Через год:</b> Ваше тело станет эталоном биологического долголетия. Вы вдохновляете близких.";
-        tm1 = "<b>Через год без тренировок:</b> Накопленная форма начнет «сдуваться», суставы потеряют былую смазку.";
-        tm2 = "<b>Через 3 года:</b> Старые спортивные травмы могут обостриться из-за отсутствия поддержки мышечного корсета.";
+        rec = "Вы в прекрасной форме! Для вас фитнес — это способ сохранить этот бесценный ресурс на десятилетия.";
+        tp1 = "<b>Через 6 месяцев:</b> Ваше тело станет еще более выносливым, а суставы — защищенными от возрастных изменений.";
+        tp2 = "<b>Через 3 года:</b> Вы будете выглядеть и чувствовать себя на 10-15 лет моложе сверстников.";
+        tm1 = "<b>Через год без действий:</b> Мышечный тонус начнет постепенно снижаться, появится первая бытовая усталость.";
+        tm2 = "<b>Через 3 года:</b> Тело начнет «забывать» свою легкость, появятся первые зажимы в теле, которых раньше не было.";
       } else if(top === 'spine') {
-        rec = "Вашему телу нужна поддержка. Осевая нагрузка на позвоночник — ваша главная точка внимания.";
-        tp1 = "<b>Через 1 месяц:</b> Пройдут утренние боли в шее, исчезнет чувство «песка» в суставах.";
-        tp2 = "<b>Через год:</b> Королевская осанка станет вашей естественной привычкой.";
-        tm1 = "<b>Через год:</b> Боли станут хроническими, возможны протрузии из-за постоянных зажимов.";
-        tm2 = "<b>Через 3 года:</b> Значительное снижение мобильности и постоянная зависимость от аптек.";
+        rec = "Вашему позвоночнику нужна бережная поддержка. Сейчас — лучшее время, чтобы не дать зажимам стать хроническими.";
+        tp1 = "<b>Через 1 месяц:</b> Вы почувствуете легкость в плечах и шее, уйдут вечерние «ноющие» боли.";
+        tp2 = "<b>Через год:</b> Правильная осанка станет вашей естественной чертой, добавятся сантиметры к росту за счет вытяжения.";
+        tm1 = "<b>Через год:</b> Дискомфорт в спине станет постоянным спутником, ограничивая вашу активность.";
+        tm2 = "<b>Через 3 года:</b> Риск серьезных изменений осанки, которые потребуют долгого и дорогого восстановления.";
       } else {
-        // Обобщенный вариант для релакса и тонуса
-        rec = "Ваше тело просит перезагрузки. Инвестиция в мягкий фитнес сейчас сэкономит вам годы здоровья в будущем.";
-        tp1 = "<b>Через 3 месяца:</b> Уровень стресса снизится, появится энергия на личные дела и карьеру.";
-        tp2 = "<b>Через год:</b> Вы не узнаете себя в зеркале — подтянутое, живое и легкое тело.";
-        tm1 = "<b>Через год:</b> Синдром хронической усталости и потеря мышечного тонуса.";
-        tm2 = "<b>Через 3 года:</b> Психосоматические боли и преждевременное старение тканей.";
+        rec = "Ваше тело подает сигналы о нехватке ресурса. Инвестиция в движение вернет вам вкус к жизни.";
+        tp1 = "<b>Через 3 месяца:</b> Вы забудете об отеках и апатии. Тело станет упругим, а сон — глубоким.";
+        tp2 = "<b>Через год:</b> Вы обретете полную уверенность в своей привлекательности и неиссякаемый запас энергии.";
+        tm1 = "<b>Через год:</b> Ощущение тяжести в теле станет нормой, гибкость снизится еще на 20-30%.";
+        tm2 = "<b>Через 3 года:</b> Постоянная скованность движений и быстрая утомляемость даже от простых прогулок.";
       }
 
       document.getElementById('recommendation-text').innerText = rec;
