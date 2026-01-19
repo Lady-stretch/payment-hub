@@ -38,7 +38,7 @@
       position: relative;
     }
 
-    /* ФОНОВЫЕ ПЯТНА ДЛЯ ЭФФЕКТА СТЕКЛА */
+    /* ФОНОВЫЕ ПЯТНА */
     body::before, body::after {
       content: ""; position: fixed; width: 500px; height: 500px; border-radius: 50%;
       z-index: -1; filter: blur(90px); opacity: 0.35; pointer-events: none;
@@ -53,21 +53,13 @@
       -webkit-backdrop-filter: blur(15px); border-bottom: 1px solid var(--light-pink);
     }
     .logo img { height: 32px; }
-    .nav-link { 
-      text-decoration: none; color: var(--main-purple); font-size: 0.75rem; 
-      letter-spacing: 2px; text-transform: uppercase; font-weight: 700;
-    }
+    .nav-link { text-decoration: none; color: var(--main-purple); font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; }
 
     .hero-mini { padding: 160px 20px 40px; text-align: center; }
-    .hero-mini h1 { 
-      font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 8vw, 4rem); 
-      text-transform: uppercase; color: var(--main-purple); font-weight: 400; letter-spacing: 4px;
-    }
+    .hero-mini h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 8vw, 4rem); text-transform: uppercase; color: var(--main-purple); font-weight: 400; letter-spacing: 4px; }
 
     .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
-    .directions-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px;
-    }
+    .directions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
 
     /* КАРТОЧКА СТЕКЛО */
     .card {
@@ -81,65 +73,47 @@
       animation: floating 6s ease-in-out infinite;
       display: flex; flex-direction: column;
     }
-    .card:hover {
-      transform: translateY(-12px);
-      background: rgba(255, 255, 255, 0.75);
-      box-shadow: 0 25px 50px rgba(255, 209, 220, 0.7);
-    }
+    .card:hover { transform: translateY(-12px); background: rgba(255, 255, 255, 0.75); box-shadow: 0 25px 50px rgba(255, 209, 220, 0.7); }
 
-    .card-icon svg {
-      width: 60px; height: 60px; margin-bottom: 25px;
-      stroke: var(--main-purple); stroke-width: 1.2; fill: none;
-      transition: 0.4s;
-    }
+    .card-icon svg { width: 60px; height: 60px; margin-bottom: 25px; stroke: var(--main-purple); stroke-width: 1.2; fill: none; transition: 0.4s; }
     .card:hover .card-icon svg { stroke: var(--accent-pink); }
 
-    .card h3 { 
-      font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; 
-      text-transform: uppercase; margin-bottom: 15px; color: var(--main-purple);
-    }
+    .card h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; text-transform: uppercase; margin-bottom: 15px; color: var(--main-purple); }
     .card p { font-size: 0.9rem; margin-bottom: 20px; opacity: 0.85; line-height: 1.5; }
 
     .benefits { list-style: none; text-align: left; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 25px; margin-top: auto;}
     .benefits li { font-size: 0.8rem; margin-bottom: 10px; padding-left: 25px; position: relative; color: #5a4b6e;}
     .benefits li::before { content: "✦"; position: absolute; left: 0; color: var(--accent-pink); }
 
-    /* КНОПКА С ПУЛЬСИРУЮЩИМ СВЕЧЕНИЕМ */
-    .quote-box {
-      background: linear-gradient(135deg, #5d3e8e 0%, #462d6b 100%);
-      color: #fff; padding: 80px 40px;
-      border-radius: 50px; margin: 100px 0; text-align: center;
-    }
+    /* ТАЙМЛАЙН ПЕРВОЙ ТРЕНИРОВКИ */
+    .timeline-section { margin: 100px 0; text-align: center; }
+    .timeline-section h2 { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; text-transform: uppercase; color: var(--main-purple); margin-bottom: 60px; }
+    .timeline-container { display: flex; justify-content: space-between; position: relative; max-width: 1000px; margin: 0 auto; gap: 20px; }
+    .timeline-container::before { content: ""; position: absolute; top: 45px; left: 10%; right: 10%; height: 1px; background: linear-gradient(90deg, transparent, var(--accent-pink), transparent); z-index: 0; }
+    .timeline-step { flex: 1; position: relative; z-index: 1; }
+    .step-number { width: 90px; height: 90px; background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid var(--glass-border); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--main-purple); box-shadow: var(--magic-glow); transition: 0.5s; }
+    .timeline-step:hover .step-number { transform: scale(1.1); border-color: var(--accent-pink); color: var(--accent-pink); box-shadow: 0 0 30px rgba(255, 209, 220, 0.6); }
+    .step-title { font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; color: var(--main-purple); }
+    .step-desc { font-size: 0.8rem; opacity: 0.7; padding: 0 10px; line-height: 1.4; }
 
-    .btn {
-      display: inline-block; padding: 22px 50px; background: #fff;
-      color: var(--main-purple); text-decoration: none; border-radius: 60px;
-      font-weight: 800; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 3px;
-      transition: all 0.4s ease;
-      position: relative;
-      /* Начальное свечение */
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.3), 0 10px 30px rgba(255, 209, 220, 0.4);
-      animation: glowingPulse 3s infinite;
-    }
+    /* ФУТЕР БЛОК С КНОПКОЙ */
+    .quote-box { background: linear-gradient(135deg, #5d3e8e 0%, #462d6b 100%); color: #fff; padding: 100px 40px; border-radius: 50px; margin: 100px 0; text-align: center; transition: all 0.8s ease; }
+    .quote-box:has(.btn:hover) { background: linear-gradient(135deg, #7452ad 0%, #5d3e8e 100%); }
+    .quote-box h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 5vw, 2.8rem); text-transform: uppercase; margin-bottom: 60px; letter-spacing: 2px; }
 
-    .btn:hover {
-      transform: scale(1.05);
-      background: var(--accent-pink);
-      box-shadow: 0 0 30px rgba(255, 209, 220, 1), 0 0 60px rgba(255, 209, 220, 0.5);
-    }
+    .btn { display: inline-block; padding: 22px 60px; background: #fff; color: var(--main-purple); text-decoration: none; border-radius: 60px; font-weight: 800; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 3px; transition: all 0.4s ease; position: relative; box-shadow: 0 0 15px rgba(255, 209, 220, 0.3); animation: glowingPulse 4s infinite ease-in-out; }
+    .btn:hover { transform: translateY(-5px) scale(1.03); background: var(--accent-pink); box-shadow: 0 0 30px rgba(255, 209, 220, 1), 0 0 60px rgba(255, 209, 220, 0.5); }
 
-    @keyframes glowingPulse {
-      0% { box-shadow: 0 0 10px rgba(255, 209, 220, 0.4); }
-      50% { box-shadow: 0 0 35px rgba(255, 209, 220, 0.9), 0 0 15px rgba(255, 255, 255, 0.5); }
-      100% { box-shadow: 0 0 10px rgba(255, 209, 220, 0.4); }
-    }
+    @keyframes glowingPulse { 0%, 100% { box-shadow: 0 0 10px rgba(255, 209, 220, 0.4); } 50% { box-shadow: 0 0 35px rgba(255, 209, 220, 0.9), 0 0 15px rgba(255, 255, 255, 0.5); } }
+    @keyframes floating { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
-    @keyframes floating {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-15px); }
+    @media (max-width: 768px) { 
+        .hero-mini h1 { font-size: 2.8rem; } 
+        .directions-grid { grid-template-columns: 1fr; } 
+        .timeline-container { flex-direction: column; gap: 50px; }
+        .timeline-container::before { display: none; }
+        .quote-box { padding: 60px 20px; }
     }
-
-    @media (max-width: 768px) { .hero-mini h1 { font-size: 2.8rem; } .directions-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -155,128 +129,134 @@
 
   <div class="container">
     <div class="directions-grid">
-      
       <div class="card">
-        <div class="card-icon">
-          <svg viewBox="0 0 24 24"><path d="M12 3v18M18 9l-6-6-6 6M18 15l-6 6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
+        <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M12 3v18M18 9l-6-6-6 6M18 15l-6 6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <h3>Подкачка с растяжкой</h3>
         <p>Идеальный баланс силы и гибкости: укрепляем рельеф и сразу расслабляем мышцы.</p>
         <ul class="benefits">
           <li>Формирует подтянутое тело</li>
           <li>Устраняет мышечные зажимы</li>
-          <li>Двойной эффект за одну тренировку</li>
+          <li>Двойной эффект</li>
         </ul>
       </div>
 
       <div class="card">
-        <div class="card-icon">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18" opacity="0.3"/><path d="M12 7l5 5-5 5" stroke-linecap="round"/></svg>
-        </div>
+        <div class="card-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18" opacity="0.3"/><path d="M12 7l5 5-5 5" stroke-linecap="round"/></svg></div>
         <h3>Круговая тренировка</h3>
         <p>Интенсивный формат для тех, кто хочет максимум результата в жиросжигании.</p>
         <ul class="benefits">
           <li>Ускоряет метаболизм</li>
           <li>Высокий расход калорий</li>
-          <li>Проработка всех групп мышц</li>
+          <li>Тонус всех мышц</li>
         </ul>
       </div>
 
       <div class="card">
-        <div class="card-icon">
-          <svg viewBox="0 0 24 24"><path d="M12 21c4.5-5 4.5-9 4.5-9s0-4-4.5-4-4.5 4-4.5 4 0 4 4.5 9z"/><path d="M7 14s-2-1-2-4 2-4 2-4M17 14s2-1 2-4-2-4-2-4" opacity="0.5"/></svg>
-        </div>
+        <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M12 21c4.5-5 4.5-9 4.5-9s0-4-4.5-4-4.5 4-4.5 4 0 4 4.5 9z"/><path d="M7 14s-2-1-2-4 2-4 2-4M17 14s2-1 2-4-2-4-2-4" opacity="0.5"/></svg></div>
         <h3>Йога Релакс</h3>
         <p>Погружение в спокойствие: мягкие асаны и дыхание для полного восстановления.</p>
         <ul class="benefits">
-          <li>Снижает уровень стресса</li>
-          <li>Улучшает качество сна</li>
-          <li>Глубокое расслабление ума</li>
+          <li>Снижает стресс</li>
+          <li>Улучшает сон</li>
+          <li>Глубокое расслабление</li>
         </ul>
       </div>
 
       <div class="card">
-        <div class="card-icon">
-          <svg viewBox="0 0 24 24"><path d="M3 12h18M12 3v18" stroke-linecap="round"/></svg>
-        </div>
+        <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M3 12h18M12 3v18" stroke-linecap="round"/></svg></div>
         <h3>Стретчинг</h3>
         <p>Классическая растяжка для улучшения эластичности мышц и подвижности суставов.</p>
         <ul class="benefits">
           <li>Развивает гибкость</li>
-          <li>Улучшает кровообращение</li>
-          <li>Снимает физическую усталость</li>
+          <li>Легкость в теле</li>
+          <li>Снятие усталости</li>
         </ul>
       </div>
 
       <div class="card">
-        <div class="card-icon">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg>
-        </div>
+        <div class="card-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg></div>
         <h3>Табата</h3>
         <p>Высокоинтервальный тренинг: 20 секунд работы, 10 секунд отдыха для жиросжигания.</p>
         <ul class="benefits">
           <li>Быстрый результат</li>
-          <li>Повышает выносливость</li>
-          <li>Работает после тренировки</li>
+          <li>Рост выносливости</li>
+          <li>Эффект после тренировки</li>
         </ul>
       </div>
 
       <div class="card">
-        <div class="card-icon">
-          <svg viewBox="0 0 24 24"><path d="M4 8c0 4 8 12 8 12s8-8 8-12M12 4v4" stroke-linecap="round"/></svg>
-        </div>
+        <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M4 8c0 4 8 12 8 12s8-8 8-12M12 4v4" stroke-linecap="round"/></svg></div>
         <h3>Sky Stretching</h3>
         <p>Уникальные занятия в гамаках: вытяжение под собственным весом без нагрузки.</p>
         <ul class="benefits">
-          <li>Разгрузка позвоночника</li>
+          <li>Разгрузка спины</li>
           <li>Новые ощущения</li>
-          <li>Улучшение координации</li>
+          <li>Координация</li>
         </ul>
       </div>
 
       <div class="card">
-        <div class="card-icon">
-          <svg viewBox="0 0 24 24"><path d="M12 2v20M9 7h6M8 12h8M9 17h6" stroke-linecap="round"/></svg>
-        </div>
+        <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M12 2v20M9 7h6M8 12h8M9 17h6" stroke-linecap="round"/></svg></div>
         <h3>Здоровая спина</h3>
-        <p>Профилактика и устранение болей в спине, формирование правильной осанки.</p>
+        <p>Профилактика болей в спине и формирование правильной королевской осанки.</p>
         <ul class="benefits">
-          <li>Укрепляет мышечный корсет</li>
-          <li>Снимает напряжение в шее</li>
+          <li>Укрепление корсета</li>
+          <li>Снятие напряжения</li>
           <li>Красивая походка</li>
         </ul>
       </div>
 
       <div class="card">
-        <div class="card-icon">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="9" opacity="0.3"/></svg>
-        </div>
+        <div class="card-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="9" opacity="0.3"/></svg></div>
         <h3>МФР</h3>
         <p>Миофасциальный релиз: работа с роллами для расслабления фасций и мышц.</p>
         <ul class="benefits">
-          <li>Устраняет отеки</li>
-          <li>Улучшает регенерацию</li>
-          <li>Снимает зажимы</li>
+          <li>Устранение отеков</li>
+          <li>Регенерация тканей</li>
+          <li>Снятие зажимов</li>
         </ul>
       </div>
 
       <div class="card">
-        <div class="card-icon">
-          <svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
+        <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round"/></svg></div>
         <h3>Ягодицы и Пресс</h3>
         <p>Акцент на самые популярные зоны: создание рельефа и укрепление тонуса.</p>
         <ul class="benefits">
           <li>Подтянутые формы</li>
           <li>Плоский живот</li>
-          <li>Интенсивная проработка</li>
+          <li>Интенсивная работа</li>
         </ul>
       </div>
-
     </div>
 
+    <section class="timeline-section">
+      <h2>Твой первый раз в Lady Stretch</h2>
+      <div class="timeline-container">
+        <div class="timeline-step">
+          <div class="step-number">01</div>
+          <div class="step-title">Мягкая встреча</div>
+          <p class="step-desc">Администратор встретит тебя, покажет студию и поможет освоиться.</p>
+        </div>
+        <div class="timeline-step">
+          <div class="step-number">02</div>
+          <div class="step-title">Знакомство</div>
+          <p class="step-desc">Тренер узнает о твоих целях и подберет нагрузку под твой уровень.</p>
+        </div>
+        <div class="timeline-step">
+          <div class="step-number">03</div>
+          <div class="step-title">Тренировка</div>
+          <p class="step-desc">60 минут, где всё внимание направлено только на твои ощущения.</p>
+        </div>
+        <div class="timeline-step">
+          <div class="step-number">04</div>
+          <div class="step-title">Послевкусие</div>
+          <p class="step-desc">Приятная легкость в теле, заряд энергии и горячий чай в зоне отдыха.</p>
+        </div>
+      </div>
+    </section>
+
     <div class="quote-box">
-      <h2>Фитнес — это инвестиция в ваше здоровье</h2>
+      <h2>Фитнес — это самая выгодная <br> инвестиция в ваше здоровье</h2>
       <a href="https://vk.me/public221142875" class="btn">Записаться на занятие</a>
     </div>
   </div>
