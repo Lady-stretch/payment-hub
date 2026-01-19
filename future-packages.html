@@ -263,7 +263,7 @@
       if(score >= 20) return;
       const el = document.createElement('div');
       el.className = 'falling-item';
-      el.innerText = ['✨','🐍','🌸','💎'][Math.floor(Math.random()*4)];
+      el.innerText = ['✨','🐎','🌸','💎'][Math.floor(Math.random()*4)];
       el.style.left = Math.random()*90+'%'; el.style.top = '70px';
       document.body.appendChild(el);
       el.animate([{top: '70px'}, {top: '100vh'}], {duration: 9000}).onfinish = () => el.remove();
