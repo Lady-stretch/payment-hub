@@ -38,7 +38,9 @@
         --text: #2D1B3E; 
         --main-purple: #5D3E8E; 
         --light-pink: #FFF0F2; 
-        --accent-pink: #FFD1DC; 
+        --accent-pink: #FFD1DC;
+        /* Переменные для свечения и парения */
+        --glow: rgba(93, 62, 142, 0.15);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -64,6 +66,7 @@
         align-items: center; 
         background: rgba(255, 255, 255, 0.8); 
         backdrop-filter: blur(15px); 
+        -webkit-backdrop-filter: blur(15px);
         border-bottom: 1px solid var(--light-pink); 
     }
 
@@ -129,6 +132,7 @@
         flex-wrap: wrap; 
     }
 
+    /* ПАРЯЩИЕ КНОПКИ */
     .btn { 
         padding: 18px 35px; 
         text-decoration: none; 
@@ -136,15 +140,36 @@
         letter-spacing: 2px; 
         text-transform: uppercase; 
         font-weight: 600; 
-        transition: 0.3s; 
+        transition: all 0.3s ease; 
         cursor: pointer; 
         border: none; 
-        display: inline-block; 
+        display: inline-block;
+        border-radius: 50px; /* Сделаем чуть мягче */
+        box-shadow: 0 10px 20px var(--glow);
+        animation: floating 4s ease-in-out infinite;
+    }
+
+    .btn:hover {
+        animation-play-state: paused;
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 15px 30px rgba(93, 62, 142, 0.3);
     }
 
     .btn-fill { background: #fff; color: var(--main-purple); }
     .btn-line { border: 1px solid #fff; color: #fff; background: transparent; }
     .btn-purple { background: var(--main-purple); color: #fff; }
+
+    /* ПАРЯЩЕЕ СТЕКЛО */
+    .glass {
+        background: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        border-radius: 30px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+        animation: floating 6s ease-in-out infinite;
+        transition: all 0.4s ease;
+    }
 
     .glass-section { 
         width: 100%; 
@@ -163,6 +188,7 @@
         font-weight: 700; 
         margin-bottom: 10px; 
         display: block; 
+        color: var(--main-purple);
     }
 
     h2 { 
@@ -228,6 +254,13 @@
         margin: 12px 0; 
         text-transform: uppercase; 
         letter-spacing: 4px; 
+    }
+
+    /* АНИМАЦИИ */
+    @keyframes floating {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-8px); }
+        100% { transform: translateY(0px); }
     }
 
     @media (max-width: 768px) { 
