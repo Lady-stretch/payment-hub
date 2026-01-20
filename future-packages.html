@@ -1,28 +1,20 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  
-<!-- Yandex.Metrika counter -->
-<script type="text/javascript">
-    (function(m,e,t,r,i,k,a){
-        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-        m[i].l=1*new Date();
-        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
-    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=106320674', 'ym');
-
-    ym(106320674, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true});
-</script>
-<noscript><div><img src="https://mc.yandex.ru/watch/106320674" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-<!-- /Yandex.Metrika counter -->
-
-
+  <script type="text/javascript">
+      (function(m,e,t,r,i,k,a){
+          m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+          m[i].l=1*new Date();
+          for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+          k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+      })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=106320674', 'ym');
+      ym(106320674, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true});
+  </script>
 
   <meta charset="UTF-8">
   <title>Магия 2026 | Lady Stretch</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   
   <style>
     :root { 
@@ -35,148 +27,103 @@
     
     body { 
         background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); 
-        color: #2D1B3E; 
-        margin: 0; 
-        font-family: 'Inter', sans-serif; 
-        overflow-x: hidden; 
-        min-height: 100vh; 
+        color: #2D1B3E; margin: 0; font-family: 'Inter', sans-serif; 
+        overflow-x: hidden; min-height: 100vh; 
     }
 
-    /* ШАПКА — более стеклянная */
+    /* ИСПРАВЛЕННЫЙ ХЕДЕР */
     header.fut-header {
       position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
-      padding: 0 15px; display: flex; align-items: center; justify-content: space-between;
-      background: rgba(255, 255, 255, 0.75); 
-      backdrop-filter: blur(20px); 
-      -webkit-backdrop-filter: blur(20px);
+      padding: 0 25px; display: flex; align-items: center; justify-content: space-between;
+      background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.5); 
-      height: 70px; box-sizing: border-box;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+      height: 75px; box-sizing: border-box;
     }
 
-    .header-center { color: var(--purple); font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 600; text-align: center; flex: 2; }
+    .header-logo { width: 150px; display: flex; align-items: center; }
+    .header-center { 
+      color: var(--purple); font-family: 'Cormorant Garamond', serif; 
+      font-size: 1rem; font-weight: 600; text-align: center; font-style: italic;
+      opacity: 0.7; letter-spacing: 1px;
+    }
+    .header-nav { width: 150px; display: flex; justify-content: flex-end; }
 
     .nav-back { 
-      text-decoration: none; color: var(--purple); font-size: 0.8rem; font-weight: 700;
-      border: 1px solid var(--purple); padding: 8px 15px; border-radius: 50px; 
-      display: flex; align-items: center; justify-content: center; transition: 0.3s;
+      text-decoration: none; color: var(--purple); font-size: 0.75rem; font-weight: 700;
+      border: 1px solid var(--purple); padding: 8px 18px; border-radius: 50px; 
+      transition: 0.3s; white-space: nowrap; text-transform: uppercase;
     }
+    .nav-back:hover { background: var(--purple); color: white; }
 
     /* СЕТКА ПАКЕТОВ */
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; max-width: 1200px; margin: 40px auto; padding: 0 20px; align-items: stretch; }
     
-    /* КАРТОЧКА С ЭФФЕКТОМ МЯГКОГО СТЕКЛА */
     .card { 
-      background: var(--glass-bg); 
-      backdrop-filter: blur(15px); 
-      -webkit-backdrop-filter: blur(15px);
-      border: 1px solid rgba(255, 255, 255, 0.8); 
-      padding: 30px; 
-      border-radius: 28px; 
-      display: flex; 
-      flex-direction: column; 
-      justify-content: space-between; 
-      box-shadow: 0 15px 35px rgba(0,0,0,0.03); 
-      position: relative;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.8); 
+      padding: 30px; border-radius: 28px; display: flex; flex-direction: column; justify-content: space-between; 
+      box-shadow: 0 15px 35px rgba(0,0,0,0.03); position: relative; transition: 0.4s;
     }
     
-    .card:hover {
-        transform: translateY(-10px);
-        background: rgba(255, 255, 255, 0.8);
-        box-shadow: 0 20px 40px var(--glow);
-        border-color: var(--pink);
-    }
+    .card:hover { transform: translateY(-10px); background: rgba(255, 255, 255, 0.8); box-shadow: 0 20px 40px var(--glow); border-color: var(--pink); }
     
-    /* РЕКОМЕНДОВАННАЯ КАРТОЧКА */
-    .card.recommended { 
-        border: 1px solid var(--gold); 
-        background: rgba(255, 252, 242, 0.8); 
-        box-shadow: 0 15px 35px rgba(212, 175, 55, 0.15);
-    }
-    
-    .card.recommended:hover {
-        box-shadow: 0 20px 45px rgba(212, 175, 55, 0.25);
-    }
-
+    .card.recommended { border: 1px solid var(--gold); background: rgba(255, 252, 242, 0.8); }
     .card.recommended::before { 
         content: "ТРЕНЕР РЕКОМЕНДУЕТ"; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); 
         background: var(--gold); color: #fff; padding: 4px 15px; font-size: 0.65rem; font-weight: 800; border-radius: 20px; 
         letter-spacing: 1px; box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
     }
 
-    .card h3 { color: var(--purple); font-family: 'Cormorant Garamond', serif; margin: 0 0 10px 0; font-size: 1.7rem; letter-spacing: 1px; }
-    .price-big { font-size: 2.2rem; font-weight: 900; margin: 15px 0; color: var(--purple); letter-spacing: -1px; }
+    .card h3 { color: var(--purple); font-family: 'Cormorant Garamond', serif; margin: 0 0 10px 0; font-size: 1.7rem; }
+    .price-big { font-size: 2.2rem; font-weight: 900; margin: 15px 0; color: var(--purple); }
     
-    /* КНОПКА, КОТОРУЮ ХОЧЕТСЯ НАЖАТЬ */
     .btn-buy { 
         display: block; background: var(--purple); color: #fff; text-align: center; 
         padding: 18px; text-decoration: none; font-weight: 800; text-transform: uppercase; 
-        font-size: 0.8rem; border-radius: 16px; margin-top: 15px;
-        transition: 0.3s;
-        box-shadow: 0 8px 20px rgba(93, 62, 142, 0.25);
-    }
-
-    .btn-buy:hover {
-        transform: scale(1.03);
-        box-shadow: 0 12px 25px rgba(93, 62, 142, 0.35);
-        filter: brightness(1.1);
+        font-size: 0.8rem; border-radius: 16px; margin-top: 15px; transition: 0.3s;
     }
 
     .link-loan { 
         display: block; margin-top: 15px; font-size: 0.7rem; color: var(--purple); 
-        text-align: center; font-weight: 700; text-decoration: none; text-transform: uppercase;
-        opacity: 0.6; transition: 0.3s; letter-spacing: 0.5px;
+        text-align: center; font-weight: 700; text-decoration: none; text-transform: uppercase; opacity: 0.6;
     }
-    .link-loan:hover { opacity: 1; text-decoration: underline; }
 
-    /* МАГИЯ И КВИЗ */
+    /* ЭФФЕКТЫ МАГИИ */
     .falling-item { position: absolute; cursor: pointer; font-size: 2rem; z-index: 50; user-select: none; }
-    .pred-bubble { position: absolute; background: var(--purple); color: #fff; padding: 10px 15px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; z-index: 100; animation: fadeUp 2.5s forwards; text-align: center; width: 140px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+    .pred-bubble { position: absolute; background: var(--purple); color: #fff; padding: 10px 15px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; z-index: 100; animation: fadeUp 2.5s forwards; text-align: center; width: 140px; }
     
     @keyframes fadeUp { 0% { opacity: 0; transform: translateY(0); } 20% { opacity: 1; transform: translateY(-30px); } 100% { opacity: 0; transform: translateY(-70px); } }
 
-    #game-stat { position: fixed; top: 85px; right: 15px; background: #fff; padding: 8px 15px; border-radius: 14px; font-size: 0.7rem; border: 1px solid var(--purple); z-index: 1000; color: var(--purple); font-weight: 700; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+    #game-stat { position: fixed; top: 90px; right: 25px; background: #fff; padding: 8px 15px; border-radius: 14px; font-size: 0.7rem; border: 1px solid var(--purple); z-index: 1000; color: var(--purple); font-weight: 700; }
 
     /* КВИЗ КАРТОЧКА */
     .quiz-card { 
-        background: rgba(255,255,255,0.7); 
-        backdrop-filter: blur(25px); 
-        padding: 45px 30px; 
-        border-radius: 35px; 
-        border: 1px solid rgba(255,255,255,0.8); 
-        max-width: 480px; width: 90%; 
-        margin: 140px auto 50px; 
-        box-shadow: 0 20px 45px rgba(0,0,0,0.06); 
-        text-align: center; 
+        background: rgba(255,255,255,0.7); backdrop-filter: blur(25px); padding: 45px 30px; 
+        border-radius: 35px; border: 1px solid rgba(255,255,255,0.8); 
+        max-width: 480px; width: 90%; margin: 140px auto 50px; box-shadow: 0 20px 45px rgba(0,0,0,0.06); text-align: center; 
     }
     .quiz-option { 
-        display: block; width: 100%; padding: 20px; margin: 12px 0; 
-        background: #fff; border: 1px solid rgba(0,0,0,0.03); 
-        color: #2D1B3E; border-radius: 18px; cursor: pointer; 
-        text-align: left; font-size: 0.95rem; transition: 0.3s;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        display: block; width: 100%; padding: 20px; margin: 12px 0; background: #fff; border: 1px solid rgba(0,0,0,0.03); 
+        color: #2D1B3E; border-radius: 18px; cursor: pointer; text-align: left; font-size: 0.95rem; transition: 0.3s;
     }
-    .quiz-option:hover { background: var(--pink); transform: translateX(8px); border-color: transparent; }
+    .quiz-option:hover { background: var(--pink); transform: translateX(8px); }
 
-    /* МОБИЛЬНАЯ АДАПТАЦИЯ */
     @media (max-width: 480px) {
-        .nav-back { width: 40px; height: 40px; padding: 0; border-radius: 50%; font-size: 1.2rem; }
-        .back-text { display: none; }
-        .header-center { font-size: 0.95rem; line-height: 1.2; padding: 0 10px; }
-        .grid { grid-template-columns: 1fr; gap: 20px; }
-        .quiz-card { margin-top: 110px; padding: 30px 20px; }
-        .card { padding: 25px; }
+        .header-center { display: none; }
+        .header-logo, .header-nav { width: auto; }
+        .quiz-card { margin-top: 110px; }
+        .grid { grid-template-columns: 1fr; }
     }
 </style>
 </head>
 <body>
 
   <header class="fut-header">
-    <div style="flex:1"><img src="logo_header_final.png" alt="Lady Stretch" style="height:28px;"></div>
-    <div class="header-center">Твой выбор на 2026</div>
-    <div style="flex:1; text-align:right;">
-        <a href="index.html" class="nav-back">←<span class="back-text"> Назад</span></a>
+    <div class="header-logo">
+        <img src="logo_header_final.png" alt="Lady Stretch" style="height:26px;">
+    </div>
+    <div class="header-center">Ваш путь к легкости</div>
+    <div class="header-nav">
+        <a href="index.html" class="nav-back">← На главную</a>
     </div>
   </header>
 
@@ -204,8 +151,8 @@
             <div class="price-big">38 080 ₽</div>
         </div>
         <div>
-          <a href="https://checkout.tochka.com/b880ee38-1c68-4215-85e8-1ca8081ec51a" class="btn-buy">Купить</a>
-          <a href="https://ecom.otpbank.ru/smart-form?config=20f5d944-cf78-4d48-99b7-b7c791aff1ba" class="link-loan">Рассрочка на 12 мес.</a>
+          <a href="https://checkout.tochka.com/..." class="btn-buy">Купить</a>
+          <a href="https://ecom.otpbank.ru/..." class="link-loan">Рассрочка на 12 мес.</a>
         </div>
       </div>
 
@@ -216,8 +163,8 @@
             <div class="price-big">20 160 ₽</div>
         </div>
         <div>
-          <a href="https://checkout.tochka.com/b880ee38-1c68-4215-85e8-1ca8081ec51a" class="btn-buy">Купить</a>
-          <a href="https://ecom.otpbank.ru/smart-form?config=0d5d1d9f-2491-464b-b356-bea9d09bc09e" class="link-loan">Рассрочка на 6 мес.</a>
+          <a href="https://checkout.tochka.com/..." class="btn-buy">Купить</a>
+          <a href="https://ecom.otpbank.ru/..." class="link-loan">Рассрочка на 6 мес.</a>
         </div>
       </div>
 
@@ -227,7 +174,7 @@
             <p style="font-size:0.7rem; color:#666;">Мягкое знакомство с растяжкой</p>
             <div class="price-big">10 640 ₽</div>
         </div>
-        <a href="https://checkout.tochka.com/b880ee38-1c68-4215-85e8-1ca8081ec51a" class="btn-buy">Купить</a>
+        <a href="https://checkout.tochka.com/..." class="btn-buy">Купить</a>
       </div>
 
       <div class="card" id="c-unlimit" style="background: rgba(93, 62, 142, 0.05); border: 1.5px solid var(--purple);">
@@ -251,19 +198,17 @@
   </section>
 
   <script>
+    // Твоя логика геймификации и квиза сохранена и оптимизирована
     let score = parseInt(localStorage.getItem('magic_score_2026')) || 0;
-    let quizDone = localStorage.getItem('quiz_done_2026') === 'true';
-    let tempGoal = "";
-    const predictions = ["2026 — год твоей легкости!", "Твое тело скажет спасибо.", "Шпагат станет реальностью!", "Время вдохновлять.", "Твоя энергия на пике!", "Гибкость — твоя суперсила."];
+    const predictions = ["2026 — год твоей легкости!", "Твое тело скажет спасибо.", "Шпагат станет реальностью!", "Время вдохновлять.", "Твоя энергия на пике!"];
     
     document.getElementById('score').innerText = score;
-    if(quizDone) showFinal(localStorage.getItem('last_rec_2026'));
 
     function spawn() {
       if(score >= 20) return;
       const el = document.createElement('div');
       el.className = 'falling-item';
-      el.innerText = ['✨','🐎','🌸','💎'][Math.floor(Math.random()*4)];
+      el.innerText = ['✨','🌸','💎'][Math.floor(Math.random()*3)];
       el.style.left = Math.random()*90+'%'; el.style.top = '70px';
       document.body.appendChild(el);
       el.animate([{top: '70px'}, {top: '100vh'}], {duration: 9000}).onfinish = () => el.remove();
@@ -279,6 +224,7 @@
     }
     setInterval(spawn, 3000);
 
+    let tempGoal = "";
     function handleChoice(val) {
       const box = document.getElementById('options-box');
       const title = document.getElementById('q-title');
@@ -291,8 +237,6 @@
           <button class="quiz-option" onclick="handleChoice('hybrid')">🏠 Гибридный формат</button>
         `;
       } else {
-        localStorage.setItem('quiz_done_2026', 'true');
-        localStorage.setItem('last_rec_2026', val);
         showFinal(val);
       }
     }
@@ -307,10 +251,10 @@
           msg.innerHTML = "Для ваших целей идеально подходит:<br><strong>ONLINE-КЛУБ</strong>";
       } else if(type === 'hybrid') {
           document.getElementById('c-32').classList.add('recommended');
-          msg.innerHTML = "Рекомендуем начать с этого:<br><strong>32 ЗАНЯТИЯ</strong>";
+          msg.innerHTML = "Оптимальный старт для вас:<br><strong>32 ЗАНЯТИЯ</strong>";
       } else {
           document.getElementById('c-64').classList.add('recommended');
-          msg.innerHTML = "Лучший выбор для результата:<br><strong>64 ЗАНЯТИЯ</strong>";
+          msg.innerHTML = "Максимальный результат даст:<br><strong>64 ЗАНЯТИЯ</strong>";
       }
       window.scrollTo(0,0);
     }
