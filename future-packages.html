@@ -53,7 +53,7 @@
     .card h3 { color: var(--purple); font-family: 'Cormorant Garamond', serif; margin: 0; font-size: 1.6rem; }
     .price-big { font-size: 2rem; font-weight: 900; margin: 15px 0; color: var(--purple); }
     
-    .btn-buy { display: block; background: var(--purple); color: #fff; text-align: center; padding: 16px; text-decoration: none; font-weight: 800; text-transform: uppercase; font-size: 0.75rem; border-radius: 14px; margin-top: 10px; transition: 0.3s; }
+    .btn-buy { display: block; background: var(--purple); color: #fff; text-align: center; padding: 16px; text-decoration: none; font-weight: 800; text-transform: uppercase; font-size: 0.75rem; border-radius: 14px; margin-top: 10px; transition: 0.3s; border: none; cursor: pointer; width: 100%; }
     .link-loan { display: block; margin-top: 12px; font-size: 0.65rem; color: var(--purple); text-align: center; font-weight: 700; text-decoration: none; text-transform: uppercase; opacity: 0.6; }
 
     .calc-container { max-width: 600px; margin: 20px auto 40px; padding: 35px; background: rgba(255,255,255,0.4); backdrop-filter: blur(25px); border-radius: 35px; border: 1px solid rgba(255,255,255,0.6); box-shadow: 0 20px 50px rgba(0,0,0,0.05); }
@@ -70,7 +70,11 @@
     @keyframes fadeUp { 0% { opacity: 0; transform: translateY(0); } 20% { opacity: 1; transform: translateY(-30px); } 100% { opacity: 0; transform: translateY(-70px); } }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     
-    #game-stat { position: fixed; top: 90px; right: 25px; background: #fff; padding: 8px 15px; border-radius: 14px; font-size: 0.7rem; border: 1px solid var(--purple); z-index: 1000; font-weight: 700; color: var(--purple); }
+    #game-stat { position: fixed; top: 90px; right: 25px; background: #fff; padding: 8px 15px; border-radius: 14px; font-size: 0.7rem; border: 2px solid var(--purple); z-index: 1000; font-weight: 800; color: var(--purple); }
+
+    /* ЭКРАН ПОБЕДЫ */
+    #win-screen { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(93, 62, 142, 0.95); z-index: 2000; color: white; text-align: center; padding-top: 15vh; backdrop-filter: blur(10px); }
+    .win-box { background: white; color: var(--purple); width: 85%; max-width: 400px; margin: 0 auto; padding: 40px 20px; border-radius: 30px; border: 4px solid var(--gold); box-shadow: 0 0 50px var(--gold); }
 
     .quiz-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(25px); padding: 40px; border-radius: 35px; max-width: 480px; width: 90%; margin: 140px auto 50px; text-align: center; box-shadow: 0 20px 45px rgba(0,0,0,0.06); }
     .quiz-option { display: block; width: 100%; padding: 18px; margin: 10px 0; background: #fff; border: 1px solid rgba(0,0,0,0.05); border-radius: 15px; cursor: pointer; text-align: left; transition: 0.3s; font-size: 0.95rem; }
@@ -81,7 +85,7 @@
         background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(10px); 
         border-top: 1px solid rgba(255, 255, 255, 0.8);
     }
-    .footer-link { font-size: 0.75rem; color: var(--purple); text-decoration: none; opacity: 0.6; font-weight: 700; transition: 0.3s; text-transform: uppercase; letter-spacing: 0.5px; }
+    .footer-link { font-size: 0.75rem; color: var(--purple); text-decoration: none; opacity: 0.8; font-weight: 700; transition: 0.3s; text-transform: uppercase; letter-spacing: 0.5px; }
     .footer-link:hover { opacity: 1; color: var(--gold); }
     .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 600; color: var(--purple); margin-top: 15px; letter-spacing: 2px; }
 
@@ -94,10 +98,22 @@
   <header class="fut-header">
     <div class="header-logo"><img src="logo_header_final.png" alt="Lady Stretch" style="height:24px;"></div>
     <div class="header-center">Ваш путь к легкости</div>
-    <div class="header-nav"><a href="index.html" class="nav-back">← На главную</a></div>
+    <div class="header-nav"><a href="index.html" class="nav-back">← Меню</a></div>
   </header>
 
   <div id="game-stat">МАГИЯ: <span id="score">0</span>/20</div>
+
+  <div id="win-screen">
+      <div class="win-box">
+          <h1 style="font-family: 'Cormorant Garamond', serif;">УРА! ПОБЕДА! ✨</h1>
+          <p style="font-size: 1.1rem; line-height: 1.4;">Вы собрали все макросы удачи 2026!</p>
+          <div style="background: var(--purple); color: white; padding: 15px; border-radius: 15px; margin: 20px 0; font-weight: 800; font-size: 1.2rem;">
+              🎁 ВАШ БОНУС:<br>+2 ЗАНЯТИЯ К АБОНЕМЕНТУ
+          </div>
+          <p style="font-size: 0.8rem; opacity: 0.8;">Сделайте скриншот этого экрана и предъявите администратору студии Lady Stretch (Сыктывкар).</p>
+          <button onclick="document.getElementById('win-screen').style.display='none'" class="btn-buy" style="margin-top: 15px; background: var(--gold);">Закрыть и продолжить</button>
+      </div>
+  </div>
 
   <main id="quiz-view">
     <div class="quiz-card">
@@ -119,7 +135,7 @@
         <div><label style="font-size:0.6rem; font-weight:700; opacity:0.6;">РОСТ (СМ)</label><input type="number" id="height" class="calc-input" placeholder="170"></div>
       </div>
       <div style="margin-bottom: 20px;"><label style="font-size:0.6rem; font-weight:700; opacity:0.6;">ВОЗРАСТ</label><input type="number" id="age" class="calc-input" placeholder="25"></div>
-      <button class="btn-buy" style="width:100%; cursor:pointer; background: var(--purple); border:none;" onclick="runAnalysis()">Рассчитать показатели</button>
+      <button class="btn-buy" onclick="runAnalysis()">Рассчитать показатели</button>
 
       <div id="calc-results" class="calc-res-box">
         <div class="res-grid">
@@ -181,7 +197,7 @@
 
   <script>
     // МАГИЯ И ЛОШАДКИ
-    let score = parseInt(localStorage.getItem('magic_score_2026')) || 0;
+    let score = 0; // Для праздника считаем в текущей сессии
     const predictions = [
         "2026 — год твоей легкости!", "Твое тело скажет спасибо!", "Шпагат станет реальностью!", 
         "Время вдохновлять окружающих!", "Твоя энергия на пике!", "Лошадка приносит удачу!",
@@ -192,8 +208,6 @@
         "Ты — воплощение грации!", "Твой путь к мечте начался сегодня!"
     ];
     
-    document.getElementById('score').innerText = score;
-
     function spawn() {
       if(score >= 20) return;
       const el = document.createElement('div');
@@ -216,7 +230,6 @@
 
       el.onclick = (e) => {
         score++; 
-        localStorage.setItem('magic_score_2026', score);
         document.getElementById('score').innerText = score;
         
         const b = document.createElement('div'); 
@@ -228,9 +241,25 @@
         
         el.style.display = 'none';
         setTimeout(() => b.remove(), 2500);
+
+        if(score === 20) {
+            document.getElementById('win-screen').style.display = 'block';
+            confettiRain();
+        }
       };
     }
     setInterval(spawn, 2500);
+
+    function confettiRain() {
+        for(let i=0; i<40; i++) {
+            const c = document.createElement('div');
+            c.innerText = '✨'; c.style.position = 'fixed';
+            c.style.left = Math.random()*100+'%'; c.style.top = '-20px';
+            c.style.zIndex = '3000';
+            document.body.appendChild(c);
+            c.animate([{top: '-20px'}, {top: '100vh'}], {duration: 2000 + Math.random()*3000, iterations: Infinity});
+        }
+    }
 
     // КВИЗ
     let tempGoal = "";
@@ -282,9 +311,9 @@
       document.getElementById('res-water').innerText = (w * 0.033).toFixed(1);
 
       let report = "";
-      if (bmi < 18.5) report = "Вашему телу необходим бережный тонус. Акцент на Sky Stretching поможет укрепить мышечный корсет без нагрузки на суставы, сохраняя изящность.";
-      else if (bmi > 25) report = "Приоритетная задача — запуск лимфодренажа. МФР и растяжка позволят снизить отечность и ускорить метаболизм уже в первый месяц.";
-      else report = "Ваши показатели в норме. Рекомендуем фокус на эластичности связок и глубоком расслаблении — это снизит биологический возраст сосудов и улучшит сон.";
+      if (bmi < 18.5) report = "Вашему телу необходим бережный тонус. Акцент на Sky Stretching поможет укрепить мышечный корсет без нагрузки на суставы.";
+      else if (bmi > 25) report = "Приоритетная задача — запуск лимфодренажа. МФР и растяжка позволят снизить отечность и ускорить метаболизм.";
+      else report = "Ваши показатели в норме. Рекомендуем фокус на эластичности связок и глубоком расслаблении — это снизит биологический возраст сосудов.";
 
       document.getElementById('ai-text').innerText = report;
       document.getElementById('calc-results').style.display = 'block';
