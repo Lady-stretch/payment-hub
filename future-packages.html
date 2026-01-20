@@ -31,7 +31,7 @@
         overflow-x: hidden; min-height: 100vh; 
     }
 
-    /* ИСПРАВЛЕННЫЙ ХЕДЕР */
+    /* ХЕДЕР */
     header.fut-header {
       position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
       padding: 0 25px; display: flex; align-items: center; justify-content: space-between;
@@ -39,169 +39,117 @@
       border-bottom: 1px solid rgba(255, 255, 255, 0.5); 
       height: 75px; box-sizing: border-box;
     }
-
-    .header-logo { width: 150px; display: flex; align-items: center; }
-    .header-center { 
-      color: var(--purple); font-family: 'Cormorant Garamond', serif; 
-      font-size: 1rem; font-weight: 600; text-align: center; font-style: italic;
-      opacity: 0.7; letter-spacing: 1px;
-    }
-    .header-nav { width: 150px; display: flex; justify-content: flex-end; }
-
-    .nav-back { 
-      text-decoration: none; color: var(--purple); font-size: 0.75rem; font-weight: 700;
-      border: 1px solid var(--purple); padding: 8px 18px; border-radius: 50px; 
-      transition: 0.3s; white-space: nowrap; text-transform: uppercase;
-    }
+    .header-logo { width: 150px; }
+    .header-center { color: var(--purple); font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-style: italic; opacity: 0.7; }
+    .header-nav { width: 150px; text-align: right; }
+    .nav-back { text-decoration: none; color: var(--purple); font-size: 0.75rem; font-weight: 700; border: 1px solid var(--purple); padding: 8px 18px; border-radius: 50px; text-transform: uppercase; transition: 0.3s; }
     .nav-back:hover { background: var(--purple); color: white; }
 
-    /* СЕТКА ПАКЕТОВ */
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; max-width: 1200px; margin: 40px auto; padding: 0 20px; align-items: stretch; }
-    
-    .card { 
-      background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.8); 
-      padding: 30px; border-radius: 28px; display: flex; flex-direction: column; justify-content: space-between; 
-      box-shadow: 0 15px 35px rgba(0,0,0,0.03); position: relative; transition: 0.4s;
-    }
-    
-    .card:hover { transform: translateY(-10px); background: rgba(255, 255, 255, 0.8); box-shadow: 0 20px 40px var(--glow); border-color: var(--pink); }
-    
+    /* КАРТОЧКИ АБОНЕМЕНТОВ */
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+    .card { background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.8); padding: 30px; border-radius: 28px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 15px 35px rgba(0,0,0,0.03); transition: 0.4s; position: relative; }
+    .card:hover { transform: translateY(-10px); background: rgba(255, 255, 255, 0.8); box-shadow: 0 20px 40px var(--glow); }
     .card.recommended { border: 1px solid var(--gold); background: rgba(255, 252, 242, 0.8); }
-    .card.recommended::before { 
-        content: "ТРЕНЕР РЕКОМЕНДУЕТ"; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); 
-        background: var(--gold); color: #fff; padding: 4px 15px; font-size: 0.65rem; font-weight: 800; border-radius: 20px; 
-        letter-spacing: 1px; box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
-    }
-
-    .card h3 { color: var(--purple); font-family: 'Cormorant Garamond', serif; margin: 0 0 10px 0; font-size: 1.7rem; }
+    .card.recommended::before { content: "ТРЕНЕР РЕКОМЕНДУЕТ"; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #fff; padding: 4px 15px; font-size: 0.65rem; font-weight: 800; border-radius: 20px; }
     .price-big { font-size: 2.2rem; font-weight: 900; margin: 15px 0; color: var(--purple); }
-    
-    .btn-buy { 
-        display: block; background: var(--purple); color: #fff; text-align: center; 
-        padding: 18px; text-decoration: none; font-weight: 800; text-transform: uppercase; 
-        font-size: 0.8rem; border-radius: 16px; margin-top: 15px; transition: 0.3s;
-    }
+    .btn-buy { display: block; background: var(--purple); color: #fff; text-align: center; padding: 18px; text-decoration: none; font-weight: 800; text-transform: uppercase; font-size: 0.8rem; border-radius: 16px; margin-top: 15px; transition: 0.3s; }
 
-    .link-loan { 
-        display: block; margin-top: 15px; font-size: 0.7rem; color: var(--purple); 
-        text-align: center; font-weight: 700; text-decoration: none; text-transform: uppercase; opacity: 0.6;
-    }
+    /* КАЛЬКУЛЯТОР */
+    .calc-container { max-width: 600px; margin: 20px auto 40px; padding: 35px; background: rgba(255,255,255,0.4); backdrop-filter: blur(25px); border-radius: 35px; border: 1px solid rgba(255,255,255,0.6); box-shadow: 0 20px 50px rgba(0,0,0,0.05); }
+    .calc-input { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); margin-top: 5px; font-size: 1rem; box-sizing: border-box; }
+    .calc-res-box { display: none; margin-top: 25px; animation: fadeIn 0.6s ease; }
+    .res-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+    .res-item { background: white; padding: 15px; border-radius: 15px; text-align: center; border: 1px solid rgba(0,0,0,0.03); }
+    .res-item span { display: block; font-size: 1.3rem; font-weight: 800; color: var(--purple); }
+    .ai-analysis-report { background: rgba(93, 62, 142, 0.05); padding: 20px; border-radius: 20px; border-left: 4px solid var(--purple); font-size: 0.85rem; line-height: 1.5; }
 
-    /* ЭФФЕКТЫ МАГИИ */
-    .falling-item { position: absolute; cursor: pointer; font-size: 2rem; z-index: 50; user-select: none; }
-    .pred-bubble { position: absolute; background: var(--purple); color: #fff; padding: 10px 15px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; z-index: 100; animation: fadeUp 2.5s forwards; text-align: center; width: 140px; }
-    
+    /* ЭФФЕКТЫ */
+    .falling-item { position: absolute; cursor: pointer; font-size: 2rem; z-index: 50; }
+    .pred-bubble { position: absolute; background: var(--purple); color: #fff; padding: 10px 15px; border-radius: 12px; font-size: 0.75rem; animation: fadeUp 2.5s forwards; z-index: 100; }
     @keyframes fadeUp { 0% { opacity: 0; transform: translateY(0); } 20% { opacity: 1; transform: translateY(-30px); } 100% { opacity: 0; transform: translateY(-70px); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    #game-stat { position: fixed; top: 90px; right: 25px; background: #fff; padding: 8px 15px; border-radius: 14px; font-size: 0.7rem; border: 1px solid var(--purple); z-index: 1000; font-weight: 700; }
 
-    #game-stat { position: fixed; top: 90px; right: 25px; background: #fff; padding: 8px 15px; border-radius: 14px; font-size: 0.7rem; border: 1px solid var(--purple); z-index: 1000; color: var(--purple); font-weight: 700; }
+    /* КВИЗ */
+    .quiz-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(25px); padding: 40px; border-radius: 35px; max-width: 480px; width: 90%; margin: 140px auto 50px; text-align: center; }
+    .quiz-option { display: block; width: 100%; padding: 18px; margin: 10px 0; background: #fff; border: 1px solid rgba(0,0,0,0.05); border-radius: 15px; cursor: pointer; text-align: left; transition: 0.3s; }
+    .quiz-option:hover { background: var(--pink); transform: translateX(5px); }
 
-    /* КВИЗ КАРТОЧКА */
-    .quiz-card { 
-        background: rgba(255,255,255,0.7); backdrop-filter: blur(25px); padding: 45px 30px; 
-        border-radius: 35px; border: 1px solid rgba(255,255,255,0.8); 
-        max-width: 480px; width: 90%; margin: 140px auto 50px; box-shadow: 0 20px 45px rgba(0,0,0,0.06); text-align: center; 
-    }
-    .quiz-option { 
-        display: block; width: 100%; padding: 20px; margin: 12px 0; background: #fff; border: 1px solid rgba(0,0,0,0.03); 
-        color: #2D1B3E; border-radius: 18px; cursor: pointer; text-align: left; font-size: 0.95rem; transition: 0.3s;
-    }
-    .quiz-option:hover { background: var(--pink); transform: translateX(8px); }
-
-    @media (max-width: 480px) {
-        .header-center { display: none; }
-        .header-logo, .header-nav { width: auto; }
-        .quiz-card { margin-top: 110px; }
-        .grid { grid-template-columns: 1fr; }
-    }
-</style>
+    @media (max-width: 480px) { .header-center { display: none; } .quiz-card { margin-top: 110px; } }
+  </style>
 </head>
 <body>
 
   <header class="fut-header">
-    <div class="header-logo">
-        <img src="logo_header_final.png" alt="Lady Stretch" style="height:26px;">
-    </div>
+    <div class="header-logo"><img src="logo_header_final.png" alt="Lady Stretch" style="height:24px;"></div>
     <div class="header-center">Ваш путь к легкости</div>
-    <div class="header-nav">
-        <a href="index.html" class="nav-back">← На главную</a>
-    </div>
+    <div class="header-nav"><a href="index.html" class="nav-back">← На главную</a></div>
   </header>
 
   <div id="game-stat">МАГИЯ: <span id="score">0</span>/20</div>
 
   <main id="quiz-view">
     <div class="quiz-card">
-      <h2 id="q-title" style="font-family: 'Cormorant Garamond', serif; font-size: 1.7rem; margin-bottom: 25px;">Какую цель вы ставите на 2026 год?</h2>
+      <h2 id="q-title" style="font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; margin-bottom: 20px;">Какую цель вы ставите на 2026 год?</h2>
       <div id="options-box">
-        <button class="quiz-option" onclick="handleChoice('health')">✨ Здоровая спина и красивая осанка</button>
-        <button class="quiz-option" onclick="handleChoice('fit')">💃 Похудение и тонус мышц</button>
-        <button class="quiz-option" onclick="handleChoice('flex')">🌸 Гибкость, шпагат и легкость</button>
+        <button class="quiz-option" onclick="handleChoice('health')">✨ Здоровая спина и осанка</button>
+        <button class="quiz-option" onclick="handleChoice('fit')">💃 Похудение и тонус</button>
+        <button class="quiz-option" onclick="handleChoice('flex')">🌸 Гибкость и шпагат</button>
       </div>
     </div>
   </main>
 
-  <section id="packages-view" style="display:none; padding-top: 80px;">
-    <center><div id="coach-msg" style="padding: 20px; font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--purple); max-width: 600px;"></div></center>
+  <section id="packages-view" style="display:none; padding-top: 100px;">
+    
+    <div class="calc-container">
+      <h3 style="text-align:center; font-family: 'Cormorant Garamond', serif; margin-bottom: 25px;">Биометрический анализ</h3>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+        <div><label style="font-size:0.6rem; font-weight:700;">ВЕС (КГ)</label><input type="number" id="weight" class="calc-input" placeholder="60"></div>
+        <div><label style="font-size:0.6rem; font-weight:700;">РОСТ (СМ)</label><input type="number" id="height" class="calc-input" placeholder="170"></div>
+      </div>
+      <div style="margin-bottom: 20px;"><label style="font-size:0.6rem; font-weight:700;">ВОЗРАСТ</label><input type="number" id="age" class="calc-input" placeholder="25"></div>
+      <button class="btn-buy" style="width:100%; cursor:pointer;" onclick="runAnalysis()">Рассчитать показатели</button>
+
+      <div id="calc-results" class="calc-res-box">
+        <div class="res-grid">
+          <div class="res-item"><span id="res-kcal">0</span><label style="font-size:0.55rem;">Ккал/день</label></div>
+          <div class="res-item"><span id="res-water">0</span><label style="font-size:0.55rem;">Вода (л)</label></div>
+        </div>
+        <div class="ai-analysis-report">
+          <header style="font-weight:800; font-size:0.6rem; color:var(--purple); letter-spacing:1px; margin-bottom:10px;">✦ ЭКСПЕРТНОЕ ЗАКЛЮЧЕНИЕ</header>
+          <div id="ai-text"></div>
+        </div>
+      </div>
+    </div>
+
+    <center><div id="coach-msg" style="padding: 20px; font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--purple); max-width: 600px;"></div></center>
     
     <div class="grid">
       <div class="card" id="c-64">
-        <div>
-            <h3>64 занятия</h3>
-            <p style="font-size:0.7rem; color:#666;">Полная перезагрузка тела</p>
-            <div class="price-big">38 080 ₽</div>
-        </div>
-        <div>
-          <a href="https://checkout.tochka.com/..." class="btn-buy">Купить</a>
-          <a href="https://ecom.otpbank.ru/..." class="link-loan">Рассрочка на 12 мес.</a>
-        </div>
+        <div><h3>64 занятия</h3><p style="font-size:0.7rem; color:#666;">Полная перезагрузка</p><div class="price-big">38 080 ₽</div></div>
+        <a href="https://checkout.tochka.com/..." class="btn-buy">Купить</a>
+        <a href="https://ecom.otpbank.ru/..." class="link-loan">Рассрочка 12 мес.</a>
       </div>
-
       <div class="card" id="c-32">
-        <div>
-            <h3>32 занятия</h3>
-            <p style="font-size:0.7rem; color:#666;">Результат, который заметят все</p>
-            <div class="price-big">20 160 ₽</div>
-        </div>
-        <div>
-          <a href="https://checkout.tochka.com/..." class="btn-buy">Купить</a>
-          <a href="https://ecom.otpbank.ru/..." class="link-loan">Рассрочка на 6 мес.</a>
-        </div>
+        <div><h3>32 занятия</h3><p style="font-size:0.7rem; color:#666;">Заметный результат</p><div class="price-big">20 160 ₽</div></div>
+        <a href="https://checkout.tochka.com/..." class="btn-buy">Купить</a>
+        <a href="https://ecom.otpbank.ru/..." class="link-loan">Рассрочка 6 мес.</a>
       </div>
-
       <div class="card" id="c-16">
-        <div>
-            <h3>16 занятий</h3>
-            <p style="font-size:0.7rem; color:#666;">Мягкое знакомство с растяжкой</p>
-            <div class="price-big">10 640 ₽</div>
-        </div>
+        <div><h3>16 занятий</h3><p style="font-size:0.7rem; color:#666;">Мягкий старт</p><div class="price-big">10 640 ₽</div></div>
         <a href="https://checkout.tochka.com/..." class="btn-buy">Купить</a>
       </div>
-
       <div class="card" id="c-unlimit" style="background: rgba(93, 62, 142, 0.05); border: 1.5px solid var(--purple);">
-        <div>
-            <h3>БЕЗЛИМИТ</h3>
-            <p style="font-size:0.7rem; color:#666;">Твой безграничный фитнес</p>
-            <div class="price-big">8 000 ₽</div>
-        </div>
+        <div><h3>БЕЗЛИМИТ</h3><p style="font-size:0.7rem; color:#666;">Свобода тренировок</p><div class="price-big">8 000 ₽</div></div>
         <a href="https://clck.ru/3RDNsC" class="btn-buy" style="background:#2D1B3E;">Забронировать</a>
-      </div>
-
-      <div class="card" id="c-online">
-        <div>
-            <h3>Lady Online</h3>
-            <p style="font-size:0.7rem; color:#666;">Твой зал в твоем кармане</p>
-            <div class="price-big">999 ₽</div>
-        </div>
-        <a href="https://t.me/fitness11_online_bot" class="btn-buy" style="background:#0088cc;">Вступить</a>
       </div>
     </div>
   </section>
 
   <script>
-    // Твоя логика геймификации и квиза сохранена и оптимизирована
+    // МАГИЯ
     let score = parseInt(localStorage.getItem('magic_score_2026')) || 0;
-    const predictions = ["2026 — год твоей легкости!", "Твое тело скажет спасибо.", "Шпагат станет реальностью!", "Время вдохновлять.", "Твоя энергия на пике!"];
-    
+    const predictions = ["2026 — год твоей легкости!", "Твое тело скажет спасибо.", "Шпагат станет реальностью!", "Твоя энергия на пике!"];
     document.getElementById('score').innerText = score;
 
     function spawn() {
@@ -224,6 +172,7 @@
     }
     setInterval(spawn, 3000);
 
+    // КВИЗ
     let tempGoal = "";
     function handleChoice(val) {
       const box = document.getElementById('options-box');
@@ -232,12 +181,10 @@
         tempGoal = val; 
         title.innerText = "Где вам удобнее тренироваться?";
         box.innerHTML = `
-          <button class="quiz-option" onclick="handleChoice('studio')">🏢 В студии (офлайн)</button>
-          <button class="quiz-option" onclick="handleChoice('online')">⏳ Дома (онлайн-курс)</button>
-          <button class="quiz-option" onclick="handleChoice('hybrid')">🏠 Гибридный формат</button>
+          <button class="quiz-option" onclick="showFinal('studio')">🏢 В студии (офлайн)</button>
+          <button class="quiz-option" onclick="showFinal('online')">⏳ Дома (онлайн)</button>
+          <button class="quiz-option" onclick="showFinal('hybrid')">🏠 Гибридный формат</button>
         `;
-      } else {
-        showFinal(val);
       }
     }
 
@@ -245,18 +192,33 @@
       document.getElementById('quiz-view').style.display = 'none';
       document.getElementById('packages-view').style.display = 'block';
       const msg = document.getElementById('coach-msg');
-      
-      if(type === 'online') {
-          document.getElementById('c-online').classList.add('recommended');
-          msg.innerHTML = "Для ваших целей идеально подходит:<br><strong>ONLINE-КЛУБ</strong>";
-      } else if(type === 'hybrid') {
-          document.getElementById('c-32').classList.add('recommended');
-          msg.innerHTML = "Оптимальный старт для вас:<br><strong>32 ЗАНЯТИЯ</strong>";
-      } else {
-          document.getElementById('c-64').classList.add('recommended');
-          msg.innerHTML = "Максимальный результат даст:<br><strong>64 ЗАНЯТИЯ</strong>";
-      }
+      if(type === 'online') { document.getElementById('c-online').classList.add('recommended'); msg.innerHTML = "Ваш выбор: <strong>ONLINE-КЛУБ</strong>"; }
+      else if(type === 'hybrid') { document.getElementById('c-32').classList.add('recommended'); msg.innerHTML = "Оптимально: <strong>32 ЗАНЯТИЯ</strong>"; }
+      else { document.getElementById('c-64').classList.add('recommended'); msg.innerHTML = "Лучший результат: <strong>64 ЗАНЯТИЯ</strong>"; }
       window.scrollTo(0,0);
+    }
+
+    // АНАЛИТИКА
+    function runAnalysis() {
+      const w = parseFloat(document.getElementById('weight').value);
+      const h = parseFloat(document.getElementById('height').value);
+      const a = parseFloat(document.getElementById('age').value);
+      if(!w || !h || !a) return alert("Введите данные для анализа");
+      
+      const bmr = (10 * w) + (6.25 * h) - (5 * a) - 161;
+      const maintenance = Math.round(bmr * 1.375);
+      const bmi = w / ((h/100)**2);
+
+      document.getElementById('res-kcal').innerText = maintenance;
+      document.getElementById('res-water').innerText = (w * 0.033).toFixed(1);
+
+      let report = "";
+      if (bmi < 18.5) report = "Вам необходим бережный тонус. Тренировки в гамаках укрепят мышечный корсет, сохраняя природную изящность и не перегружая суставы.";
+      else if (bmi > 25) report = "Приоритет — запуск лимфодренажа. МФР и растяжка помогут снизить отечность и ускорить ваш метаболизм на 15-20% уже в первый месяц.";
+      else report = "Показатели в норме. Фокус на эластичности связок поможет снизить биологический возраст сосудов и обеспечит глубокое расслабление нервной системы.";
+
+      document.getElementById('ai-text').innerText = report;
+      document.getElementById('calc-results').style.display = 'block';
     }
   </script>
 </body>
