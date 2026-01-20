@@ -43,32 +43,19 @@
     .nav-back { text-decoration: none; color: var(--purple); font-size: 0.75rem; font-weight: 700; border: 1px solid var(--purple); padding: 8px 18px; border-radius: 50px; text-transform: uppercase; transition: 0.3s; }
     .nav-back:hover { background: var(--purple); color: white; }
 
-    /* СЕТКА 3 В РЯД */
-    .grid { 
-        display: grid; 
-        grid-template-columns: repeat(3, 1fr); 
-        gap: 25px; max-width: 1200px; margin: 40px auto; padding: 0 20px; 
-    }
-    .card { 
-        background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.8); 
-        padding: 30px; border-radius: 28px; display: flex; flex-direction: column; justify-content: space-between; 
-        box-shadow: 0 15px 35px rgba(0,0,0,0.03); transition: 0.4s; position: relative; 
-    }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+    .card { background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.8); padding: 30px; border-radius: 28px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 15px 35px rgba(0,0,0,0.03); transition: 0.4s; position: relative; }
     .card:hover { transform: translateY(-10px); background: rgba(255, 255, 255, 0.8); box-shadow: 0 20px 40px var(--glow); }
     
     .card.recommended { border: 1.5px solid var(--gold); background: rgba(255, 252, 242, 0.8); }
-    .card.recommended::before { 
-        content: "ТРЕНЕР РЕКОМЕНДУЕТ"; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); 
-        background: var(--gold); color: #fff; padding: 4px 15px; font-size: 0.6rem; font-weight: 800; border-radius: 20px; white-space: nowrap;
-    }
+    .card.recommended::before { content: "ТРЕНЕР РЕКОМЕНДУЕТ"; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #fff; padding: 4px 15px; font-size: 0.6rem; font-weight: 800; border-radius: 20px; white-space: nowrap; }
 
     .card h3 { color: var(--purple); font-family: 'Cormorant Garamond', serif; margin: 0; font-size: 1.6rem; }
     .price-big { font-size: 2rem; font-weight: 900; margin: 15px 0; color: var(--purple); }
     
-    .btn-buy { display: block; background: var(--purple); color: #fff; text-align: center; padding: 16px; text-decoration: none; font-weight: 800; text-transform: uppercase; font-size: 0.75rem; border-radius: 14px; margin-top: 10px; transition: 0.3s; border: none; }
+    .btn-buy { display: block; background: var(--purple); color: #fff; text-align: center; padding: 16px; text-decoration: none; font-weight: 800; text-transform: uppercase; font-size: 0.75rem; border-radius: 14px; margin-top: 10px; transition: 0.3s; }
     .link-loan { display: block; margin-top: 12px; font-size: 0.65rem; color: var(--purple); text-align: center; font-weight: 700; text-decoration: none; text-transform: uppercase; opacity: 0.6; }
 
-    /* КАЛЬКУЛЯТОР */
     .calc-container { max-width: 600px; margin: 20px auto 40px; padding: 35px; background: rgba(255,255,255,0.4); backdrop-filter: blur(25px); border-radius: 35px; border: 1px solid rgba(255,255,255,0.6); box-shadow: 0 20px 50px rgba(0,0,0,0.05); }
     .calc-input { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); margin-top: 5px; font-size: 1rem; box-sizing: border-box; }
     .calc-res-box { display: none; margin-top: 25px; animation: fadeIn 0.6s ease; }
@@ -77,24 +64,29 @@
     .res-item span { display: block; font-size: 1.3rem; font-weight: 800; color: var(--purple); }
     .ai-analysis-report { background: rgba(93, 62, 142, 0.05); padding: 20px; border-radius: 20px; border-left: 4px solid var(--purple); font-size: 0.85rem; line-height: 1.5; text-align: left; }
 
-    /* ГЕЙМИФИКАЦИЯ */
-    .falling-item { position: absolute; cursor: pointer; font-size: 2rem; z-index: 50; }
-    .pred-bubble { position: absolute; background: var(--purple); color: #fff; padding: 10px 15px; border-radius: 12px; font-size: 0.75rem; animation: fadeUp 2.5s forwards; z-index: 100; text-align: center; width: 140px; }
+    .falling-item { position: absolute; cursor: pointer; font-size: 2rem; z-index: 50; user-select: none; }
+    .pred-bubble { position: absolute; background: var(--purple); color: #fff; padding: 10px 15px; border-radius: 12px; font-size: 0.75rem; animation: fadeUp 2.5s forwards; z-index: 100; text-align: center; width: 150px; font-weight: 600; line-height: 1.3; }
+    
     @keyframes fadeUp { 0% { opacity: 0; transform: translateY(0); } 20% { opacity: 1; transform: translateY(-30px); } 100% { opacity: 0; transform: translateY(-70px); } }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    
     #game-stat { position: fixed; top: 90px; right: 25px; background: #fff; padding: 8px 15px; border-radius: 14px; font-size: 0.7rem; border: 1px solid var(--purple); z-index: 1000; font-weight: 700; color: var(--purple); }
 
-    /* КВИЗ */
     .quiz-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(25px); padding: 40px; border-radius: 35px; max-width: 480px; width: 90%; margin: 140px auto 50px; text-align: center; box-shadow: 0 20px 45px rgba(0,0,0,0.06); }
     .quiz-option { display: block; width: 100%; padding: 18px; margin: 10px 0; background: #fff; border: 1px solid rgba(0,0,0,0.05); border-radius: 15px; cursor: pointer; text-align: left; transition: 0.3s; font-size: 0.95rem; }
     .quiz-option:hover { background: var(--pink); transform: translateX(5px); }
 
-    @media (max-width: 992px) { .grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 600px) { 
-        .grid { grid-template-columns: 1fr; } 
-        .header-center { display: none; } 
-        .quiz-card { margin-top: 110px; } 
+    footer { 
+        margin-top: 80px; padding: 40px 20px; text-align: center; 
+        background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(10px); 
+        border-top: 1px solid rgba(255, 255, 255, 0.8);
     }
+    .footer-link { font-size: 0.75rem; color: var(--purple); text-decoration: none; opacity: 0.6; font-weight: 700; transition: 0.3s; text-transform: uppercase; letter-spacing: 0.5px; }
+    .footer-link:hover { opacity: 1; color: var(--gold); }
+    .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 600; color: var(--purple); margin-top: 15px; letter-spacing: 2px; }
+
+    @media (max-width: 992px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } .header-center { display: none; } .quiz-card { margin-top: 110px; } }
   </style>
 </head>
 <body>
@@ -127,7 +119,7 @@
         <div><label style="font-size:0.6rem; font-weight:700; opacity:0.6;">РОСТ (СМ)</label><input type="number" id="height" class="calc-input" placeholder="170"></div>
       </div>
       <div style="margin-bottom: 20px;"><label style="font-size:0.6rem; font-weight:700; opacity:0.6;">ВОЗРАСТ</label><input type="number" id="age" class="calc-input" placeholder="25"></div>
-      <button class="btn-buy" style="width:100%; cursor:pointer; background: var(--purple);" onclick="runAnalysis()">Рассчитать показатели</button>
+      <button class="btn-buy" style="width:100%; cursor:pointer; background: var(--purple); border:none;" onclick="runAnalysis()">Рассчитать показатели</button>
 
       <div id="calc-results" class="calc-res-box">
         <div class="res-grid">
@@ -147,32 +139,32 @@
       <div class="card" id="c-64">
         <div><h3>64 занятия</h3><p style="font-size:0.7rem; color:#666;">Полная перезагрузка тела</p><div class="price-big">38 080 ₽</div></div>
         <div>
-          <a href="https://checkout.tochka.com/payment/v1/7083f2ba-8287-466d-978d-1943806a5992" class="btn-buy">Купить</a>
-          <a href="https://ecom.otpbank.ru/link/mI22X02pM_P" class="link-loan">Рассрочка на 12 мес.</a>
+          <a href="https://checkout.tochka.com/b880ee38-1c68-4215-85e8-1ca8081ec51a" class="btn-buy">Купить</a>
+          <a href="https://ecom.otpbank.ru/smart-form?config=20f5d944-cf78-4d48-99b7-b7c791aff1ba" class="link-loan">Рассрочка на 12 мес.</a>
         </div>
       </div>
 
       <div class="card" id="c-32">
         <div><h3>32 занятия</h3><p style="font-size:0.7rem; color:#666;">Результат, который заметят все</p><div class="price-big">20 160 ₽</div></div>
         <div>
-          <a href="https://checkout.tochka.com/payment/v1/71d5334c-628d-4be9-9238-51834241e3d6" class="btn-buy">Купить</a>
-          <a href="https://ecom.otpbank.ru/link/6m4vW01uR_P" class="link-loan">Рассрочка на 6 мес.</a>
+          <a href="https://checkout.tochka.com/b880ee38-1c68-4215-85e8-1ca8081ec51a" class="btn-buy">Купить</a>
+          <a href="https://ecom.otpbank.ru/smart-form?config=0d5d1d9f-2491-464b-b356-bea9d09bc09e" class="link-loan">Рассрочка на 6 мес.</a>
         </div>
       </div>
 
       <div class="card" id="c-16">
         <div><h3>16 занятий</h3><p style="font-size:0.7rem; color:#666;">Мягкое знакомство с растяжкой</p><div class="price-big">10 640 ₽</div></div>
-        <a href="https://checkout.tochka.com/payment/v1/a29df5b1-e2da-4b10-8646-f94d30e0717a" class="btn-buy">Купить</a>
+        <a href="https://checkout.tochka.com/b880ee38-1c68-4215-85e8-1ca8081ec51a" class="btn-buy">Купить</a>
       </div>
 
       <div class="card" id="c-trial" style="background: rgba(255, 209, 220, 0.2);">
-        <div><h3>Пробное</h3><p style="font-size:0.7rem; color:#666;">Первый шаг к мечте</p><div class="price-big">455 ₽</div></div>
-        <a href="https://clck.ru/366Cms" class="btn-buy" style="background: #E08FA3;">Записаться</a>
+        <div><h3>Пробное</h3><p style="font-size:0.7rem; color:#666;">Первый шаг к мечте</p><div class="price-big">500 ₽</div></div>
+        <a href="https://checkout.tochka.com/b880ee38-1c68-4215-85e8-1ca8081ec51a" class="btn-buy" style="background: #E08FA3;">Записаться</a>
       </div>
 
       <div class="card" id="c-unlimit" style="background: rgba(93, 62, 142, 0.05); border: 1.5px solid var(--purple);">
         <div><h3>БЕЗЛИМИТ</h3><p style="font-size:0.7rem; color:#666;">Твой безграничный фитнес</p><div class="price-big">8 000 ₽</div></div>
-        <a href="https://clck.ru/3RDNsC" class="btn-buy" style="background:#2D1B3E;">Забронировать</a>
+        <a href="https://checkout.tochka.com/b880ee38-1c68-4215-85e8-1ca8081ec51a" class="btn-buy" style="background:#2D1B3E;">Забронировать</a>
       </div>
 
       <div class="card" id="c-online">
@@ -180,32 +172,65 @@
         <a href="https://t.me/fitness11_online_bot" class="btn-buy" style="background:#0088cc;">Вступить в клуб</a>
       </div>
     </div>
+
+    <footer>
+      <a href="https://vk.com/ladystretch_syktyvkar" class="footer-link">Вопросы по абонементам --> Написать нам в ВК</a>
+      <div class="footer-logo">LADY STRETCH 2026</div>
+    </footer>
   </section>
 
   <script>
-    // МАГИЯ
+    // МАГИЯ И ЛОШАДКИ
     let score = parseInt(localStorage.getItem('magic_score_2026')) || 0;
-    const predictions = ["2026 — год твоей легкости!", "Твое тело скажет спасибо.", "Шпагат станет реальностью!", "Время вдохновлять.", "Твоя энергия на пике!"];
+    const predictions = [
+        "2026 — год твоей легкости!", "Твое тело скажет спасибо!", "Шпагат станет реальностью!", 
+        "Время вдохновлять окружающих!", "Твоя энергия на пике!", "Лошадка приносит удачу!",
+        "Сегодня идеальный день для тренировки!", "Ты сияешь ярче всех звезд!", "Гибкость — это твоя суперсила!",
+        "Скоро ты почувствуешь невероятную легкость!", "Твои цели достижимы, действуй!", "Красивая осанка — твой залог уверенности!",
+        "Магия происходит там, где ты работаешь над собой!", "2026 подарит тебе новое тело!", "Твой прогресс восхищает!",
+        "С каждым днем ты становишься лучше!", "Растяжка — это любовь к себе!", "Доверься процессу, результат близко!",
+        "Ты — воплощение грации!", "Твой путь к мечте начался сегодня!"
+    ];
+    
     document.getElementById('score').innerText = score;
 
     function spawn() {
       if(score >= 20) return;
       const el = document.createElement('div');
-      el.className = 'falling-item'; el.innerText = ['✨','🌸','💎'][Math.floor(Math.random()*3)];
-      el.style.left = Math.random()*90+'%'; el.style.top = '70px';
+      el.className = 'falling-item';
+      const items = ['✨','🌸','💎','🐎','✨','🐎','💎']; 
+      el.innerText = items[Math.floor(Math.random()*items.length)];
+      el.style.left = Math.random()*90+'%'; 
+      el.style.top = '70px';
       document.body.appendChild(el);
-      el.animate([{top: '70px'}, {top: '100vh'}], {duration: 9000}).onfinish = () => el.remove();
+
+      const animation = el.animate([
+        {top: '70px', transform: 'rotate(0deg)'}, 
+        {top: '100vh', transform: 'rotate(360deg)'}
+      ], {
+        duration: 7000 + Math.random() * 3000,
+        easing: 'linear'
+      });
+
+      animation.onfinish = () => el.remove();
+
       el.onclick = (e) => {
-        score++; localStorage.setItem('magic_score_2026', score);
+        score++; 
+        localStorage.setItem('magic_score_2026', score);
         document.getElementById('score').innerText = score;
-        const b = document.createElement('div'); b.className = 'pred-bubble';
+        
+        const b = document.createElement('div'); 
+        b.className = 'pred-bubble';
         b.innerText = predictions[Math.floor(Math.random()*predictions.length)];
-        b.style.left = (e.pageX - 70) + 'px'; b.style.top = (e.pageY - 50) + 'px';
-        document.body.appendChild(b); setTimeout(() => b.remove(), 2500);
-        el.remove();
+        b.style.left = (e.pageX - 75) + 'px'; 
+        b.style.top = (e.pageY - 50) + 'px';
+        document.body.appendChild(b); 
+        
+        el.style.display = 'none';
+        setTimeout(() => b.remove(), 2500);
       };
     }
-    setInterval(spawn, 3000);
+    setInterval(spawn, 2500);
 
     // КВИЗ
     let tempGoal = "";
@@ -227,26 +252,27 @@
       document.getElementById('quiz-view').style.display = 'none';
       document.getElementById('packages-view').style.display = 'block';
       const msg = document.getElementById('coach-msg');
-      
-      if(type === 'online') {
-          document.getElementById('c-online').classList.add('recommended');
-          msg.innerHTML = "Для ваших целей идеально подходит:<br><strong>ONLINE-КЛУБ</strong>";
-      } else if(type === 'hybrid') {
-          document.getElementById('c-32').classList.add('recommended');
-          msg.innerHTML = "Оптимальный старт для вас:<br><strong>32 ЗАНЯТИЯ</strong>";
-      } else {
-          document.getElementById('c-64').classList.add('recommended');
-          msg.innerHTML = "Максимальный результат даст:<br><strong>64 ЗАНЯТИЯ</strong>";
+      if(type === 'online') { 
+          document.getElementById('c-online').classList.add('recommended'); 
+          msg.innerHTML = "Для ваших целей идеально подходит:<br><strong>ONLINE-КЛУБ</strong>"; 
+      }
+      else if(type === 'hybrid') { 
+          document.getElementById('c-32').classList.add('recommended'); 
+          msg.innerHTML = "Оптимальный старт для вас:<br><strong>32 ЗАНЯТИЯ</strong>"; 
+      }
+      else { 
+          document.getElementById('c-64').classList.add('recommended'); 
+          msg.innerHTML = "Максимальный результат даст:<br><strong>64 ЗАНЯТИЯ</strong>"; 
       }
       window.scrollTo({top: 0, behavior: 'smooth'});
     }
 
-    // АНАЛИТИКА
+    // БИОМЕТРИЯ
     function runAnalysis() {
       const w = parseFloat(document.getElementById('weight').value);
       const h = parseFloat(document.getElementById('height').value);
       const a = parseFloat(document.getElementById('age').value);
-      if(!w || !h || !a) return alert("Пожалуйста, заполните данные");
+      if(!w || !h || !a) return alert("Пожалуйста, заполните данные для расчета");
       
       const bmr = (10 * w) + (6.25 * h) - (5 * a) - 161;
       const maintenance = Math.round(bmr * 1.375);
@@ -256,9 +282,9 @@
       document.getElementById('res-water').innerText = (w * 0.033).toFixed(1);
 
       let report = "";
-      if (bmi < 18.5) report = "Вашему телу необходим бережный тонус. Акцент на Sky Stretching поможет укрепить мышечный корсет без лишней нагрузки на суставы, сохраняя природную изящность.";
-      else if (bmi > 25) report = "Приоритетная задача — запуск лимфодренажной системы. Комбинация МФР и активной растяжки позволит снизить отечность и ускорить метаболизм на 15-20% уже в первый месяц.";
-      else report = "Ваши показатели в норме. Для поддержания высокого уровня энергии рекомендуем фокус на эластичности связок. Это снизит биологический возраст сосудов и улучшит качество сна.";
+      if (bmi < 18.5) report = "Вашему телу необходим бережный тонус. Акцент на Sky Stretching поможет укрепить мышечный корсет без нагрузки на суставы, сохраняя изящность.";
+      else if (bmi > 25) report = "Приоритетная задача — запуск лимфодренажа. МФР и растяжка позволят снизить отечность и ускорить метаболизм уже в первый месяц.";
+      else report = "Ваши показатели в норме. Рекомендуем фокус на эластичности связок и глубоком расслаблении — это снизит биологический возраст сосудов и улучшит сон.";
 
       document.getElementById('ai-text').innerText = report;
       document.getElementById('calc-results').style.display = 'block';
