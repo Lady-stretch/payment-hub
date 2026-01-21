@@ -361,13 +361,42 @@
         <source src="hero-video.mp4" type="video/mp4">
     </video>
 
-    <div style="position: absolute; top: 80px; left: 0; width: 100%; z-index: 10; padding: 0 15px;">
-        <div style="max-width: 500px; margin: 0 auto; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 20px; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-            <p style="font-size: 0.9rem; color: #fff; font-style: italic; line-height: 1.3; margin: 0; text-shadow: 0 1px 2px rgba(0,0,0,0.2);">
-                «Мы знаем, как ты устала. Наша студия — это <span style="font-weight: 600; color: #FFD1DC;">легальный способ сбежать</span> от дел на час. Только ты и твоя спина.»
-            </p>
-        </div>
+    <a href="https://clck.ru/3RDNsC" target="_blank" class="marquee-glass-container">
+    <div class="marquee-content">
+        <span class="m-bold">ЗАПИШИСЬ УЖЕ СЕЙЧАС</span>
+        <span class="m-light">ВЫБЕРИ ТРЕНИРОВКУ</span>
+        <span class="m-glow">УЗНАЙ СВОИ ВОЗМОЖНОСТИ</span>
+        <span class="m-light">ПОДАРИ СЕБЕ СЧАСТЬЕ</span>
+        <span class="m-bold">УКРЕПИ СВОЕ ЗДОРОВЬЕ</span>
+        <span class="m-light">НАЧНИ С СЕБЯ</span>
+        <span class="m-glow">ВСПОМНИ СВОИ ЦЕЛИ</span>
+        <span class="m-light">МЕЧТАЙ</span>
+        <span class="m-bold">МЕЧТЫ СБЫВАЮТСЯ</span>
+        <span class="m-glow">ЗАФИКСИРУЙ "ДО" СЕГОДНЯ И "ПОСЛЕ" ЧЕРЕЗ ГОД</span>
+        <span class="m-light">СДЕЛАЙ СЕБЕ ПОДАРОК</span>
+        <span class="m-bold">ВЫКЛЮЧИ СТРАХ, ВОЗЬМИ СИЛУ И ЛЕГКОСТЬ</span>
+        <span class="m-glow">ТВОЕ ТЕЛО НЕ ТЮРЬМА</span>
+        <span class="m-light">ВЫКЛЮЧИ РЕЖИМ ОЖИДАНИЯ</span>
+        <span class="m-bold">РАЗРЕШИ СЕБЕ ДЫШАТЬ</span>
+        <span class="m-light">ПРИГЛАСИ ПОДРУГУ</span>
+        <span class="m-bold">ЗАПИШИСЬ УЖЕ СЕЙЧАС</span>
+        <span class="m-light">ВЫБЕРИ ТРЕНИРОВКУ</span>
+        <span class="m-glow">УЗНАЙ СВОИ ВОЗМОЖНОСТИ</span>
+        <span class="m-light">ПОДАРИ СЕБЕ СЧАСТЬЕ</span>
+        <span class="m-bold">УКРЕПИ СВОЕ ЗДОРОВЬЕ</span>
+        <span class="m-light">НАЧНИ С СЕБЯ</span>
+        <span class="m-glow">ВСПОМНИ СВОИ ЦЕЛИ</span>
+        <span class="m-light">МЕЧТАЙ</span>
+        <span class="m-bold">МЕЧТЫ СБЫВАЮТСЯ</span>
+        <span class="m-glow">ЗАФИКСИРУЙ "ДО" СЕГОДНЯ И "ПОСЛЕ" ЧЕРЕЗ ГОД</span>
+        <span class="m-light">СДЕЛАЙ СЕБЕ ПОДАРОК</span>
+        <span class="m-bold">ВЫКЛЮЧИ СТРАХ, ВОЗЬМИ СИЛУ И ЛЕГКОСТЬ</span>
+        <span class="m-glow">ТВОЕ ТЕЛО НЕ ТЮРЬМА</span>
+        <span class="m-light">ВЫКЛЮЧИ РЕЖИМ ОЖИДАНИЯ</span>
+        <span class="m-bold">РАЗРЕШИ СЕБЕ ДЫШАТЬ</span>
+        <span class="m-light">ПРИГЛАСИ ПОДРУГУ</span>
     </div>
+</a>
 
     <div class="hero-content" style="position: relative; z-index: 2;">
         <p style="text-transform: uppercase; letter-spacing: 4px; font-size: 0.8rem;">Est. 2026 // Сыктывкар</p>
@@ -549,6 +578,68 @@ function toggleMenu() {
       #ls-ai-button::after { display: none; } /* Скрываем текст на мобилках */
       #ls-ai-button { width: 55px; height: 55px; bottom: 15px; right: 15px; }
     }
+    /* Стили бегущей строки */
+.marquee-glass-container {
+    position: absolute;
+    top: 100px; /* Отступ от верха, чтобы не перекрывать логотип */
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    background: rgba(10, 2, 20, 0.75); /* Темное стекло */
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 18px 0;
+    overflow: hidden;
+    text-decoration: none;
+    display: flex;
+    cursor: pointer;
+}
+
+.marquee-content {
+    display: flex;
+    white-space: nowrap;
+    animation: marquee-run 50s linear infinite; /* 50 секунд для вдумчивого чтения */
+}
+
+.marquee-content span {
+    font-size: 1.2rem;
+    color: #fff;
+    letter-spacing: 2px;
+    padding: 0 60px;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    align-items: center;
+}
+
+/* Эффекты для разных фраз */
+.m-glow {
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 0 10px #FFD1DC, 0 0 25px rgba(255, 209, 220, 0.8);
+}
+
+.m-bold { font-weight: 800; }
+
+.m-light { font-weight: 300; opacity: 0.8; }
+
+/* Сама анимация движения */
+@keyframes marquee-run {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+/* Остановка при наведении */
+.marquee-glass-container:hover .marquee-content {
+    animation-play-state: paused;
+}
+
+/* Адаптация для мобильных: текст чуть мельче */
+@media (max-width: 768px) {
+    .marquee-content span { font-size: 1rem; padding: 0 40px; }
+    .marquee-glass-container { top: 80px; padding: 12px 0; }
+}
   </style>
 
   <button id="ls-ai-button">💬</button>
