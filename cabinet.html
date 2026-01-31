@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Lady Stretch - My Transformation</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --purple: #7a5af8;
+            --gold: #d4af37;
+            --glass: rgba(255, 255, 255, 0.15);
+            --text: #2d2d2d;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 400px;
+            padding: 20px 0;
+        }
+
+        /* Эффект стекла (Glassmorphism) */
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+        }
+
+        h1 { font-size: 1.5rem; text-align: center; margin-bottom: 5px; color: var(--purple); }
+        p.subtitle { text-align: center; font-size: 0.9rem; opacity: 0.7; margin-bottom: 25px; }
+
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .stat-item { text-align: center; }
+        .stat-value { font-size: 1.8rem; font-weight: bold; color: var(--purple); display: block; }
+        .stat-label { font-size: 0.75rem; opacity: 0.6; text-transform: uppercase; }
+
+        /* Кнопка действия */
+        .action-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--purple);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-top: 10px;
+        }
+        .action-btn:active { transform: scale(0.98); }
+
+        /* Блок Био-хука */
+        #bio-hook {
+            font-style: italic;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #444;
+            border-left: 3px solid var(--gold);
+            padding-left: 15px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            background: rgba(255,255,255,0.5);
+            border: 1px solid var(--purple);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="glass-card">
+        <h1>Трансформация</h1>
+        <p class="subtitle" id="user-name">Загрузка магии...</p>
+        
+        <div class="stat-grid">
+            <div class="stat-item">
+                <span class="stat-value" id="workout-count">0</span>
+                <span class="stat-label">Занятий</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value" id="current-flex">0</span>
+                <span class="stat-label">см до пола</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="glass-card">
+        <canvas id="progressChart"></canvas>
+    </div>
+
+    <div class="glass-card">
+        <label class="stat-label">Сегодняшний замер (см):</label>
+        <input type="number" id="new-measure" placeholder="Введите результат">
+        <button class="action-btn" onclick="saveProgress()">ЗАСЧИТАТЬ ТРЕНИРОВКУ</button>
+    </div>
+
+    <div class="glass-card" id="hook-card">
+        <div id="bio-hook">«Первая искра зажжена. Большие перемены начинаются с одного бережного движения...»</div>
+    </div>
+</div>
+
+<script>
+    const tg = window.Telegram.WebApp;
+    tg.expand(); // Развернуть на весь экран
+
+    const user = tg.initDataUnsafe?.user;
+    if (user) {
+        document.getElementById('user-name').innerText = user.first_name + ', твоя карта гибкости';
+    }
+
+    // Настройка графика
+    const ctx = document.getElementById('progressChart').getContext('2d');
+    let chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Старт', 'Т1', 'Т2', 'Т3'], // Это будет тянуться из YDB
+            datasets: [{
+                label: 'Гибкость (см)',
+                data: [40, 38, 35, 34], // И это тоже
+                borderColor: '#7a5af8',
+                tension: 0.4,
+                fill: true,
+                backgroundColor: 'rgba(122, 90, 248, 0.1)'
+            }]
+        },
+        options: {
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: false }, x: { display: false } }
+        }
+    });
+
+    // Функция сохранения (отправка в твой бот)
+    function saveProgress() {
+        const val = document.getElementById('new-measure').value;
+        if(!val) return alert("Введи замер!");
+
+        // Визуальный эффект
+        tg.HapticFeedback.notificationOccurred('success');
+        
+        // Отправляем данные обратно в бот
+        tg.sendData(JSON.stringify({
+            action: 'update_progress',
+            measure: val,
+            user_id: user?.id
+        }));
+
+        tg.close(); // Закрываем WebApp после ввода
+    }
+</script>
+
+</body>
+</html>
