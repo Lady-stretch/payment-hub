@@ -279,6 +279,9 @@
     tg.expand();
     tg.ready();
 
+    // ССЫЛКА НА ТВОЙ ЯНДЕКС (вставляем один раз здесь)
+    const YANDEX_API_URL = 'https://functions.yandexcloud.net/d4e4hhddaqn4qhrq6cj5';
+
     // ГЛОБАЛЬНАЯ БАЗА (LS Elite V7)
     let db = JSON.parse(localStorage.getItem('ls_elite_v7_complete')) || {
         metrics: { 
@@ -288,6 +291,28 @@
         workouts: {},
         energy: "mid"
     };
+
+    // ФУНКЦИЯ ОТПРАВКИ (добавляем её сразу после базы)
+    async function sendToYandex(payload) {
+        const dot = document.querySelector('.status-dot');
+        const statusText = document.querySelector('.backend-status span');
+        try {
+            dot.style.background = '#ff9f0a'; // Оранжевый — пошла загрузка
+            statusText.innerText = 'SENDING TO YDB...';
+            const response = await fetch(YANDEX_API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            if (response.ok) {
+                dot.style.background = '#32d74b'; // Зеленый — успех
+                statusText.innerText = 'YANDEX_CLOUD_ACTIVE';
+            } else { throw new Error(); }
+        } catch (e) {
+            dot.style.background = '#ff453a'; // Красный — ошибка
+            statusText.innerText = 'SYNC_ERROR';
+        }
+    }
 
     const calmList = ['Пилатес', 'Стретчинг', 'МФР', 'Здоровая спина', 'Sky Stretching', 'Йога релакс'];
     const activeList = ['Подкачка+Шпагат', 'Ягодицы+Пресс', 'Круговая', 'Body Sculpt', 'Табата', 'TRX'];
@@ -420,6 +445,18 @@
         }
         checkBMI(); updateChart(); saveDB();
         tg.HapticFeedback.notificationOccurred('success');
+        // Эта строчка внутри saveMetrics отправит всё в облако
+    sendToYandex({
+        user_id: tg.initDataUnsafe.user?.id || 0,
+        username: tg.initDataUnsafe.user?.username || 'guest',
+        weight: w,
+        height: db.metrics.height,
+        chest: document.getElementById('c-in').value,
+        waist: document.getElementById('ws-in').value,
+        energy: db.energy,
+        total_workouts: Object.values(db.workouts).reduce((a, b) => a + b, 0),
+        method: 'update_metrics'
+    });
     }
 
     function checkBMI() {
