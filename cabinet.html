@@ -263,19 +263,39 @@
         96: {t: "96 ЗАНЯТИЙ. ГРАНД МАСТЕР", d: "Регулярность — признак любви к себе. Вы достигли вершины. Ваша награда — скидка 20% на любой абонемент!", isFinal: true}
     };
 
-    // НОВАЯ ФУНКЦИЯ: СИНХРОНИЗАЦИЯ С ОБЛАКОМ
+    // === РЕАЛЬНАЯ СИНХРОНИЗАЦИЯ С ТВОЕЙ YDB ===
     async function syncWithYDB() {
         const dot = document.getElementById('sync-indicator');
-        dot.classList.add('active'); // Становится оранжевой
+        dot.classList.add('active'); // Оранжевый — поехали!
         
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                saveDB(); // Сохраняем локально
-                dot.classList.remove('active'); // Возвращается в зеленый
-                console.log("Data synced with YDB");
-                resolve();
-            }, 1500);
-        });
+        try {
+            // Используем ID пользователя из Telegram как ключ в базе
+            const userId = tg.initDataUnsafe?.user?.id || 'local_user';
+            
+            const response = await fetch('https://d5du1tksblqr7q5d8nqs.fary004x.apigw.yandexcloud.net', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user_id: userId,
+                    payload: db // Отправляем весь объект db
+                })
+            });
+
+            if (response.ok) {
+                saveDB(); // Обновляем локальную копию
+                dot.classList.remove('active'); // Зеленый — данные в облаке!
+                console.log("Успешно сохранено в YDB");
+            } else {
+                throw new Error('Ошибка сервера');
+            }
+        } catch (e) {
+            console.error("Связь прервана:", e);
+            dot.style.background = 'var(--danger)'; // Красный — если что-то пошло не так
+            dot.style.boxShadow = '0 0 10px var(--danger)';
+        }
+    }
     }
 
     function init() {
