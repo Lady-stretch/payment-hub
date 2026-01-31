@@ -166,10 +166,7 @@
     <div class="card" style="grid-row: span 2;">
         <div class="card-header">
             <span class="card-title">Динамика & Цели</span>
-            <div style="text-align: right;">
-    <div style="font-size: 10px; opacity: 0.7;" id="status-msg">Анализ...</div>
-    <div id="global-rank" style="font-size: 9px; color: var(--success); margin-top: 4px; font-weight: 600; letter-spacing: 0.5px;"></div>
-</div>
+            <div style="font-size: 10px; opacity: 0.7;" id="status-msg">Анализ...</div>
         </div>
         <div style="flex: 1; position: relative; min-height: 250px;">
             <canvas id="mainChart"></canvas>
@@ -279,8 +276,6 @@
         if(db.metrics.height) document.getElementById('h-in').value = db.metrics.height;
         const lastW = db.metrics.weight[db.metrics.weight.length-1];
         if(lastW) document.getElementById('w-in').value = lastW;
-
-        updateRank(); // Теперь здесь чисто
     }
 
     // === ЛОГИКА ТРЕНИРОВОК ===
@@ -317,21 +312,11 @@
             tg.HapticFeedback.impactOccurred('light');
         }
 
-        updateRank(); // Обновляем рейтинг при добавлении
         saveDB();
         renderButtons();
         updateStats();
     }
 
-    // Вынес функцию отдельно, чтобы она была доступна отовсюду
-    function updateRank() {
-        const total = Object.values(db.workouts).reduce((a,b)=>a+b,0);
-        const rankEl = document.getElementById('global-rank');
-        if (total > 0 && rankEl) {
-            let percent = total > 24 ? "ТОП-1%" : total > 12 ? "ТОП-5%" : total > 5 ? "ТОП-15%" : "ТОП-30%";
-            rankEl.innerText = `Вы в ${percent} активных участниц LS`;
-        }
-    }
     // Функция ручного изменения (+ / -)
     function manualEdit(name, delta) {
         if(!db.workouts[name]) db.workouts[name] = 0;
