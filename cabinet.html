@@ -3,157 +3,190 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LS: Evolution Portal 2026</title>
+    <title>Lady Stretch | Professional Evolution 2026</title>
     
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;600&display=swap" rel="stylesheet">
     
     <style>
         :root {
             --accent: #b085ff;
-            --glass: rgba(255, 255, 255, 0.08);
-            --border: rgba(255, 255, 255, 0.15);
-            --glow: rgba(176, 133, 255, 0.4);
+            --accent-glow: rgba(176, 133, 255, 0.5);
+            --glass: rgba(255, 255, 255, 0.07);
+            --glass-strong: rgba(255, 255, 255, 0.12);
+            --border: rgba(255, 255, 255, 0.18);
+            --bg: #030308;
         }
 
-        body, html {
-            margin: 0; padding: 0; min-height: 100vh;
-            background: #040408; font-family: 'Montserrat', sans-serif;
-            color: #fff; overflow-x: hidden; -webkit-tap-highlight-color: transparent;
-        }
+        * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+        body, html { margin: 0; padding: 0; min-height: 100vh; background: var(--bg); font-family: 'Montserrat', sans-serif; color: #fff; overflow-x: hidden; }
 
-        /* КОСМИЧЕСКИЙ ФОН */
-        .universe { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -3; background: #040408; }
-        .aurora {
-            position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle at center, #7a5af810 0%, #24f0ff05 35%, transparent 70%);
-            z-index: -2; animation: rotateA 45s linear infinite;
-        }
-        #stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-        @keyframes rotateA { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        /* --- ФОНОВЫЕ ЭФФЕКТЫ --- */
+        .universe { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -5; background: radial-gradient(circle at 50% 10%, #150f2b 0%, #030308 100%); }
+        #stars-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -4; }
+        .aurora-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -3; filter: blur(100px); opacity: 0.6; pointer-events: none; }
+        .aurora-spot { position: absolute; border-radius: 50%; animation: drift 20s infinite alternate; }
+        .spot-1 { width: 400px; height: 400px; background: #7a5af820; top: -10%; left: -10%; }
+        .spot-2 { width: 500px; height: 500px; background: #24f0ff10; bottom: -10%; right: -10%; animation-delay: -5s; }
+        @keyframes drift { from { transform: translate(0,0) scale(1); } to { transform: translate(100px, 50px) scale(1.2); } }
 
-        /* HEADER */
+        /* --- ШАПКА --- */
         header {
-            position: fixed; top: 0; width: 100%; height: 75px;
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 0 20px; box-sizing: border-box; z-index: 1000;
-            background: rgba(0,0,0,0.6); backdrop-filter: blur(20px);
-            border-bottom: 0.5px solid var(--border);
+            position: fixed; top: 0; width: 100%; height: 85px; z-index: 1000;
+            display: flex; align-items: center; padding: 0 25px;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(20px); border-bottom: 0.5px solid var(--border);
         }
-        .logo { width: 42px; height: 42px; border-radius: 50%; border: 1.5px solid var(--accent); overflow: hidden; box-shadow: 0 0 15px var(--glow); }
-        .logo img { width: 100%; height: 100%; object-fit: cover; }
-        .title { font-weight: 100; letter-spacing: 3px; font-size: 10px; text-transform: uppercase; text-align: center; flex: 1; }
+        .logo-box { width: 48px; height: 48px; border-radius: 50%; border: 1.5px solid var(--accent); overflow: hidden; box-shadow: 0 0 20px var(--accent-glow); }
+        .logo-box img { width: 100%; height: 100%; object-fit: cover; }
+        .header-info { flex: 1; margin-left: 15px; }
+        .header-info h1 { margin: 0; font-size: 11px; font-weight: 200; letter-spacing: 3px; color: #fff; text-transform: uppercase; }
+        .header-info p { margin: 2px 0 0; font-size: 9px; color: var(--accent); font-weight: 600; letter-spacing: 1px; }
 
-        /* CONTENT */
-        .container {
-            width: 100%; max-width: 500px; margin: 0 auto; padding: 100px 15px 40px;
-            display: flex; flex-direction: column; gap: 20px; box-sizing: border-box;
-        }
+        /* --- ОСНОВНОЙ КОНТЕНТ --- */
+        .main-scroll { width: 100%; max-width: 800px; margin: 0 auto; padding: 110px 20px 50px; display: flex; flex-direction: column; gap: 25px; }
 
-        .card {
-            background: var(--glass); backdrop-filter: blur(30px);
-            border: 1px solid var(--border); border-radius: 35px;
-            padding: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        .glass-card {
+            background: var(--glass); backdrop-filter: blur(30px) saturate(150%); border: 1px solid var(--border);
+            border-radius: 35px; padding: 30px; box-shadow: 0 25px 50px rgba(0,0,0,0.4);
         }
 
-        .label { font-size: 9px; letter-spacing: 2px; color: var(--accent); text-transform: uppercase; margin-bottom: 15px; display: block; font-weight: 600; }
+        /* --- ГРАФИК --- */
+        .chart-wrap { height: 220px; width: 100%; margin-top: 15px; }
 
-        /* CHART */
-        #chartBox { height: 200px; width: 100%; }
+        /* --- СТАТИСТИКА --- */
+        .label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; color: var(--accent); margin-bottom: 20px; display: block; }
+        .total-display { display: flex; align-items: baseline; gap: 15px; margin-bottom: 10px; }
+        .total-num { font-size: 72px; font-weight: 100; letter-spacing: -4px; line-height: 1; }
+        .total-unit { font-size: 16px; font-weight: 300; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 2px; }
 
-        /* GRID КНОПОК */
-        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .btn-dir {
-            background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-            border-radius: 20px; padding: 25px 10px; text-align: center;
-            font-size: 11px; cursor: pointer; transition: 0.3s; font-weight: 300;
+        .science-box { font-size: 14px; line-height: 1.7; font-weight: 300; color: rgba(255,255,255,0.85); min-height: 80px; transition: 0.3s; }
+        .science-box b { color: var(--accent); font-weight: 600; }
+
+        /* --- СЕТКА ТРЕНИРОВОК --- */
+        .train-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .train-item {
+            background: var(--glass); border: 1px solid var(--border); border-radius: 25px;
+            padding: 25px 15px; text-align: center; cursor: pointer; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
         }
-        .btn-dir.active { background: #fff; color: #000; font-weight: 600; box-shadow: 0 0 20px #fff; }
+        .train-item.active { background: #fff; color: #000; border-color: #fff; box-shadow: 0 0 30px rgba(255,255,255,0.3); transform: scale(1.02); }
+        .train-item h3 { margin: 0; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .train-item span { font-size: 20px; font-weight: 200; display: block; margin-top: 8px; opacity: 0.6; }
+        .train-item.active span { opacity: 1; color: #000; font-weight: 600; }
 
-        /* INPUT AREA */
-        .input-panel { margin-top: 15px; display: none; padding-top: 15px; border-top: 1px solid var(--border); }
-        .input-panel.active { display: block; animation: fadeInUp 0.4s ease; }
+        /* --- ВВОД --- */
+        .input-section { display: none; margin-top: 5px; animation: slideUp 0.5s ease forwards; }
+        .input-section.visible { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        
         .f-input {
-            width: 100%; background: transparent; border: none; border-bottom: 2px solid var(--accent);
-            color: #fff; font-size: 36px; padding: 10px 0; outline: none; margin: 10px 0; text-align: center;
+            width: 100%; background: transparent; border: none; border-bottom: 2.5px solid var(--accent);
+            color: #fff; font-size: 42px; padding: 15px 0; outline: none; text-align: center; font-weight: 200; margin-bottom: 20px;
         }
         .f-btn {
-            width: 100%; background: #fff; color: #000; border: none; padding: 20px;
-            border-radius: 20px; font-weight: 600; text-transform: uppercase; cursor: pointer;
+            width: 100%; background: #fff; color: #000; border: none; padding: 22px; border-radius: 25px;
+            font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: 0.3s;
         }
+        .f-btn:active { transform: scale(0.97); background: var(--accent); color: #fff; }
 
-        /* MILESTONE */
-        .modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.92); z-index: 2000; display: none;
-            align-items: center; justify-content: center; padding: 25px; box-sizing: border-box;
+        /* --- МОДАЛКА --- */
+        .milestone-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000;
+            background: rgba(0,0,0,0.9); backdrop-filter: blur(25px); display: none; align-items: center; justify-content: center; padding: 30px;
         }
-        .modal-card {
-            background: linear-gradient(135deg, rgba(176,133,255,0.2), rgba(255,255,255,0.05));
-            border: 1px solid #fff; border-radius: 40px; padding: 40px; text-align: center; backdrop-filter: blur(20px);
+        .milestone-card {
+            background: linear-gradient(135deg, rgba(176,133,255,0.25), rgba(255,255,255,0.05));
+            border: 1px solid #fff; border-radius: 45px; padding: 45px; text-align: center; max-width: 450px;
+            box-shadow: 0 0 60px var(--accent-glow);
         }
+        .milestone-card h2 { font-weight: 100; font-size: 42px; margin: 10px 0; letter-spacing: -2px; }
 
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        /* Адаптивность для планшетов */
+        @media (min-width: 700px) {
+            .train-grid { grid-template-columns: repeat(3, 1fr); }
+            .header-info h1 { font-size: 14px; }
+        }
     </style>
 </head>
 <body>
 
 <div class="universe"></div>
-<div class="aurora"></div>
-<canvas id="stars"></canvas>
+<div class="aurora-container">
+    <div class="aurora-spot spot-1"></div>
+    <div class="aurora-spot spot-2"></div>
+</div>
+<canvas id="stars-layer"></canvas>
 
 <header>
-    <div class="logo"><img src="lady_logo.png" alt="LS"></div>
-    <div class="title">АНАЛИТИКА ТРАНСФОРМАЦИИ 2026</div>
-    <div style="font-size: 9px; color: var(--accent);">MENU</div>
+    <div class="logo-box"><img src="lady_logo.png" alt="LS"></div>
+    <div class="header-info">
+        <h1>Твоя эволюция</h1>
+        <p id="user-status">Status: Биологическое обновление</p>
+    </div>
 </header>
 
-<div class="container">
-    
-    <div class="card">
-        <span class="label">Динамика посещений (Год)</span>
-        <div id="chartBox">
-            <canvas id="myChart"></canvas>
+<div class="main-scroll">
+    <div class="glass-card">
+        <span class="label">Динамика прогресса 2026</span>
+        <div class="chart-wrap">
+            <canvas id="mainChart"></canvas>
         </div>
     </div>
 
-    <div class="card">
+    <div class="glass-card" id="stat-panel">
         <span class="label">Твой биологический паспорт</span>
-        <div style="display: flex; align-items: baseline; gap: 10px;">
-            <div id="total-val" style="font-size: 64px; font-weight: 100;">0</div>
-            <div style="font-size: 14px; color: #666;">ЗАНЯТИЙ</div>
+        <div class="total-display">
+            <div class="total-num" id="total-val">0</div>
+            <div class="total-unit">Занятий</div>
         </div>
-        <div id="bio-text" style="font-size: 13px; line-height: 1.6; font-weight: 300; margin-top: 15px; color: rgba(255,255,255,0.7);">
-            Нажми на направление ниже, чтобы добавить тренировку и увидеть научный разбор прогресса.
+        
+        <div class="science-box" id="info-display">
+            Нажмите на любое направление тренировки. Мы покажем детальную аналитику того, как именно меняется ваше тело после каждой нагрузки.
         </div>
     </div>
 
-    <div class="btn-grid">
-        <div class="btn-dir" onclick="sel(this, 'abs')">Ягодицы + Пресс</div>
-        <div class="btn-dir" onclick="sel(this, 'spine')">Здоровая спина</div>
-        <div class="btn-dir" onclick="sel(this, 'stretch')">Шпагат</div>
-        <div class="btn-dir" onclick="sel(this, 'sky')">Sky Stretching</div>
-        <div class="btn-dir" onclick="sel(this, 'tabata')">Табата</div>
-        <div class="btn-dir" onclick="sel(this, 'sculpt')">Body Sculpt</div>
+    <div class="train-grid">
+        <div class="train-item" onclick="selectDir(this, 'abs')">
+            <h3>Ягодицы + Пресс</h3>
+            <span id="cnt-abs">0</span>
+        </div>
+        <div class="train-item" onclick="selectDir(this, 'spine')">
+            <h3>Спина</h3>
+            <span id="cnt-spine">0</span>
+        </div>
+        <div class="train-item" onclick="selectDir(this, 'stretch')">
+            <h3>Шпагат</h3>
+            <span id="cnt-stretch">0</span>
+        </div>
+        <div class="train-item" onclick="selectDir(this, 'sky')">
+            <h3>Sky Stretch</h3>
+            <span id="cnt-sky">0</span>
+        </div>
+        <div class="train-item" onclick="selectDir(this, 'tabata')">
+            <h3>Табата</h3>
+            <span id="cnt-tabata">0</span>
+        </div>
+        <div class="train-item" onclick="selectDir(this, 'sculpt')">
+            <h3>Body Sculpt</h3>
+            <span id="cnt-sculpt">0</span>
+        </div>
     </div>
 
-    <div class="card input-panel" id="input-box">
-        <span class="label" id="dir-title">Направление</span>
-        <span id="dir-hint" style="font-size: 11px; color: #555;"></span>
-        <input type="number" class="f-input" id="num-in" placeholder="0">
-        <button class="f-btn" onclick="save()">Зафиксировать серию</button>
+    <div class="glass-card input-section" id="input-block">
+        <span class="label" id="input-label">Ввод данных</span>
+        <div id="input-hint" style="font-size: 11px; color: #555; margin-bottom: 5px;"></div>
+        <input type="number" class="f-input" id="num-val" placeholder="0">
+        <button class="f-btn" onclick="commit()">Зафиксировать тренировку</button>
     </div>
-
 </div>
 
-<div class="modal" id="ms-modal" onclick="this.style.display='none'">
-    <div class="modal-card">
-        <span class="label" style="color:#fff">ЭВОЛЮЦИЯ РАЗБЛОКИРОВАНА</span>
-        <h1 style="font-weight: 100; font-size: 48px; margin: 15px 0;">8 ЗАНЯТИЙ</h1>
-        <p id="ms-desc" style="font-size: 14px; line-height: 1.7; font-weight: 300;"></p>
-        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.2); font-size: 10px; letter-spacing: 2px; color: var(--accent);">
-            ЧТО ЖДЕТ ТЕБЯ НА 16-Й ТРЕНИРОВКЕ?
+<div class="milestone-overlay" id="ms-modal" onclick="this.style.display='none'">
+    <div class="milestone-card">
+        <span class="label" style="color:#fff">Новое достижение</span>
+        <h2 id="ms-title">8 ЗАНЯТИЙ</h2>
+        <p id="ms-desc" style="font-weight: 300; font-size: 15px; line-height: 1.8;"></p>
+        <div style="margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px; font-size: 10px; letter-spacing: 2px;">
+            ЭТО ТОЛЬКО НАЧАЛО. ХОТИТЕ УЗНАТЬ, ЧТО БУДЕТ НА 16-Й ТРЕНИРОВКЕ?
         </div>
     </div>
 </div>
@@ -162,103 +195,151 @@
     const tg = window.Telegram.WebApp;
     tg.expand();
 
-    // DATABASE
-    let data = JSON.parse(localStorage.getItem('ls_2026_pro')) || {
-        isNew: true,
-        months: Array(12).fill(0),
-        counts: { abs:0, spine:0, stretch:0, sky:0, tabata:0, sculpt:0 }
+    // 1. БАЗА ДАННЫХ
+    let db = JSON.parse(localStorage.getItem('ls_ultra_2026')) || {
+        init: true,
+        yearly: Array(12).fill(0),
+        dirs: { abs:0, spine:0, stretch:0, sky:0, tabata:0, sculpt:0 }
     };
 
-    let active = '';
-    const curM = new Date().getMonth();
+    let currentType = '';
+    const mIdx = new Date().getMonth();
 
-    const lib = {
+    // 2. НАУЧНЫЙ КОНТЕНТ (ПОЛНЫЙ АРХИВ)
+    const scienceDB = {
         abs: {
-            txt: "<b>Ягодицы+Пресс:</b> Укрепление кора создает 'мышечный корсет', который поддерживает внутренние органы и разгружает поясницу.",
-            ms: "<b>8 занятий:</b> Твой метаболизм переключился в режим активного сжигания. Улучшился лимфодренаж в области бедер. На 16-й тренировке рельеф станет твоей гордостью!"
+            info: "<b>Висцеральный детокс:</b> Глубокая проработка мышц кора создает давление на лимфатические узлы брюшной полости, ускоряя детоксикацию в 2 раза.",
+            ms8: "<b>8 занятий (Ягодицы+Пресс):</b> Плотность мышечных волокон увеличилась. Ваш базовый метаболизм вырос: теперь тело сжигает больше калорий даже в состоянии покоя.",
+            ms16: "<b>16 занятий:</b> Сформирован глубокий мышечный корсет. Улучшилась работа ЖКТ и осанка. Ваше тело начало 'держать' себя само."
         },
         spine: {
-            txt: "<b>Здоровая спина:</b> Движения увеличивают приток синовиальной жидкости к хрящам. Твой позвоночник 'пьет' воду и восстанавливается.",
-            ms: "<b>8 занятий:</b> Поздравляем! Высота межпозвоночных дисков восстановилась на 1-2 мм. Ушли зажимы. На 16-й тренировке осанка станет твоей второй натурой."
+            info: "<b>Гидратация дисков:</b> Плавные вытяжения позволяют межпозвоночным хрящам впитывать влагу, восстанавливая их амортизационные свойства.",
+            ms8: "<b>8 занятий (Спина):</b> Суставная смазка полностью обновилась. Ушли микро-зажимы в шейном и поясничном отделах. Вы чувствуете легкость после рабочего дня.",
+            ms16: "<b>16 занятий:</b> Декомпрессия завершена. Рост восстановился на 0.5-1 см за счет выпрямления осанки. Ушли хронические головные боли напряжения."
         },
         stretch: {
-            txt: "<b>Шпагат:</b> Растяжка делает фасции эластичными, убирая 'застойные' зоны в теле. Твоя кровь движется быстрее.",
-            ms: "<b>8 занятий:</b> Капилляризация мышц выросла на 30%. Ты чувствуешь легкость в каждом шаге. На 16-й тренировке ты поразишь себя своей гибкостью!"
+            info: "<b>Капиллярная сеть:</b> Растяжка разрушает фасциальные спайки. Это открывает путь крови к самым отдаленным участкам мышц.",
+            ms8: "<b>8 занятий (Шпагат):</b> Фасции стали эластичными, как шелк. Кровоток в области таза увеличился на 40%, улучшая женское здоровье.",
+            ms16: "<b>16 занятий:</b> Амплитуда движений достигла максимума. Мышцы стали длинными и рельефными без лишнего объема. Вы на пороге идеального шпагата."
         }
     };
 
-    // CHART
-    const ctx = document.getElementById('myChart').getContext('2d');
-    const chart = new Chart(ctx, {
+    // 3. ИНИЦИАЛИЗАЦИЯ ГРАФИКА
+    const chartCtx = document.getElementById('mainChart').getContext('2d');
+    const mainChart = new Chart(chartCtx, {
         type: 'bar',
         data: {
             labels: ['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек'],
-            datasets: [{ data: data.months, backgroundColor: '#b085ff', borderRadius: 8 }]
+            datasets: [{
+                data: db.yearly,
+                backgroundColor: 'rgba(176, 133, 255, 0.6)',
+                borderRadius: 10,
+                hoverBackgroundColor: '#fff'
+            }]
         },
         options: {
             responsive: true, maintainAspectRatio: false,
-            scales: { y: { display: false }, x: { grid: {display: false}, ticks: {color: '#444'} } },
+            scales: { y: { display: false }, x: { grid: { display: false }, ticks: { color: '#555', font: {size: 10} } } },
             plugins: { legend: { display: false } }
         }
     });
 
-    function sel(btn, type) {
-        document.querySelectorAll('.btn-dir').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        active = type;
+    // 4. ФУНКЦИИ
+    function selectDir(el, type) {
+        document.querySelectorAll('.train-item').forEach(i => i.classList.remove('active'));
+        el.classList.add('active');
+        currentType = type;
 
-        document.getElementById('bio-text').innerHTML = lib[type]?.txt || lib.abs.txt;
-        document.getElementById('input-box').classList.add('active');
-        document.getElementById('dir-title').innerText = btn.innerText;
-        document.getElementById('dir-hint').innerText = data.isNew ? "Введи общую базу с 1.01.2026" : `Твой текущий счет: ${data.counts[type]}`;
-        document.getElementById('num-in').focus();
+        document.getElementById('info-display').innerHTML = scienceDB[type]?.info || scienceDB.abs.info;
+        document.getElementById('input-block').classList.add('visible');
+        document.getElementById('input-label').innerText = el.querySelector('h3').innerText;
+        document.getElementById('input-hint').innerText = db.init ? "Первый вход: укажите общее кол-во занятий с 1.01.2026" : "Сколько тренировок добавим сегодня?";
+        document.getElementById('num-val').focus();
     }
 
-    function save() {
-        const val = parseInt(document.getElementById('num-in').value) || 0;
+    function commit() {
+        const val = parseInt(document.getElementById('num-val').value) || 0;
         
-        if(data.isNew) {
-            data.counts[active] = val;
-            data.months[curM] += val;
+        if(db.init) {
+            db.dirs[currentType] = val;
+            db.yearly[mIdx] += val;
         } else {
-            data.counts[active] += val;
-            data.months[curM] += val;
+            db.dirs[currentType] += val;
+            db.yearly[mIdx] += val;
         }
 
-        if(data.counts[active] >= 8 && data.counts[active] < 12) {
-            document.getElementById('ms-desc').innerHTML = lib[active]?.ms || lib.abs.ms;
-            document.getElementById('ms-modal').style.display = 'flex';
-        }
+        // Проверка на Milestone
+        checkMilestone(currentType, db.dirs[currentType]);
 
-        data.isNew = false;
-        document.getElementById('num-in').value = '';
-        document.getElementById('input-box').classList.remove('active');
-        update();
+        db.init = false;
+        document.getElementById('num-val').value = '';
+        document.getElementById('input-block').classList.remove('visible');
+        updateAll();
         tg.HapticFeedback.notificationOccurred('success');
     }
 
-    function update() {
-        const total = Object.values(data.counts).reduce((a, b) => a + b, 0);
-        document.getElementById('total-val').innerText = total;
-        chart.data.datasets[0].data = data.months;
-        chart.update();
-        localStorage.setItem('ls_2026_pro', JSON.stringify(data));
+    function checkMilestone(type, count) {
+        if(count >= 8 && count < 10) {
+            triggerModal("8 ЗАНЯТИЙ", scienceDB[type]?.ms8 || scienceDB.abs.ms8);
+        } else if(count >= 16 && count < 18) {
+            triggerModal("16 ЗАНЯТИЙ", scienceDB[type]?.ms16 || scienceDB.abs.ms16);
+        }
     }
 
-    // STARS
-    const c = document.getElementById('stars');
-    const s = c.getContext('2d');
-    function init() { c.width = window.innerWidth; c.height = window.innerHeight; }
-    let pts = Array.from({length: 120}, () => ({x:Math.random(), y:Math.random(), r:Math.random()*1.5}));
-    function draw() {
-        s.clearRect(0,0,c.width,c.height);
-        pts.forEach(p => {
-            s.beginPath(); s.arc(p.x*c.width, p.y*c.height, p.r, 0, 7);
-            s.fillStyle = "rgba(255,255,255,"+Math.random()+")"; s.fill();
-        });
-        setTimeout(() => requestAnimationFrame(draw), 80);
+    function triggerModal(title, text) {
+        document.getElementById('ms-title').innerText = title;
+        document.getElementById('ms-desc').innerHTML = text;
+        document.getElementById('ms-modal').style.display = 'flex';
     }
-    window.onresize = init; init(); draw(); update();
+
+    function updateAll() {
+        const total = Object.values(db.dirs).reduce((a, b) => a + b, 0);
+        document.getElementById('total-val').innerText = total;
+
+        for(let key in db.dirs) {
+            const el = document.getElementById(`cnt-${key}`);
+            if(el) el.innerText = db.dirs[key];
+        }
+
+        mainChart.data.datasets[0].data = db.yearly;
+        mainChart.update();
+
+        localStorage.setItem('ls_ultra_2026', JSON.stringify(db));
+    }
+
+    // 5. ДВИЖОК ЗВЕЗД
+    const canvas = document.getElementById('stars-layer');
+    const sCtx = canvas.getContext('2d');
+    let stars = [];
+
+    function initStars() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        stars = Array.from({length: 150}, () => ({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            r: Math.random() * 1.5,
+            v: 0.01 + Math.random() * 0.03,
+            o: Math.random()
+        }));
+    }
+
+    function animate() {
+        sCtx.clearRect(0,0,canvas.width, canvas.height);
+        stars.forEach(s => {
+            s.o += s.v;
+            if(s.o > 1 || s.o < 0) s.v = -s.v;
+            sCtx.globalAlpha = Math.abs(s.o);
+            sCtx.beginPath();
+            sCtx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+            sCtx.fillStyle = "#fff";
+            sCtx.fill();
+        });
+        requestAnimationFrame(animate);
+    }
+
+    window.onresize = initStars;
+    initStars(); animate(); updateAll();
 </script>
 </body>
 </html>
