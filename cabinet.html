@@ -6,237 +6,231 @@
     <title>Lady Stretch | Achievement Portal</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --accent: #b085ff;
-            --glass-core: rgba(255, 255, 255, 0.03);
-            --glass-stroke: rgba(255, 255, 255, 0.12);
+            --glass-core: rgba(255, 255, 255, 0.04);
+            --glass-stroke: rgba(255, 255, 255, 0.15);
+            --glow: rgba(176, 133, 255, 0.2);
         }
 
         body, html {
             margin: 0; padding: 0; min-height: 100vh;
             background: #020205; font-family: 'Montserrat', sans-serif;
-            color: #fff; overflow-x: hidden;
+            color: #fff; overflow-x: hidden; -webkit-tap-highlight-color: transparent;
         }
 
-        /* LIVE COSMOS & AURORA */
-        #canvas-stars {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
-        }
-        .aurora-wash {
+        /* ЗВЕЗДНОЕ НЕБО */
+        #canvas-stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; }
+        .aurora {
             position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle at center, #7a5af811 0%, #24f0ff08 30%, transparent 70%);
-            z-index: -1; animation: rotate 20s linear infinite;
+            background: radial-gradient(circle at center, #7a5af80a 0%, #24f0ff05 30%, transparent 70%);
+            z-index: -1; animation: rotate 25s linear infinite;
         }
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* FIXED PREMIUM HEADER */
+        /* ИСПРАВЛЕННАЯ ШАПКА */
         header {
-            position: fixed; top: 0; left: 0; width: 100%; height: 80px;
+            position: fixed; top: 0; left: 0; width: 100%; height: 85px;
             display: flex; align-items: center; justify-content: space-between;
-            padding: 0 40px; box-sizing: border-box; z-index: 1000;
-            background: rgba(0,0,0,0.1); backdrop-filter: blur(15px);
+            padding: 0 25px; box-sizing: border-box; z-index: 1000;
+            background: rgba(0,0,0,0.3); backdrop-filter: blur(25px);
             border-bottom: 1px solid var(--glass-stroke);
         }
 
-        .header-title {
-            position: absolute; left: 50%; transform: translateX(-50%);
-            font-weight: 100; letter-spacing: 5px; font-size: 14px; text-transform: uppercase;
-        }
-
         .logo-wrapper {
-            width: 50px; height: 50px; border-radius: 50%;
-            border: 1px solid var(--accent); padding: 2px;
-            box-shadow: 0 0 20px rgba(176, 133, 255, 0.4);
+            width: 48px; height: 48px; border-radius: 50%;
+            border: 1px solid var(--accent);
+            box-shadow: 0 0 15px var(--glow); overflow: hidden;
         }
-        .logo-wrapper img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+        .logo-wrapper img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* MAIN LAYOUT */
+        .header-title {
+            font-weight: 100; letter-spacing: 3px; font-size: 11px;
+            text-transform: uppercase; text-align: center; flex: 1; padding: 0 10px;
+        }
+
+        .menu-btn { font-size: 12px; letter-spacing: 2px; font-weight: 300; cursor: pointer; color: var(--accent); }
+
+        /* ОСНОВНОЙ КОНТЕЙНЕР (Центровка) */
         .container {
-            max-width: 1200px; margin: 0 auto; padding: 120px 20px 50px;
-            display: grid; grid-template-columns: 1fr 350px; gap: 30px;
+            max-width: 1100px; margin: 0 auto; padding: 110px 20px 40px;
+            display: grid; grid-template-columns: 1fr 340px; gap: 30px;
+            box-sizing: border-box;
         }
 
-        @media (max-width: 900px) {
+        @media (max-width: 950px) {
             .container { grid-template-columns: 1fr; padding-top: 100px; }
+            .header-title { font-size: 9px; letter-spacing: 2px; }
         }
 
-        /* FROSTED GLASS PANELS */
+        /* ПАРЯЩЕЕ СТЕКЛО */
         .glass-panel {
             background: var(--glass-core);
-            backdrop-filter: blur(25px) saturate(150%);
-            -webkit-backdrop-filter: blur(25px) saturate(150%);
+            backdrop-filter: blur(20px) saturate(160%);
+            -webkit-backdrop-filter: blur(20px) saturate(160%);
             border: 1px solid var(--glass-stroke);
             border-radius: 35px; padding: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            transition: 0.3s;
         }
 
-        /* GRID OF BUTTONS */
+        .panel-glow {
+            box-shadow: 0 0 30px var(--glow), inset 0 0 20px rgba(255,255,255,0.02);
+            border-color: rgba(176, 133, 255, 0.4);
+        }
+
+        /* ГРИД КНОПОК */
         .btn-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 25px;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 20px;
         }
         @media (max-width: 600px) { .btn-grid { grid-template-columns: 1fr 1fr; } }
 
         .bubble-btn {
-            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-stroke);
-            border-radius: 20px; padding: 20px; text-align: center; font-size: 12px;
-            cursor: pointer; transition: all 0.4s ease; font-weight: 300;
+            background: rgba(255,255,255,0.03); border: 1px solid var(--glass-stroke);
+            border-radius: 20px; padding: 18px 10px; text-align: center; font-size: 11px;
+            cursor: pointer; transition: 0.4s; font-weight: 300; letter-spacing: 1px;
         }
-        .bubble-btn:hover { background: rgba(255,255,255,0.1); border-color: #fff; transform: translateY(-3px); }
-        .bubble-btn.active { background: #fff; color: #000; font-weight: 600; box-shadow: 0 0 30px rgba(255,255,255,0.2); }
+        .bubble-btn.active { background: #fff; color: #000; font-weight: 600; box-shadow: 0 0 20px #fff; }
 
-        /* GLOWING CHART */
-        .chart-container { height: 300px; width: 100%; margin-top: 20px; }
+        /* ТЕКСТЫ */
+        .label-mini { font-size: 9px; letter-spacing: 3px; color: var(--accent); font-weight: 600; text-transform: uppercase; }
+        .bio-text { font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.9); margin-top: 15px; font-weight: 300; }
 
-        .input-area {
-            border-bottom: 1px solid var(--glass-stroke); background: transparent;
-            color: #fff; width: 100%; padding: 15px 0; font-size: 20px;
-            outline: none; border-top: none; border-left: none; border-right: none;
-            font-family: inherit; margin: 20px 0;
+        /* ПОЛЕ ВВОДА */
+        .input-wrap { margin-top: 25px; position: relative; }
+        .input-hint { font-size: 10px; color: var(--accent); margin-bottom: 8px; display: block; }
+        .input-field {
+            width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--glass-stroke);
+            color: #fff; padding: 10px 0; font-size: 22px; font-family: inherit; outline: none;
         }
 
-        .btn-main {
-            width: 100%; background: #fff; color: #000; border: none;
-            padding: 20px; border-radius: 20px; font-weight: 600;
-            text-transform: uppercase; letter-spacing: 2px; cursor: pointer;
+        .btn-confirm {
+            width: 100%; background: #fff; color: #000; border: none; padding: 20px;
+            border-radius: 22px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px;
+            margin-top: 25px; cursor: pointer; transition: 0.3s;
         }
+        .btn-confirm:active { transform: scale(0.97); }
+
+        #neonChart { height: 260px !important; }
     </style>
 </head>
 <body>
 
     <canvas id="canvas-stars"></canvas>
-    <div class="aurora-wash"></div>
+    <div class="aurora"></div>
 
     <header>
         <div class="logo-wrapper">
-            <img src="lady_logo.png" alt="LS">
+            <img src="lady_logo.png" alt="Lady Stretch">
         </div>
-        <div class="header-title">Твое пространство достижений</div>
-        <div style="cursor: pointer; font-size: 14px; letter-spacing: 2px;">MENU</div>
+        <div class="header-title">Твоё пространство достижений</div>
+        <div class="menu-btn">MENU</div>
     </header>
 
     <div class="container">
-        <div class="main-content">
-            <div class="glass-panel">
-                <span style="font-size: 10px; letter-spacing: 3px; color: var(--accent);">АНАЛИТИКА ТРАНСФОРМАЦИИ</span>
-                <div class="chart-container">
-                    <canvas id="neonChart"></canvas>
-                </div>
+        <div class="content-left">
+            <div class="glass-panel" style="margin-bottom: 25px;">
+                <div class="label-mini">Пульс твоей трансформации</div>
+                <canvas id="neonChart"></canvas>
             </div>
 
             <div class="btn-grid">
-                <div class="bubble-btn" onclick="sel(this, 'sculpt')">Body Sculpt</div>
-                <div class="bubble-btn" onclick="sel(this, 'spine')">Здоровая спина</div>
-                <div class="bubble-btn" onclick="sel(this, 'sky')">Sky Stretching</div>
-                <div class="bubble-btn" onclick="sel(this, 'tabata')">Табата</div>
-                <div class="bubble-btn" onclick="sel(this, 'pilates')">Пилатес</div>
-                <div class="bubble-btn" onclick="sel(this, 'abs')">Ягодицы + Пресс</div>
+                <div class="bubble-btn" onclick="updateMode(this, 'sculpt')">Body Sculpt</div>
+                <div class="bubble-btn" onclick="updateMode(this, 'spine')">Здоровая спина</div>
+                <div class="bubble-btn" onclick="updateMode(this, 'sky')">Sky Stretching</div>
+                <div class="bubble-btn" onclick="updateMode(this, 'tabata')">Табата</div>
+                <div class="bubble-btn" onclick="updateMode(this, 'pilates')">Пилатес</div>
+                <div class="bubble-btn" onclick="updateMode(this, 'abs')">Ягодицы + Пресс</div>
             </div>
         </div>
 
-        <div class="sidebar">
-            <div class="glass-panel" style="margin-bottom: 30px;">
-                <span style="font-size: 10px; letter-spacing: 3px; color: var(--accent);">ТЕКУЩИЙ СТАТУС</span>
-                <div style="font-size: 60px; font-weight: 100; margin: 10px 0;">14 <small style="font-size: 15px; color: #555;">/ 96</small></div>
-                <p style="font-size: 12px; color: #888; line-height: 1.6;" id="bio-hook">Выберите практику, чтобы увидеть биологический инсайт...</p>
+        <div class="content-right">
+            <div class="glass-panel panel-glow" style="margin-bottom: 25px;">
+                <div class="label-mini">Биологический инсайт</div>
+                <div class="bio-text" id="bio-display">Выберите практику, чтобы запустить глубокий анализ изменений в вашем теле...</div>
             </div>
 
             <div class="glass-panel">
-                <input type="number" class="input-area" id="u-val" placeholder="Показатель">
-                <button class="btn-main" onclick="save()">Зафиксировать</button>
+                <div class="label-mini">Прогресс занятия</div>
+                <div style="font-size: 50px; font-weight: 100; margin: 10px 0;">14 <span style="font-size: 14px; color: #555;">/ 96</span></div>
+                
+                <div class="input-wrap">
+                    <span class="input-hint" id="hint">Введи значение</span>
+                    <input type="number" class="input-field" id="val" placeholder="0">
+                </div>
+                <button class="btn-confirm" onclick="save()">Зафиксировать</button>
             </div>
         </div>
     </div>
 
 <script>
-    // 1. LIVE STARS SCRIPT
+    // STARS
     const canvas = document.getElementById('canvas-stars');
     const ctxS = canvas.getContext('2d');
     let stars = [];
-
-    function initStars() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        stars = [];
-        for(let i=0; i<200; i++) {
-            stars.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                size: Math.random() * 1.5,
-                t: Math.random() * Math.PI * 2
-            });
-        }
+    function init() {
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        stars = Array.from({length: 150}, () => ({
+            x: Math.random()*canvas.width, y: Math.random()*canvas.height, 
+            s: Math.random()*1.5, t: Math.random()*Math.PI*2
+        }));
     }
-
-    function drawStars() {
+    function draw() {
         ctxS.clearRect(0,0,canvas.width, canvas.height);
-        ctxS.fillStyle = "#fff";
         stars.forEach(s => {
-            let opacity = (Math.sin(s.t) + 1) / 2;
-            ctxS.globalAlpha = opacity;
-            ctxS.beginPath();
-            ctxS.arc(s.x, s.y, s.size, 0, Math.PI*2);
-            ctxS.fill();
+            ctxS.globalAlpha = (Math.sin(s.t)+1)/2;
+            ctxS.beginPath(); ctxS.arc(s.x, s.y, s.s, 0, 7); ctxS.fillStyle = "#fff"; ctxS.fill();
             s.t += 0.02;
         });
-        requestAnimationFrame(drawStars);
+        requestAnimationFrame(draw);
     }
-    initStars(); drawStars();
+    init(); draw(); window.onresize = init;
 
-    // 2. NEON CHART
+    // CHART
     const ctxC = document.getElementById('neonChart').getContext('2d');
-    const chartGradient = ctxC.createLinearGradient(0, 0, 0, 300);
-    chartGradient.addColorStop(0, 'rgba(176, 133, 255, 0.3)');
-    chartGradient.addColorStop(1, 'rgba(176, 133, 255, 0)');
-
+    const grad = ctxC.createLinearGradient(0, 0, 0, 300);
+    grad.addColorStop(0, 'rgba(176, 133, 255, 0.3)'); grad.addColorStop(1, 'rgba(176, 133, 255, 0)');
     new Chart(ctxC, {
         type: 'line',
         data: {
-            labels: ['1','2','3','4','5','6','7'],
+            labels: ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'],
             datasets: [{
-                data: [60, 80, 75, 90, 85, 95, 100],
-                borderColor: '#b085ff',
-                borderWidth: 3,
-                pointRadius: 5,
-                pointBackgroundColor: '#fff',
-                tension: 0.4,
-                fill: true,
-                backgroundColor: chartGradient
+                data: [65, 78, 70, 85, 95, 90, 100], borderColor: '#b085ff', borderWidth: 3, 
+                fill: true, backgroundColor: grad, tension: 0.4, pointRadius: 0
             }]
         },
         options: {
             responsive: true, maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: {
-                x: { grid: { color: 'rgba(255,255,255,0.05)' } },
-                y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { display: false } }
-            }
+            plugins: { legend: {display: false} },
+            scales: { x: {grid: {display: false}}, y: {display: false} }
         }
     });
 
-    // 3. LOGIC
-    function sel(el, type) {
+    // LOGIC
+    const data = {
+        sculpt: ["После Body Sculpt твой метаболизм переходит в режим «afterburn» — жиросжигание продлится до 24 часов даже во время сна.", "Уровень тонуса (1-10)"],
+        spine: ["Здоровая спина восстановила питание межпозвоночных дисков. Сегодня твой позвоночник стал длиннее на пару миллиметров за счет декомпрессии.", "Легкость в спине (1-10)"],
+        sky: ["В гамаках гравитация работала на тебя. Лимфатическая система очистила ткани, избавляя тело от скрытых отеков.", "Расстояние до пола (см)"],
+        tabata: ["Табата вызвала митохондриальный стресс — это запускает процесс омоложения клеток и увеличивает твой запас выносливости.", "Интенсивность (1-10)"],
+        pilates: ["Пилатес укрепил твою внутреннюю опору. Твой кор теперь лучше поддерживает внутренние органы и формирует идеальный силуэт.", "Контроль тела (1-10)"],
+        abs: ["Тренировка ЯП прицельно воздействовала на мышечные волокна пресса. Сейчас идет процесс уплотнения тканей и сжигания висцерального жира.", "Мышечный отклик (1-10)"]
+    };
+
+    function updateMode(el, type) {
         document.querySelectorAll('.bubble-btn').forEach(b => b.classList.remove('active'));
         el.classList.add('active');
-        const hooks = {
-            sculpt: "<b>Биохакинг:</b> Метаболизм на пике. Жиросжигание активно 24 часа.",
-            spine: "<b>Биохакинг:</b> Осевая нагрузка снята. Питание дисков восстановлено.",
-            sky: "<b>Биохакинг:</b> Лимфодренаж в невесомости. Отеки уходят мгновенно.",
-            tabata: "<b>Биохакинг:</b> Клеточное обновление митохондрий. Заряд бодрости +50%.",
-            pilates: "<b>Биохакинг:</b> Глубокая стабилизация кора. Твоя внутренняя опора окрепла.",
-            abs: "<b>Биохакинг:</b> Тонус мышц живота на клеточном уровне. Формируем силуэт."
-        };
-        document.getElementById('bio-hook').innerHTML = hooks[type];
+        document.getElementById('bio-display').innerHTML = data[type][0];
+        document.getElementById('hint').innerText = data[type][1];
+        document.getElementById('val').focus();
     }
 
     function save() {
         const tg = window.Telegram.WebApp;
         tg.HapticFeedback.notificationOccurred('success');
-        alert("Результат занесен в хроники твоих достижений ✨");
+        alert("Результат зафиксирован ✨");
     }
-
-    window.onresize = initStars;
 </script>
 </body>
 </html>
