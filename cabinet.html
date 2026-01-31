@@ -3,191 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Lady Stretch | Premium Club</title>
-    
-    <link rel="icon" type="image/png" href="https://img.icons8.com/ios-filled/50/7a5af8/sparkling-diamond.png">
-    
+    <title>Lady Stretch | Premium</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #08080a;
-            --accent: #7a5af8;
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.07);
-            --text-dim: #8e8e93;
+            --accent: #a18aff; /* Мягкий неоновый фиолетовый */
+            --bg: #000000;
+            --glass: rgba(255, 255, 255, 0.04);
+            --border: rgba(255, 255, 255, 0.1);
         }
 
         body {
             background: var(--bg);
-            background-image: radial-gradient(circle at 50% -20%, #1e1e3f 0%, #08080a 100%);
             color: #fff;
             font-family: 'Montserrat', sans-serif;
-            margin: 0; padding: 0; min-height: 100vh;
+            margin: 0; padding: 20px;
             -webkit-font-smoothing: antialiased;
         }
 
-        .container { padding: 20px; max-width: 420px; margin: 0 auto; }
+        /* Логотип */
+        .logo { text-align: center; margin-bottom: 30px; }
+        .logo img { max-width: 150px; height: auto; }
 
-        /* ЛОГОТИП */
-        .logo-box { text-align: center; margin-bottom: 25px; }
-        .logo-box img { max-width: 160px; filter: drop-shadow(0 0 15px rgba(122, 90, 248, 0.4)); }
-
-        /* ЭФФЕКТ ЖИДКОГО СТЕКЛА */
-        .glass-card {
+        /* Эффект жидкого стекла Apple */
+        .card {
             background: var(--glass);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--glass-border);
-            border-radius: 30px;
-            padding: 24px;
-            margin-bottom: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            position: relative;
-            overflow: hidden;
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 0.5px solid var(--border);
+            border-radius: 25px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .glass-card::before {
-            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%);
-            pointer-events: none;
+        .label { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: #888; margin-bottom: 10px; display: block; }
+
+        /* Кастомизация списка и инпута */
+        select, input {
+            width: 100%; background: rgba(255,255,255,0.06); border: none;
+            border-radius: 12px; color: #fff; padding: 12px; font-size: 16px; 
+            margin-bottom: 10px; outline: none; box-sizing: border-box;
         }
 
-        .label { font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 12px; display: block; }
-
-        /* СТИЛЬНЫЙ СЕЛЕКТОР */
-        select {
-            width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
-            border-radius: 15px; color: #fff; padding: 14px; font-size: 0.9rem; outline: none; appearance: none;
-            margin-bottom: 15px; font-family: inherit;
+        .btn-ok {
+            width: 100%; background: #fff; color: #000; border: none;
+            padding: 15px; border-radius: 12px; font-weight: 600; font-size: 16px;
         }
 
-        .input-row { display: flex; gap: 10px; }
-        input {
-            flex: 1; background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border);
-            border-radius: 15px; color: #fff; padding: 14px; font-size: 1rem; outline: none;
-        }
+        /* Прогресс-бар */
+        .progress-val { font-size: 24px; font-weight: 300; color: var(--accent); }
+        .bar { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-top: 10px; overflow: hidden; }
+        .fill { height: 100%; background: var(--accent); width: 14%; box-shadow: 0 0 10px var(--accent); }
 
-        .btn-action {
-            background: #fff; color: #000; border: none; padding: 0 25px; border-radius: 15px;
-            font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: 0.3s;
-        }
-        .btn-action:active { transform: scale(0.95); opacity: 0.8; }
-
-        /* ПРОГРЕСС 96 */
-        .progress-info { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 10px; }
-        .count-num { font-size: 1.8rem; font-weight: 700; color: var(--accent); }
-        .bar-bg { height: 6px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; }
-        .bar-fill { height: 100%; background: var(--accent); width: 0%; transition: 1.5s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 0 20px var(--accent); }
-
-        .bio-note { font-size: 0.85rem; line-height: 1.6; color: #b0b0b5; border-left: 2px solid var(--accent); padding-left: 15px; }
+        /* График как в Apple Health */
+        #chartContainer { height: 150px; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="logo-box">
-        <img src="https://ladysfit.ru/img/logo_white.png" alt="Lady Stretch">
+    <div class="logo">
+        <img src="img/logo_white.png" alt="Lady Stretch">
     </div>
 
-    <div class="glass-card">
-        <div class="progress-info">
-            <div>
-                <span class="label">Твоя трансформация</span>
-                <span class="count-num" id="current-cnt">14</span><span style="color:var(--text-dim)"> / 96</span>
-            </div>
-            <div style="font-size: 0.8rem; font-weight: 600; color: #7a5af8;">ELITE STATUS</div>
-        </div>
-        <div class="bar-bg">
-            <div class="bar-fill" id="progress-bar"></div>
-        </div>
+    <div class="card">
+        <span class="label">Статус Трансформации</span>
+        <div><span class="progress-val">14</span> <span style="color:#444">/ 96</span></div>
+        <div class="bar"><div class="fill"></div></div>
     </div>
 
-    <div class="glass-card">
-        <span class="label">Выбери направление</span>
-        <select id="workout-type" onchange="adjustUI()">
-            <optgroup label="Мягкий фитнес">
-                <option value="spine">Здоровая спина</option>
-                <option value="pilates">Пилатес</option>
-                <option value="mfr">МФР / Релакс</option>
-            </optgroup>
-            <optgroup label="Растяжка">
-                <option value="stretch">Классический стретчинг</option>
-                <option value="sky">Sky Stretching (Гамаки)</option>
-                <option value="psr">Подкачка с растяжкой (ПСР)</option>
-            </optgroup>
-            <optgroup label="Интенсив">
-                <option value="abs">Ягодицы + Пресс (ЯП)</option>
-                <option value="tabata">Табата / Функционал</option>
-                <option value="circle">Круговая тренировка</option>
-                <option value="sculpt">Body Sculpt</option>
-            </optgroup>
+    <div class="card">
+        <span class="label">Выбор Направления</span>
+        <select id="dir" onchange="updateContent()">
+            <option value="sculpt">Body Sculpt</option>
+            <option value="spine">Здоровая Спина</option>
+            <option value="abs">Ягодицы + Пресс (ЯП)</option>
+            <option value="sky">Sky Stretching</option>
+            <option value="tabata">Табата / Функционал</option>
         </select>
+        
+        <input type="number" id="val" placeholder="Оцени состояние (1-10)">
+        <button class="btn-ok" onclick="sendToBot()">ЗАФИКСИРОВАТЬ</button>
+    </div>
 
-        <span class="label" id="val-label">Твоё состояние (1-10)</span>
-        <div class="input-row">
-            <input type="number" id="workout-val" placeholder="Оцени себя">
-            <button class="btn-action" onclick="sendData()">OK</button>
+    <div class="card">
+        <span class="label">График Состояния</span>
+        <div id="chartContainer">
+            <canvas id="myChart"></canvas>
         </div>
     </div>
 
-    <div class="glass-card">
-        <span class="label">Динамика обновлений</span>
-        <div id="main-chart"></div>
-    </div>
-
-    <div class="glass-card">
-        <span class="label">Биохакинг тела</span>
-        <div class="bio-note" id="hook-text">
-            После тренировки <b>Body Sculpt</b> твой метаболизм ускорен на 15%. Организм продолжает сжигать калории даже в покое.
+    <div class="card">
+        <span class="label">Биохакинг Тела</span>
+        <div id="bio-hook" style="font-size: 14px; line-height: 1.5; color: #ccc;">
+            Выберите направление, чтобы увидеть биологический отклик...
         </div>
     </div>
-</div>
 
 <script>
     const tg = window.Telegram.WebApp;
     tg.expand();
-    tg.headerColor = '#08080a';
 
-    // Анимация прогресса (замени цифру 14 на данные из базы)
-    setTimeout(() => {
-        const count = 14; 
-        document.getElementById('progress-bar').style.width = (count / 96 * 100) + '%';
-        document.getElementById('current-cnt').innerText = count;
-    }, 500);
+    // База текстов биохакинга
+    const hooks = {
+        sculpt: "После <b>Body Sculpt</b> метаболизм ускорен на 15%. Организм сжигает жиры даже во сне.",
+        spine: "На <b>Здоровой Спине</b> мы сняли осевую нагрузку. Твои межпозвоночные диски начали получать питание.",
+        abs: "<b>ЯП</b> активировал глубокие мышцы кора. Это формирует мышечный корсет и улучшает осанку.",
+        sky: "В <b>гамаках</b> декомпрессия суставов увеличила приток лимфы. Твоё тело избавляется от отеков.",
+        tabata: "<b>Табата</b> разогнала твою митохондриальную энергию. Ты будешь чувствовать бодрость весь день."
+    };
 
-    function adjustUI() {
-        const type = document.getElementById('workout-type').value;
-        const label = document.getElementById('val-label');
-        if(['stretch', 'sky'].includes(type)) label.innerText = "Результат (см до пола)";
-        else label.innerText = "Твоё состояние (1-10)";
+    function updateContent() {
+        const dir = document.getElementById('dir').value;
+        document.getElementById('bio-hook').innerHTML = hooks[dir];
+        
+        const input = document.getElementById('val');
+        if(dir === 'sky') input.placeholder = "см до пола";
+        else input.placeholder = "Оцени состояние (1-10)";
     }
 
-    // Премиальный график
-    var options = {
-        series: [{ name: 'Состояние', data: [4, 6, 5, 8, 7, 9, 10] }],
-        chart: { type: 'area', height: 140, toolbar: {show: false}, sparklines: {enabled: true} },
-        colors: ['#7a5af8'],
-        stroke: { curve: 'smooth', width: 3 },
-        fill: { type: 'gradient', gradient: { opacityFrom: 0.5, opacityTo: 0 } },
-        tooltip: { enabled: false }
-    };
-    new ApexCharts(document.querySelector("#main-chart"), options).render();
+    // Инициализация (первый запуск)
+    updateContent();
 
-    function sendData() {
-        const val = document.getElementById('workout-val').value;
-        const type = document.getElementById('workout-type').value;
-        if(!val) return;
+    // Чистый график Apple Style
+    const ctx = document.getElementById('myChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [1,2,3,4,5,6,7],
+            datasets: [{
+                data: [5, 7, 6, 8, 9, 7, 10],
+                borderColor: '#a18aff',
+                borderWidth: 3,
+                pointRadius: 0,
+                tension: 0.4,
+                fill: true,
+                backgroundColor: 'rgba(161, 138, 255, 0.05)'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { display: false },
+                y: { display: false }
+            }
+        }
+    });
+
+    function sendToBot() {
+        const val = document.getElementById('val').value;
+        const dir = document.getElementById('dir').value;
+        
+        if(!val) {
+            tg.HapticFeedback.notificationOccurred('error');
+            return alert("Введите результат");
+        }
 
         tg.HapticFeedback.notificationOccurred('success');
-        tg.sendData(JSON.stringify({
-            action: "log_workout",
-            type: type,
-            value: val
-        }));
-        tg.close();
+        
+        // ВАЖНО: Это сработает ТОЛЬКО внутри Telegram бота
+        const data = JSON.stringify({ action: "log", value: val, direction: dir });
+        tg.sendData(data); 
     }
 </script>
 </body>
