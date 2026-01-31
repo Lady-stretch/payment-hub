@@ -3,75 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Lady Stretch | Personal Cabinet</title>
-    
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    
+    <title>LS Premium</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --accent: #a18aff;
-            --glass: rgba(255, 255, 255, 0.05);
-            --border: rgba(255, 255, 255, 0.12);
-        }
-
         body, html {
-            margin: 0; padding: 0; width: 100%; height: 100%;
-            background: #000; font-family: 'Montserrat', sans-serif;
-            color: #fff; overflow-x: hidden;
+            margin: 0; padding: 0; background: #000;
+            font-family: 'Montserrat', sans-serif; color: #fff;
+            height: 100vh; overflow: hidden;
         }
 
-        /* ВИДЕО ФОН (Apple Style) */
+        /* Тот самый Apple Blur */
         #video-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover; z-index: -1; filter: brightness(0.4) blur(5px);
+            object-fit: cover; z-index: -1; filter: brightness(0.5);
         }
 
-        .container { padding: 25px; max-width: 450px; margin: 0 auto; box-sizing: border-box; }
-
-        /* ЛОГОТИП */
-        .logo { text-align: center; margin-bottom: 30px; }
-        .logo img { max-width: 180px; filter: drop-shadow(0 0 10px rgba(0,0,0,0.5)); }
-
-        /* ЖИДКОЕ СТЕКЛО */
-        .glass-card {
-            background: var(--glass);
-            backdrop-filter: blur(25px) saturate(180%);
-            -webkit-backdrop-filter: blur(25px) saturate(180%);
-            border: 1px solid var(--border);
-            border-radius: 30px; padding: 20px; margin-bottom: 20px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at top right, rgba(122, 90, 248, 0.15), transparent);
+            z-index: 0;
         }
 
-        .label { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: rgba(255,255,255,0.5); margin-bottom: 12px; display: block; }
+        .content {
+            position: relative; z-index: 10; padding: 30px 20px;
+            display: flex; flex-direction: column; height: 100vh; box-sizing: border-box;
+        }
 
-        /* ПРОГРЕСС */
-        .count-wrap { display: flex; align-items: baseline; gap: 5px; }
-        .current-num { font-size: 32px; font-weight: 600; color: #fff; }
-        .total-num { font-size: 16px; color: rgba(255,255,255,0.3); }
-        .bar { height: 5px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-top: 15px; overflow: hidden; }
-        .fill { height: 100%; background: linear-gradient(90deg, var(--accent), #fff); width: 0%; transition: 2s ease-out; }
+        .logo { width: 140px; margin: 0 auto 40px; display: block; }
 
-        /* ИНПУТЫ */
+        /* Кольцо прогресса вместо полоски */
+        .status-circle {
+            position: relative; width: 180px; height: 180px; margin: 0 auto 40px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        
+        svg { transform: rotate(-90deg); width: 100%; height: 100%; }
+        circle {
+            fill: none; stroke-width: 6; stroke-linecap: round;
+        }
+        .circle-bg { stroke: rgba(255,255,255,0.1); }
+        .circle-val {
+            stroke: var(--accent, #a18aff);
+            stroke-dasharray: 440; stroke-dashoffset: 380; /* Динамика */
+            transition: stroke-dashoffset 2s ease-in-out;
+            filter: drop-shadow(0 0 8px #a18aff);
+        }
+
+        .counter-text {
+            position: absolute; text-align: center;
+        }
+        .counter-text span { font-size: 42px; font-weight: 200; display: block; }
+        .counter-text small { font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 2px; }
+
+        /* Карточка-стекло с эффектом парения */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border: 0.5px solid rgba(255,255,255,0.15);
+            border-radius: 35px; padding: 25px; margin-top: auto;
+        }
+
         select, input {
-            width: 100%; background: rgba(255,255,255,0.08); border: 1px solid var(--border);
-            border-radius: 15px; color: #fff; padding: 14px; font-size: 16px; 
-            margin-bottom: 12px; outline: none; box-sizing: border-box; font-family: inherit;
+            width: 100%; background: transparent; border: none;
+            color: #fff; font-size: 18px; font-family: inherit;
+            padding: 15px 0; border-bottom: 0.5px solid rgba(255,255,255,0.2);
+            margin-bottom: 20px; outline: none;
         }
 
-        .btn-prime {
-            width: 100%; background: #fff; color: #000; border: none;
-            padding: 16px; border-radius: 15px; font-weight: 700; font-size: 15px;
-            cursor: pointer; transition: 0.3s;
+        option { background: #111; color: #fff; }
+
+        .btn-confirm {
+            background: #fff; color: #000; border: none;
+            width: 100%; padding: 18px; border-radius: 20px;
+            font-weight: 600; font-size: 14px; letter-spacing: 1px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
-        .btn-prime:active { transform: scale(0.96); background: var(--accent); color: #fff; }
 
-        #chart-canvas { height: 120px !important; }
-
-        .bio-text { font-size: 14px; line-height: 1.6; color: rgba(255,255,255,0.8); }
+        .bio-hook-area {
+            margin-top: 25px; font-size: 13px; line-height: 1.6;
+            color: rgba(255,255,255,0.6); font-weight: 300;
+        }
     </style>
 </head>
 <body>
@@ -79,126 +92,78 @@
     <video id="video-bg" autoplay muted loop playsinline>
         <source src="hero-video.mp4" type="video/mp4">
     </video>
+    <div class="overlay"></div>
 
-    <div class="container">
-        <div class="logo">
-            <img src="lady_logo.png" alt="Lady Stretch">
-        </div>
+    <div class="content">
+        <img src="lady_logo.png" class="logo" alt="Lady Stretch">
 
-        <div class="glass-card">
-            <span class="label">Твоя трансформация</span>
-            <div class="count-wrap">
-                <span class="current-num" id="user-count">0</span>
-                <span class="total-num">/ 96 занятий</span>
+        <div class="status-circle">
+            <svg viewBox="0 0 160 160">
+                <circle class="circle-bg" cx="80" cy="80" r="70"></circle>
+                <circle class="circle-val" id="progress-ring" cx="80" cy="80" r="70"></circle>
+            </svg>
+            <div class="counter-text">
+                <span id="curr-val">14</span>
+                <small>ИЗ 96 ШАГОВ</small>
             </div>
-            <div class="bar"><div class="fill" id="progress-fill"></div></div>
         </div>
 
-        <div class="glass-card">
-            <span class="label">Направление и результат</span>
-            <select id="workout-select" onchange="updateView()">
+        <div class="glass-panel">
+            <select id="w-type" onchange="updateInfo()">
                 <option value="sculpt">Body Sculpt</option>
                 <option value="spine">Здоровая Спина</option>
-                <option value="abs">Ягодицы + Пресс (ЯП)</option>
                 <option value="sky">Sky Stretching</option>
-                <option value="tabata">Табата / Функционал</option>
-                <option value="pilates">Пилатес</option>
-                <option value="stretch">Классический стретчинг</option>
+                <option value="abs">Ягодицы + Пресс</option>
             </select>
-            <input type="number" id="user-val" placeholder="Оцени состояние (1-10)">
-            <button class="btn-prime" onclick="handleSave()">ЗАФИКСИРОВАТЬ</button>
-        </div>
+            
+            <input type="number" id="w-val" placeholder="Твоё состояние (1-10)">
+            
+            <button class="btn-confirm" onclick="confirm()">ПОДТВЕРДИТЬ</button>
 
-        <div class="glass-card" style="padding: 15px;">
-            <canvas id="chart-canvas"></canvas>
-        </div>
-
-        <div class="glass-card">
-            <span class="label">Биологический отклик</span>
-            <div id="bio-display" class="bio-text">Выбирай тренировку, чтобы увидеть изменения в теле...</div>
+            <div class="bio-hook-area" id="bio-msg">
+                Ваша энергия на пике. Body Sculpt запускает жиросжигание на 24 часа.
+            </div>
         </div>
     </div>
 
-<script>
-    const tg = window.Telegram.WebApp;
-    tg.expand();
-    tg.headerColor = '#000000';
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
 
-    // 1. Анимация прогресса (можно передать через URL: ?count=24)
-    const urlParams = new URLSearchParams(window.location.search);
-    const currentSessions = urlParams.get('count') || 1; // По умолчанию 1, если не передано
-
-    document.getElementById('user-count').innerText = currentSessions;
-    setTimeout(() => {
-        document.getElementById('progress-fill').style.width = (currentSessions / 96 * 100) + '%';
-    }, 500);
-
-    // 2. Логика Био-хуков
-    const bioData = {
-        sculpt: "Метаболизм ускорен. Организм сжигает жиры еще 24 часа после тренировки.",
-        spine: "Снято напряжение с межпозвоночных дисков. Улучшен кровоток к мозгу.",
-        abs: "Активирован глубокий кор. Твой живот становится плотнее на клеточном уровне.",
-        sky: "Лимфодренаж в действии. Ткани избавляются от лишней жидкости и отеков.",
-        tabata: "Взрыв митохондрий. Твоя выносливость выросла на 0.5% за этот час.",
-        pilates: "Контроль и баланс. Нервная система перешла в режим глубокого восстановления.",
-        stretch: "Эластичность связок повышена. Мышцы стали длиннее и мягче."
-    };
-
-    function updateView() {
-        const dir = document.getElementById('workout-select').value;
-        document.getElementById('bio-display').innerHTML = bioData[dir];
-        document.getElementById('user-val').placeholder = (dir === 'stretch' || dir === 'sky') ? "см до пола" : "Оцени состояние (1-10)";
-    }
-    updateView();
-
-    // 3. График Apple Style
-    const ctx = document.getElementById('chart-canvas').getContext('2d');
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: [1,2,3,4,5,6],
-            datasets: [{
-                data: [4, 6, 5, 8, 7, 9],
-                borderColor: '#fff',
-                borderWidth: 2,
-                pointRadius: 0,
-                tension: 0.45,
-                fill: true,
-                backgroundColor: 'rgba(255,255,255,0.05)'
-            }]
-        },
-        options: {
-            responsive: true, maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: { x: { display: false }, y: { display: false } }
-        }
-    });
-
-    // 4. Кнопка сохранения
-    function handleSave() {
-        const val = document.getElementById('user-val').value;
-        const dir = document.getElementById('workout-select').value;
-        
-        if(!val) {
-            tg.HapticFeedback.notificationOccurred('error');
-            alert("Введи показатель!");
-            return;
+        // Анимация кольца
+        function setProgress(percent) {
+            const circle = document.getElementById('progress-ring');
+            const radius = circle.r.baseVal.value;
+            const circumference = 2 * Math.PI * radius;
+            const offset = circumference - (percent / 100 * circumference);
+            circle.style.strokeDasharray = `${circumference} ${circumference}`;
+            circle.style.strokeDashoffset = offset;
         }
 
-        tg.HapticFeedback.notificationOccurred('success');
-        
-        // Визуальный эффект нажатия
-        const btn = document.querySelector('.btn-prime');
-        btn.innerText = "СОХРАНЕНО ✓";
-        
-        // Отправка боту
-        tg.sendData(JSON.stringify({ action: "save", value: val, type: dir }));
-        
-        // Если открыто просто в браузере
-        setTimeout(() => { 
-            if(!window.Telegram.WebApp.initData) alert("Данные сохранены в системе!");
-        }, 500);
-    }
-</script>
+        // Старт (для примера 14 занятий)
+        setTimeout(() => setProgress((14/96)*100), 500);
+
+        function updateInfo() {
+            const type = document.getElementById('w-type').value;
+            const msg = document.getElementById('bio-msg');
+            const hooks = {
+                sculpt: "Метаболизм ускорен. Организм сжигает жиры даже во сне.",
+                spine: "Декомпрессия позвоночника завершена. Кровоток восстановлен.",
+                sky: "Лимфодренажный эффект активен. Лишняя жидкость уходит.",
+                abs: "Кор активирован. Ваша осанка становится вашей опорой."
+            };
+            msg.innerText = hooks[type];
+        }
+
+        function confirm() {
+            tg.HapticFeedback.notificationOccurred('success');
+            const btn = document.querySelector('.btn-confirm');
+            btn.style.background = '#a18aff';
+            btn.style.color = '#fff';
+            btn.innerText = 'РЕЗУЛЬТАТ ПРИНЯТ';
+            
+            setTimeout(() => tg.close(), 1000);
+        }
+    </script>
 </body>
 </html>
