@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Lady Stretch | Space Portal</title>
+    <title>Lady Stretch | Achievement Portal</title>
     
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -12,211 +12,249 @@
     <style>
         :root {
             --accent: #b085ff;
-            --glass: rgba(255, 255, 255, 0.05);
-            --border: rgba(255, 255, 255, 0.15);
-            --glow: rgba(176, 133, 255, 0.3);
+            --glass: rgba(255, 255, 255, 0.06);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glow: rgba(176, 133, 255, 0.35);
         }
 
         body, html {
             margin: 0; padding: 0; min-height: 100vh;
-            background: #020205; font-family: 'Montserrat', sans-serif;
+            background: #05050a; font-family: 'Montserrat', sans-serif;
             color: #fff; overflow-x: hidden; -webkit-tap-highlight-color: transparent;
         }
 
-        /* 1. ФОН: КОСМОС И СИЯНИЕ */
-        #canvas-stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; }
-        .aurora {
+        /* 1. ФОН: ГЛУБОКИЙ КОСМОС */
+        .space-wrapper {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
+            background: radial-gradient(circle at 50% 0%, #1a1233 0%, #05050a 100%);
+        }
+        #canvas-stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        .aurora-blur {
             position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle at center, #7a5af80f 0%, #24f0ff08 30%, transparent 70%);
-            z-index: -1; animation: rotateAurora 30s linear infinite;
+            background: radial-gradient(circle at center, #7a5af808 0%, #24f0ff05 40%, transparent 70%);
+            z-index: -1; animation: rotateAurora 40s linear infinite;
         }
         @keyframes rotateAurora { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* 2. ШАПКА: ИСПРАВЛЕННАЯ ГЕОМЕТРИЯ */
+        /* 2. ШАПКА: PREMIUM ADAPTIVE */
         header {
             position: fixed; top: 0; left: 0; width: 100%; height: 80px;
             display: flex; align-items: center; justify-content: space-between;
             padding: 0 25px; box-sizing: border-box; z-index: 1000;
-            background: rgba(0,0,0,0.3); backdrop-filter: blur(25px);
-            border-bottom: 0.5px solid var(--border);
+            background: rgba(0,0,0,0.3); backdrop-filter: blur(30px);
+            border-bottom: 0.5px solid var(--glass-border);
         }
-
-        .logo-box {
-            width: 45px; height: 45px; border-radius: 50%;
-            border: 1px solid var(--accent); box-shadow: 0 0 15px var(--glow);
-            overflow: hidden; flex-shrink: 0;
+        .logo-circle {
+            width: 46px; height: 46px; border-radius: 50%;
+            border: 1.5px solid var(--accent); overflow: hidden;
+            box-shadow: 0 0 20px var(--glow); flex-shrink: 0;
         }
-        .logo-box img { width: 100%; height: 100%; object-fit: cover; }
+        .logo-circle img { width: 100%; height: 100%; object-fit: cover; }
 
-        .header-title {
+        .header-center-text {
             flex: 1; text-align: center; font-weight: 100; letter-spacing: 4px;
-            font-size: 11px; text-transform: uppercase; color: #fff;
-            padding: 0 10px; line-height: 1.2;
+            font-size: 11px; text-transform: uppercase; color: #fff; padding: 0 10px;
         }
+        .menu-toggle { font-size: 11px; letter-spacing: 2px; color: var(--accent); cursor: pointer; font-weight: 400; }
 
-        .menu-btn {
-            font-size: 11px; letter-spacing: 2px; color: var(--accent);
-            text-transform: uppercase; cursor: pointer; flex-shrink: 0;
-        }
-
-        /* 3. КОНТЕЙНЕР: АДАПТИВНОСТЬ */
+        /* 3. КОНТЕЙНЕР */
         .container {
-            max-width: 1200px; margin: 0 auto; padding: 110px 20px 50px;
-            display: grid; grid-template-columns: 1fr 350px; gap: 30px;
+            max-width: 1100px; margin: 0 auto; padding: 110px 20px 40px;
+            display: grid; grid-template-columns: 1fr 360px; gap: 30px;
             box-sizing: border-box;
         }
-
-        @media (max-width: 950px) {
-            .container { grid-template-columns: 1fr; padding-top: 100px; padding-left: 15px; padding-right: 15px; }
-            .header-title { font-size: 9px; letter-spacing: 2px; }
+        @media (max-width: 960px) {
+            .container { grid-template-columns: 1fr; padding-top: 100px; }
+            .header-center-text { font-size: 9px; letter-spacing: 2px; }
         }
 
-        /* 4. КАРТОЧКИ: ЭФФЕКТ СТЕКЛА */
-        .glass-card {
-            background: var(--glass); backdrop-filter: blur(30px) saturate(150%);
-            -webkit-backdrop-filter: blur(30px) saturate(150%);
-            border: 1px solid var(--border); border-radius: 35px;
-            padding: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            position: relative; overflow: hidden;
+        /* 4. КАРТОЧКИ: GLASSMORPHISM */
+        .glass-panel {
+            background: var(--glass); backdrop-filter: blur(25px) saturate(160%);
+            -webkit-backdrop-filter: blur(25px) saturate(160%);
+            border: 1px solid var(--glass-border); border-radius: 35px;
+            padding: 30px; box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            transition: 0.4s ease;
         }
+        .panel-active { border-color: var(--accent); box-shadow: 0 0 30px var(--glow); }
 
-        .glass-card::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%);
-            pointer-events: none;
+        /* 5. ГРИД НАПРАВЛЕНИЙ */
+        .dir-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 25px;
         }
+        @media (max-width: 650px) { .dir-grid { grid-template-columns: 1fr 1fr; } }
 
-        /* 5. КНОПКИ-ПУЗЫРИ */
-        .btn-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 25px;
+        .dir-btn {
+            background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border);
+            border-radius: 22px; padding: 22px 10px; text-align: center;
+            font-size: 11px; font-weight: 300; letter-spacing: 1px; cursor: pointer;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        @media (max-width: 600px) { .btn-grid { grid-template-columns: 1fr 1fr; } }
+        .dir-btn:hover { background: rgba(255,255,255,0.08); transform: translateY(-3px); }
+        .dir-btn.active { background: #fff; color: #000; font-weight: 600; border-color: #fff; box-shadow: 0 0 20px #fff; }
 
-        .bubble-btn {
-            background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-            border-radius: 20px; padding: 20px 10px; text-align: center;
-            font-size: 11px; letter-spacing: 1px; cursor: pointer; transition: 0.4s;
-            font-weight: 300; backdrop-filter: blur(5px);
-        }
-        .bubble-btn.active {
-            background: #fff; color: #000; font-weight: 600;
-            box-shadow: 0 0 25px rgba(255,255,255,0.3); border-color: #fff;
-        }
+        /* 6. ТИПОГРАФИКА И ИНПУТЫ */
+        .label-tag { font-size: 9px; letter-spacing: 3px; color: var(--accent); font-weight: 600; text-transform: uppercase; margin-bottom: 15px; display: block; }
+        
+        .stat-value { font-size: 54px; font-weight: 100; margin: 10px 0; color: #fff; }
+        .stat-value span { font-size: 16px; color: rgba(255,255,255,0.3); font-weight: 300; }
 
-        /* 6. ТЕКСТЫ СЕРИАЛА */
-        .label-mini { font-size: 9px; letter-spacing: 3px; color: var(--accent); font-weight: 600; text-transform: uppercase; margin-bottom: 15px; display: block; }
-        .series-box { min-height: 120px; display: flex; flex-direction: column; justify-content: center; }
-        .series-text { font-size: 14px; line-height: 1.7; font-weight: 300; color: rgba(255,255,255,0.9); }
-        .series-text b { color: var(--accent); font-weight: 600; }
+        .bio-display { min-height: 80px; font-size: 14px; line-height: 1.7; font-weight: 300; color: rgba(255,255,255,0.85); }
+        .bio-display b { color: var(--accent); font-weight: 600; }
 
-        /* 7. ВВОД ДАННЫХ */
-        .input-section { margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--border); }
-        .input-hint { font-size: 10px; color: #666; margin-bottom: 10px; display: block; }
-        .input-main {
+        .input-wrapper { margin-top: 30px; display: none; border-top: 1px solid var(--glass-border); padding-top: 25px; }
+        .input-wrapper.active { display: block; animation: slideUp 0.5s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .hint-text { font-size: 11px; color: #777; margin-bottom: 12px; display: block; }
+        .main-input {
             width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--accent);
-            color: #fff; font-size: 28px; padding: 10px 0; outline: none; font-family: inherit; font-weight: 200;
+            color: #fff; font-size: 32px; padding: 10px 0; outline: none; font-family: inherit; font-weight: 200;
         }
 
-        .btn-action {
-            width: 100%; background: #fff; color: #000; border: none; padding: 20px;
+        .confirm-btn {
+            width: 100%; background: #fff; color: #000; border: none; padding: 22px;
             border-radius: 25px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px;
-            margin-top: 30px; cursor: pointer; transition: 0.3s;
+            margin-top: 25px; cursor: pointer; transition: 0.3s;
         }
-        .btn-action:active { transform: scale(0.96); background: var(--accent); color: #fff; }
+        .confirm-btn:active { transform: scale(0.96); background: var(--accent); color: #fff; }
 
-        /* ГРАФИК */
-        .chart-wrap { height: 280px; width: 100%; margin-top: 10px; }
+        #chartArea { height: 260px !important; width: 100%; }
     </style>
 </head>
 <body>
 
+    <div class="space-wrapper"></div>
+    <div class="aurora-blur"></div>
     <canvas id="canvas-stars"></canvas>
-    <div class="aurora"></div>
 
     <header>
-        <div class="logo-box">
-            <img src="lady_logo.png" alt="Lady Stretch">
-        </div>
-        <div class="header-title">Твоё пространство достижений</div>
-        <div class="menu-btn">Menu</div>
+        <div class="logo-circle"><img src="lady_logo.png" alt="Lady Stretch"></div>
+        <div class="header-center-text">Твое пространство достижений</div>
+        <div class="menu-toggle">STAT 2026</div>
     </header>
 
     <div class="container">
-        <div class="col-main">
-            <div class="glass-card" style="margin-bottom: 25px;">
-                <span class="label-mini">Пульс твоей трансформации</span>
-                <div class="chart-wrap">
-                    <canvas id="neonChart"></canvas>
+        <div class="column-left">
+            <div class="glass-panel" style="margin-bottom: 25px;">
+                <span class="label-tag">Пульс твоей трансформации</span>
+                <div class="chart-container">
+                    <canvas id="chartArea"></canvas>
                 </div>
             </div>
 
-            <div class="btn-grid">
-                <div class="bubble-btn" onclick="runSeries(this, 'spine')">Здоровая спина</div>
-                <div class="bubble-btn" onclick="runSeries(this, 'stretch')">Шпагат</div>
-                <div class="bubble-btn" onclick="runSeries(this, 'sculpt')">Body Sculpt</div>
-                <div class="bubble-btn" onclick="runSeries(this, 'sky')">Sky Stretching</div>
-                <div class="bubble-btn" onclick="runSeries(this, 'tabata')">Табата</div>
-                <div class="bubble-btn" onclick="updateMode(this, 'abs')">Ягодицы + Пресс</div>
+            <div class="dir-grid">
+                <div class="dir-btn" onclick="activateBranch(this, 'abs')">Ягодицы + Пресс</div>
+                <div class="dir-btn" onclick="activateBranch(this, 'spine')">Здоровая спина</div>
+                <div class="dir-btn" onclick="activateBranch(this, 'stretch')">Шпагат</div>
+                <div class="dir-btn" onclick="activateBranch(this, 'sky')">Sky Stretching</div>
+                <div class="dir-btn" onclick="activateBranch(this, 'tabata')">Табата</div>
+                <div class="dir-btn" onclick="activateBranch(this, 'sculpt')">Body Sculpt</div>
             </div>
         </div>
 
-        <div class="col-side">
-            <div class="glass-card" style="margin-bottom: 25px; border-color: var(--accent); box-shadow: 0 0 30px var(--glow);">
-                <span class="label-mini">Эпизод 14 / 96</span>
-                <div class="series-box">
-                    <div class="series-text" id="series-display">
-                        Выбери направление тренировки, чтобы узнать секреты своего тела в этой серии...
-                    </div>
+        <div class="column-right">
+            <div class="glass-panel panel-active" style="margin-bottom: 25px;">
+                <span class="label-tag">Биологический инсайт</span>
+                <div class="bio-display" id="bio-text">
+                    Выберите направление тренировки. Мы покажем, как именно меняется ваше тело на клеточном уровне...
                 </div>
             </div>
 
-            <div class="glass-card">
-                <span class="label-mini">Фиксация результата</span>
-                <div class="input-section">
-                    <span class="input-hint" id="hint-text">Введи значение</span>
-                    <input type="number" class="input-main" id="main-val" placeholder="0">
-                    <button class="btn-action" onclick="finishEpisode()">Зафиксировать</button>
+            <div class="glass-panel">
+                <span class="label-tag">Личный счетчик</span>
+                <div class="stat-value" id="total-val">0 <span>занятий</span></div>
+                
+                <div class="input-wrapper" id="input-block">
+                    <span class="hint-text" id="dynamic-hint">Введите количество</span>
+                    <input type="number" class="main-input" id="user-input" placeholder="0">
+                    <button class="confirm-btn" onclick="commitData()">Зафиксировать</button>
                 </div>
             </div>
         </div>
     </div>
 
 <script>
-    // 1. LIVE COSMOS
-    const canvas = document.getElementById('canvas-stars');
-    const ctxS = canvas.getContext('2d');
-    let stars = [];
-    function initStars() {
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        stars = Array.from({length: 150}, () => ({
-            x: Math.random()*canvas.width, y: Math.random()*canvas.height,
-            s: Math.random()*1.5, t: Math.random()*Math.PI*2
-        }));
-    }
-    function drawStars() {
-        ctxS.clearRect(0,0,canvas.width, canvas.height);
-        stars.forEach(s => {
-            ctxS.globalAlpha = (Math.sin(s.t)+1)/2;
-            ctxS.beginPath(); ctxS.arc(s.x, s.y, s.s, 0, 7); ctxS.fillStyle = "#fff"; ctxS.fill();
-            s.t += 0.02;
-        });
-        requestAnimationFrame(drawStars);
-    }
-    initStars(); drawStars(); window.onresize = initStars;
+    const tg = window.Telegram.WebApp;
+    tg.expand();
 
-    // 2. NEON CHART
-    const ctxC = document.getElementById('neonChart').getContext('2d');
-    const gradient = ctxC.createLinearGradient(0, 0, 0, 300);
-    gradient.addColorStop(0, 'rgba(176, 133, 255, 0.3)');
-    gradient.addColorStop(1, 'rgba(176, 133, 255, 0)');
-    new Chart(ctxC, {
+    // 1. ХРАНИЛИЩЕ ДАННЫХ (Локально до интеграции с YDB)
+    let stats = JSON.parse(localStorage.getItem('ls_user_stats_v2')) || {
+        firstEntry: true,
+        abs: 0, spine: 0, stretch: 0, sky: 0, tabata: 0, sculpt: 0
+    };
+
+    let currentType = '';
+
+    // 2. НАУЧНЫЙ КОНТЕНТ (Википедия подтвердит)
+    const library = {
+        abs: "<b>Кор и Лимфа:</b> Глубокая проработка мышц живота создает ритмичное давление на крупные лимфатические сосуды, ускоряя детокс организма в 2.5 раза.",
+        spine: "<b>Синовиальный эффект:</b> Плавные скручивания стимулируют секрецию суставной смазки. Это единственный способ доставить питание в хрящи позвоночника.",
+        stretch: "<b>Капилляризация:</b> Удлинение мышечного волокна «проращивает» новые мелкие сосуды. Твои мышцы начинают получать в 3 раза больше кислорода.",
+        sky: "<b>Декомпрессия:</b> В гамаке гравитация не давит на диски, а мягко растягивает их. Одно занятие в воздухе убирает последствия 8 часов сидения в офисе.",
+        tabata: "<b>Митохондрии:</b> Интервальный взрыв заставляет клетки обновлять «энергостанции» (митохондрии). Это замедляет биологическое старение кожи и органов.",
+        sculpt: "<b>Гормональный отклик:</b> Мышечный стресс после Sculpt снижает уровень кортизола и повышает соматотропин — гормон, отвечающий за упругость тканей."
+    };
+
+    // 3. ОБНОВЛЕНИЕ ИНТЕРФЕЙСА
+    function refreshStats() {
+        const total = Object.keys(stats).filter(k => k !== 'firstEntry').reduce((acc, k) => acc + stats[k], 0);
+        document.getElementById('total-val').innerHTML = `${total} <span>занятий</span>`;
+        localStorage.setItem('ls_user_stats_v2', JSON.stringify(stats));
+    }
+
+    // 4. ЛОГИКА ВЕТОК
+    function activateBranch(btn, type) {
+        document.querySelectorAll('.dir-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentType = type;
+
+        document.getElementById('bio-text').innerHTML = library[type];
+        const block = document.getElementById('input-block');
+        const hint = document.getElementById('dynamic-hint');
+        block.classList.add('active');
+
+        if (stats.firstEntry) {
+            hint.innerText = "Первый вход: Введи общее кол-во занятий по этому направлению с 1.01.26";
+        } else {
+            hint.innerText = `У тебя уже ${stats[type]} зан. Сколько добавим к прогрессу сегодня?`;
+        }
+        document.getElementById('user-input').focus();
+    }
+
+    function commitData() {
+        const val = parseInt(document.getElementById('user-input').value) || 0;
+        
+        if (stats.firstEntry) {
+            stats[currentType] = val;
+        } else {
+            stats[currentType] += val;
+        }
+
+        // Если прошли по всем кнопкам или ввели хоть что-то, отключаем режим "первого раза" позже
+        // Но для удобства — отключаем сразу после первого сохранения
+        stats.firstEntry = false;
+
+        document.getElementById('user-input').value = '';
+        document.getElementById('input-block').classList.remove('active');
+        
+        tg.HapticFeedback.notificationOccurred('success');
+        refreshStats();
+    }
+
+    // 5. ГРАФИК (NEON STYLE)
+    const ctx = document.getElementById('chartArea').getContext('2d');
+    const grad = ctx.createLinearGradient(0, 0, 0, 300);
+    grad.addColorStop(0, 'rgba(176, 133, 255, 0.4)');
+    grad.addColorStop(1, 'rgba(176, 133, 255, 0)');
+
+    new Chart(ctx, {
         type: 'line',
         data: {
-            labels: ['1','2','3','4','5','6','7'],
+            labels: ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'],
             datasets: [{
-                data: [65, 80, 75, 90, 88, 95, 100],
-                borderColor: '#b085ff', borderWidth: 3, pointRadius: 0, tension: 0.4,
-                fill: true, backgroundColor: gradient
+                data: [50, 65, 60, 85, 80, 95, 100],
+                borderColor: '#b085ff', borderWidth: 4, pointRadius: 0, tension: 0.4, fill: true, backgroundColor: grad
             }]
         },
         options: {
@@ -226,41 +264,43 @@
         }
     });
 
-    // 3. СЕРИАЛ ТРАНСФОРМАЦИИ
-    const sessions = 14; 
-    const content = {
-        spine: {
-            hint: "Ощущение легкости (1-10)",
-            text: sessions < 12 
-                ? "<b>Хук:</b> Хочешь узнать, как твои межпозвоночные диски начнут «пить» воду после 12 занятий? Твой позвоночник сейчас готовится к декомпрессии."
-                : "<b>Эпизод 12+:</b> Твоя спина больше не тратит энергию на борьбу с гравитацией. Плечи опускаются сами. Знаешь, что будет с твоим лицом на 24-й тренировке?"
-        },
-        stretch: {
-            hint: "Расстояние до пола (см)",
-            text: sessions < 12
-                ? "<b>Хук:</b> Твои связки меняют структуру. Через 5 занятий они станут эластичными, как шелк. Ты почувствуешь это в каждом шаге."
-                : "<b>Эпизод 12+:</b> Микроциркуляция в области таза усилилась. Это твоя женская энергия. На 24-м занятии тело начнет вырабатывать дофамин от каждой растяжки."
-        },
-        sculpt: {
-            hint: "Твой тонус (1-10)",
-            text: "<b>Метаболический сериал:</b> Сейчас ты запустила «afterburn» эффект. Твои клетки будут сжигать энергию еще 24 часа, даже пока ты отдыхаешь."
-        }
-    };
+    // 6. ЖИВЫЕ ЗВЕЗДЫ (CANVAS)
+    const starCanvas = document.getElementById('canvas-stars');
+    const starCtx = starCanvas.getContext('2d');
+    let stars = [];
 
-    function runSeries(btn, type) {
-        document.querySelectorAll('.bubble-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const data = content[type] || content['sculpt'];
-        document.getElementById('series-display').innerHTML = data.text;
-        document.getElementById('hint-text').innerText = data.hint;
-        document.getElementById('main-val').focus();
+    function resize() {
+        starCanvas.width = window.innerWidth;
+        starCanvas.height = window.innerHeight;
     }
 
-    function finishEpisode() {
-        const tg = window.Telegram.WebApp;
-        tg.HapticFeedback.notificationOccurred('success');
-        alert("Эпизод твоей трансформации успешно зафиксирован! ✨");
+    function createStars() {
+        stars = Array.from({length: 150}, () => ({
+            x: Math.random() * starCanvas.width,
+            y: Math.random() * starCanvas.height,
+            size: Math.random() * 1.5,
+            speed: Math.random() * 0.05,
+            opacity: Math.random()
+        }));
     }
+
+    function animateStars() {
+        starCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
+        stars.forEach(s => {
+            s.opacity += s.speed;
+            if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
+            starCtx.globalAlpha = Math.abs(s.opacity);
+            starCtx.beginPath();
+            starCtx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+            starCtx.fillStyle = '#fff';
+            starCtx.fill();
+        });
+        requestAnimationFrame(animateStars);
+    }
+
+    window.addEventListener('resize', resize);
+    resize(); createStars(); animateStars(); refreshStats();
+
 </script>
 </body>
 </html>
