@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>LS Evolution Elite V5</title>
+    <title>LS Evolution Elite V7 Premium</title>
     
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -28,154 +28,163 @@
             box-sizing: border-box; 
             -webkit-tap-highlight-color: transparent; 
             outline: none; 
-            -webkit-font-smoothing: antialiased;
+            margin: 0; padding: 0;
         }
         
         body {
-            margin: 0; padding: 0; background: var(--bg); color: var(--text-main);
+            background: var(--bg); color: var(--text-main);
             font-family: 'Montserrat', sans-serif; overflow-x: hidden;
-            line-height: 1.5;
+            -webkit-user-select: none; user-select: none;
+            line-height: 1.6;
         }
 
-        /* Анимированный фон */
+        /* Звездное небо */
         #starfield { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             z-index: -1; pointer-events: none; 
         }
 
-        /* Индикатор бэкенда */
+        /* Статус синхронизации */
         .backend-status {
             position: fixed; top: calc(20px + var(--safe-top)); left: 20px; z-index: 1000;
             display: flex; align-items: center; gap: 8px; font-size: 10px;
             font-weight: 800; letter-spacing: 1.5px; color: var(--text-sec);
-            background: rgba(0,0,0,0.3); padding: 6px 12px; border-radius: 20px;
-            backdrop-filter: blur(5px);
+            background: rgba(0,0,0,0.4); padding: 8px 16px; border-radius: 30px;
+            backdrop-filter: blur(10px); border: 1px solid var(--border);
         }
         .status-dot {
-            width: 7px; height: 7px; border-radius: 50%;
-            background: var(--success); box-shadow: 0 0 10px var(--success);
-            animation: pulseSync 2s infinite;
+            width: 8px; height: 8px; border-radius: 50%;
+            background: var(--success); box-shadow: 0 0 12px var(--success);
+            animation: pulseSync 2.5s infinite;
         }
         @keyframes pulseSync { 
             0% { opacity: 1; transform: scale(1); } 
-            50% { opacity: 0.4; transform: scale(0.8); } 
+            50% { opacity: 0.3; transform: scale(0.8); } 
             100% { opacity: 1; transform: scale(1); } 
         }
 
         header {
-            position: fixed; top: 0; width: 100%; height: 70px;
-            background: rgba(5,5,7,0.8); backdrop-filter: blur(25px);
+            position: fixed; top: 0; width: 100%; height: 75px;
+            background: rgba(5,5,7,0.85); backdrop-filter: blur(25px);
             border-bottom: 1px solid var(--border); z-index: 999;
             display: flex; align-items: center; justify-content: center;
             padding-top: var(--safe-top);
         }
-        .logo { font-weight: 200; letter-spacing: 6px; font-size: 18px; color: #fff; }
+        .logo { font-weight: 200; letter-spacing: 7px; font-size: 18px; color: #fff; }
 
         .app-container {
-            max-width: 1200px; margin: 0 auto; padding: 90px 20px 40px;
-            display: grid; grid-template-columns: 1.6fr 1fr; gap: 24px;
+            max-width: 1200px; margin: 0 auto; padding: 100px 20px 50px;
+            display: grid; grid-template-columns: 1.7fr 1fr; gap: 25px;
         }
 
-        @media (max-width: 900px) {
-            .app-container { grid-template-columns: 1fr; padding-top: 80px; }
+        @media (max-width: 950px) {
+            .app-container { grid-template-columns: 1fr; padding-top: 90px; }
         }
 
         .card {
-            background: var(--glass); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
-            border: 1px solid var(--border); border-radius: 28px; padding: 28px;
+            background: var(--glass); backdrop-filter: blur(45px); -webkit-backdrop-filter: blur(45px);
+            border: 1px solid var(--border); border-radius: 32px; padding: 30px;
             display: flex; flex-direction: column; position: relative; overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 1px 1px rgba(255,255,255,0.1);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.1);
         }
         
         .card-header {
             display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 22px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 12px;
+            margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 15px;
         }
-        .card-title { font-size: 13px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; }
+        .card-title { font-size: 12px; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 2.5px; }
 
-        /* Метрики и ввод */
-        .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
-        .input-group { position: relative; }
+        /* График */
+        .chart-container { flex: 1; min-height: 350px; position: relative; width: 100%; }
+
+        /* Ввод данных */
+        .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
         .metric-input {
-            background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 14px;
-            padding: 14px; color: #fff; width: 100%; font-family: inherit; font-size: 14px;
-            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 16px;
+            padding: 16px; color: #fff; width: 100%; font-family: inherit; font-size: 15px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .metric-input:focus { border-color: var(--accent); background: rgba(255,255,255,0.07); }
+        .metric-input:focus { border-color: var(--accent); background: rgba(255,255,255,0.08); box-shadow: 0 0 20px rgba(176,133,255,0.1); }
         
         .bmi-box {
-            background: linear-gradient(90deg, rgba(176,133,255,0.1), rgba(176,133,255,0.02));
-            border-radius: 16px; padding: 18px; text-align: center; margin-bottom: 20px;
-            border: 1px solid rgba(176,133,255,0.2);
+            background: linear-gradient(135deg, rgba(176,133,255,0.15), rgba(176,133,255,0.02));
+            border-radius: 20px; padding: 22px; text-align: center; margin-bottom: 25px;
+            border: 1px solid rgba(176,133,255,0.25);
         }
 
-        /* Блок Энергии */
-        .energy-section { margin: 20px 0; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 18px; }
-        .energy-label { font-size: 10px; font-weight: 800; color: var(--text-sec); margin-bottom: 10px; display: block; text-transform: uppercase; }
+        /* Энергия */
+        .energy-card { margin-top: 10px; padding: 20px; background: rgba(0,0,0,0.25); border-radius: 22px; border: 1px solid rgba(255,255,255,0.03); }
         .energy-tip { 
-            font-size: 11px; margin-top: 12px; padding: 10px; border-radius: 10px; 
-            background: rgba(255,159,10,0.05); color: var(--warning); border-left: 3px solid var(--warning);
-            display: none; line-height: 1.4;
+            font-size: 12px; margin-top: 15px; padding: 12px 15px; border-radius: 12px; 
+            background: rgba(255,159,10,0.08); color: var(--warning); border-left: 4px solid var(--warning);
+            display: none; line-height: 1.5; font-weight: 500;
         }
 
-        /* Список тренировок */
+        /* Тренировки */
         .stat-row { 
             display: flex; justify-content: space-between; align-items: center; 
-            padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.03);
+            padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
         }
-        .counter-box { display: flex; align-items: center; gap: 12px; }
-        .stat-val { font-weight: 800; color: #fff; min-width: 24px; text-align: center; font-size: 15px; }
+        .counter-box { display: flex; align-items: center; gap: 15px; }
+        .stat-val { font-weight: 800; color: #fff; min-width: 30px; text-align: center; font-size: 18px; font-variant-numeric: tabular-nums; }
         .edit-btn {
             background: var(--glass-bright); border: 1px solid var(--border); color: #fff;
-            width: 30px; height: 30px; border-radius: 10px; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; font-size: 18px;
+            width: 34px; height: 34px; border-radius: 12px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; font-size: 20px;
+            transition: 0.2s;
         }
-        .edit-btn:active { transform: scale(0.9); background: var(--accent); }
+        .edit-btn:active { transform: scale(0.85); background: var(--accent); }
 
-        /* Биохакинг текст */
-        .bio-highlight { font-size: 14px; line-height: 1.8; font-weight: 300; min-height: 80px; color: #ddd; }
+        /* Текст Биохакинга */
+        .bio-highlight { font-size: 15px; line-height: 1.9; font-weight: 300; min-height: 100px; color: #efefef; }
         .bio-pulse { 
-            color: var(--success); font-weight: 700; text-transform: uppercase; 
-            display: block; margin-bottom: 6px; letter-spacing: 1px;
-            text-shadow: 0 0 15px rgba(50,215,75,0.3);
+            color: var(--success); font-weight: 800; text-transform: uppercase; 
+            display: block; margin-bottom: 10px; letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(50,215,75,0.4);
         }
 
-        /* Кнопки занятий */
-        .category-header { font-size: 11px; font-weight: 800; color: var(--text-sec); margin: 25px 0 12px; text-transform: uppercase; letter-spacing: 1.5px; }
-        .buttons-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+        /* Кнопки */
+        .category-label { font-size: 11px; font-weight: 800; color: var(--text-sec); margin: 35px 0 15px; text-transform: uppercase; letter-spacing: 2px; padding-left: 10px; border-left: 3px solid var(--accent); }
+        .buttons-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
         .t-btn {
-            background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-            border-radius: 20px; padding: 22px 12px; text-align: center; cursor: pointer;
+            background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+            border-radius: 24px; padding: 28px 15px; text-align: center; cursor: pointer;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .t-btn:active { transform: scale(0.94); background: rgba(176,133,255,0.15); border-color: var(--accent); }
-        .t-name { font-size: 11px; font-weight: 700; display: block; margin-bottom: 6px; color: #fff; }
-        .t-count { font-size: 10px; color: var(--text-sec); font-weight: 500; }
+        .t-btn:active { transform: scale(0.92); background: rgba(176,133,255,0.2); border-color: var(--accent); }
+        .t-name { font-size: 12px; font-weight: 700; display: block; margin-bottom: 8px; color: #fff; letter-spacing: 0.5px; }
+        .t-count { font-size: 10px; color: var(--text-sec); font-weight: 600; text-transform: uppercase; }
 
-        .save-metrics-btn {
-            width: 100%; background: #fff; color: #000; border: none; padding: 16px;
-            border-radius: 16px; font-weight: 900; cursor: pointer; margin-top: 10px;
-            font-size: 13px; letter-spacing: 1px; transition: 0.3s;
-        }
-        .save-metrics-btn:active { transform: scale(0.98); opacity: 0.8; }
-        
-        .reset-btn {
-            background: transparent; border: 1px solid var(--danger); color: var(--danger);
-            margin-top: 30px; opacity: 0.3; font-size: 9px; padding: 10px; width: 100%; 
-            border-radius: 12px; cursor: pointer; font-weight: 700; text-transform: uppercase;
+        .main-action-btn {
+            width: 100%; background: #fff; color: #000; border: none; padding: 18px;
+            border-radius: 20px; font-weight: 900; cursor: pointer; margin-top: 15px;
+            font-size: 14px; letter-spacing: 1.5px; text-transform: uppercase;
         }
 
-        /* Скроллбар */
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+        /* Модалка Майлстоунов */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.92); backdrop-filter: blur(20px);
+            z-index: 2000; display: none; align-items: center; justify-content: center;
+            opacity: 0; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .modal-active { display: flex; opacity: 1; }
+        .modal-card {
+            background: #0a0a0c; border: 1px solid var(--accent); border-radius: 40px;
+            padding: 50px 30px; width: 90%; max-width: 450px; text-align: center;
+            transform: translateY(30px); transition: 0.5s;
+        }
+        .modal-active .modal-card { transform: translateY(0); }
+        .m-icon { font-size: 70px; margin-bottom: 25px; display: block; }
+        .m-title { font-size: 32px; font-weight: 200; color: var(--accent); margin-bottom: 15px; letter-spacing: -1px; }
+
     </style>
 </head>
 <body>
 
 <div class="backend-status">
     <div class="status-dot"></div>
-    <span>SERVER SYNC ACTIVE</span>
+    <span>YANDEX_DATABASE_CONNECT</span>
 </div>
 
 <canvas id="starfield"></canvas>
@@ -184,60 +193,59 @@
     <div class="logo">LADY STRETCH ID</div>
 </header>
 
+<div class="modal-overlay" id="milestone-modal">
+    <div class="modal-card">
+        <span class="m-icon">💎</span>
+        <h2 class="m-title" id="m-title">УРОВЕНЬ 1</h2>
+        <p id="m-text" style="font-size: 16px; line-height: 1.7; opacity: 0.8; font-weight: 300; margin-bottom: 30px;"></p>
+        <button class="main-action-btn" onclick="closeMilestone()">ПРИНЯТЬ ЭВОЛЮЦИЮ</button>
+    </div>
+</div>
+
 <div class="app-container">
     
     <div class="card" style="grid-row: span 2;">
         <div class="card-header">
-            <span class="card-title">Прогресс Трансформации</span>
-            <div id="status-msg" style="font-size: 10px; font-weight: 700; color: var(--success);">READY</div>
+            <span class="card-title">Прогресс трансформации</span>
+            <div id="sync-status" style="font-size: 10px; font-weight: 800; color: var(--success);">ONLINE</div>
         </div>
-        <div style="flex: 1; min-height: 320px; position: relative;">
+        <div class="chart-container">
             <canvas id="mainChart"></canvas>
         </div>
-        <div style="margin-top: 20px; display: flex; justify-content: space-around;">
+        <div style="margin-top: 30px; display: flex; justify-content: space-around; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px;">
             <div style="text-align: center;">
-                <div style="font-size: 18px; font-weight: 800;" id="stat-weight">--</div>
-                <div style="font-size: 9px; color: var(--text-sec);">ТЕКУЩИЙ ВЕС</div>
+                <div style="font-size: 22px; font-weight: 900;" id="display-w">--</div>
+                <div style="font-size: 10px; color: var(--text-sec); text-transform: uppercase;">Текущий вес</div>
             </div>
             <div style="text-align: center;">
-                <div style="font-size: 18px; font-weight: 800; color: var(--accent);" id="stat-total">0</div>
-                <div style="font-size: 9px; color: var(--text-sec);">ТРЕНИРОВОК</div>
+                <div style="font-size: 22px; font-weight: 900; color: var(--accent);" id="display-t">0</div>
+                <div style="font-size: 10px; color: var(--text-sec); text-transform: uppercase;">Занятий всего</div>
             </div>
         </div>
     </div>
 
     <div class="card" id="bio-anchor">
-        <div class="card-header"><span class="card-title">Биохакинг системы</span></div>
+        <div class="card-header"><span class="card-title">Аналитика биосистем</span></div>
         <div id="bio-content" class="bio-highlight">
-            Интеллектуальная система анализа готова. Выберите тип физической активности для получения данных о физиологическом отклике организма.
+            Выберите тренировочный протокол для инициации сканирования физиологического отклика. Система LS Evolution готова к работе.
         </div>
     </div>
 
     <div class="card">
-        <div class="card-header"><span class="card-title">Биометрические данные</span></div>
+        <div class="card-header"><span class="card-title">Биометрический профиль</span></div>
         
-        <div class="bmi-box" id="bmi-display">
-            ИМТ: <span style="opacity: 0.5;">Ожидание ввода данных...</span>
-        </div>
+        <div class="bmi-box" id="bmi-display">ИМТ: <span style="opacity: 0.4;">Введите рост и вес</span></div>
 
         <div class="metrics-grid">
-            <div class="input-group">
-                <input type="number" id="w-in" class="metric-input" placeholder="Вес (кг)" step="0.1">
-            </div>
-            <div class="input-group">
-                <input type="number" id="h-in" class="metric-input" placeholder="Рост (см)">
-            </div>
-            <div class="input-group">
-                <input type="number" id="c-in" class="metric-input" placeholder="Грудь (см)">
-            </div>
-            <div class="input-group">
-                <input type="number" id="ws-in" class="metric-input" placeholder="Талия (см)">
-            </div>
+            <input type="number" id="w-in" class="metric-input" placeholder="Вес (кг)" step="0.1">
+            <input type="number" id="h-in" class="metric-input" placeholder="Рост (см)">
+            <input type="number" id="c-in" class="metric-input" placeholder="Грудь (см)">
+            <input type="number" id="ws-in" class="metric-input" placeholder="Талия (см)">
         </div>
 
-        <div class="energy-section">
-            <span class="energy-label">Уровень нейро-энергии:</span>
-            <select id="energy-level" class="metric-input" onchange="updateEnergyUI()">
+        <div class="energy-card">
+            <span style="font-size: 10px; font-weight: 800; color: var(--text-sec); text-transform: uppercase;">Нейро-энергия:</span>
+            <select id="energy-level" class="metric-input" style="margin-top: 10px;" onchange="updateEnergyUI()">
                 <option value="high">🔋 ГОТОВА К РАБОТЕ (MAX)</option>
                 <option value="mid" selected>🔌 ВОССТАНАВЛИВАЮСЬ (MID)</option>
                 <option value="low">🪫 ТРЕБУЕТСЯ REBOOT (LOW)</option>
@@ -245,22 +253,22 @@
             <div id="energy-tip" class="energy-tip"></div>
         </div>
 
-        <button class="save-metrics-btn" onclick="saveMetrics()">ОБНОВИТЬ СОСТОЯНИЕ</button>
+        <button class="main-action-btn" onclick="saveMetrics()">ОБНОВИТЬ СОСТОЯНИЕ</button>
 
-        <div style="margin-top: 30px;">
-            <div class="card-title" style="margin-bottom: 15px; font-size: 11px;">История активности</div>
+        <div style="margin-top: 40px;">
+            <div class="card-title" style="margin-bottom: 20px; font-size: 11px;">История логов</div>
             <div id="stats-list"></div>
-            <button class="reset-btn" onclick="resetAll()">Полный сброс системы</button>
+            <button style="background:transparent; border: 1px solid var(--danger); color:var(--danger); width:100%; padding:10px; border-radius:15px; margin-top:40px; font-size:9px; opacity:0.3;" onclick="clearAllData()">УДАЛИТЬ ВСЕ ДАННЫЕ</button>
         </div>
     </div>
 
     <div class="card" style="grid-column: 1 / -1;">
-        <div class="card-header"><span class="card-title">Протоколы тренировок</span></div>
+        <div class="card-header"><span class="card-title">Протоколы занятий</span></div>
         
-        <div class="category-header" style="color: #64d2ff;">Mind & Body / Гибкость</div>
+        <div class="category-label" style="color: #64d2ff;">Mind & Body / Гибкость и реабилитация</div>
         <div id="calm-grid" class="buttons-grid"></div>
 
-        <div class="category-header" style="color: #ff9f0a;">Power & Cardio / Интенсив</div>
+        <div class="category-label" style="color: #ff9f0a;">Power & Sculpt / Интенсивное воздействие</div>
         <div id="active-grid" class="buttons-grid"></div>
     </div>
 
@@ -271,11 +279,11 @@
     tg.expand();
     tg.ready();
 
-    // Главная база данных
-    let db = JSON.parse(localStorage.getItem('ls_elite_v6_full')) || {
+    // ГЛОБАЛЬНАЯ БАЗА (LS Elite V7)
+    let db = JSON.parse(localStorage.getItem('ls_elite_v7_complete')) || {
         metrics: { 
             weight: [], chest: [], waist: [], height: null, 
-            dates: [], totalWorkoutsHistory: [] 
+            dates: [], totalHistory: [] 
         },
         workouts: {},
         energy: "mid"
@@ -284,26 +292,35 @@
     const calmList = ['Пилатес', 'Стретчинг', 'МФР', 'Здоровая спина', 'Sky Stretching', 'Йога релакс'];
     const activeList = ['Подкачка+Шпагат', 'Ягодицы+Пресс', 'Круговая', 'Body Sculpt', 'Табата', 'TRX'];
 
-    // Полные данные по биохакингу (12 позиций)
+    // ПОЛНЫЕ 12 ПРОТОКОЛОВ БИОХАКИНГА
     const bioFacts = {
-        'Табата': 'Максимальный протокол жиросжигания. EPOC-эффект активирован: потребление кислорода повышено на 15% в течение суток после нагрузки.',
-        'Стретчинг': 'Снижение уровня кортизола и декомпрессия нервных окончаний. Улучшение эластичности сосудов и профилактика варикоза.',
-        'Здоровая спина': 'Коррекция осевой нагрузки. Укрепление глубоких паравертебральных мышц и улучшение питания межпозвоночных дисков.',
-        'Sky Stretching': 'Антигравитационная терапия. Декомпрессия позвоночника и стимуляция вестибулярного аппарата. Мощный лимфодренаж.',
-        'Body Sculpt': 'Гипертрофия медленных мышечных волокон. Формирование четкого рельефа и повышение базального метаболизма.',
-        'МФР': 'Миофасциальный релиз. Разрушение триггерных точек, улучшение скольжения фасций и мгновенное снятие отечности тканей.',
-        'Пилатес': 'Активация мышц-стабилизаторов и "центра силы". Улучшение контроля дыхания и глубокая проработка мышечного корсета.',
-        'Йога релакс': 'Доминирование парасимпатической нервной системы. Клеточное восстановление и снижение психосоматического напряжения.',
-        'Ягодицы+Пресс': 'Фокусированная проработка тазового региона. Улучшение кровообращения в органах малого таза и тонуса кожи.',
-        'Круговая': 'Тренировка сердечной мышцы и выносливости. Повышение плотности митохондрий и способности клеток поглощать энергию.',
-        'TRX': 'Функциональный тренинг с собственным весом. Работа в нестабильных условиях включает все мелкие мышцы-помощники.',
-        'Подкачка+Шпагат': 'Синергия силы и длины. Укрепление связочного аппарата в условиях максимальной амплитуды растяжения.'
+        'Табата': 'Протокол высокой интенсивности. Активирует митохондриальный биогенез и повышает чувствительность к инсулину. Жиросжигание длится до 24 часов.',
+        'Стретчинг': 'Снижение жесткости артерий и уровня кортизола. Улучшает микроциркуляцию крови и ускоряет вывод продуктов метаболизма из мышц.',
+        'Здоровая спина': 'Коррекция мышечного дисбаланса. Укрепление многораздельных мышц спины и декомпрессия нервных корешков позвоночника.',
+        'Sky Stretching': 'Инверсионное воздействие улучшает венозный отток от нижних конечностей и стимулирует выработку серотонина за счет ощущения "полета".',
+        'Body Sculpt': 'Силовой стресс провоцирует микроразрывы мышечных волокон, запуская синтез нового белка. Формирует плотность и тонус тканей.',
+        'МФР': 'Воздействие на проприорецепторы фасций. Снимает "склейки" в тканях, восстанавливает лимфоток и убирает застойные явления (целлюлит).',
+        'Пилатес': 'Фокус на глубокие мышцы пресса и тазового дна. Улучшает нейромышечную связь и контроль над каждым сегментом позвоночника.',
+        'Йога релакс': 'Переключение вегетативной нервной системы в парасимпатический режим. Идеально для клеточного восстановления и снижения стресса.',
+        'Ягодицы+Пресс': 'Фокусированный приток крови к целевым зонам. Улучшает трофику кожи и укрепляет связки тазобедренных суставов.',
+        'Круговая': 'Тренировка сердечно-сосудистой системы. Повышает ударный объем сердца и общую аэробную выносливость организма.',
+        'TRX': 'Работа с гравитационным весом. Включает в работу все цепи мышц-стабилизаторов, создавая функциональное и сильное тело.',
+        'Подкачка+Шпагат': 'Комбинированный метод: саркоплазматическая гипертрофия + развитие эластичности связок. Идеальный баланс силы и гибкости.'
     };
 
-    const energyTips = {
-        high: "⚡️ Тело в режиме суперкомпенсации. Рекомендуется: ТАБАТА, КРУГОВАЯ или BODY SCULPT. Используйте ресурс на 100%!",
-        mid: "🔄 Стабильное состояние. Рекомендуется: ПИЛАТЕС, СТРЕТЧИНГ или TRX. Хорошее время для закрепления результата.",
-        low: "🔌 Режим энергосбережения. Рекомендуется: МФР или ЙОГА РЕЛАКС. Избегайте осевых нагрузок и высокого пульса."
+    // ОТМЕТКИ ДОСТИЖЕНИЙ (MILESTONES)
+    const milestones = {
+        8: {t: "РИТМ НАЙДЕН", icon: "🌱", txt: "Тело прошло стадию первичной адаптации. Кислородный обмен улучшен на 12%."},
+        16: {t: "ЭВОЛЮЦИЯ", icon: "🔥", txt: "Метаболизм перестроился. Вы чувствуете прилив сил даже в дни без тренировок."},
+        32: {t: "НОВОЕ ТЕЛО", icon: "💎", txt: "Трансформация тканей завершена. Плотность мышц и эластичность связок на пике."},
+        64: {t: "АТЛЕТ LS", icon: "⚡", txt: "Ваша биосистема работает как часы. Биологический возраст официально снижен."},
+        96: {t: "МАСТЕР ЭЛИТЫ", icon: "👑", txt: "Вы достигли вершины эволюции. Ваше тело — эталон Lady Stretch. VIP-статус активен."}
+    };
+
+    const energyData = {
+        high: "⚡️ Максимальный ресурс. Идеально для силовых и интервальных тренировок (Табата, Body Sculpt).",
+        mid: "🔄 Баланс. Рекомендуется поддерживать ритм (Стретчинг, TRX, Пилатес).",
+        low: "🔌 Восстановление. Фокус на мягкие практики и детокс (МФР, Йога, Здоровая спина)."
     };
 
     function init() {
@@ -313,29 +330,29 @@
         checkBMI();
         updateEnergyUI();
         
-        // Заполнение инпутов из памяти
+        // Автозаполнение
         if(db.metrics.height) document.getElementById('h-in').value = db.metrics.height;
         if(db.metrics.weight.length) {
             const lastW = db.metrics.weight[db.metrics.weight.length - 1];
             document.getElementById('w-in').value = lastW;
-            document.getElementById('stat-weight').innerText = lastW + ' кг';
+            document.getElementById('display-w').innerText = lastW + ' кг';
         }
         
-        // Настройка кнопки ТГ
+        // Настройка главной кнопки Telegram
         tg.MainButton.setParams({
-            text: "ОТПРАВИТЬ ОТЧЕТ БОТУ",
+            text: "ОТПРАВИТЬ ОТЧЕТ В ЯНДЕКС",
             color: "#b085ff",
             text_color: "#ffffff"
         });
         
-        if(Object.values(db.workouts).length > 0) tg.MainButton.show();
+        if(Object.values(db.workouts).reduce((a,b)=>a+b,0) > 0) tg.MainButton.show();
     }
 
     function updateEnergyUI() {
         const val = document.getElementById('energy-level').value;
         const tip = document.getElementById('energy-tip');
         db.energy = val;
-        tip.innerText = energyTips[val];
+        tip.innerText = energyData[val];
         tip.style.display = 'block';
         saveDB();
     }
@@ -349,7 +366,6 @@
             btn.onclick = () => addWorkout(name);
             document.getElementById(target).appendChild(btn);
         };
-        
         document.getElementById('calm-grid').innerHTML = '';
         document.getElementById('active-grid').innerHTML = '';
         calmList.forEach(n => createBtn(n, 'calm-grid'));
@@ -358,49 +374,51 @@
 
     function addWorkout(name) {
         db.workouts[name] = (db.workouts[name] || 0) + 1;
+        const total = Object.values(db.workouts).reduce((a,b)=>a+b,0);
         
-        // Визуал биохакинга
         document.getElementById('bio-anchor').scrollIntoView({behavior: "smooth"});
         document.getElementById('bio-content').innerHTML = `
             <span class="bio-pulse">${name}:</span>
-            ${bioFacts[name] || "Протокол активирован. Тело адаптируется к нагрузке, запуская процессы регенерации."}
+            ${bioFacts[name] || "Анализ завершен. Биосистема подтверждает положительный отклик на нагрузку."}
         `;
         
-        saveDB();
-        renderButtons();
-        updateStats();
+        // Проверка Майлстоуна
+        if(milestones[total]) {
+            showMilestone(milestones[total]);
+        }
+
+        saveDB(); renderButtons(); updateStats();
         tg.MainButton.show();
         tg.HapticFeedback.impactOccurred('medium');
     }
 
-    function manualEdit(name, delta) {
-        db.workouts[name] = Math.max(0, (db.workouts[name] || 0) + delta);
-        saveDB(); renderButtons(); updateStats();
+    function showMilestone(data) {
+        document.getElementById('m-title').innerText = data.t;
+        document.getElementById('m-text').innerText = data.txt;
+        document.querySelector('.m-icon').innerText = data.icon;
+        const modal = document.getElementById('milestone-modal');
+        modal.style.display = 'flex';
+        setTimeout(() => modal.classList.add('modal-active'), 10);
+        tg.HapticFeedback.notificationOccurred('success');
+    }
+
+    function closeMilestone() {
+        const modal = document.getElementById('milestone-modal');
+        modal.classList.remove('modal-active');
+        setTimeout(() => modal.style.display = 'none', 500);
     }
 
     function saveMetrics() {
         const w = parseFloat(document.getElementById('w-in').value);
         const h = parseFloat(document.getElementById('h-in').value);
-        const c = parseFloat(document.getElementById('c-in').value);
-        const ws = parseFloat(document.getElementById('ws-in').value);
-
         if(h) db.metrics.height = h;
         if(w) {
             db.metrics.weight.push(w);
             db.metrics.dates.push(new Date().toLocaleDateString('ru-RU', {day:'numeric', month:'short'}));
-            db.metrics.totalWorkoutsHistory.push(Object.values(db.workouts).reduce((a,b)=>a+b,0));
-            
-            if(!db.metrics.chest) db.metrics.chest = [];
-            if(!db.metrics.waist) db.metrics.waist = [];
-            db.metrics.chest.push(c || 0);
-            db.metrics.waist.push(ws || 0);
+            db.metrics.totalHistory.push(Object.values(db.workouts).reduce((a,b)=>a+b,0));
+            document.getElementById('display-w').innerText = w + ' кг';
         }
-
-        checkBMI();
-        updateChart();
-        saveDB();
-        
-        document.getElementById('stat-weight').innerText = w + ' кг';
+        checkBMI(); updateChart(); saveDB();
         tg.HapticFeedback.notificationOccurred('success');
     }
 
@@ -408,34 +426,29 @@
         const h = db.metrics.height, w = db.metrics.weight[db.metrics.weight.length-1];
         if(h && w) {
             const bmi = (w / ((h/100)**2)).toFixed(1);
-            let status = '';
-            if(bmi < 18.5) status = 'Дефицит веса';
-            else if(bmi < 25) status = 'Нормальный вес';
-            else if(bmi < 30) status = 'Избыточный вес';
-            else status = 'Ожирение';
+            let status = bmi < 18.5 ? 'Дефицит' : bmi < 25 ? 'Норма' : bmi < 30 ? 'Избыток' : 'Ожирение';
             document.getElementById('bmi-display').innerHTML = `ИМТ: <b style="color:var(--accent)">${bmi}</b> — ${status}`;
         }
     }
 
     function updateStats() {
         const total = Object.values(db.workouts).reduce((a,b)=>a+b,0);
-        document.getElementById('stat-total').innerText = total;
-        
-        let html = '';
-        for (const [name, val] of Object.entries(db.workouts)) {
-            if(val > 0) {
-                html += `
-                <div class="stat-row">
-                    <span>${name}</span>
-                    <div class="counter-box">
-                        <button class="edit-btn" onclick="manualEdit('${name}', -1)">−</button>
-                        <span class="stat-val">${val}</span>
-                        <button class="edit-btn" onclick="manualEdit('${name}', 1)">+</button>
-                    </div>
-                </div>`;
-            }
-        }
-        document.getElementById('stats-list').innerHTML = html || '<div style="opacity:0.3; font-size:11px; text-align:center; padding:10px;">Активности не зафиксировано</div>';
+        document.getElementById('display-t').innerText = total;
+        document.getElementById('stats-list').innerHTML = Object.entries(db.workouts)
+            .filter(e => e[1] > 0).map(e => `
+            <div class="stat-row">
+                <span>${e[0]}</span>
+                <div class="counter-box">
+                    <button class="edit-btn" onclick="manualEdit('${e[0]}', -1)">-</button>
+                    <span class="stat-val">${e[1]}</span>
+                    <button class="edit-btn" onclick="manualEdit('${e[0]}', 1)">+</button>
+                </div>
+            </div>`).join('');
+    }
+
+    function manualEdit(name, delta) {
+        db.workouts[name] = Math.max(0, (db.workouts[name] || 0) + delta);
+        saveDB(); renderButtons(); updateStats();
     }
 
     let chartInstance = null;
@@ -446,66 +459,74 @@
         chartInstance = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: db.metrics.dates.length ? db.metrics.dates : ['START'],
-                datasets: [{
-                    label: 'Динамика веса',
-                    data: db.metrics.weight,
-                    borderColor: '#b085ff',
-                    borderWidth: 3,
-                    pointBackgroundColor: '#b085ff',
-                    pointRadius: 4,
-                    backgroundColor: (context) => {
-                        const gradient = context.chart.ctx.createLinearGradient(0, 0, 0, 400);
-                        gradient.addColorStop(0, 'rgba(176,133,255,0.2)');
-                        gradient.addColorStop(1, 'rgba(176,133,255,0)');
-                        return gradient;
+                labels: db.metrics.dates,
+                datasets: [
+                    {
+                        label: 'Вес (кг)',
+                        data: db.metrics.weight,
+                        borderColor: '#b085ff',
+                        borderWidth: 4,
+                        pointBackgroundColor: '#b085ff',
+                        pointRadius: 5,
+                        fill: true,
+                        backgroundColor: (c) => {
+                            const g = c.chart.ctx.createLinearGradient(0, 0, 0, 400);
+                            g.addColorStop(0, 'rgba(176,133,255,0.25)');
+                            g.addColorStop(1, 'rgba(176,133,255,0)');
+                            return g;
+                        },
+                        tension: 0.4,
+                        yAxisID: 'y'
                     },
-                    fill: true,
-                    tension: 0.4
-                }]
+                    {
+                        label: 'Занятия',
+                        data: db.metrics.totalHistory,
+                        borderColor: '#32d74b',
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                        pointRadius: 0,
+                        tension: 0.1,
+                        yAxisID: 'y1'
+                    }
+                ]
             },
             options: {
-                responsive: true,
-                maintainAspectRatio: false,
+                responsive: true, maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
                 scales: {
-                    x: { ticks: { color: 'rgba(255,255,255,0.3)', font: { size: 10 } }, grid: { display: false } },
-                    y: { ticks: { color: 'rgba(255,255,255,0.3)', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                    y: { position: 'left', ticks: { color: 'rgba(255,255,255,0.4)', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                    y1: { position: 'right', ticks: { color: '#32d74b', font: { size: 10 } }, grid: { display: false } }
                 }
             }
         });
     }
 
     tg.MainButton.onClick(() => {
-        const total = Object.values(db.workouts).reduce((a, b) => a + b, 0);
-        const report = {
-            weight: db.metrics.weight[db.metrics.weight.length-1],
-            workouts: total,
+        // Подготовка данных для Яндекса
+        const dataForBackend = {
+            userId: tg.initDataUnsafe.user?.id,
+            username: tg.initDataUnsafe.user?.username,
+            currentWeight: db.metrics.weight[db.metrics.weight.length-1],
+            totalWorkouts: Object.values(db.workouts).reduce((a,b)=>a+b,0),
             energy: db.energy,
-            date: new Date().toLocaleDateString()
+            history: db.workouts
         };
-        tg.sendData(JSON.stringify(report));
+        tg.sendData(JSON.stringify(dataForBackend));
     });
 
-    function saveDB() { localStorage.setItem('ls_elite_v6_full', JSON.stringify(db)); }
+    function saveDB() { localStorage.setItem('ls_elite_v7_complete', JSON.stringify(db)); }
+    function clearAllData() { if(confirm("Удалить всё?")) { localStorage.clear(); location.reload(); } }
 
-    function resetAll() {
-        if(confirm("Внимание! Все данные о прогрессе будут безвозвратно удалены. Продолжить?")) {
-            localStorage.clear();
-            location.reload();
-        }
-    }
-
-    // Звезды
+    // ЗВЕЗДЫ
     const cvs = document.getElementById('starfield');
     const sCtx = cvs.getContext('2d');
     let stars = [];
     function initStars() {
         cvs.width = window.innerWidth; cvs.height = window.innerHeight;
-        stars = Array.from({length: 300}, () => ({
+        stars = Array.from({length: 400}, () => ({
             x: Math.random() * cvs.width,
             y: Math.random() * cvs.height,
-            r: Math.random() * 1.5,
+            r: Math.random() * 1.6,
             t: Math.random() * Math.PI * 2,
             s: 0.01 + Math.random() * 0.02
         }));
@@ -513,20 +534,15 @@
     function drawStars() {
         sCtx.clearRect(0, 0, cvs.width, cvs.height);
         stars.forEach(s => {
-            sCtx.globalAlpha = (Math.sin(s.t) + 1) / 2;
-            sCtx.beginPath();
-            sCtx.arc(s.x, s.y, s.r, 0, 7);
-            sCtx.fillStyle = "#fff";
-            sCtx.fill();
+            sCtx.globalAlpha = (Math.sin(s.t) + 1.1) / 2.2;
+            sCtx.beginPath(); sCtx.arc(s.x, s.y, s.r, 0, 7); sCtx.fillStyle = "#fff"; sCtx.fill();
             s.t += s.s;
         });
         requestAnimationFrame(drawStars);
     }
 
     window.addEventListener('resize', initStars);
-    initStars();
-    drawStars();
-    init();
+    initStars(); drawStars(); init();
 </script>
 </body>
 </html>
