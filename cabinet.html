@@ -3,201 +3,399 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LS Portal | Evolution</title>
+    <title>LS Achievement Portal | Final Edition 2026</title>
+    
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;600&display=swap" rel="stylesheet">
+    
     <style>
-        :root { --accent: #b085ff; --bg: #050508; --glass: rgba(255, 255, 255, 0.05); }
-        body { margin: 0; background: var(--bg); font-family: 'Montserrat', sans-serif; color: #fff; }
-
-        /* АДАПТИВНАЯ ШАПКА */
-        header {
-            position: fixed; top: 0; width: 100%; height: 60px;
-            display: flex; align-items: center; padding: 0 15px;
-            background: rgba(0,0,0,0.8); backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255,255,255,0.1); z-index: 1000; box-sizing: border-box;
+        :root {
+            --accent: #b085ff;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.15);
+            --glow: rgba(176, 133, 255, 0.3);
+            --bg: #050508;
         }
-        .logo-wrap { width: 35px; height: 35px; border-radius: 50%; border: 1px solid var(--accent); overflow: hidden; flex-shrink: 0; }
-        .logo-wrap img { width: 100%; height: 100%; object-fit: cover; }
-        .h-title { flex: 1; text-align: center; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-weight: 300; }
 
-        /* СЕТКА: 1 КОЛОНКА НА МОБИЛКЕ */
+        body, html {
+            margin: 0; padding: 0; min-height: 100vh;
+            background: var(--bg); font-family: 'Montserrat', sans-serif;
+            color: #fff; overflow-x: hidden; -webkit-tap-highlight-color: transparent;
+        }
+
+        /* МНОГОСЛОЙНОЕ НЕБО (AURORA + STARS) */
+        .universe {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -3;
+            background: radial-gradient(circle at 50% 0%, #1a103d 0%, #050508 100%);
+        }
+        
+        .aurora-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
+            overflow: hidden; opacity: 0.6;
+        }
+
+        .aurora {
+            position: absolute; width: 200%; height: 200%; top: -50%; left: -50%;
+            background: radial-gradient(circle at 30% 30%, #7a5af830 0%, transparent 40%),
+                        radial-gradient(circle at 70% 60%, #24f0ff20 0%, transparent 40%);
+            filter: blur(100px); animation: aurora-drift 25s infinite alternate ease-in-out;
+        }
+
+        @keyframes aurora-drift {
+            0% { transform: rotate(0deg) scale(1); }
+            100% { transform: rotate(15deg) scale(1.2); }
+        }
+
+        #starfield { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+
+        /* ИНТЕРФЕЙС */
+        header {
+            position: fixed; top: 0; left: 0; width: 100%; height: 85px;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 30px; box-sizing: border-box; z-index: 1000;
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(30px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo-wrap {
+            width: 48px; height: 48px; border-radius: 50%;
+            border: 1.5px solid var(--accent); overflow: hidden;
+            box-shadow: 0 0 20px var(--glow);
+        }
+        .logo-wrap img { width: 100%; height: 100%; object-fit: cover; }
+
+        .h-title {
+            flex: 1; text-align: center; font-weight: 100; letter-spacing: 4px;
+            font-size: 12px; text-transform: uppercase; color: #fff;
+        }
+
+        /* КОНТЕЙНЕР: ИДЕАЛЬНЫЙ DESKTOP -> MOBILE */
         .container {
-            padding: 80px 15px 30px;
-            display: flex; flex-direction: column; gap: 20px;
-            max-width: 800px; margin: 0 auto;
+            max-width: 1200px; margin: 0 auto; padding: 120px 20px 60px;
+            display: grid; grid-template-columns: 1fr 400px; gap: 40px;
+        }
+
+        @media (max-width: 1000px) {
+            .container { grid-template-columns: 1fr; padding-top: 100px; gap: 25px; }
+            .h-title { font-size: 10px; letter-spacing: 2px; }
         }
 
         .glass-card {
-            background: var(--glass); backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.1); border-radius: 25px;
-            padding: 20px; box-sizing: border-box;
+            background: var(--glass); backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--border); border-radius: 40px;
+            padding: 35px; box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease, border-color 0.3s ease;
         }
 
-        .tag { font-size: 9px; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; display: block; }
-        .main-stat { font-size: 40px; font-weight: 100; margin: 10px 0; }
-        .main-stat span { font-size: 16px; opacity: 0.5; }
+        /* НАПРАВЛЕНИЯ */
+        .grid-dirs {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 30px;
+        }
+        @media (max-width: 600px) { .grid-dirs { grid-template-columns: 1fr 1fr; } }
 
-        /* КНОПКИ НАПРАВЛЕНИЙ */
-        .grid-dirs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .btn-dir {
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 15px; padding: 15px 5px; text-align: center; font-size: 10px;
-            color: #fff; cursor: pointer; transition: 0.3s;
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+            border-radius: 25px; padding: 25px 10px; text-align: center;
+            font-size: 11px; cursor: pointer; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-weight: 300; letter-spacing: 1px; color: rgba(255,255,255,0.7);
         }
-        .btn-dir.active { background: #fff; color: #000; font-weight: 600; }
-
-        /* СЕРИАЛ ТРАНСФОРМАЦИИ */
-        .bio-content { font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.8); }
-        .bio-content b { color: var(--accent); }
-
-        .input-panel { margin-top: 20px; display: none; text-align: center; }
-        .input-panel.visible { display: block; }
-        .f-input { 
-            width: 80%; background: transparent; border: none; border-bottom: 2px solid var(--accent);
-            color: #fff; font-size: 30px; text-align: center; outline: none; margin-bottom: 20px;
-        }
-        .save-btn {
-            width: 100%; background: #fff; color: #000; border: none; padding: 18px;
-            border-radius: 15px; font-weight: 600; text-transform: uppercase; font-size: 12px;
+        .btn-dir.active {
+            background: #fff; color: #000; font-weight: 600;
+            box-shadow: 0 15px 30px rgba(176, 133, 255, 0.3); transform: scale(1.05);
         }
 
-        /* МОДАЛКА */
-        .modal {
-            position: fixed; top:0; left:0; width:100%; height:100%;
-            background: rgba(0,0,0,0.95); z-index: 2000; display:none; align-items:center; justify-content:center;
-        }
-        .modal-card { padding: 30px; text-align: center; max-width: 90%; }
+        .tag { font-size: 10px; letter-spacing: 3px; color: var(--accent); font-weight: 600; text-transform: uppercase; margin-bottom: 20px; display: block; }
         
-        #chartContainer { height: 200px; }
+        .main-stat { font-size: 64px; font-weight: 100; margin: 20px 0; letter-spacing: -3px; }
+        .main-stat span { font-size: 20px; color: #555; letter-spacing: 1px; }
+
+        .bio-content { font-size: 15px; line-height: 1.8; font-weight: 300; color: rgba(255,255,255,0.85); min-height: 120px; }
+        .bio-content b { color: var(--accent); font-weight: 600; }
+
+        /* ПАНЕЛЬ ВВОДА */
+        .input-panel {
+            margin-top: 35px; padding-top: 30px; border-top: 1px solid var(--border);
+            display: none;
+        }
+        .input-panel.visible { display: block; animation: fadeInUp 0.6s ease forwards; }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .f-input {
+            width: 100%; background: transparent; border: none; border-bottom: 2px solid var(--accent);
+            color: #fff; font-size: 36px; padding: 15px 0; outline: none; font-family: inherit;
+            text-align: center; font-weight: 200;
+        }
+
+        .save-btn {
+            width: 100%; background: #fff; color: #000; border: none; padding: 25px;
+            border-radius: 30px; font-weight: 600; text-transform: uppercase; letter-spacing: 3px;
+            margin-top: 30px; cursor: pointer; transition: 0.3s;
+        }
+        .save-btn:active { transform: scale(0.98); opacity: 0.8; }
+
+        /* МОДАЛЬНОЕ ОКНО */
+        .modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); backdrop-filter: blur(25px);
+            z-index: 2000; display: none; align-items: center; justify-content: center;
+        }
+        .modal-card {
+            background: rgba(255,255,255,0.03); border: 1px solid #fff; border-radius: 50px;
+            padding: 60px 40px; max-width: 450px; text-align: center; position: relative; margin: 25px;
+        }
+        .ms-title { font-weight: 100; font-size: 48px; margin: 20px 0; color: #fff; }
+        .ms-compliment { color: var(--accent); font-style: italic; margin-top: 25px; font-size: 16px; }
+
+        #chartCanvas { height: 280px !important; }
+        .stat-line { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.08); padding: 12px 0; font-size: 12px; }
+        .stat-line b { color: var(--accent); }
     </style>
 </head>
 <body>
 
+    <div class="universe"></div>
+    <div class="aurora-container"><div class="aurora"></div></div>
+    <canvas id="starfield"></canvas>
+
     <header>
-        <div class="logo-wrap"><img src="https://ladysfit.ru/favicon.ico" alt="LS"></div>
-        <div class="h-title" id="user-greeting">Lady Stretch Evolution 2026</div>
+        <div class="logo-wrap"><img src="lady_logo.png" alt="LS"></div>
+        <div class="h-title">Интеллектуальный отчет 2026</div>
+        <div style="width: 48px; opacity: 0.5; font-size: 10px;">V.4.0</div>
     </header>
 
     <div class="container">
-        <div class="glass-card" style="border-left: 4px solid var(--accent);">
-            <span class="tag">Следующая серия: Твоё тело</span>
-            <div class="bio-content" id="serial-text">
-                Выберите цель тренировок, чтобы узнать, какой апгрейд ждет ваш организм...
+        <div class="col-left">
+            <div class="glass-card" style="margin-bottom: 30px;">
+                <span class="tag">Аналитика прогресса</span>
+                <canvas id="chartCanvas"></canvas>
+            </div>
+
+            <div class="grid-dirs">
+                <div class="btn-dir" onclick="openBranch(this, 'abs')">Ягодицы + Пресс</div>
+                <div class="btn-dir" onclick="openBranch(this, 'spine')">Здоровая спина</div>
+                <div class="btn-dir" onclick="openBranch(this, 'stretch')">Шпагат</div>
+                <div class="btn-dir" onclick="openBranch(this, 'sky')">Sky Stretching</div>
+                <div class="btn-dir" onclick="openBranch(this, 'tabata')">Табата</div>
+                <div class="btn-dir" onclick="openBranch(this, 'sculpt')">Body Sculpt</div>
             </div>
         </div>
 
-        <div class="glass-card">
-            <span class="tag">График прогресса</span>
-            <div id="chartContainer"><canvas id="myChart"></canvas></div>
-        </div>
+        <div class="col-right">
+            <div class="glass-card" style="margin-bottom: 30px; border-color: var(--accent);">
+                <span class="tag">Биологический паспорт</span>
+                <div class="bio-content" id="bio-info">
+                    Выберите направление тренировок, чтобы система проанализировала влияние нагрузок на вашу физиологию и клеточный метаболизм.
+                </div>
+            </div>
 
-        <div class="grid-dirs">
-            <div class="btn-dir" onclick="selDir(this, 'spine')">Спина и Осанка</div>
-            <div class="btn-dir" onclick="selDir(this, 'stretch')">Шпагат и Гибкость</div>
-        </div>
+            <div class="glass-card">
+                <span class="tag">Результативности</span>
+                <div class="main-stat" id="total-stat">0 <span>занятий</span></div>
+                
+                <div id="monthly-breakdown" style="margin-bottom: 25px;"></div>
 
-        <div class="glass-card">
-            <span class="tag">Результат</span>
-            <div class="main-stat" id="total-val">0 <span>тренировок</span></div>
-            
-            <div class="input-panel" id="input-panel">
-                <input type="number" class="f-input" id="val-input" placeholder="Сколько сегодня?">
-                <button class="save-btn" onclick="addTrain()">Зафиксировать прогресс</button>
+                <div class="input-panel" id="input-block">
+                    <span id="input-hint" style="font-size: 12px; display: block; margin-bottom: 15px; color: var(--accent); font-weight: 600;"></span>
+                    <input type="number" class="f-input" id="val-entry" placeholder="0" pattern="\d*">
+                    <button class="save-btn" onclick="saveSession()">Зафиксировать данные</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="modal" id="win-modal" onclick="this.style.display='none'">
+    <div class="modal" id="milestone-modal" onclick="this.style.display='none'">
         <div class="modal-card">
-            <span class="tag">Уровень пройден!</span>
-            <h2 id="win-title">8 занятий</h2>
-            <p id="win-desc" class="bio-content"></p>
-            <button class="save-btn" style="margin-top:20px">Продолжить эволюцию</button>
+            <span class="tag">Достижение разблокировано</span>
+            <h1 class="ms-title" id="ms-title">8</h1>
+            <p id="ms-desc" style="font-weight: 300; line-height: 1.8; font-size: 15px; color: rgba(255,255,255,0.8);"></p>
+            <div class="ms-compliment" id="ms-compliment"></div>
+            <div style="margin-top: 40px; padding-top: 25px; border-top: 1px solid var(--border); font-size: 11px; letter-spacing: 3px; opacity: 0.6;">
+                ПРОДОЛЖАЙТЕ ЭВОЛЮЦИЮ ТЕЛА
+            </div>
         </div>
     </div>
 
 <script>
     const tg = window.Telegram.WebApp;
     tg.expand();
-    
-    // Подхватываем имя из ТГ
-    const userName = tg.initDataUnsafe?.user?.first_name || "Красотка";
-    document.getElementById('user-greeting').innerText = `Личный кабинет: ${userName}`;
 
-    let currentDir = '';
-    let db = JSON.parse(localStorage.getItem('ls_db_2026')) || { spine: 0, stretch: 0, history: [0,0,0,0,0,0] };
+    // 1. ПОЛНЫЙ DATA CENTER
+    let db = JSON.parse(localStorage.getItem('ls_final_v4')) || {
+        isFirst: true,
+        yearly: [0,0,0,0,0,0,0,0,0,0,0,0], 
+        dirs: { abs: 0, spine: 0, stretch: 0, sky: 0, tabata: 0, sculpt: 0 },
+        levels: { abs: 0, spine: 0, stretch: 0, sky: 0, tabata: 0, sculpt: 0 } 
+    };
 
-    const scenario = {
+    const compliments = [
+        "Твоя грация — это искусство в движении! ✨",
+        "Дисциплина — кратчайший путь к совершенству. Ты молодец! 🌸",
+        "Твое тело меняется на клеточном уровне. Гордимся! 🔥",
+        "Этот результат вдохновляет! Только вперед! 🚀",
+        "Ты создаешь лучшую версию себя прямо сейчас. 🧘‍♀️"
+    ];
+
+    const scienceMap = {
+        abs: {
+            info: "<b>Висцеральный детокс:</b> Глубокое сокращение мышц пресса создает эффект массажа для внутренних органов, улучшая кровоток в воротной вене печени и ускоряя обмен веществ.",
+            ms8: "<b>Уровень 1 (8 занятий):</b> Сформировался мышечный корсет, который начал поддерживать внутренние органы в анатомически верном положении. Улучшилась осанка.",
+            ms16: "<b>Уровень 2 (16 занятий):</b> Плотность мышечных волокон выросла. Метаболизм в покое ускорился на 7%. Тело начало эффективнее сжигать калории даже во сне."
+        },
         spine: {
-            start: "Хочешь узнать, как твои межпозвоночные диски начнут «пить» воду после 12 занятий?",
-            lvl12: "<b>Твоя спина больше не борется с гравитацией!</b> Плечи опустились, зажимы ушли. Знаешь, какой эффект будет на 24-й тренировке?",
-            final: "<b>Декомпрессия завершена!</b> Твой рост визуально увеличился, а сон стал глубоким как в детстве."
+            info: "<b>Гидратация дисков:</b> Движения в осевой плоскости заставляют межпозвоночные хрящи впитывать питательную жидкость, предотвращая их старение и 'высыхание'.",
+            ms8: "<b>Уровень 1 (8 занятий):</b> Восстановился объем синовиальной жидкости в суставах позвоночника. Ушли утренние скованности и мышечные зажимы.",
+            ms16: "<b>Уровень 2 (16 занятий):</b> Декомпрессия завершена. Рост визуально увеличился за счет восстановления естественной высоты межпозвоночных дисков."
         },
         stretch: {
-            start: "Твои связки станут эластичными как шелк через 12 занятий. Готова запустить процесс?",
-            lvl12: "<b>Микроциркуляция в разгаре!</b> Это не просто шпагат — это женское здоровье и легкость походки. Идем к 24 занятиям за 'гормонами радости'?",
-            final: "<b>Шелковое тело!</b> Ткани эластичны, а походка притягивает взгляды. Ты великолепна!"
+            info: "<b>Капиллярная сеть:</b> Глубокая растяжка разблокирует сдавленные капилляры. Мышцы начинают получать в 4 раза больше кислорода и нутриентов.",
+            ms8: "<b>Уровень 1 (8 занятий):</b> Фасции стали эластичными. Ушел эффект 'деревянного тела'. Лимфа движется свободно, очищая ткани.",
+            ms16: "<b>Уровень 2 (16 занятий):</b> Ткани стали шелковистыми. Твой гормональный фон стабилизировался за счет улучшения кровоснабжения органов малого таза."
+        },
+        sky: {
+            info: "<b>Гравитационная разгрузка:</b> Работа в гамаке снимает осевое давление, позволяя суставам раскрыться максимально мягко. Это 'перезагрузка' для всей нервной системы.",
+            ms8: "<b>Уровень 1 (8 занятий):</b> Улучшилась работа вестибулярного аппарата и нейромышечная связь. Тело стало более послушным и легким.",
+            ms16: "<b>Уровень 2 (16 занятий):</b> Лимфодренажный эффект от перевернутых поз стал постоянным. Лицо выглядит свежее, ушли отеки и тяжесть в ногах."
+        },
+        tabata: {
+            info: "<b>Митохондриальный взрыв:</b> Высокоинтенсивные интервалы заставляют клетки обновлять свои энергетические станции (митохондрии) в ускоренном режиме.",
+            ms8: "<b>Уровень 1 (8 занятий):</b> Объем легких увеличился. Сердечно-сосудистая система стала работать экономичнее. Твоя выносливость выросла на 25%.",
+            ms16: "<b>Уровень 2 (16 занятий):</b> Организм перешел в режим жиросжигания 'Afterburn'. Калории продолжают расходоваться в течение 24 часов после каждой тренировки."
+        },
+        sculpt: {
+            info: "<b>Микрорельеф:</b> Работа с малым отягощением формирует плотные, 'сухие' мышцы без лишнего объема, создавая точеный силуэт.",
+            ms8: "<b>Уровень 1 (8 занятий):</b> Мышечный тонус стал заметен визуально. Линии тела стали более четкими, кожа подтянулась и стала упругой.",
+            ms16: "<b>Уровень 2 (16 занятий):</b> Качество тела радикально изменилось. Процент подкожного жира снизился, проявился благородный рельеф рук, пресса и ног."
         }
     };
 
-    function selDir(btn, dir) {
-        document.querySelectorAll('.btn-dir').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentDir = dir;
-        document.getElementById('input-panel').classList.add('visible');
-        updateText();
-    }
-
-    function updateText() {
-        const count = db[currentDir];
-        let text = scenario[currentDir].start;
-        if(count >= 12) text = scenario[currentDir].lvl12;
-        if(count >= 24) text = scenario[currentDir].final;
-        document.getElementById('serial-text').innerHTML = text;
-        document.getElementById('total-val').innerHTML = `${count} <span>зан.</span>`;
-    }
-
-    function addTrain() {
-        const val = parseInt(document.getElementById('val-input').value) || 0;
-        if(val <= 0) return;
-        
-        const oldVal = db[currentDir];
-        db[currentDir] += val;
-        db.history[5] += val; // добавляем в последний месяц графика
-        
-        if(oldVal < 12 && db[currentDir] >= 12) showWin(12);
-        if(oldVal < 24 && db[currentDir] >= 24) showWin(24);
-
-        localStorage.setItem('ls_db_2026', JSON.stringify(db));
-        document.getElementById('val-input').value = '';
-        updateText();
-        updateChart();
-        tg.HapticFeedback.impactOccurred('medium');
-    }
-
-    function showWin(lvl) {
-        document.getElementById('win-title').innerText = `${lvl} ЗАНЯТИЙ!`;
-        document.getElementById('win-desc').innerHTML = scenario[currentDir][lvl === 12 ? 'lvl12' : 'final'];
-        document.getElementById('win-modal').style.display = 'flex';
-    }
-
-    // ГРАФИК
-    const ctx = document.getElementById('myChart').getContext('2d');
-    let myChart = new Chart(ctx, {
-        type: 'line',
+    // 2. ГРАФИК (CHART JS)
+    const ctx = document.getElementById('chartCanvas').getContext('2d');
+    const chart = new Chart(ctx, {
+        type: 'bar',
         data: {
-            labels: ['1','2','3','4','5','6'],
-            datasets: [{ data: db.history, borderColor: '#b085ff', tension: 0.4, fill: true, backgroundColor: 'rgba(176,133,255,0.1)' }]
+            labels: ['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек'],
+            datasets: [{
+                data: db.yearly,
+                backgroundColor: 'rgba(176, 133, 255, 0.5)',
+                borderColor: '#b085ff',
+                borderWidth: 1,
+                borderRadius: 10,
+                hoverBackgroundColor: '#fff'
+            }]
         },
-        options: { plugins: {legend: {display: false}}, scales: {y: {display: false}, x: {ticks: {color: '#555'}}} }
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            scales: { 
+                y: { display: false }, 
+                x: { grid: {display: false}, ticks: {color: 'rgba(255,255,255,0.3)', font: {size: 10}} } 
+            },
+            plugins: { legend: { display: false } }
+        }
     });
 
-    function updateChart() {
-        myChart.data.datasets[0].data = db.history;
-        myChart.update();
+    // 3. ЛОГИКА ПРИЛОЖЕНИЯ
+    let activeDir = '';
+    const nowMonth = new Date().getMonth();
+
+    function openBranch(btn, type) {
+        document.querySelectorAll('.btn-dir').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeDir = type;
+
+        document.getElementById('bio-info').innerHTML = scienceMap[type]?.info;
+        document.getElementById('input-block').classList.add('visible');
+        document.getElementById('input-hint').innerText = db.isFirst ? "Введи общую базу тренировок с 1 января" : `Прогресс в этом направлении: ${db.dirs[type]}`;
+        document.getElementById('val-entry').focus();
+        
+        if(window.innerWidth < 1000) {
+            setTimeout(() => document.getElementById('input-block').scrollIntoView({behavior: "smooth"}), 300);
+        }
     }
+
+    function saveSession() {
+        const val = parseInt(document.getElementById('val-entry').value) || 0;
+        if(val <= 0) return;
+
+        db.dirs[activeDir] += val;
+        db.yearly[nowMonth] += val;
+
+        const totalInDir = db.dirs[activeDir];
+        if (totalInDir >= 8 && db.levels[activeDir] < 8) {
+            db.levels[activeDir] = 8;
+            triggerMilestone(activeDir, 8);
+        } else if (totalInDir >= 16 && db.levels[activeDir] < 16) {
+            db.levels[activeDir] = 16;
+            triggerMilestone(activeDir, 16);
+        }
+
+        db.isFirst = false;
+        document.getElementById('val-entry').value = '';
+        updateAll();
+        tg.HapticFeedback.notificationOccurred('success');
+    }
+
+    function triggerMilestone(type, count) {
+        const msData = scienceMap[type];
+        document.getElementById('ms-title').innerText = count + ' ЗАНЯТИЙ';
+        document.getElementById('ms-desc').innerHTML = (count === 8) ? msData.ms8 : msData.ms16;
+        document.getElementById('ms-compliment').innerText = compliments[Math.floor(Math.random() * compliments.length)];
+        document.getElementById('milestone-modal').style.display = 'flex';
+    }
+
+    function updateAll() {
+        const total = Object.values(db.dirs).reduce((a, b) => a + b, 0);
+        document.getElementById('total-stat').innerHTML = `${total} <span>занятий</span>`;
+        
+        const nMap = {abs:'Ягодицы+Пресс', spine:'Здоровая спина', stretch:'Шпагат', sky:'Sky Stretching', tabata:'Табата', sculpt:'Body Sculpt'};
+        let html = '';
+        for(let key in db.dirs) {
+            if(db.dirs[key] > 0) {
+                html += `<div class="stat-line"><span>${nMap[key]}</span> <b>${db.dirs[key]} зан.</b></div>`;
+            }
+        }
+        document.getElementById('monthly-breakdown').innerHTML = html;
+        chart.data.datasets[0].data = db.yearly;
+        chart.update();
+
+        localStorage.setItem('ls_final_v4', JSON.stringify(db));
+    }
+
+    // 4. ЗВЕЗДНОЕ НЕБО (ENGINE)
+    const sCanvas = document.getElementById('starfield');
+    const sCtx = sCanvas.getContext('2d');
+    let stars = [];
+
+    function initStars() {
+        sCanvas.width = window.innerWidth; sCanvas.height = window.innerHeight;
+        stars = Array.from({length: 120}, () => ({
+            x: Math.random() * sCanvas.width,
+            y: Math.random() * sCanvas.height,
+            size: Math.random() * 1.5,
+            t: Math.random() * Math.PI * 2,
+            speed: 0.01 + Math.random() * 0.02
+        }));
+    }
+
+    function drawStars() {
+        sCtx.clearRect(0, 0, sCanvas.width, sCanvas.height);
+        stars.forEach(s => {
+            sCtx.globalAlpha = (Math.sin(s.t) + 1) / 2;
+            sCtx.beginPath();
+            sCtx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+            sCtx.fillStyle = "#fff";
+            sCtx.fill();
+            s.t += s.speed;
+        });
+        requestAnimationFrame(drawStars);
+    }
+
+    initStars(); drawStars(); window.onresize = initStars; updateAll();
 </script>
 </body>
 </html>
