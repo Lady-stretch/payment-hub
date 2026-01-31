@@ -3,304 +3,248 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Lady Stretch | Achievement Portal</title>
-    
+    <title>Lady Stretch | Analytical Portal</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;600&display=swap" rel="stylesheet">
-    
     <style>
         :root {
             --accent: #b085ff;
-            --glass: rgba(255, 255, 255, 0.06);
-            --glass-border: rgba(255, 255, 255, 0.15);
-            --glow: rgba(176, 133, 255, 0.35);
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.12);
         }
 
         body, html {
             margin: 0; padding: 0; min-height: 100vh;
-            background: #05050a; font-family: 'Montserrat', sans-serif;
-            color: #fff; overflow-x: hidden; -webkit-tap-highlight-color: transparent;
+            background: #050508; font-family: 'Montserrat', sans-serif;
+            color: #fff; overflow-x: hidden;
         }
 
-        /* 1. ФОН: ГЛУБОКИЙ КОСМОС */
-        .space-wrapper {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
-            background: radial-gradient(circle at 50% 0%, #1a1233 0%, #05050a 100%);
+        .bg-space {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 0%, #1a1233 0%, #050508 100%);
+            z-index: -2;
         }
-        #canvas-stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-        .aurora-blur {
-            position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle at center, #7a5af808 0%, #24f0ff05 40%, transparent 70%);
-            z-index: -1; animation: rotateAurora 40s linear infinite;
-        }
-        @keyframes rotateAurora { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* 2. ШАПКА: PREMIUM ADAPTIVE */
+        /* HEADER */
         header {
-            position: fixed; top: 0; left: 0; width: 100%; height: 80px;
+            position: fixed; top: 0; width: 100%; height: 75px;
             display: flex; align-items: center; justify-content: space-between;
-            padding: 0 25px; box-sizing: border-box; z-index: 1000;
-            background: rgba(0,0,0,0.3); backdrop-filter: blur(30px);
-            border-bottom: 0.5px solid var(--glass-border);
+            padding: 0 20px; box-sizing: border-box; z-index: 1000;
+            background: rgba(0,0,0,0.4); backdrop-filter: blur(20px);
+            border-bottom: 0.5px solid var(--border);
         }
-        .logo-circle {
-            width: 46px; height: 46px; border-radius: 50%;
-            border: 1.5px solid var(--accent); overflow: hidden;
-            box-shadow: 0 0 20px var(--glow); flex-shrink: 0;
-        }
-        .logo-circle img { width: 100%; height: 100%; object-fit: cover; }
+        .logo-c { width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--accent); overflow: hidden; }
+        .logo-c img { width: 100%; height: 100%; object-fit: cover; }
 
-        .header-center-text {
-            flex: 1; text-align: center; font-weight: 100; letter-spacing: 4px;
-            font-size: 11px; text-transform: uppercase; color: #fff; padding: 0 10px;
-        }
-        .menu-toggle { font-size: 11px; letter-spacing: 2px; color: var(--accent); cursor: pointer; font-weight: 400; }
-
-        /* 3. КОНТЕЙНЕР */
+        /* LAYOUT */
         .container {
-            max-width: 1100px; margin: 0 auto; padding: 110px 20px 40px;
-            display: grid; grid-template-columns: 1fr 360px; gap: 30px;
-            box-sizing: border-box;
+            max-width: 1000px; margin: 0 auto; padding: 95px 15px 40px;
+            display: grid; grid-template-columns: 1fr 340px; gap: 20px;
         }
-        @media (max-width: 960px) {
-            .container { grid-template-columns: 1fr; padding-top: 100px; }
-            .header-center-text { font-size: 9px; letter-spacing: 2px; }
+        @media (max-width: 900px) { .container { grid-template-columns: 1fr; } }
+
+        .glass {
+            background: var(--glass); backdrop-filter: blur(30px);
+            border: 1px solid var(--border); border-radius: 30px;
+            padding: 25px; position: relative;
         }
 
-        /* 4. КАРТОЧКИ: GLASSMORPHISM */
-        .glass-panel {
-            background: var(--glass); backdrop-filter: blur(25px) saturate(160%);
-            -webkit-backdrop-filter: blur(25px) saturate(160%);
-            border: 1px solid var(--glass-border); border-radius: 35px;
-            padding: 30px; box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-            transition: 0.4s ease;
-        }
-        .panel-active { border-color: var(--accent); box-shadow: 0 0 30px var(--glow); }
-
-        /* 5. ГРИД НАПРАВЛЕНИЙ */
-        .dir-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 25px;
-        }
-        @media (max-width: 650px) { .dir-grid { grid-template-columns: 1fr 1fr; } }
-
+        /* КНОПКИ НАПРАВЛЕНИЙ */
+        .dir-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; }
         .dir-btn {
-            background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border);
-            border-radius: 22px; padding: 22px 10px; text-align: center;
-            font-size: 11px; font-weight: 300; letter-spacing: 1px; cursor: pointer;
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+            border-radius: 20px; padding: 18px 10px; text-align: center;
+            font-size: 11px; cursor: pointer; transition: 0.3s;
         }
-        .dir-btn:hover { background: rgba(255,255,255,0.08); transform: translateY(-3px); }
-        .dir-btn.active { background: #fff; color: #000; font-weight: 600; border-color: #fff; box-shadow: 0 0 20px #fff; }
+        .dir-btn.active { background: #fff; color: #000; font-weight: 600; box-shadow: 0 0 15px #fff; }
 
-        /* 6. ТИПОГРАФИКА И ИНПУТЫ */
-        .label-tag { font-size: 9px; letter-spacing: 3px; color: var(--accent); font-weight: 600; text-transform: uppercase; margin-bottom: 15px; display: block; }
-        
-        .stat-value { font-size: 54px; font-weight: 100; margin: 10px 0; color: #fff; }
-        .stat-value span { font-size: 16px; color: rgba(255,255,255,0.3); font-weight: 300; }
-
-        .bio-display { min-height: 80px; font-size: 14px; line-height: 1.7; font-weight: 300; color: rgba(255,255,255,0.85); }
-        .bio-display b { color: var(--accent); font-weight: 600; }
-
-        .input-wrapper { margin-top: 30px; display: none; border-top: 1px solid var(--glass-border); padding-top: 25px; }
-        .input-wrapper.active { display: block; animation: slideUp 0.5s ease; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        .hint-text { font-size: 11px; color: #777; margin-bottom: 12px; display: block; }
-        .main-input {
-            width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--accent);
-            color: #fff; font-size: 32px; padding: 10px 0; outline: none; font-family: inherit; font-weight: 200;
+        /* INPUT BLOCK */
+        .input-panel { margin-top: 20px; display: none; }
+        .input-panel.show { display: block; animation: fadeInUp 0.4s; }
+        .f-input {
+            width: 100%; background: transparent; border: none; border-bottom: 1.5px solid var(--accent);
+            color: #fff; font-size: 32px; padding: 10px 0; outline: none; margin: 15px 0;
+        }
+        .f-btn {
+            width: 100%; background: #fff; color: #000; border: none; padding: 18px;
+            border-radius: 20px; font-weight: 600; text-transform: uppercase; cursor: pointer;
         }
 
-        .confirm-btn {
-            width: 100%; background: #fff; color: #000; border: none; padding: 22px;
-            border-radius: 25px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px;
-            margin-top: 25px; cursor: pointer; transition: 0.3s;
+        /* MILESTONE MODAL */
+        #milestone {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(15px);
+            z-index: 2000; display: none; align-items: center; justify-content: center; padding: 20px;
         }
-        .confirm-btn:active { transform: scale(0.96); background: var(--accent); color: #fff; }
+        .milestone-card {
+            background: linear-gradient(135deg, rgba(176,133,255,0.2), rgba(255,255,255,0.05));
+            border: 1px solid #fff; border-radius: 40px; padding: 40px; text-align: center;
+            max-width: 400px; box-shadow: 0 0 50px var(--accent);
+        }
 
-        #chartArea { height: 260px !important; width: 100%; }
+        .label { font-size: 9px; letter-spacing: 2px; color: var(--accent); text-transform: uppercase; display: block; margin-bottom: 10px; }
+        .report-item { font-size: 12px; margin: 5px 0; color: #ccc; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <div class="space-wrapper"></div>
-    <div class="aurora-blur"></div>
-    <canvas id="canvas-stars"></canvas>
+<div class="bg-space"></div>
 
-    <header>
-        <div class="logo-circle"><img src="lady_logo.png" alt="Lady Stretch"></div>
-        <div class="header-center-text">Твое пространство достижений</div>
-        <div class="menu-toggle">STAT 2026</div>
-    </header>
+<header>
+    <div class="logo-c"><img src="lady_logo.png" alt="LS"></div>
+    <div style="font-weight: 100; letter-spacing: 2px; font-size: 10px; text-align: center; flex: 1;">АНАЛИТИКА ТВОЕЙ ТРАНСФОРМАЦИИ</div>
+    <div style="font-size: 10px; color: var(--accent);">MENU</div>
+</header>
 
-    <div class="container">
-        <div class="column-left">
-            <div class="glass-panel" style="margin-bottom: 25px;">
-                <span class="label-tag">Пульс твоей трансформации</span>
-                <div class="chart-container">
-                    <canvas id="chartArea"></canvas>
-                </div>
-            </div>
-
-            <div class="dir-grid">
-                <div class="dir-btn" onclick="activateBranch(this, 'abs')">Ягодицы + Пресс</div>
-                <div class="dir-btn" onclick="activateBranch(this, 'spine')">Здоровая спина</div>
-                <div class="dir-btn" onclick="activateBranch(this, 'stretch')">Шпагат</div>
-                <div class="dir-btn" onclick="activateBranch(this, 'sky')">Sky Stretching</div>
-                <div class="dir-btn" onclick="activateBranch(this, 'tabata')">Табата</div>
-                <div class="dir-btn" onclick="activateBranch(this, 'sculpt')">Body Sculpt</div>
-            </div>
+<div class="container">
+    <div class="main-col">
+        <div class="glass" style="margin-bottom: 20px;">
+            <span class="label">Динамика посещений по месяцам</span>
+            <canvas id="evolutionChart" style="height: 220px;"></canvas>
         </div>
 
-        <div class="column-right">
-            <div class="glass-panel panel-active" style="margin-bottom: 25px;">
-                <span class="label-tag">Биологический инсайт</span>
-                <div class="bio-display" id="bio-text">
-                    Выберите направление тренировки. Мы покажем, как именно меняется ваше тело на клеточном уровне...
-                </div>
-            </div>
-
-            <div class="glass-panel">
-                <span class="label-tag">Личный счетчик</span>
-                <div class="stat-value" id="total-val">0 <span>занятий</span></div>
-                
-                <div class="input-wrapper" id="input-block">
-                    <span class="hint-text" id="dynamic-hint">Введите количество</span>
-                    <input type="number" class="main-input" id="user-input" placeholder="0">
-                    <button class="confirm-btn" onclick="commitData()">Зафиксировать</button>
-                </div>
-            </div>
+        <div class="dir-grid">
+            <div class="dir-btn" onclick="openDir(this, 'abs')">Ягодицы + Пресс</div>
+            <div class="dir-btn" onclick="openDir(this, 'spine')">Здоровая спина</div>
+            <div class="dir-btn" onclick="openDir(this, 'stretch')">Шпагат</div>
+            <div class="dir-btn" onclick="openDir(this, 'sky')">Sky Stretching</div>
+            <div class="dir-btn" onclick="openDir(this, 'tabata')">Табата</div>
+            <div class="dir-btn" onclick="openDir(this, 'sculpt')">Body Sculpt</div>
         </div>
     </div>
 
+    <div class="side-col">
+        <div class="glass" style="margin-bottom: 20px;">
+            <span class="label">Месячный отчет: Январь</span>
+            <div id="month-report">
+                <p class="report-item">Занятий в этом месяце: <b id="m-total">0</b></p>
+                <div id="m-details" style="border-top: 1px solid var(--border); margin-top: 10px; padding-top: 10px;"></div>
+            </div>
+            <div id="bio-insight" style="font-size: 11px; margin-top: 15px; line-height: 1.5; color: var(--accent);">
+                Выберите направление, чтобы увидеть прогресс.
+            </div>
+        </div>
+
+        <div class="glass" id="input-area" style="display: none;">
+            <span class="label" id="dir-name">Направление</span>
+            <p id="dir-hint" style="font-size: 10px; color: #666;"></p>
+            <input type="number" class="f-input" id="num-val" placeholder="0">
+            <button class="f-btn" onclick="saveData()">Добавить занятие</button>
+        </div>
+    </div>
+</div>
+
+<div id="milestone" onclick="this.style.display='none'">
+    <div class="milestone-card">
+        <div class="label" style="color:#fff">ПОЗДРАВЛЯЕМ!</div>
+        <h2 style="font-weight: 100; margin: 10px 0;">8 ЗАНЯТИЙ</h2>
+        <p id="ms-text" style="font-size: 13px; line-height: 1.6; font-weight: 300;"></p>
+        <div style="margin-top: 20px; font-size: 10px; letter-spacing: 2px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 15px;">
+            ХОТИТЕ УЗНАТЬ, ЧТО БУДЕТ НА 16-Й ТРЕНИРОВКЕ?
+        </div>
+    </div>
+</div>
+
 <script>
-    const tg = window.Telegram.WebApp;
-    tg.expand();
-
-    // 1. ХРАНИЛИЩЕ ДАННЫХ (Локально до интеграции с YDB)
-    let stats = JSON.parse(localStorage.getItem('ls_user_stats_v2')) || {
+    // 1. DATA ENGINE
+    let store = JSON.parse(localStorage.getItem('ls_v3')) || {
         firstEntry: true,
-        abs: 0, spine: 0, stretch: 0, sky: 0, tabata: 0, sculpt: 0
+        monthData: Array(12).fill(0), // Янв-Дек
+        details: { abs: 0, spine: 0, stretch: 0, sky: 0, tabata: 0, sculpt: 0 }
     };
 
-    let currentType = '';
+    let activeType = '';
+    const currentMonth = new Date().getMonth(); // 0 = Январь
 
-    // 2. НАУЧНЫЙ КОНТЕНТ (Википедия подтвердит)
-    const library = {
-        abs: "<b>Кор и Лимфа:</b> Глубокая проработка мышц живота создает ритмичное давление на крупные лимфатические сосуды, ускоряя детокс организма в 2.5 раза.",
-        spine: "<b>Синовиальный эффект:</b> Плавные скручивания стимулируют секрецию суставной смазки. Это единственный способ доставить питание в хрящи позвоночника.",
-        stretch: "<b>Капилляризация:</b> Удлинение мышечного волокна «проращивает» новые мелкие сосуды. Твои мышцы начинают получать в 3 раза больше кислорода.",
-        sky: "<b>Декомпрессия:</b> В гамаке гравитация не давит на диски, а мягко растягивает их. Одно занятие в воздухе убирает последствия 8 часов сидения в офисе.",
-        tabata: "<b>Митохондрии:</b> Интервальный взрыв заставляет клетки обновлять «энергостанции» (митохондрии). Это замедляет биологическое старение кожи и органов.",
-        sculpt: "<b>Гормональный отклик:</b> Мышечный стресс после Sculpt снижает уровень кортизола и повышает соматотропин — гормон, отвечающий за упругость тканей."
-    };
-
-    // 3. ОБНОВЛЕНИЕ ИНТЕРФЕЙСА
-    function refreshStats() {
-        const total = Object.keys(stats).filter(k => k !== 'firstEntry').reduce((acc, k) => acc + stats[k], 0);
-        document.getElementById('total-val').innerHTML = `${total} <span>занятий</span>`;
-        localStorage.setItem('ls_user_stats_v2', JSON.stringify(stats));
-    }
-
-    // 4. ЛОГИКА ВЕТОК
-    function activateBranch(btn, type) {
-        document.querySelectorAll('.dir-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentType = type;
-
-        document.getElementById('bio-text').innerHTML = library[type];
-        const block = document.getElementById('input-block');
-        const hint = document.getElementById('dynamic-hint');
-        block.classList.add('active');
-
-        if (stats.firstEntry) {
-            hint.innerText = "Первый вход: Введи общее кол-во занятий по этому направлению с 1.01.26";
-        } else {
-            hint.innerText = `У тебя уже ${stats[type]} зан. Сколько добавим к прогрессу сегодня?`;
-        }
-        document.getElementById('user-input').focus();
-    }
-
-    function commitData() {
-        const val = parseInt(document.getElementById('user-input').value) || 0;
-        
-        if (stats.firstEntry) {
-            stats[currentType] = val;
-        } else {
-            stats[currentType] += val;
-        }
-
-        // Если прошли по всем кнопкам или ввели хоть что-то, отключаем режим "первого раза" позже
-        // Но для удобства — отключаем сразу после первого сохранения
-        stats.firstEntry = false;
-
-        document.getElementById('user-input').value = '';
-        document.getElementById('input-block').classList.remove('active');
-        
-        tg.HapticFeedback.notificationOccurred('success');
-        refreshStats();
-    }
-
-    // 5. ГРАФИК (NEON STYLE)
-    const ctx = document.getElementById('chartArea').getContext('2d');
-    const grad = ctx.createLinearGradient(0, 0, 0, 300);
-    grad.addColorStop(0, 'rgba(176, 133, 255, 0.4)');
-    grad.addColorStop(1, 'rgba(176, 133, 255, 0)');
-
-    new Chart(ctx, {
-        type: 'line',
+    // 2. CHART ENGINE
+    const ctx = document.getElementById('evolutionChart').getContext('2d');
+    const chart = new Chart(ctx, {
+        type: 'bar',
         data: {
-            labels: ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'],
+            labels: ['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек'],
             datasets: [{
-                data: [50, 65, 60, 85, 80, 95, 100],
-                borderColor: '#b085ff', borderWidth: 4, pointRadius: 0, tension: 0.4, fill: true, backgroundColor: grad
+                label: 'Посещения',
+                data: store.monthData,
+                backgroundColor: 'rgba(176, 133, 255, 0.5)',
+                borderColor: '#b085ff',
+                borderWidth: 1,
+                borderRadius: 10
             }]
         },
         options: {
             responsive: true, maintainAspectRatio: false,
-            plugins: { legend: {display: false} },
-            scales: { x: {grid: {display: false}, ticks: {color: '#444'}}, y: {display: false} }
+            scales: { y: { display: false }, x: { grid: {display: false}, ticks: {color: '#555'} } },
+            plugins: { legend: { display: false } }
         }
     });
 
-    // 6. ЖИВЫЕ ЗВЕЗДЫ (CANVAS)
-    const starCanvas = document.getElementById('canvas-stars');
-    const starCtx = starCanvas.getContext('2d');
-    let stars = [];
+    // 3. LOGIC
+    const science = {
+        abs: "<b>Ягодицы+Пресс:</b> 8 занятий запустили процесс 'капиллярного прорастания'. Ткани стали получать на 40% больше питания. На 16-й отметке мышечный корсет станет твоей естественной поддержкой осанки.",
+        spine: "<b>Здоровая спина:</b> 8 часов работы восстановили гидратацию межпозвоночных хрящей. Прошли застойные явления. На 16-й отметке уйдут мышечные зажимы, влияющие на головные боли.",
+        stretch: "<b>Шпагат:</b> Фасции стали эластичными. Кровь в области малого таза циркулирует свободно. На 16-й отметке амплитуда движений увеличит твой гормональный фон."
+    };
 
-    function resize() {
-        starCanvas.width = window.innerWidth;
-        starCanvas.height = window.innerHeight;
+    function openDir(btn, type) {
+        document.querySelectorAll('.dir-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeType = type;
+        
+        document.getElementById('input-area').style.display = 'block';
+        document.getElementById('dir-name').innerText = btn.innerText;
+        document.getElementById('dir-hint').innerText = store.firstEntry ? "Ввод данных с 1.01.26" : `Уже пройдено: ${store.details[type]}`;
+        document.getElementById('num-val').focus();
     }
 
-    function createStars() {
-        stars = Array.from({length: 150}, () => ({
-            x: Math.random() * starCanvas.width,
-            y: Math.random() * starCanvas.height,
-            size: Math.random() * 1.5,
-            speed: Math.random() * 0.05,
-            opacity: Math.random()
-        }));
+    function saveData() {
+        const val = parseInt(document.getElementById('num-val').value) || 0;
+        
+        if(store.firstEntry) {
+            store.details[activeType] = val;
+            store.monthData[currentMonth] += val;
+        } else {
+            store.details[activeType] += val;
+            store.monthData[currentMonth] += val;
+        }
+
+        // Check Milestone
+        if(store.details[activeType] >= 8 && store.details[activeType] < 10) {
+            showMilestone(activeType);
+        }
+
+        store.firstEntry = false;
+        updateUI();
+        document.getElementById('num-val').value = '';
+        window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
     }
 
-    function animateStars() {
-        starCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
-        stars.forEach(s => {
-            s.opacity += s.speed;
-            if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
-            starCtx.globalAlpha = Math.abs(s.opacity);
-            starCtx.beginPath();
-            starCtx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-            starCtx.fillStyle = '#fff';
-            starCtx.fill();
-        });
-        requestAnimationFrame(animateStars);
+    function showMilestone(type) {
+        document.getElementById('ms-text').innerHTML = science[type] || science.abs;
+        document.getElementById('milestone').style.display = 'flex';
     }
 
-    window.addEventListener('resize', resize);
-    resize(); createStars(); animateStars(); refreshStats();
+    function updateUI() {
+        // Update Chart
+        chart.data.datasets[0].data = store.monthData;
+        chart.update();
 
+        // Update Report
+        document.getElementById('m-total').innerText = store.monthData[currentMonth];
+        let html = '';
+        const names = {abs:'Ягодицы', spine:'Спина', stretch:'Шпагат', sky:'Sky', tabata:'Табата', sculpt:'Sculpt'};
+        for(let key in store.details) {
+            if(store.details[key] > 0) {
+                html += `<p class="report-item">${names[key]}: <b>${store.details[key]}</b></p>`;
+            }
+        }
+        document.getElementById('m-details').innerHTML = html;
+        
+        localStorage.setItem('ls_v3', JSON.stringify(store));
+    }
+
+    updateUI();
 </script>
 </body>
 </html>
