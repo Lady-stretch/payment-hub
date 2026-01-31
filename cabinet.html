@@ -3,167 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LS Premium</title>
+    <title>Lady Stretch | Space Portal</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --accent: #b085ff;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.15);
+        }
+
         body, html {
-            margin: 0; padding: 0; background: #000;
-            font-family: 'Montserrat', sans-serif; color: #fff;
-            height: 100vh; overflow: hidden;
+            margin: 0; padding: 0; min-height: 100vh;
+            background: #050508; font-family: 'Montserrat', sans-serif;
+            color: #fff; overflow-x: hidden; scroll-behavior: smooth;
         }
 
-        /* Тот самый Apple Blur */
-        #video-bg {
+        /* КОСМИЧЕСКИЙ ФОН (Aurora Borealis Effect) */
+        .space-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover; z-index: -1; filter: brightness(0.5);
+            background: radial-gradient(circle at 20% 30%, #1a1a3a 0%, #050508 100%);
+            z-index: -2;
         }
-
-        .overlay {
+        .aurora {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at top right, rgba(122, 90, 248, 0.15), transparent);
-            z-index: 0;
+            background: linear-gradient(120deg, #7a5af822, #24f0ff11, #b324f011);
+            filter: blur(100px); opacity: 0.6; z-index: -1;
+            animation: moveAurora 15s infinite alternate;
+        }
+        @keyframes moveAurora {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.2) translate(5%, 5%); }
         }
 
-        .content {
-            position: relative; z-index: 10; padding: 30px 20px;
-            display: flex; flex-direction: column; height: 100vh; box-sizing: border-box;
+        /* ФИКСИРОВАННАЯ ШАПКА */
+        header {
+            position: fixed; top: 0; width: 100%; height: 70px;
+            background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(20px);
+            border-bottom: 0.5px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 20px; box-sizing: border-box; z-index: 100;
+        }
+        .header-center {
+            position: absolute; left: 50%; transform: translateX(-50%);
+            font-weight: 100; letter-spacing: 3px; font-size: 13px; text-transform: uppercase;
+            white-space: nowrap;
+        }
+        .logo-circle {
+            width: 45px; height: 45px; border-radius: 50%;
+            border: 1px solid var(--accent); overflow: hidden;
+            box-shadow: 0 0 15px var(--accent);
+        }
+        .logo-circle img { width: 100%; height: 100%; object-fit: cover; }
+
+        .menu-trigger { font-size: 24px; cursor: pointer; padding: 10px; }
+
+        /* ОСНОВНОЙ КОНТЕНТ */
+        .main-stage {
+            padding-top: 100px; padding-bottom: 50px;
+            max-width: 900px; margin: 0 auto; width: 90%;
         }
 
-        .logo { width: 140px; margin: 0 auto 40px; display: block; }
-
-        /* Кольцо прогресса вместо полоски */
-        .status-circle {
-            position: relative; width: 180px; height: 180px; margin: 0 auto 40px;
-            display: flex; align-items: center; justify-content: center;
-        }
-        
-        svg { transform: rotate(-90deg); width: 100%; height: 100%; }
-        circle {
-            fill: none; stroke-width: 6; stroke-linecap: round;
-        }
-        .circle-bg { stroke: rgba(255,255,255,0.1); }
-        .circle-val {
-            stroke: var(--accent, #a18aff);
-            stroke-dasharray: 440; stroke-dashoffset: 380; /* Динамика */
-            transition: stroke-dashoffset 2s ease-in-out;
-            filter: drop-shadow(0 0 8px #a18aff);
+        /* СВЕТЯЩИЙСЯ ГРАФИК */
+        .chart-box {
+            background: var(--glass); border: 0.5px solid var(--border);
+            border-radius: 40px; padding: 30px; backdrop-filter: blur(15px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5); margin-bottom: 30px;
         }
 
-        .counter-text {
-            position: absolute; text-align: center;
+        /* КНОПКИ-ПУЗЫРИ (Bubble Selection) */
+        .direction-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 15px; margin-bottom: 30px;
         }
-        .counter-text span { font-size: 42px; font-weight: 200; display: block; }
-        .counter-text small { font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 2px; }
-
-        /* Карточка-стекло с эффектом парения */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.07);
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            border: 0.5px solid rgba(255,255,255,0.15);
-            border-radius: 35px; padding: 25px; margin-top: auto;
+        .bubble-btn {
+            background: var(--glass); border: 0.5px solid var(--border);
+            border-radius: 25px; padding: 15px; text-align: center;
+            font-size: 12px; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer; backdrop-filter: blur(10px);
+        }
+        .bubble-btn:hover, .bubble-btn.active {
+            background: #fff; color: #000; transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(255,255,255,0.3);
         }
 
-        select, input {
+        /* БОКОВОЕ МЕНЮ (Drawer) */
+        .drawer {
+            position: fixed; right: -100%; top: 0; width: 300px; height: 100%;
+            background: rgba(10, 10, 15, 0.95); backdrop-filter: blur(40px);
+            z-index: 200; transition: 0.5s ease; padding: 40px; box-sizing: border-box;
+            border-left: 0.5px solid var(--border);
+        }
+        .drawer.open { right: 0; }
+        .drawer h3 { font-weight: 300; letter-spacing: 2px; margin-bottom: 30px; }
+
+        /* ВВОД ДАННЫХ */
+        .input-glass {
             width: 100%; background: transparent; border: none;
-            color: #fff; font-size: 18px; font-family: inherit;
-            padding: 15px 0; border-bottom: 0.5px solid rgba(255,255,255,0.2);
-            margin-bottom: 20px; outline: none;
+            border-bottom: 1px solid var(--border); color: #fff;
+            padding: 15px 0; font-size: 18px; font-family: inherit; margin-bottom: 20px;
         }
 
-        option { background: #111; color: #fff; }
-
-        .btn-confirm {
-            background: #fff; color: #000; border: none;
-            width: 100%; padding: 18px; border-radius: 20px;
-            font-weight: 600; font-size: 14px; letter-spacing: 1px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-        }
-
-        .bio-hook-area {
-            margin-top: 25px; font-size: 13px; line-height: 1.6;
-            color: rgba(255,255,255,0.6); font-weight: 300;
+        .btn-action {
+            width: 100%; background: var(--accent); color: #fff;
+            border: none; padding: 18px; border-radius: 20px;
+            font-weight: 600; text-transform: uppercase; letter-spacing: 2px;
+            box-shadow: 0 10px 30px rgba(176, 133, 255, 0.3);
         }
     </style>
 </head>
 <body>
 
-    <video id="video-bg" autoplay muted loop playsinline>
-        <source src="hero-video.mp4" type="video/mp4">
-    </video>
-    <div class="overlay"></div>
+    <div class="space-bg"></div>
+    <div class="aurora"></div>
 
-    <div class="content">
-        <img src="lady_logo.png" class="logo" alt="Lady Stretch">
+    <header>
+        <div class="logo-circle">
+            <img src="lady_logo.png" alt="LS">
+        </div>
+        <div class="header-center">Твоё Пространство Достижений</div>
+        <div class="menu-trigger" onclick="toggleMenu()">🧬</div>
+    </header>
 
-        <div class="status-circle">
-            <svg viewBox="0 0 160 160">
-                <circle class="circle-bg" cx="80" cy="80" r="70"></circle>
-                <circle class="circle-val" id="progress-ring" cx="80" cy="80" r="70"></circle>
-            </svg>
-            <div class="counter-text">
-                <span id="curr-val">14</span>
-                <small>ИЗ 96 ШАГОВ</small>
-            </div>
+    <div class="main-stage">
+        
+        <div class="chart-box">
+            <div style="font-weight: 100; color: #888; margin-bottom: 20px; font-size: 10px; letter-spacing: 2px;">ПУЛЬС ТВОЕЙ ТРАНСФОРМАЦИИ</div>
+            <canvas id="neonChart" height="200"></canvas>
         </div>
 
-        <div class="glass-panel">
-            <select id="w-type" onchange="updateInfo()">
-                <option value="sculpt">Body Sculpt</option>
-                <option value="spine">Здоровая Спина</option>
-                <option value="sky">Sky Stretching</option>
-                <option value="abs">Ягодицы + Пресс</option>
-            </select>
-            
-            <input type="number" id="w-val" placeholder="Твоё состояние (1-10)">
-            
-            <button class="btn-confirm" onclick="confirm()">ПОДТВЕРДИТЬ</button>
+        <div class="direction-grid" id="grid">
+            <div class="bubble-btn" onclick="select(this, 'sculpt')">Body Sculpt</div>
+            <div class="bubble-btn" onclick="select(this, 'spine')">Здоровая спина</div>
+            <div class="bubble-btn" onclick="select(this, 'sky')">Sky Stretching</div>
+            <div class="bubble-btn" onclick="select(this, 'tabata')">Табата</div>
+            <div class="bubble-btn" onclick="select(this, 'pilates')">Пилатес</div>
+            <div class="bubble-btn" onclick="select(this, 'abs')">Ягодицы + Пресс</div>
+        </div>
 
-            <div class="bio-hook-area" id="bio-msg">
-                Ваша энергия на пике. Body Sculpt запускает жиросжигание на 24 часа.
+        <div class="chart-box" style="text-align: center;">
+            <input type="number" id="userVal" class="input-glass" placeholder="Твой показатель сегодня">
+            <button class="btn-action" onclick="save()">ЗАФИКСИРОВАТЬ МАГИЮ</button>
+            <div id="bioHook" style="margin-top: 25px; font-size: 13px; font-weight: 300; color: #aaa; line-height: 1.6;">
+                «Твое тело — это отражение твоей дисциплины. Выбери практику выше.»
             </div>
         </div>
     </div>
 
-    <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
+    <div class="drawer" id="drawer">
+        <div onclick="toggleMenu()" style="text-align: right; cursor: pointer; margin-bottom: 20px;">✕</div>
+        <h3>СТАТИСТИКА</h3>
+        <p style="font-size: 12px; color: #777;">Занятий пройдено:</p>
+        <div style="font-size: 48px; font-weight: 100;">14 <span style="font-size: 14px; color: #444;">/ 96</span></div>
+        <br>
+        <button class="btn-action" style="background: transparent; border: 1px solid #fff; font-size: 10px;">РЕДАКТИРОВАТЬ ПРОФИЛЬ</button>
+    </div>
 
-        // Анимация кольца
-        function setProgress(percent) {
-            const circle = document.getElementById('progress-ring');
-            const radius = circle.r.baseVal.value;
-            const circumference = 2 * Math.PI * radius;
-            const offset = circumference - (percent / 100 * circumference);
-            circle.style.strokeDasharray = `${circumference} ${circumference}`;
-            circle.style.strokeDashoffset = offset;
+<script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+
+    function toggleMenu() {
+        document.getElementById('drawer').classList.toggle('open');
+    }
+
+    function select(btn, type) {
+        document.querySelectorAll('.bubble-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        const hooks = {
+            sculpt: "<b>Биохакинг:</b> Метаболизм на пике. Клетки сжигают энергию в режиме форсажа.",
+            spine: "<b>Биохакинг:</b> Декомпрессия дисков завершена. Энергия свободно течет по позвоночнику.",
+            sky: "<b>Биохакинг:</b> Эффект невесомости запустил глубокий лимфодренаж. Ощути легкость.",
+            tabata: "<b>Биохакинг:</b> Митохондрии обновлены. Запас твоей бодрости вырос на 20%.",
+            pilates: "<b>Биохакинг:</b> Мышечный корсет стал плотнее. Твоя внутренняя опора укреплена.",
+            abs: "<b>Биохакинг:</b> Клеточное жиросжигание в области кора активировано. Твой силуэт меняется."
+        };
+        document.getElementById('bioHook').innerHTML = hooks[type];
+    }
+
+    // СВЕТЯЩИЙСЯ ГРАФИК
+    const ctx = document.getElementById('neonChart').getContext('2d');
+    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, 'rgba(176, 133, 255, 0.4)');
+    gradient.addColorStop(1, 'rgba(176, 133, 255, 0)');
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
+            datasets: [{
+                label: 'Прогресс',
+                data: [65, 78, 72, 85, 92, 88, 100],
+                borderColor: '#b085ff',
+                borderWidth: 4,
+                pointBackgroundColor: '#fff',
+                pointBorderWidth: 4,
+                pointRadius: 6,
+                tension: 0.4,
+                fill: true,
+                backgroundColor: gradient
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { grid: { display: false }, ticks: { color: '#444' } },
+                y: { display: false }
+            }
         }
+    });
 
-        // Старт (для примера 14 занятий)
-        setTimeout(() => setProgress((14/96)*100), 500);
-
-        function updateInfo() {
-            const type = document.getElementById('w-type').value;
-            const msg = document.getElementById('bio-msg');
-            const hooks = {
-                sculpt: "Метаболизм ускорен. Организм сжигает жиры даже во сне.",
-                spine: "Декомпрессия позвоночника завершена. Кровоток восстановлен.",
-                sky: "Лимфодренажный эффект активен. Лишняя жидкость уходит.",
-                abs: "Кор активирован. Ваша осанка становится вашей опорой."
-            };
-            msg.innerText = hooks[type];
-        }
-
-        function confirm() {
-            tg.HapticFeedback.notificationOccurred('success');
-            const btn = document.querySelector('.btn-confirm');
-            btn.style.background = '#a18aff';
-            btn.style.color = '#fff';
-            btn.innerText = 'РЕЗУЛЬТАТ ПРИНЯТ';
-            
-            setTimeout(() => tg.close(), 1000);
-        }
-    </script>
+    function save() {
+        tg.HapticFeedback.notificationOccurred('success');
+        alert("Результат зафиксирован в твоей вечности ✨");
+    }
+</script>
 </body>
 </html>
