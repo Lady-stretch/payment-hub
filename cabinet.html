@@ -2,231 +2,157 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>LS Evolution Elite</title>
     
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
             --bg: #050507;
-            /* Сделал прозрачнее (0.01 вместо 0.04) */
-            --glass: rgba(255, 255, 255, 0.01);
+            --glass: rgba(255, 255, 255, 0.03);
             --border: rgba(255, 255, 255, 0.1);
             --accent: #b085ff;
-            --success: #32d74b;
-            --danger: #ff453a;
-            --text-sec: rgba(255, 255, 255, 0.5);
+            --safe-top: env(safe-area-inset-top, 20px);
+            --safe-bottom: env(safe-area-inset-bottom, 20px);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+        
         body {
-            margin: 0; padding: 0; background: var(--bg); color: #fff;
-            font-family: 'Montserrat', sans-serif; overflow-x: hidden;
-        }
-
-        /* 1. КОСМОС */
-        #starfield { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-        
-        /* 2. ЛЭЙАУТ */
-        .app-container {
-            max-width: 1200px; margin: 0 auto; padding: 20px;
-            display: grid; 
-            grid-template-columns: 2fr 1fr;
-            grid-template-rows: auto auto 1fr;
-            gap: 20px;
-            padding-top: 80px;
-        }
-
-        /* Адаптив под мобилки (сохранен оригинальный) */
-        @media (max-width: 900px) {
-            .app-container { grid-template-columns: 1fr; padding-top: 70px; }
-        }
-
-        /* СТИЛЬ КАРТОЧЕК */
-        .card {
-            background: var(--glass); 
-            backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
-            border: 1px solid var(--border); 
-            border-radius: 24px; padding: 24px;
+            background: var(--bg); color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            margin: 0; padding: 0; min-height: 100vh;
             display: flex; flex-direction: column;
-            transition: transform 0.3s ease;
-            /* ДОБАВЛЕНО: Эффект кромки стекла (отражение света сверху) */
-            box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.15), 0 10px 30px rgba(0,0,0,0.5);
         }
-        
-        .card-header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;
-        }
-        .card-title { font-size: 14px; font-weight: 600; letter-spacing: 1px; color: var(--accent); text-transform: uppercase; }
 
-        /* HEADER */
+        #starfield { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+
         header {
-            position: fixed; top: 0; width: 100%; height: 60px;
-            background: rgba(5,5,7,0.8); backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border); z-index: 100;
-            display: flex; align-items: center; justify-content: space-between; padding: 0 20px;
-        }
-        .logo { font-weight: 200; letter-spacing: 4px; font-size: 16px; }
-
-        /* БЛОК РЕЗУЛЬТАТИВНОСТЬ */
-        .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
-        .metric-input {
-            background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px;
-            padding: 10px; color: #fff; width: 100%; font-family: inherit; font-size: 13px;
-        }
-        .bmi-box {
-            background: rgba(176, 133, 255, 0.1); border-radius: 12px; padding: 10px;
-            text-align: center; margin-bottom: 15px;
-        }
-        /* Обновленный стиль строки статистики для кнопок +/- */
-        .stat-row { 
-            display: flex; justify-content: space-between; align-items: center; 
-            font-size: 12px; margin-bottom: 8px; color: var(--text-sec); 
-            padding-bottom: 5px; border-bottom: 1px solid rgba(255,255,255,0.02);
-        }
-        .stat-val { color: #fff; font-weight: 500; min-width: 20px; text-align: center; }
-        .edit-btn {
-            background: rgba(255,255,255,0.1); border: none; color: #fff;
-            width: 20px; height: 20px; border-radius: 5px; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; font-size: 14px;
-            margin: 0 5px;
+            padding-top: var(--safe-top);
+            height: calc(70px + var(--safe-top));
+            background: rgba(5, 5, 7, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            position: sticky; top: 0; z-index: 100;
         }
 
-        /* БЛОК БИОХАКИНГ */
-        .bio-highlight { font-size: 13px; line-height: 1.6; font-weight: 300; color: #ddd; }
-        .bio-pulse { animation: glow 2s infinite alternate; color: var(--success); font-weight: 500; }
-        @keyframes glow { from { opacity: 0.7; } to { opacity: 1; text-shadow: 0 0 10px var(--success); } }
+        .container { padding: 15px 20px calc(30px + var(--safe-bottom)); flex: 1; max-width: 500px; margin: 0 auto; width: 100%; }
 
-        /* БЛОК ТРЕНИРОВОК */
-        .training-section { grid-column: 1 / -1; }
-        .category-title { font-size: 12px; opacity: 0.6; margin: 20px 0 10px; letter-spacing: 2px; text-transform: uppercase; }
-        .buttons-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
-        
-        .t-btn {
-            background: rgba(255,255,255,0.03); 
-            /* ДОБАВЛЕНО: Подсветка границ для видимости */
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 16px; padding: 16px 10px; text-align: center; cursor: pointer;
-            transition: 0.2s; position: relative; overflow: hidden;
+        .sync-bar {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            font-size: 10px; padding: 10px 0; color: rgba(255,255,255,0.4);
+            letter-spacing: 1px;
         }
-        /* Эффект наведения */
-        .t-btn:active, .t-btn:hover { 
-            transform: scale(0.98); 
-            background: rgba(176, 133, 255, 0.1); 
-            border-color: var(--accent);
-        }
-        .t-name { font-size: 11px; font-weight: 500; display: block; margin-bottom: 5px; }
-        .t-count { font-size: 9px; opacity: 0.5; }
-        
-        /* КНОПКА СОХРАНИТЬ ЗАМЕРЫ */
-        .save-metrics-btn {
-            width: 100%; background: #fff; color: #000; border: none; padding: 12px;
-            border-radius: 12px; font-weight: 600; cursor: pointer; margin-top: 10px; font-size: 12px;
-        }
-        .reset-btn {
-            background: transparent; border: 1px solid var(--danger); color: var(--danger);
-            margin-top: 10px; opacity: 0.6; font-size: 10px; padding: 8px; width: 100%; border-radius: 8px; cursor: pointer;
-        }
+        .dot { width: 7px; height: 7px; border-radius: 50%; background: #32d74b; box-shadow: 0 0 10px #32d74b; }
 
-        /* МОДАЛКА */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); backdrop-filter: blur(15px);
-            z-index: 999; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s;
+        .role-nav {
+            display: flex; background: var(--glass); border-radius: 15px;
+            padding: 5px; margin-bottom: 20px; border: 1px solid var(--border);
         }
-        .modal-content {
-            background: #111; border: 1px solid var(--accent); border-radius: 30px;
-            padding: 40px; width: 90%; max-width: 400px; text-align: center; transform: scale(0.8); transition: transform 0.3s;
+        .role-nav div {
+            flex: 1; text-align: center; padding: 12px; border-radius: 12px;
+            font-size: 11px; font-weight: 800; color: rgba(255,255,255,0.3); transition: 0.3s;
         }
-        .modal-active { display: flex; opacity: 1; }
-        .modal-active .modal-content { transform: scale(1); }
-        
-        .promo-code {
-            background: var(--accent); color: #fff; padding: 15px; border-radius: 10px;
-            font-size: 24px; font-weight: 700; margin: 20px 0; letter-spacing: 2px;
+        .role-nav .active { background: var(--accent); color: #000; }
+
+        .card {
+            background: var(--glass); border: 1px solid var(--border);
+            border-radius: 28px; padding: 25px; margin-bottom: 20px;
+            backdrop-filter: blur(15px);
+        }
+        .card-label { font-size: 10px; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; display: block; }
+
+        .bmi-display { text-align: center; margin-bottom: 20px; }
+        .bmi-v { font-size: 40px; font-weight: 200; color: #fff; }
+        .bmi-s { font-size: 11px; letter-spacing: 2px; color: var(--accent); margin-top: 5px; }
+
+        .inputs-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        input {
+            background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+            border-radius: 16px; padding: 18px; color: #fff; text-align: center; font-size: 18px;
+            width: 100%; font-family: inherit;
         }
 
+        .btn-main {
+            background: #fff; color: #000; border: none; width: 100%;
+            padding: 20px; border-radius: 20px; font-weight: 800; font-size: 13px;
+            letter-spacing: 1px; text-transform: uppercase; transition: 0.2s;
+        }
+        .btn-main:active { transform: scale(0.96); }
+
+        .grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .t-card {
+            background: var(--glass); border: 1px solid var(--border);
+            padding: 22px 10px; border-radius: 22px; text-align: center;
+            transition: 0.3s;
+        }
+        .t-card:active { background: rgba(176, 133, 255, 0.15); border-color: var(--accent); }
+        .t-n { font-size: 12px; font-weight: 700; display: block; margin-bottom: 5px; }
+        .t-c { font-size: 9px; opacity: 0.4; letter-spacing: 1px; }
+
+        .modal-ov {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.95);
+            z-index: 1000; display: none; align-items: center; justify-content: center;
+            padding: 25px; backdrop-filter: blur(15px);
+        }
+        .modal-box {
+            background: #0a0a0c; border: 1px solid var(--accent);
+            border-radius: 35px; padding: 40px 25px; width: 100%; max-width: 360px; text-align: center;
+        }
+        #chart-zone { height: 200px; margin-top: 10px; }
     </style>
 </head>
 <body>
 
 <canvas id="starfield"></canvas>
 
-<header>
-    <div class="logo">LADY STRETCH ID</div>
-    <div style="font-size: 10px; color: var(--accent);">PROFILE</div>
-</header>
+<header><div style="font-weight: 200; letter-spacing: 6px; font-size: 16px;">LADY STRETCH ELITE</div></header>
 
-<div class="app-container">
-    
-    <div class="card" style="grid-row: span 2;">
-        <div class="card-header">
-            <span class="card-title">Динамика & Цели</span>
-            <div style="font-size: 10px; opacity: 0.7;" id="status-msg">Анализ...</div>
-        </div>
-        <div style="flex: 1; position: relative; min-height: 250px;">
-            <canvas id="mainChart"></canvas>
-        </div>
-        <div style="margin-top: 15px; font-size: 11px; opacity: 0.6; text-align: center; font-style: italic;">
-            *Фиолетовый - вес, Зеленый - кол-во тренировок
-        </div>
+<div class="container">
+    <div class="sync-bar">
+        <div class="dot" id="sync-dot"></div>
+        <span id="sync-text">SYSTEM_ONLINE</span>
     </div>
 
-    <div class="card" id="bio-anchor">
-        <div class="card-header"><span class="card-title">Биохакинг тела</span></div>
-        <div id="bio-content" class="bio-highlight">
-            Нажмите на любую тренировку, чтобы узнать, что происходит с вашей физиологией.
-        </div>
+    <div class="role-nav">
+        <div id="r-u" class="active" onclick="setR('user')">КЛИЕНТ</div>
+        <div id="r-c" onclick="setR('coach')">ТРЕНЕР</div>
     </div>
 
     <div class="card">
-        <div class="card-header"><span class="card-title">Результативность</span></div>
-        
-        <div class="bmi-box" id="bmi-display">ИМТ: -- (Нет данных)</div>
-
-        <div class="metrics-grid">
-            <input type="number" id="w-in" class="metric-input" placeholder="Вес (кг)">
-            <input type="number" id="h-in" class="metric-input" placeholder="Рост (см)">
-            <input type="number" id="c-in" class="metric-input" placeholder="Грудь (см)">
-            <input type="number" id="ws-in" class="metric-input" placeholder="Талия (см)">
+        <span class="card-label">Биометрический модуль</span>
+        <div class="bmi-display">
+            <div class="bmi-v" id="bv">--</div>
+            <div class="bmi-s" id="bs">ВВЕДИТЕ ДАННЫЕ</div>
         </div>
-        <button class="save-metrics-btn" onclick="saveMetrics()">Записать замеры</button>
-
-        <div style="margin-top: 20px;">
-            <div class="stat-row"><span>Всего за месяц:</span> <span class="stat-val" id="month-total">0</span></div>
-            <div id="stats-list" style="margin-top: 10px; max-height: 150px; overflow-y: auto;">
-                </div>
-            <button class="reset-btn" onclick="resetGraph()">Сбросить историю графика</button>
+        <div class="inputs-row">
+            <input type="number" id="in-w" placeholder="ВЕС" inputmode="decimal">
+            <input type="number" id="in-h" placeholder="РОСТ" inputmode="numeric">
         </div>
+        <button class="btn-main" onclick="updM()">ОБНОВИТЬ СОСТОЯНИЕ</button>
     </div>
 
-    <div class="training-section card">
-        <div class="card-header"><span class="card-title">Журнал занятий</span></div>
-
-        <div class="category-title" style="color: #64d2ff;">Спокойные практики (Mind & Body)</div>
-        <div class="buttons-grid" id="calm-grid">
-            </div>
-
-        <div class="category-title" style="color: #ff9f0a;">Активные практики (Power & Sculpt)</div>
-        <div class="buttons-grid" id="active-grid">
-             </div>
+    <div class="card">
+        <span class="card-label">Аналитика веса</span>
+        <div id="chart-zone"><canvas id="ch"></canvas></div>
     </div>
 
+    <div class="card" style="background:none; border:none; padding:0;">
+        <span class="card-label">Выбор протокола</span>
+        <div class="grid-layout" id="grid"></div>
+    </div>
 </div>
 
-<div class="modal-overlay" id="modal" onclick="closeModal()">
-    <div class="modal-content" onclick="event.stopPropagation()">
-        <h2 id="m-title" style="font-weight: 100; font-size: 28px; margin: 0 0 15px;"></h2>
-        <p id="m-text" style="font-size: 14px; line-height: 1.6; opacity: 0.9;"></p>
-        <div id="m-promo-box" style="display:none;">
-            <div class="promo-code">VIP96-LS</div>
-            <p style="font-size: 10px;">Покажите этот код администратору</p>
-        </div>
-        <button class="save-metrics-btn" style="background: transparent; border: 1px solid #fff; color: #fff; margin-top: 20px;" onclick="closeModal()">Отлично</button>
+<div class="modal-ov" id="mo">
+    <div class="modal-box">
+        <div style="font-size: 50px;">🧬</div>
+        <h3 id="mt" style="margin-top: 20px; font-weight: 400; letter-spacing: 3px;"></h3>
+        <p id="mb" style="margin: 25px 0; font-size: 14px; line-height: 1.7; opacity: 0.8; font-weight: 300;"></p>
+        <button class="btn-main" onclick="clM()">ЗАКРЫТЬ ПРОТОКОЛ</button>
     </div>
 </div>
 
@@ -234,297 +160,140 @@
     const tg = window.Telegram.WebApp;
     tg.expand();
 
-    // === ДАННЫЕ И НАСТРОЙКИ ===
-    const initialData = {
-        // Добавил totalWorkoutsHistory для графика
-        metrics: { weight: [], chest: [], waist: [], height: null, dates: [], totalWorkoutsHistory: [] },
-        workouts: {},
-        lastFeedback: ""
+    const API = 'https://d5du1tksblqr7q5d8nqs.fary004x.apigw.yandexcloud.net';
+    let role = 'user';
+    let db = JSON.parse(localStorage.getItem('ls_final_v1')) || { weight: [], dates: [], workouts: {}, height: 0 };
+
+    const protos = {
+        'Пилатес': 'Глубокая проработка мышц-стабилизаторов. Укрепляет корсет и выравнивает осанку.',
+        'Стретчинг': 'Увеличение эластичности связок и мышц. Снимает зажимы и улучшает кровоток.',
+        'МФР': 'Миофасциальный релиз. Проработка триггерных точек и лимфодренаж тела.',
+        'Здоровая спина': 'Декомпрессия позвоночника и укрепление мышц спины. Прощай, усталость.',
+        'Sky Stretching': 'Тренировки в гамаках. Мягкая растяжка под действием гравитации.',
+        'Йога релакс': 'Баланс тела и разума. Глубокое расслабление через дыхание.',
+        'Подкачка+Шпагат': 'Силовой блок для тонуса мышц и интенсивная растяжка ног.',
+        'Ягодицы+Пресс': 'Скульптурирование тела. Акцент на самые важные зоны.',
+        'Круговая': 'Жиросжигающий протокол. Высокий темп для максимального результата.',
+        'Body Sculpt': 'Силовая тренировка на все группы мышц. Формирует рельеф.',
+        'Табата': 'Интервальный тренинг 20/10. Разгон метаболизма на 48 часов.',
+        'TRX': 'Функциональный тренинг с петлями. Работают все мышцы сразу.'
     };
 
-    let db = JSON.parse(localStorage.getItem('ls_elite_db_v3')) || initialData;
-
-    const calmList = ['Пилатес', 'Стретчинг', 'МФР', 'Здоровая спина', 'Sky Stretching', 'Йога релакс'];
-    const activeList = ['Подкачка+Шпагат', 'Ягодицы+Пресс', 'Круговая', 'Body Sculpt', 'Табата', 'TRX'];
-
-    const bioFacts = {
-        'Табата': 'Ваши капилляры расширились на 15%. Метаболизм ускорен на следующие 24 часа. Жиросжигание продолжается даже во сне.',
-        'Стретчинг': 'Уровень кортизола снизился. Мышечные фасции получают гидратацию, возвращая телу природную гибкость.',
-        'Здоровая спина': 'Межпозвоночные диски начали процесс регидратации. Снята компрессия с нервных окончаний.',
-        'Sky Stretching': 'Лимфодренажный эффект достигнут. Перевернутые позы улучшили кровоснабжение мозга и цвет лица.',
-        'Body Sculpt': 'Плотность мышечных волокон увеличивается. Вы создаете "корсет", который держит органы и осанку.',
-        'МФР': 'Склеенные ткани расправлены. Вы вернули мышцам скольжение, избавившись от отеков и зажимов.'
-    };
-
-    const milestones = {
-        1: {t: "Первый шаг", d: "Ваши капилляры начали просыпаться. Кровоток в мышцах улучшился на уровне микроциркуляции."},
-        8: {t: "8 ЗАНЯТИЙ", d: "Поздравляем! Ваше тело наполнилось кислородом, отеки уходят. Вы официально вошли в ритм."},
-        16: {t: "16 ЗАНЯТИЙ", d: "Нервная система адаптировалась. Теперь тренировка — это не стресс, а источник дофамина. Хотите узнать, что будет на 32?"},
-        32: {t: "32 ЗАНЯТИЯ", d: "Ткани стали эластичными, как шелк. Осанка держится без усилий. Вы молодец!"},
-        64: {t: "64 ЗАНЯТИЯ", d: "Глубокая клеточная трансформация. Ваш биологический возраст снижается."},
-        96: {t: "96 ЗАНЯТИЙ. ГРАНД МАСТЕР", d: "Регулярность — признак любви к себе. Вы достигли вершины. Ваша награда — скидка 20% на любой абонемент!", isFinal: true}
-    };
-
-    // === ИНИЦИАЛИЗАЦИЯ ===
-    function init() {
-        renderButtons();
-        updateStats();
-        updateChart();
-        checkBMI();
-        
-        // Load input values
-        if(db.metrics.height) document.getElementById('h-in').value = db.metrics.height;
-        const lastW = db.metrics.weight[db.metrics.weight.length-1];
-        if(lastW) document.getElementById('w-in').value = lastW;
+    function setR(r) {
+        role = r;
+        document.getElementById('r-u').classList.toggle('active', r === 'user');
+        document.getElementById('r-c').classList.toggle('active', r === 'coach');
+        tg.HapticFeedback.impactOccurred('light');
     }
 
-    // === ЛОГИКА ТРЕНИРОВОК ===
-    function renderButtons() {
-        const createBtn = (name, parent) => {
-            const count = db.workouts[name] || 0;
-            const btn = document.createElement('div');
-            btn.className = 't-btn';
-            btn.innerHTML = `<span class="t-name">${name}</span><span class="t-count">${count} раз</span>`;
-            btn.onclick = () => addWorkout(name);
-            document.getElementById(parent).appendChild(btn);
-        };
-        document.getElementById('calm-grid').innerHTML = '';
-        document.getElementById('active-grid').innerHTML = '';
-        calmList.forEach(n => createBtn(n, 'calm-grid'));
-        activeList.forEach(n => createBtn(n, 'active-grid'));
+    function render() {
+        const g = document.getElementById('grid'); g.innerHTML = '';
+        Object.keys(protos).forEach(p => {
+            const c = db.workouts[p] || 0;
+            g.innerHTML += `<div class="t-card" onclick="log('${p}')">
+                <span class="t-n">${p}</span>
+                <span class="t-c">${c} ЗАНЯТИЙ</span>
+            </div>`;
+        });
     }
 
-    function addWorkout(name) {
-        if(!db.workouts[name]) db.workouts[name] = 0;
-        db.workouts[name]++;
+    function log(p) {
+        db.workouts[p] = (db.workouts[p] || 0) + 1;
+        save(); render();
         
-        const total = Object.values(db.workouts).reduce((a,b)=>a+b,0);
+        const lastW = db.weight[db.weight.length-1] || 60;
+        const water = (lastW * 0.033 + (role === 'coach' ? 0.5 : 0)).toFixed(1);
         
-        // Скролл к биохакингу
-        document.getElementById('bio-anchor').scrollIntoView({behavior: "smooth"});
-
-        const fact = bioFacts[name] || "Ваше тело благодарит вас. Выработка эндорфинов запущена.";
-        document.getElementById('bio-content').innerHTML = `<span class="bio-pulse">${name}:</span> ${fact}`;
+        document.getElementById('mt').innerText = p.toUpperCase();
+        document.getElementById('mb').innerHTML = `${protos[p]}<br><br><b style="color:var(--accent)">БИО-ЦЕЛЬ:</b> Ваша дневная норма воды сегодня — <b>${water} л</b>.`;
+        document.getElementById('mo').style.display = 'flex';
         
-        if(milestones[total]) {
-            showModal(milestones[total]);
-        } else {
-            tg.HapticFeedback.impactOccurred('light');
-        }
-
-        saveDB();
-        renderButtons();
-        updateStats();
+        sync({ type: 'workout', name: p });
+        tg.HapticFeedback.impactOccurred('medium');
     }
 
-    // Функция ручного изменения (+ / -)
-    function manualEdit(name, delta) {
-        if(!db.workouts[name]) db.workouts[name] = 0;
-        db.workouts[name] += delta;
-        if(db.workouts[name] < 0) db.workouts[name] = 0;
+    function updM() {
+        const w = parseFloat(document.getElementById('in-w').value);
+        const h = parseFloat(document.getElementById('in-h').value);
+        if(!w || !h) return;
+
+        db.weight.push(w); db.height = h;
+        db.dates.push(new Date().toLocaleDateString('ru-RU', {day:'numeric', month:'short'}));
         
-        saveDB();
-        renderButtons();
-        updateStats();
-    }
-
-    // === ЛОГИКА ЗАМЕРОВ И BMI ===
-    function saveMetrics() {
-        const w = parseFloat(document.getElementById('w-in').value);
-        const h = parseFloat(document.getElementById('h-in').value);
-        const c = parseFloat(document.getElementById('c-in').value);
-        const ws = parseFloat(document.getElementById('ws-in').value);
-
-        // Получаем текущее общее количество тренировок для графика
-        const currentTotalWorkouts = Object.values(db.workouts).reduce((a,b)=>a+b,0);
-
-        if(h) db.metrics.height = h;
-        if(w) db.metrics.weight.push(w);
-        if(c) db.metrics.chest.push(c);
-        if(ws) db.metrics.waist.push(ws);
+        const bmi = (w / ((h/100)**2)).toFixed(1);
+        document.getElementById('bv').innerText = bmi;
+        document.getElementById('bs').innerText = bmi < 18.5 ? 'ДЕФИЦИТ ВЕСА' : (bmi < 25 ? 'ИДЕАЛЬНАЯ НОРМА' : 'НУЖЕН ТРЕНИНГ');
         
-        // Сохраняем кол-во тренировок в историю для графика
-        if(!db.metrics.totalWorkoutsHistory) db.metrics.totalWorkoutsHistory = [];
-        db.metrics.totalWorkoutsHistory.push(currentTotalWorkouts);
-
-        const date = new Date().toLocaleDateString('ru-RU', {day:'numeric', month:'short'});
-        db.metrics.dates.push(date);
-
-        // Лимит истории 10 точек
-        if(db.metrics.weight.length > 10) {
-            db.metrics.weight.shift();
-            db.metrics.dates.shift();
-            if(db.metrics.totalWorkoutsHistory.length > 0) db.metrics.totalWorkoutsHistory.shift();
-        }
-
-        checkBMI();
-        analyzeProgress(w);
-        saveDB();
-        updateChart();
+        save(); updCh();
+        sync({ type: 'metrics', weight: w, height: h, bmi });
         tg.HapticFeedback.notificationOccurred('success');
     }
 
-    function checkBMI() {
-        const h = db.metrics.height;
-        const w = db.metrics.weight[db.metrics.weight.length-1];
-        if(h && w) {
-            const bmi = (w / ((h/100)**2)).toFixed(1);
-            let status = '';
-            if(bmi < 18.5) status = 'Дефицит массы';
-            else if(bmi < 25) status = 'Норма';
-            else status = 'Избыток массы';
-            document.getElementById('bmi-display').innerText = `ИМТ: ${bmi} (${status})`;
-        }
+    async function sync(data) {
+        const d = document.getElementById('sync-dot');
+        d.style.background = '#ff9f0a';
+        try {
+            await fetch(API, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ user: tg.initDataUnsafe.user?.id, ...data })
+            });
+            d.style.background = '#32d74b';
+        } catch (e) { d.style.background = '#ff453a'; }
     }
 
-    function analyzeProgress(currentW) {
-        const prevW = db.metrics.weight[db.metrics.weight.length-2];
-        const statusDiv = document.getElementById('status-msg');
-        
-        if(!prevW) {
-            statusDiv.innerText = "Начало положено. Собираем данные...";
-            return;
-        }
-        if(currentW < prevW) {
-            statusDiv.innerHTML = "<span style='color:var(--success)'>▼ Вес снижается! Вы в отличной форме!</span>";
-        } else if (currentW > prevW) {
-            statusDiv.innerHTML = "<span style='color:var(--danger)'>▲ Внимание к цели! Усилим кардио?</span>";
-        } else {
-            statusDiv.innerText = "Стабильность — признак мастерства.";
-        }
-    }
+    function clM() { document.getElementById('mo').style.display = 'none'; }
+    function save() { localStorage.setItem('ls_final_v1', JSON.stringify(db)); }
 
-    function updateStats() {
-        const total = Object.values(db.workouts).reduce((a,b)=>a+b,0);
-        document.getElementById('month-total').innerText = total;
-
-        let listHtml = '';
-        for (const [key, val] of Object.entries(db.workouts)) {
-            if(val > 0) {
-                // Добавил кнопки + и - для редактирования
-                listHtml += `
-                <div class="stat-row">
-                    <span>${key}</span>
-                    <div style="display:flex; align-items:center;">
-                        <button class="edit-btn" onclick="manualEdit('${key}', -1)">-</button>
-                        <span class="stat-val">${val}</span>
-                        <button class="edit-btn" onclick="manualEdit('${key}', 1)">+</button>
-                    </div>
-                </div>`;
-            }
-        }
-        document.getElementById('stats-list').innerHTML = listHtml || '<div style="opacity:0.3; text-align:center">История пуста</div>';
-    }
-
-    function resetGraph() {
-        if(confirm("Очистить историю веса и замеров? Кол-во тренировок останется.")) {
-            db.metrics = { weight: [], chest: [], waist: [], height: db.metrics.height, dates: [], totalWorkoutsHistory: [] };
-            saveDB();
-            updateChart();
-            document.getElementById('status-msg').innerText = 'Данные сброшены';
-        }
-    }
-
-    // === ГРАФИК (Chart.js) ===
-    let chartInstance = null;
-    function updateChart() {
-        const ctx = document.getElementById('mainChart').getContext('2d');
-        if(chartInstance) chartInstance.destroy();
-
-        // Подготовка данных для второй оси (если массив пустой, заполняем нулями)
-        const workoutData = db.metrics.totalWorkoutsHistory || new Array(db.metrics.dates.length).fill(0);
-
-        chartInstance = new Chart(ctx, {
+    let chart;
+    function updCh() {
+        const ctx = document.getElementById('ch').getContext('2d');
+        if(chart) chart.destroy();
+        chart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: db.metrics.dates.length ? db.metrics.dates : ['Старт'],
-                datasets: [
-                    {
-                        label: 'Вес (кг)',
-                        data: db.metrics.weight,
-                        borderColor: '#b085ff',
-                        backgroundColor: 'rgba(176, 133, 255, 0.1)',
-                        tension: 0.4,
-                        fill: true,
-                        yAxisID: 'y'
-                    },
-                    {
-                        label: 'Тренировки (шт)',
-                        data: workoutData,
-                        borderColor: '#32d74b', /* Зеленый цвет для активности */
-                        backgroundColor: 'transparent',
-                        tension: 0.2,
-                        borderDash: [5, 5],
-                        yAxisID: 'y1'
-                    }
-                ]
+                labels: db.dates,
+                datasets: [{
+                    data: db.weight,
+                    borderColor: '#b085ff',
+                    borderWidth: 3,
+                    tension: 0.4,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#fff',
+                    fill: true,
+                    backgroundColor: 'rgba(176,133,255,0.05)'
+                }]
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
+            options: { 
+                responsive: true, maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
-                scales: {
-                    x: { ticks: { color: '#666', font: {size: 10} }, grid: {display: false} },
-                    y: { 
-                        type: 'linear', display: true, position: 'left',
-                        ticks: { color: '#b085ff', font: {size: 10} }, 
-                        grid: {color: 'rgba(255,255,255,0.05)'} 
-                    },
-                    y1: {
-                        type: 'linear', display: true, position: 'right',
-                        ticks: { color: '#32d74b', font: {size: 10} },
-                        grid: { drawOnChartArea: false } // убираем лишнюю сетку
-                    }
+                scales: { 
+                    x: { ticks: { color: '#555', font: { size: 9 } }, grid: { display: false } },
+                    y: { ticks: { color: '#555', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.05)' } }
                 }
             }
         });
     }
 
-    // === МОДАЛКА ===
-    function showModal(data) {
-        document.getElementById('m-title').innerText = data.t;
-        document.getElementById('m-text').innerText = data.d;
-        document.getElementById('m-promo-box').style.display = data.isFinal ? 'block' : 'none';
-        
-        const m = document.getElementById('modal');
-        m.style.display = 'flex';
-        setTimeout(()=> m.classList.add('modal-active'), 10);
-        tg.HapticFeedback.notificationOccurred('success');
-    }
-    function closeModal() {
-        const m = document.getElementById('modal');
-        m.classList.remove('modal-active');
-        setTimeout(()=> m.style.display = 'none', 300);
+    const c = document.getElementById('starfield');
+    const x = c.getContext('2d');
+    function stars() {
+        c.width = innerWidth; c.height = innerHeight;
+        x.fillStyle = "#fff";
+        for(let i=0; i<100; i++) {
+            x.globalAlpha = Math.random();
+            x.beginPath(); x.arc(Math.random()*innerWidth, Math.random()*innerHeight, 0.7, 0, 7); x.fill();
+        }
     }
 
-    function saveDB() {
-        localStorage.setItem('ls_elite_db_v3', JSON.stringify(db));
+    window.addEventListener('resize', stars);
+    stars(); render();
+    if(db.weight.length) {
+        updCh();
+        document.getElementById('in-w').value = db.weight[db.weight.length-1];
+        document.getElementById('in-h').value = db.height;
+        updM();
     }
-
-    // === 1000 ЗВЕЗД ===
-    const cvs = document.getElementById('starfield');
-    const sCtx = cvs.getContext('2d');
-    let stars = [];
-    function initStars() {
-        cvs.width = window.innerWidth; cvs.height = window.innerHeight;
-        stars = Array.from({length: 1000}, () => ({
-            x: Math.random()*cvs.width, y: Math.random()*cvs.height,
-            r: Math.random()*1.2, t: Math.random()*Math.PI*2, s: 0.005 + Math.random()*0.01
-        }));
-    }
-    function drawStars() {
-        sCtx.clearRect(0,0,cvs.width, cvs.height);
-        stars.forEach(s => {
-            sCtx.globalAlpha = (Math.sin(s.t)+1)/2;
-            sCtx.beginPath(); sCtx.arc(s.x, s.y, s.r, 0, 7); sCtx.fillStyle = "#fff"; sCtx.fill();
-            s.t += s.s;
-        });
-        requestAnimationFrame(drawStars);
-    }
-
-    initStars(); drawStars();
-    init();
-
 </script>
 </body>
 </html>
