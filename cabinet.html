@@ -3,678 +3,300 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>LS Evolution Ultra Elite V7.5 FULL</title>
+    <title>LS Evolution Elite V7.8</title>
     
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
             --bg: #050507;
-            --glass: rgba(255, 255, 255, 0.02);
-            --glass-bright: rgba(255, 255, 255, 0.07);
-            --border: rgba(255, 255, 255, 0.12);
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
             --accent: #b085ff;
-            --accent-glow: rgba(176, 133, 255, 0.3);
-            --success: #32d74b;
-            --warning: #ff9f0a;
-            --danger: #ff453a;
-            --text-main: #ffffff;
-            --text-sec: rgba(255, 255, 255, 0.4);
-            --safe-top: env(safe-area-inset-top);
+            --text: #ffffff;
+            --safe-top: env(safe-area-inset-top, 20px);
+            --safe-bottom: env(safe-area-inset-bottom, 20px);
         }
 
-        /* Глобальные стили и сброс */
-        * { 
-            box-sizing: border-box; 
-            -webkit-tap-highlight-color: transparent; 
-            margin: 0; padding: 0; 
-            outline: none;
-        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
         
         body {
-            background: var(--bg);
-            color: var(--text-main);
+            background: var(--bg); color: var(--text);
             font-family: 'Montserrat', sans-serif;
-            overflow-x: hidden;
-            -webkit-user-select: none;
-            user-select: none;
-            line-height: 1.6;
-            min-height: 100vh;
+            margin: 0; padding: 0; overflow-x: hidden;
+            min-height: 100vh; display: flex; flex-direction: column;
         }
 
-        #starfield {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -1;
-            pointer-events: none;
-        }
+        #starfield { position: fixed; inset: 0; z-index: -1; }
 
-        /* Индикатор облака */
-        .backend-status {
-            position: fixed;
-            top: calc(85px + var(--safe-top));
-            left: 20px;
-            z-index: 1100;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 10px;
-            font-weight: 900;
-            letter-spacing: 1.5px;
-            color: var(--text-sec);
-            background: rgba(0, 0, 0, 0.5);
-            padding: 8px 16px;
-            border-radius: 40px;
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--border);
-            text-transform: uppercase;
-        }
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--success);
-            box-shadow: 0 0 12px var(--success);
-            transition: all 0.4s ease;
-        }
-
-        /* Шапка */
+        /* HEADER */
         header {
-            position: fixed;
-            top: 0; width: 100%; height: 75px;
-            background: rgba(5, 5, 7, 0.8);
-            backdrop-filter: blur(30px);
-            border-bottom: 1px solid var(--border);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             padding-top: var(--safe-top);
+            height: calc(60px + var(--safe-top));
+            background: rgba(5, 5, 7, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            position: sticky; top: 0; z-index: 100;
         }
-        .logo {
-            font-weight: 200;
-            letter-spacing: 8px;
-            font-size: 18px;
-            color: #fff;
-            text-shadow: 0 0 20px rgba(255,255,255,0.2);
-        }
+        .logo { font-weight: 200; letter-spacing: 5px; font-size: 14px; }
 
-        /* Контейнер */
-        .app-container {
-            max-width: 650px;
-            margin: 0 auto;
-            padding: 100px 20px 60px;
-            animation: fadeIn 0.8s ease-out;
+        /* STATUS */
+        .sync-bar {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            font-size: 9px; padding: 8px 0; color: rgba(255,255,255,0.3);
+            letter-spacing: 1px; font-weight: 600;
         }
+        .dot { width: 6px; height: 6px; border-radius: 50%; background: #32d74b; box-shadow: 0 0 8px #32d74b; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .container { padding: 10px 16px calc(20px + var(--safe-bottom)); flex: 1; }
 
-        /* Выбор роли */
-        .role-selector {
-            display: flex;
-            background: var(--glass-bright);
-            border-radius: 18px;
-            padding: 5px;
-            margin-bottom: 25px;
-            border: 1px solid var(--border);
+        /* ROLE SELECTOR */
+        .role-nav {
+            display: flex; background: var(--glass); border-radius: 12px;
+            padding: 4px; margin-bottom: 20px; border: 1px solid var(--border);
         }
-        .role-btn {
-            flex: 1;
-            padding: 12px;
-            border-radius: 14px;
-            text-align: center;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            color: var(--text-sec);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        .role-nav div {
+            flex: 1; text-align: center; padding: 10px; border-radius: 10px;
+            font-size: 11px; font-weight: 800; color: rgba(255,255,255,0.4); transition: 0.3s;
         }
-        .role-btn.active {
-            background: var(--accent);
-            color: #000;
-            box-shadow: 0 4px 15px var(--accent-glow);
-        }
+        .role-nav .active { background: var(--accent); color: #000; }
 
-        /* Модальные окна */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.96);
-            backdrop-filter: blur(25px);
-            z-index: 5000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-        .modal-overlay.active {
-            display: flex;
-            opacity: 1;
-        }
-        .modal-card {
-            width: 90%;
-            max-width: 420px;
-            background: linear-gradient(145deg, #0f0f13 0%, #050507 100%);
-            border: 1px solid var(--accent);
-            border-radius: 40px;
-            padding: 45px 35px;
-            text-align: center;
-            position: relative;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(176, 133, 255, 0.1);
-        }
-
-        /* Карточки */
+        /* CARDS */
         .card {
-            background: var(--glass);
-            backdrop-filter: blur(40px);
-            border: 1px solid var(--border);
-            border-radius: 32px;
-            padding: 28px;
-            margin-bottom: 25px;
-            transition: transform 0.3s ease;
+            background: var(--glass); border: 1px solid var(--border);
+            border-radius: 24px; padding: 20px; margin-bottom: 16px;
+            backdrop-filter: blur(10px);
         }
-        .card-title {
-            font-size: 11px;
-            font-weight: 900;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .card-title::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(90deg, var(--border), transparent);
+        .card-label { font-size: 10px; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; display: block; }
+
+        /* METRICS */
+        .bmi-box { text-align: center; margin-bottom: 15px; }
+        .bmi-val { font-size: 32px; font-weight: 300; }
+        .bmi-txt { font-size: 10px; text-transform: uppercase; opacity: 0.5; letter-spacing: 1px; }
+
+        .inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
+        input {
+            background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+            border-radius: 14px; padding: 14px; color: #fff; text-align: center; font-size: 16px;
+            -webkit-appearance: none;
         }
 
-        /* Метрики */
-        #bmi-res {
-            font-size: 28px;
-            font-weight: 200;
-            color: var(--text-main);
-            text-align: center;
-            margin-bottom: 20px;
-            letter-spacing: 2px;
-        }
-        #bmi-status {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--accent);
-            margin-bottom: 20px;
-            text-align: center;
-            display: block;
-        }
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        .m-input {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 20px;
-            color: #fff;
-            font-size: 18px;
-            font-family: inherit;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-        .m-input:focus {
-            background: rgba(255, 255, 255, 0.07);
-            border-color: var(--accent);
-            box-shadow: 0 0 15px rgba(176, 133, 255, 0.1);
+        .btn {
+            background: #fff; color: #000; border: none; width: 100%;
+            padding: 16px; border-radius: 16px; font-weight: 800; font-size: 12px;
+            letter-spacing: 1px; text-transform: uppercase;
         }
 
-        /* Кнопки */
-        .btn-prime {
-            background: #ffffff;
-            color: #000000;
-            border: none;
-            width: 100%;
-            padding: 22px;
-            border-radius: 22px;
-            font-weight: 900;
-            font-size: 14px;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .btn-prime:active {
-            transform: scale(0.96);
-            background: #eeeeee;
-        }
-
-        /* Тренировки (2 колонки) */
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
+        /* GRID */
+        .workout-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .t-btn {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 25px 15px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            min-height: 100px;
+            background: var(--glass); border: 1px solid var(--border);
+            padding: 18px 10px; border-radius: 18px; text-align: center;
         }
-        .t-btn:active {
-            transform: scale(0.94);
-            background: rgba(176, 133, 255, 0.1);
-            border-color: var(--accent);
-        }
-        .t-name {
-            font-size: 12px;
-            font-weight: 700;
-            color: #fff;
-            margin-bottom: 6px;
-            letter-spacing: 0.5px;
-        }
-        .t-count {
-            font-size: 9px;
-            color: var(--text-sec);
-            font-weight: 600;
-            text-transform: uppercase;
-        }
+        .t-btn:active { background: rgba(176, 133, 255, 0.1); transform: scale(0.97); }
+        .t-name { font-size: 11px; font-weight: 600; display: block; margin-bottom: 4px; }
+        .t-count { font-size: 8px; opacity: 0.4; text-transform: uppercase; }
 
-        /* График */
-        .chart-wrap {
-            height: 250px;
-            margin-top: 15px;
-            width: 100%;
+        /* MODAL */
+        .modal {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.95);
+            z-index: 1000; display: none; align-items: center; justify-content: center;
+            padding: 20px; backdrop-filter: blur(10px);
         }
+        .modal-content {
+            background: #0a0a0c; border: 1px solid var(--accent);
+            border-radius: 32px; padding: 30px 20px; width: 100%; max-width: 340px; text-align: center;
+        }
+        .modal-text { font-size: 14px; line-height: 1.6; opacity: 0.8; margin: 20px 0; font-weight: 300; }
 
-        /* Декор и вспомогательные */
-        .footer-info {
-            text-align: center;
-            margin-top: 40px;
-            opacity: 0.3;
-        }
-        .footer-info button {
-            background: none; border: none; color: #fff; font-size: 10px; 
-            letter-spacing: 2px; cursor: pointer; text-transform: uppercase;
-        }
-
+        #chart-container { height: 200px; width: 100%; }
     </style>
 </head>
 <body>
 
 <canvas id="starfield"></canvas>
 
-<div id="welcome" class="modal-overlay">
-    <div class="modal-card">
-        <div style="font-size: 50px; margin-bottom: 25px; filter: drop-shadow(0 0 10px var(--accent));">✦</div>
-        <h2 style="font-weight: 200; letter-spacing: 6px; margin-bottom: 20px;">EVOLUTION</h2>
-        <p style="font-size: 14px; opacity: 0.7; margin-bottom: 35px; line-height: 1.8; font-weight: 300;">
-            Инициализация персонального биометрического модуля. Все данные синхронизируются с облаком для анализа вашей прогрессии.
-        </p>
-        <button class="btn-prime" onclick="closeModal('welcome')">НАЧАТЬ СЕССИЮ</button>
-    </div>
+<header><div class="logo">LADY STRETCH ELITE</div></header>
+
+<div class="sync-bar">
+    <div class="dot" id="sync-dot"></div>
+    <span id="sync-text">DATABASE_CONNECTED</span>
 </div>
 
-<div id="bio-modal" class="modal-overlay">
-    <div class="modal-card">
-        <div id="m-icon" style="font-size: 60px; margin-bottom: 20px;">🧬</div>
-        <h3 id="m-title" style="color: var(--accent); margin-bottom: 15px; font-weight: 400; letter-spacing: 3px; text-transform: uppercase;">ПРОТОКОЛ</h3>
-        <p id="m-text" style="font-size: 15px; opacity: 0.9; margin-bottom: 35px; line-height: 1.7; font-weight: 300; text-align: left;"></p>
-        <button class="btn-prime" onclick="closeModal('bio-modal')">ПРИНЯТЬ ЛОГ</button>
-    </div>
-</div>
-
-<header>
-    <div class="logo">LADY STRETCH ID</div>
-</header>
-
-<div class="backend-status">
-    <div class="status-dot" id="sync-dot"></div>
-    <span id="sync-label">YANDEX_CLOUD_READY</span>
-</div>
-
-<div class="app-container">
-
-    <div class="role-selector">
-        <div id="role-user" class="role-btn active" onclick="setRole('user')">КЛИЕНТ</div>
-        <div id="role-coach" class="role-btn" onclick="setRole('coach')">ТРЕНЕР</div>
+<div class="container">
+    <div class="role-nav">
+        <div id="r-user" class="active" onclick="setRole('user')">КЛИЕНТ</div>
+        <div id="r-coach" onclick="setRole('coach')">ТРЕНЕР</div>
     </div>
 
     <div class="card">
-        <span class="card-title">Биометрия</span>
-        <div id="bmi-res">--</div>
-        <span id="bmi-status">Ожидание данных</span>
-        <div class="metrics-grid">
-            <input type="number" id="w-in" class="m-input" placeholder="КГ" step="0.1" inputmode="decimal">
-            <input type="number" id="h-in" class="m-input" placeholder="СМ" inputmode="numeric">
+        <span class="card-label">Биометрия</span>
+        <div class="bmi-box">
+            <div class="bmi-val" id="bmi-v">--</div>
+            <div class="bmi-txt" id="bmi-t">ОЖИДАНИЕ ДАННЫХ</div>
         </div>
-        <button class="btn-prime" onclick="saveMetrics()">ОБНОВИТЬ СОСТОЯНИЕ</button>
-    </div>
-
-    <div class="card">
-        <span class="card-title">Аналитика веса</span>
-        <div class="chart-wrap">
-            <canvas id="mainChart"></canvas>
+        <div class="inputs">
+            <input type="number" id="w" placeholder="ВЕС (КГ)" inputmode="decimal">
+            <input type="number" id="h" placeholder="РОСТ (СМ)" inputmode="numeric">
         </div>
+        <button class="btn" onclick="saveMetrics()">Обновить данные</button>
     </div>
 
     <div class="card">
-        <span class="card-title">Протоколы занятий</span>
-        <div class="grid-2" id="workout-grid"></div>
+        <span class="card-label">Динамика</span>
+        <div id="chart-container"><canvas id="myChart"></canvas></div>
     </div>
 
-    <div class="footer-info">
-        <button onclick="clearData()">СБРОСИТЬ ВСЕ ДАННЫЕ СИСТЕМЫ</button>
+    <div class="card" style="background: none; border: none; padding: 0;">
+        <span class="card-label">Тренировки</span>
+        <div class="workout-grid" id="grid"></div>
+    </div>
+</div>
+
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <div id="m-icon" style="font-size: 40px;">🧬</div>
+        <h3 id="m-title" style="margin-top: 15px; font-weight: 400; letter-spacing: 2px;">ПРОТОКОЛ</h3>
+        <p class="modal-text" id="m-body"></p>
+        <button class="btn" onclick="closeModal()">ПОНЯТНО</button>
     </div>
 </div>
 
 <script>
-    /**
-     * CORE CONFIGURATION & DATABASE
-     */
     const tg = window.Telegram.WebApp;
     tg.expand();
-    tg.enableClosingConfirmation();
 
-    const YANDEX_API_URL = 'https://d5du1tksblqr7q5d8nqs.fary004x.apigw.yandexcloud.net';
-    
+    const API_URL = 'https://d5du1tksblqr7q5d8nqs.fary004x.apigw.yandexcloud.net';
     let currentRole = 'user';
-    let db = JSON.parse(localStorage.getItem('ls_elite_v7_full')) || {
-        weight: [],
-        dates: [],
-        workouts: {},
-        height: null,
-        total: 0,
-        firstLaunch: true
-    };
+    let db = JSON.parse(localStorage.getItem('ls_db_v8')) || { weight: [], dates: [], workouts: {}, height: 0 };
 
     const protocols = {
-        'Пилатес': 'Глубокая проработка мышц-стабилизаторов и тазового дна. Улучшает нейромышечную связь и контроль дыхания. Рекомендуется при сидячем образе жизни.',
-        'Стретчинг': 'Снижение уровня кортизола и жесткости артерий. Улучшает микроциркуляцию в тканях, делая их более эластичными и устойчивыми к нагрузкам.',
-        'МФР': 'Миофасциальный релиз воздействует на фасции, устраняя "склейки" и триггерные точки. Восстанавливает лимфодренаж и убирает отеки.',
-        'Здоровая спина': 'Декомпрессия межпозвоночных дисков и укрепление паравертебральных мышц. Идеально для коррекции осанки.',
-        'Sky Stretching': 'Антигравитационное воздействие разгружает суставы и позвоночник. Стимулирует вестибулярный аппарат и улучшает кровоснабжение мозга.',
-        'Йога релакс': 'Активация парасимпатической нервной системы. Запускает процессы глубокой регенерации и снижает ментальное напряжение.',
-        'Подкачка+Шпагат': 'Синергия силового импульса и растяжки. Укрепляет сухожилия, делая мышцы не только сильными, но и длинными.',
-        'Ягодицы+Пресс': 'Концентрированная работа над целевыми зонами. Повышает тургор кожи и плотность мышечного корсета таза.',
-        'Круговая': 'Высокоинтенсивный метаболический тренинг. Повышает VO2 max (максимальное потребление кислорода) и выносливость.',
-        'Body Sculpt': 'Моделирование рельефа через многоповторные упражнения. Увеличивает плотность митохондрий в клетках.',
-        'Табата': 'Протокол по методу Идзуми Табата. Экстремальное сжигание калорий и пост-тренировочный эффект до 48 часов.',
-        'TRX': 'Функциональный тренинг с собственным весом. Включает в работу мышцы, которые невозможно задействовать в обычных тренажерах.'
+        'Пилатес': 'Работа с глубоким кором. Помогает сформировать "внутренний корсет" и улучшить осанку.',
+        'Стретчинг': 'Растяжка фасций и связок. Снижает риск травм и ускоряет восстановление мышц.',
+        'МФР': 'Самомассаж роллом. Убирает триггеры, улучшает лимфоток и борется с отечностью.',
+        'Здоровая спина': 'Укрепление мышц вдоль позвоночника. Декомпрессия и легкость в движениях.',
+        'Sky Stretching': 'Тренировка в гамаках. Разгружает спину и дает чувство невесомости.',
+        'Йога релакс': 'Мягкая практика для снятия стресса и гармонизации нервной системы.',
+        'Подкачка+Шпагат': 'Сила + Гибкость. Идеальный микс для тех, кто хочет рельеф и шпагат.',
+        'Ягодицы+Пресс': 'Работа на целевые зоны. Делает фигуру точеной и подтянутой.',
+        'Круговая': 'Интенсивный жиросжигающий протокол. Повышает выносливость сердца.',
+        'Body Sculpt': 'Силовая работа на все группы мышц. Формирует красивое, атлетичное тело.',
+        'Табата': '20 сек работы / 10 сек отдыха. Максимальный метаболический отклик.',
+        'TRX': 'Тренировка с петлями. Работает каждая мышца, включая стабилизаторы.'
     };
 
-    /**
-     * INITIALIZATION
-     */
-    window.onload = () => {
-        if (db.firstLaunch) {
-            openModal('welcome');
-            db.firstLaunch = false;
-            save();
-        }
-        renderWorkouts();
-        initStars();
-        if (db.weight.length) {
-            updateUI();
-            updateChart();
-        }
-    };
-
-    /**
-     * UI LOGIC
-     */
-    function setRole(role) {
-        currentRole = role;
-        document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById('role-' + role).classList.add('active');
+    function setRole(r) {
+        currentRole = r;
+        document.getElementById('r-user').classList.toggle('active', r === 'user');
+        document.getElementById('r-coach').classList.toggle('active', r === 'coach');
         tg.HapticFeedback.impactOccurred('light');
     }
 
-    function openModal(id) {
-        const modal = document.getElementById(id);
-        modal.style.display = 'flex';
-        setTimeout(() => modal.classList.add('active'), 10);
-    }
-
-    function closeModal(id) {
-        const modal = document.getElementById(id);
-        modal.classList.remove('active');
-        setTimeout(() => modal.style.display = 'none', 400);
-    }
-
-    function renderWorkouts() {
-        const grid = document.getElementById('workout-grid');
-        grid.innerHTML = '';
-        Object.keys(protocols).forEach(name => {
-            const count = db.workouts[name] || 0;
-            const btn = document.createElement('div');
-            btn.className = 't-btn';
-            btn.innerHTML = `
-                <span class="t-name">${name}</span>
+    function render() {
+        const g = document.getElementById('grid'); g.innerHTML = '';
+        Object.keys(protocols).forEach(p => {
+            const count = db.workouts[p] || 0;
+            g.innerHTML += `<div class="t-btn" onclick="log('${p}')">
+                <span class="t-name">${p}</span>
                 <span class="t-count">${count} СЕССИЙ</span>
-            `;
-            btn.onclick = () => logWorkout(name);
-            grid.appendChild(btn);
+            </div>`;
         });
     }
 
-    /**
-     * BUSINESS LOGIC
-     */
-    function logWorkout(name) {
-        db.workouts[name] = (db.workouts[name] || 0) + 1;
-        db.total++;
-        save();
-        renderWorkouts();
+    function log(p) {
+        db.workouts[p] = (db.workouts[p] || 0) + 1;
+        save(); render();
         
-        const lastW = db.weight[db.weight.length-1] || 60;
-        const water = (lastW * 0.033 + (currentRole === 'coach' ? 0.6 : 0)).toFixed(1);
+        const waterGoal = ((db.weight[db.weight.length-1] || 60) * 0.033 + (currentRole === 'coach' ? 0.5 : 0)).toFixed(1);
         
-        document.getElementById('m-title').innerText = name;
-        document.getElementById('m-text').innerHTML = `
-            ${protocols[name]}<br><br>
-            <b style="color:var(--accent)">ГИДРАТАЦИЯ:</b> Для восстановления баланса после этой сессии выпейте <b>${water}л</b> чистой воды.
-        `;
-        document.getElementById('m-icon').innerText = '🧬';
-        openModal('bio-modal');
+        document.getElementById('m-title').innerText = p.toUpperCase();
+        document.getElementById('m-body').innerHTML = `${protocols[p]}<br><br><b style="color:var(--accent)">ГИДРАТАЦИЯ:</b> Ваша дневная цель по воде сегодня — <b>${waterGoal} л</b>.`;
+        document.getElementById('modal').style.display = 'flex';
         
-        syncWithYandex({ 
-            type: 'workout_event', 
-            name: name, 
-            total_logs: db.total,
-            timestamp: new Date().toISOString()
-        });
-        
-        tg.HapticFeedback.notificationOccurred('success');
+        sync({ type: 'workout', name: p });
+        tg.HapticFeedback.impactOccurred('medium');
     }
 
     function saveMetrics() {
-        const w = parseFloat(document.getElementById('w-in').value);
-        const h = parseFloat(document.getElementById('h-in').value);
-        
-        if (!w || !h) {
-            tg.showAlert("Введите рост и вес для анализа.");
-            return;
-        }
+        const weight = parseFloat(document.getElementById('w').value);
+        const height = parseFloat(document.getElementById('h').value);
+        if(!weight || !height) return;
 
-        db.weight.push(w);
-        db.height = h;
+        db.weight.push(weight); db.height = height;
         db.dates.push(new Date().toLocaleDateString('ru-RU', {day:'numeric', month:'short'}));
         
-        save();
-        updateUI();
-        updateChart();
+        const bmi = (weight / ((height/100)**2)).toFixed(1);
+        document.getElementById('bmi-v').innerText = bmi;
+        document.getElementById('bmi-t').innerText = bmi < 18.5 ? 'ДЕФИЦИТ' : (bmi < 25 ? 'НОРМА' : 'ИЗБЫТОК');
         
-        syncWithYandex({ 
-            type: 'metrics_update', 
-            weight: w, 
-            height: h, 
-            bmi: calculateBMI(w, h).val
-        });
-        
+        save(); updateChart();
+        sync({ type: 'metrics', weight, height, bmi });
         tg.HapticFeedback.notificationOccurred('success');
     }
 
-    function calculateBMI(w, h) {
-        const val = (w / ((h/100)**2)).toFixed(1);
-        let status = 'Норма';
-        if (val < 18.5) status = 'Дефицит массы';
-        else if (val > 25 && val < 30) status = 'Предожирение';
-        else if (val >= 30) status = 'Ожирение';
-        return { val, status };
-    }
-
-    function updateUI() {
-        if (!db.weight.length) return;
-        const w = db.weight[db.weight.length-1];
-        const res = calculateBMI(w, db.height);
-        document.getElementById('bmi-res').innerText = res.val;
-        document.getElementById('bmi-status').innerText = res.status;
-        document.getElementById('w-in').value = w;
-        document.getElementById('h-in').value = db.height;
-    }
-
-    /**
-     * BACKEND SYNC
-     */
-    async function syncWithYandex(payload) {
-        const dot = document.getElementById('sync-dot');
-        const label = document.getElementById('sync-label');
-        
-        dot.style.background = varProp('--warning');
-        dot.style.boxShadow = `0 0 15px ${varProp('--warning')}`;
-        label.innerText = 'SYNCING...';
-
+    async function sync(data) {
+        const d = document.getElementById('sync-dot');
+        d.style.background = '#ff9f0a';
         try {
-            const res = await fetch(YANDEX_API_URL, {
+            await fetch(API_URL, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    user: tg.initDataUnsafe.user || { id: 'local_dev' },
-                    payload: payload,
-                    client_version: '7.5.0'
-                })
+                body: JSON.stringify({ user: tg.initDataUnsafe.user?.id, ...data })
             });
-            
-            if (res.ok) {
-                dot.style.background = varProp('--success');
-                dot.style.boxShadow = `0 0 15px ${varProp('--success')}`;
-                label.innerText = 'CLOUD_SYNCED';
-            } else { throw 'err'; }
-        } catch (e) {
-            dot.style.background = varProp('--danger');
-            dot.style.boxShadow = `0 0 15px ${varProp('--danger')}`;
-            label.innerText = 'SYNC_ERROR';
-        }
+            d.style.background = '#32d74b';
+        } catch (e) { d.style.background = '#ff453a'; }
     }
 
-    function varProp(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+    function closeModal() { document.getElementById('modal').style.display = 'none'; }
+    function save() { localStorage.setItem('ls_db_v8', JSON.stringify(db)); }
 
-    /**
-     * CHART LOGIC
-     */
-    let chartInstance;
+    let chart;
     function updateChart() {
-        const ctx = document.getElementById('mainChart').getContext('2d');
-        if (chartInstance) chartInstance.destroy();
-        
-        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-        gradient.addColorStop(0, 'rgba(176, 133, 255, 0.2)');
-        gradient.addColorStop(1, 'rgba(176, 133, 255, 0)');
-
-        chartInstance = new Chart(ctx, {
+        const ctx = document.getElementById('myChart').getContext('2d');
+        if(chart) chart.destroy();
+        chart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: db.dates,
                 datasets: [{
-                    label: 'Вес',
                     data: db.weight,
                     borderColor: '#b085ff',
-                    borderWidth: 4,
-                    pointBackgroundColor: '#fff',
-                    pointBorderColor: '#b085ff',
-                    pointRadius: 5,
-                    pointHoverRadius: 8,
+                    borderWidth: 2,
                     tension: 0.4,
+                    pointRadius: 0,
                     fill: true,
-                    backgroundColor: gradient
+                    backgroundColor: 'rgba(176,133,255,0.05)'
                 }]
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
+            options: { 
+                responsive: true, maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
-                scales: {
-                    y: { 
-                        beginAtZero: false,
-                        grid: { color: 'rgba(255,255,255,0.05)', drawBorder: false },
-                        ticks: { color: 'rgba(255,255,255,0.3)', font: { size: 10 } }
-                    },
-                    x: {
-                        grid: { display: false },
-                        ticks: { color: 'rgba(255,255,255,0.3)', font: { size: 10 } }
-                    }
-                }
+                scales: { x: { display: false }, y: { display: false } }
             }
         });
     }
 
-    /**
-     * VISUAL EFFECTS & UTILS
-     */
-    function initStars() {
-        const cvs = document.getElementById('starfield');
-        const ctx = cvs.getContext('2d');
-        cvs.width = window.innerWidth;
-        cvs.height = window.innerHeight;
-        
-        const stars = [];
-        for(let i=0; i<150; i++) {
-            stars.push({
-                x: Math.random() * cvs.width,
-                y: Math.random() * cvs.height,
-                size: Math.random() * 1.5,
-                opacity: Math.random(),
-                speed: 0.005 + Math.random() * 0.02
-            });
+    // STARS
+    const c = document.getElementById('starfield');
+    const x = c.getContext('2d');
+    function draw() {
+        c.width = innerWidth; c.height = innerHeight;
+        x.fillStyle = "#fff";
+        for(let i=0; i<100; i++) {
+            x.globalAlpha = Math.random();
+            x.beginPath(); x.arc(Math.random()*innerWidth, Math.random()*innerHeight, 0.8, 0, 7); x.fill();
         }
-
-        function animate() {
-            ctx.clearRect(0, 0, cvs.width, cvs.height);
-            stars.forEach(s => {
-                ctx.fillStyle = `rgba(255, 255, 255, ${s.opacity})`;
-                ctx.beginPath();
-                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-                ctx.fill();
-                s.opacity += s.speed;
-                if(s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
-            });
-            requestAnimationFrame(animate);
-        }
-        animate();
     }
 
-    function save() { localStorage.setItem('ls_elite_v7_full', JSON.stringify(db)); }
-    function clearData() { if(confirm("Внимание! Все данные прогресса будут удалены. Продолжить?")) { localStorage.clear(); location.reload(); } }
-
+    draw(); render();
+    if(db.weight.length) {
+        updateChart();
+        document.getElementById('w').value = db.weight[db.weight.length-1];
+        document.getElementById('h').value = db.height;
+        saveMetrics();
+    }
 </script>
-
 </body>
 </html>
