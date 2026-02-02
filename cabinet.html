@@ -95,7 +95,10 @@
         .card-title { font-size: 12px; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 2.5px; }
 
         /* График */
-        .chart-container { flex: 1; min-height: 350px; position: relative; width: 100%; }
+        .chart-container { flex: 1; min-height: 350px; position:
+px; position: re
+l
+sition: relative; width: 100%; }
 
         /* Ввод данных */
         .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
@@ -165,7 +168,8 @@
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.92); backdrop-filter: blur(20px);
-            z-index: 2000; display: none; align-items: center; justify-content: center;
+            z-index: 2000; display: none; align-items: center; justify-conten
+t: center;
             opacity: 0; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .modal-active { display: flex; opacity: 1; }
@@ -253,7 +257,10 @@
             <div id="energy-tip" class="energy-tip"></div>
         </div>
 
-        <button class="main-action-btn" onclick="saveMetrics()">ОБНОВИТЬ СОСТОЯНИЕ</button>
+        <button
+class="main-a
+c
+ss="main-action-btn" onclick="saveMetrics()">ОБНОВИТЬ СОСТОЯНИЕ</button>
 
         <div style="margin-top: 40px;">
             <div class="card-title" style="margin-bottom: 20px; font-size: 11px;">История логов</div>
@@ -327,7 +334,8 @@ const YANDEX_API_URL = 'https://d5du1tksblqr7q5d8nqs.fary004x.apigw.yandexcloud.
         'МФР': 'Воздействие на проприорецепторы фасций. Снимает "склейки" в тканях, восстанавливает лимфоток и убирает застойные явления (целлюлит).',
         'Пилатес': 'Фокус на глубокие мышцы пресса и тазового дна. Улучшает нейромышечную связь и контроль над каждым сегментом позвоночника.',
         'Йога релакс': 'Переключение вегетативной нервной системы в парасимпатический режим. Идеально для клеточного восстановления и снижения стресса.',
-        'Ягодицы+Пресс': 'Фокусированный приток крови к целевым зонам. Улучшает трофику кожи и укрепляет связки тазобедренных суставов.',
+        'Ягодицы+Пресс': 'Фокусированный приток крови к целевым зонам. Улучшает трофику кожи и укрепляет связки
+тазобедренных суставов.',
         'Круговая': 'Тренировка сердечно-сосудистой системы. Повышает ударный объем сердца и общую аэробную выносливость организма.',
         'TRX': 'Работа с гравитационным весом. Включает в работу все цепи мышц-стабилизаторов, создавая функциональное и сильное тело.',
         'Подкачка+Шпагат': 'Комбинированный метод: саркоплазматическая гипертрофия + развитие эластичности связок. Идеальный баланс силы и гибкости.'
@@ -387,7 +395,7 @@ const YANDEX_API_URL = 'https://d5du1tksblqr7q5d8nqs.fary004x.apigw.yandexcloud.
             const count = db.workouts[name] || 0;
             const btn = document.createElement('div');
             btn.className = 't-btn';
-            btn.innerHTML = `<span class="t-name">${name}</span><span class="t-count">${count} ЗАНЯТИЙ</span>`;
+            btn.innerHTML = <span class="t-name">${name}</span><span class="t-count">${count} ЗАНЯТИЙ</span>;
             btn.onclick = () => addWorkout(name);
             document.getElementById(target).appendChild(btn);
         };
@@ -417,7 +425,8 @@ const YANDEX_API_URL = 'https://d5du1tksblqr7q5d8nqs.fary004x.apigw.yandexcloud.
         tg.HapticFeedback.impactOccurred('medium');
     }
 
-    function showMilestone(data) {
+    function
+tion showMilestone(data) {
         document.getElementById('m-title').innerText = data.t;
         document.getElementById('m-text').innerText = data.txt;
         document.querySelector('.m-icon').innerText = data.icon;
@@ -464,7 +473,7 @@ const YANDEX_API_URL = 'https://d5du1tksblqr7q5d8nqs.fary004x.apigw.yandexcloud.
         if(h && w) {
             const bmi = (w / ((h/100)**2)).toFixed(1);
             let status = bmi < 18.5 ? 'Дефицит' : bmi < 25 ? 'Норма' : bmi < 30 ? 'Избыток' : 'Ожирение';
-            document.getElementById('bmi-display').innerHTML = `ИМТ: <b style="color:var(--accent)">${bmi}</b> — ${status}`;
+            document.getElementById('bmi-display').innerHTML = ИМТ: <b style="color:var(--accent)">${bmi}</b> — ${status};
         }
     }
 
@@ -509,7 +518,8 @@ const YANDEX_API_URL = 'https://d5du1tksblqr7q5d8nqs.fary004x.apigw.yandexcloud.
                         backgroundColor: (c) => {
                             const g = c.chart.ctx.createLinearGradient(0, 0, 0, 400);
                             g.addColorStop(0, 'rgba(176,133,255,0.25)');
-                            g.addColorStop(1, 'rgba(176,133,255,0)');
+                            g.addColorStop(1, 'rgba(17
+6,133,255,0)');
                             return g;
                         },
                         tension: 0.4,
