@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LS Evolution Elite | Neuroscience Edition</title>
+    <title>LS Evolution Elite | Biohacking System</title>
     
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -11,149 +11,183 @@
     
     <style>
         :root {
-            --bg: #030305;
-            --glass: rgba(255, 255, 255, 0.01);
-            --border: rgba(255, 255, 255, 0.1);
+            --bg: #020204;
+            --glass: rgba(255, 255, 255, 0.02);
+            --border: rgba(255, 255, 255, 0.08);
             --accent: #b085ff;
-            --orange: #ff9f0a;
+            --energy-color: #00f2ff;
             --success: #32d74b;
+            --orange: #ff9f0a;
             --danger: #ff453a;
-            --text-bright: #00f2ff;
+            --text-main: #ffffff;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
         body {
-            margin: 0; padding: 0; background: var(--bg); color: #fff;
+            margin: 0; background: var(--bg); color: var(--text-main);
             font-family: 'Montserrat', sans-serif; overflow-x: hidden;
+            -webkit-user-select: none;
         }
 
-        /* КОСМОС (ЯРКИЙ) */
-        #starfield { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; filter: brightness(1.5); }
-        
+        #starfield { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; filter: brightness(1.8); }
+
         /* HEADER */
         header {
-            position: fixed; top: 0; width: 100%; height: 60px;
-            background: rgba(0,0,0,0.7); backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border); z-index: 100;
+            position: fixed; top: 0; width: 100%; height: 65px;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(25px);
+            border-bottom: 1px solid var(--border); z-index: 1000;
             display: flex; align-items: center; justify-content: space-between; padding: 0 20px;
         }
-        .logo { font-weight: 100; letter-spacing: 3px; font-size: 14px; }
 
-        .app-container {
-            max-width: 1200px; margin: 0 auto; padding: 80px 15px 40px;
-            display: grid; grid-template-columns: 2fr 1fr; gap: 20px;
-        }
-
-        @media (max-width: 900px) { .app-container { grid-template-columns: 1fr; } }
+        .container { max-width: 900px; margin: 0 auto; padding: 85px 15px 40px; display: grid; gap: 20px; }
 
         /* CARDS */
         .card {
-            background: var(--glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--border); border-radius: 24px; padding: 20px;
-            box-shadow: inset 0 1px 1px rgba(255,255,255,0.1), 0 20px 40px rgba(0,0,0,0.4);
+            background: var(--glass); border: 1px solid var(--border);
+            border-radius: 28px; padding: 22px; backdrop-filter: blur(20px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
         }
-        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px; }
-        .card-title { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--accent); text-transform: uppercase; }
+        .card-title { font-size: 10px; text-transform: uppercase; letter-spacing: 3px; color: var(--accent); margin-bottom: 18px; font-weight: 700; opacity: 0.8; }
 
-        /* ENERGY BLOCK */
-        .energy-btn {
-            background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-            border-radius: 12px; padding: 15px 5px; color: #fff; font-size: 10px; cursor: pointer; transition: 0.3s;
-        }
-        .energy-btn.active { border-color: var(--orange); background: rgba(255, 159, 10, 0.15); box-shadow: 0 0 15px rgba(255, 159, 10, 0.2); }
-        #energy-rec { color: var(--text-bright); font-size: 12px; font-weight: 500; text-shadow: 0 0 10px rgba(0,242,255,0.5); }
-
-        /* BMI & STATS */
-        .bmi-box { background: rgba(0,0,0,0.3); border: 1px solid var(--accent); border-radius: 15px; padding: 15px; text-align: center; margin-bottom: 15px; }
-        .stat-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 12px; }
-        .edit-btn { background: rgba(255,255,255,0.1); border: none; color: #fff; width: 26px; height: 26px; border-radius: 8px; cursor: pointer; }
-
-        /* TRAINING LOG */
-        .training-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .t-btn {
-            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 16px; padding: 20px 10px; text-align: center; transition: 0.2s;
-        }
-        .t-btn:active { background: var(--accent); transform: scale(0.95); }
-        .t-name { font-size: 11px; font-weight: 600; display: block; margin-bottom: 5px; }
-
-        /* SCIENCE MODAL */
-        #sci-modal {
+        /* WELCOME OVERLAY */
+        #welcome-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 1000; background: rgba(0,0,0,0.9);
-            display: none; align-items: center; justify-content: center; backdrop-filter: blur(30px); opacity: 0; transition: 0.4s;
+            z-index: 5000; background: var(--bg); display: flex; align-items: center; justify-content: center;
+            transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .sci-content {
-            width: 88%; max-width: 450px; background: rgba(255,255,255,0.03); border: 1px solid var(--accent);
-            border-radius: 35px; padding: 35px 25px; text-align: center;
+        .welcome-content { text-align: center; }
+        .loader-line { width: 200px; height: 2px; background: var(--border); margin: 20px auto; position: relative; overflow: hidden; }
+        .loader-line::after { content: ''; position: absolute; left: -100%; width: 100%; height: 100%; background: var(--accent); animation: load 2s infinite; }
+        @keyframes load { 100% { left: 100%; } }
+
+        /* BIO-WINDOW (80%) */
+        #bio-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 4000; background: rgba(0,0,0,0.92);
+            display: none; align-items: center; justify-content: center; backdrop-filter: blur(30px);
         }
-        .sci-text { font-size: 15px; line-height: 1.7; color: #ddd; text-align: left; margin: 20px 0; }
-        .milestone-badge { background: linear-gradient(135deg, rgba(50,215,75,0.2), rgba(0,242,255,0.1)); border: 1px solid var(--success); border-radius: 15px; padding: 15px; margin-top: 15px; }
+        .bio-window {
+            width: 85%; height: 80%; background: rgba(15, 15, 20, 0.98);
+            border: 1px solid var(--accent); border-radius: 40px; padding: 35px;
+            display: flex; flex-direction: column; box-shadow: 0 0 120px rgba(176, 133, 255, 0.25);
+        }
+
+        /* ENERGY */
+        .energy-box { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+        .e-btn {
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+            border-radius: 14px; padding: 14px 5px; color: #fff; font-size: 10px; font-weight: 700; cursor: pointer; text-align: center; transition: 0.3s;
+        }
+        .e-btn.active { border-color: var(--energy-color); background: rgba(0, 242, 255, 0.1); box-shadow: 0 0 20px rgba(0, 242, 255, 0.2); }
+        #energy-status { color: var(--energy-color); font-size: 11px; margin-top: 15px; text-align: center; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* INPUTS & METRICS */
+        .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+        input {
+            background: rgba(0,0,0,0.5); border: 1px solid var(--border);
+            border-radius: 14px; padding: 16px; color: #fff; font-size: 16px; text-align: center; font-weight: 300;
+        }
+        .bmi-indicator {
+            padding: 18px; border-radius: 18px; text-align: center; margin-bottom: 15px;
+            border: 1px solid var(--accent); background: rgba(176, 133, 255, 0.05);
+        }
+
+        /* TRAININGS */
+        .train-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .train-card {
+            background: rgba(255,255,255,0.02); border: 1px solid var(--border);
+            border-radius: 20px; padding: 20px 15px; text-align: center; transition: 0.2s;
+        }
+        .train-card:active { transform: scale(0.96); background: rgba(176, 133, 255, 0.2); }
+        .t-name { font-size: 12px; font-weight: 700; display: block; margin-bottom: 6px; letter-spacing: 0.5px; }
+        .t-count { font-size: 10px; opacity: 0.4; font-weight: 400; }
+
+        /* CALORIE BOX */
+        .calorie-box {
+            background: rgba(50, 215, 75, 0.05); border: 1px solid var(--success);
+            border-radius: 20px; padding: 15px; margin-top: 15px; text-align: center;
+        }
 
         /* BUTTONS */
-        .btn-prime { width: 100%; background: #fff; color: #000; border: none; padding: 15px; border-radius: 14px; font-weight: 700; font-size: 12px; margin-top: 10px; }
-        .btn-danger { background: transparent; border: 1px solid var(--danger); color: var(--danger); padding: 10px; border-radius: 10px; width: 100%; font-size: 10px; margin-top: 20px; opacity: 0.5; }
+        .btn-full { width: 100%; padding: 18px; border-radius: 16px; border: none; font-weight: 700; font-size: 13px; cursor: pointer; transition: 0.3s; }
+        .btn-prime { background: #ffffff; color: #000; box-shadow: 0 5px 15px rgba(255,255,255,0.1); }
+        .btn-sec { background: transparent; border: 1px solid var(--border); color: #666; font-size: 11px; }
+
+        /* HISTORY */
+        .history-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.03); }
+        .count-ctrl { display: flex; align-items: center; gap: 15px; }
+        .c-btn { width: 30px; height: 30px; border-radius: 10px; border: 1px solid var(--border); background: rgba(255,255,255,0.05); color: #fff; font-weight: 700; }
+
+        .sci-text { font-size: 14px; line-height: 1.7; color: #bbb; overflow-y: auto; flex-grow: 1; margin: 20px 0; padding-right: 10px; }
+        .milestone-alert { background: linear-gradient(135deg, var(--success), var(--energy-color)); color: #000; padding: 15px; border-radius: 20px; font-weight: 800; font-size: 12px; margin-top: 10px; text-align: center; }
+
     </style>
 </head>
 <body>
 
 <canvas id="starfield"></canvas>
 
-<header>
-    <div class="logo">LADY STRETCH <span style="font-weight:700">EVOLUTION</span></div>
-    <div id="top-total" style="font-size: 12px; font-weight: 700; color: var(--success);">SESSIONS: 0</div>
-</header>
-
-<div class="app-container">
-    
-    <div class="card" style="grid-row: span 2;">
-        <div class="card-header">
-            <span class="card-title">Нейробиологический трекинг</span>
-            <span id="trend-label" style="font-size: 10px; font-weight: 600;">АНАЛИЗ...</span>
-        </div>
-        <div style="height: 250px; position: relative;">
-            <canvas id="mainChart"></canvas>
-        </div>
-        
-        <div style="margin-top: 25px;">
-            <div class="card-title" style="color: var(--orange);">Био-Потенциал (Energy)</div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 10px;">
-                <button class="energy-btn" onclick="setEnergy('high', this)">SURGE</button>
-                <button class="energy-btn active" onclick="setEnergy('mid', this)">STABLE</button>
-                <button class="energy-btn" onclick="setEnergy('low', this)">DRAIN</button>
-            </div>
-            <p id="energy-rec" style="text-align: center; margin-top: 15px;">Система готова к приему данных.</p>
-        </div>
-    </div>
-
-    <div class="card">
-        <div class="card-header"><span class="card-title">Физиологические данные</span></div>
-        <div id="bmi-display" class="bmi-box">Введите вес и рост</div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <input type="number" id="w-in" style="background:rgba(0,0,0,0.5); border:1px solid var(--border); padding:12px; border-radius:12px; color:#fff; text-align:center;" placeholder="Вес (кг)">
-            <input type="number" id="h-in" style="background:rgba(0,0,0,0.5); border:1px solid var(--border); padding:12px; border-radius:12px; color:#fff; text-align:center;" placeholder="Рост (см)">
-        </div>
-        <button class="btn-prime" onclick="saveMetrics()">ОБНОВИТЬ СТАТУС</button>
-    </div>
-
-    <div class="card">
-        <div class="card-header"><span class="card-title">Журнал сессий</span></div>
-        <div id="stats-list" style="max-height: 200px; overflow-y: auto; margin-bottom: 15px;"></div>
-        <button class="btn-danger" onclick="resetAll()">СБРОСИТЬ ВСЕ ДАННЫЕ</button>
-    </div>
-
-    <div class="card" style="grid-column: 1 / -1;">
-        <div class="card-header"><span class="card-title">Выбор протокола</span></div>
-        <div class="training-grid" id="train-grid"></div>
+<div id="welcome-overlay">
+    <div class="welcome-content">
+        <div style="font-weight: 100; font-size: 20px; letter-spacing: 8px; color: var(--accent);">EVOLUTION</div>
+        <div style="font-weight: 700; font-size: 24px; letter-spacing: 2px; margin-top: 5px;">ELITE SYSTEM</div>
+        <div class="loader-line"></div>
+        <div style="font-size: 10px; opacity: 0.5; letter-spacing: 2px;">INITIALIZING BIO-SENSORS...</div>
     </div>
 </div>
 
-<div id="sci-modal" onclick="closeSci()">
-    <div class="sci-content" onclick="event.stopPropagation()">
-        <div style="color:var(--accent); font-weight:700; letter-spacing:3px; font-size:12px;">NEUROSCIENCE REPORT</div>
-        <div id="sci-body" class="sci-text"></div>
-        <div id="milestone-box" class="milestone-badge" style="display:none"></div>
-        <button class="btn-prime" style="margin-top:30px" onclick="closeSci()">ПОДТВЕРДИТЬ</button>
+<header>
+    <div style="font-weight: 300; letter-spacing: 3px; font-size: 13px;">LADY STRETCH <b style="font-weight: 700;">ELITE</b></div>
+    <div id="global-total" style="color: var(--success); font-weight: 800; font-size: 16px; text-shadow: 0 0 10px rgba(50,215,75,0.3);">0</div>
+</header>
+
+<div class="container">
+    
+    <div class="card">
+        <div class="card-title">Нейро-Динамика прогресса</div>
+        <div style="height: 240px;"><canvas id="mainChart"></canvas></div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Био-Потенциал (Energy)</div>
+        <div class="energy-box">
+            <div class="e-btn" id="btn-high" onclick="updateEnergy('ПИК')">ПИК СИЛЫ</div>
+            <div class="e-btn active" id="btn-mid" onclick="updateEnergy('НОРМА')">БАЛАНС</div>
+            <div class="e-btn" id="btn-low" onclick="updateEnergy('СПАД')">СПАД</div>
+        </div>
+        <div id="energy-status">Система готова к анализу.</div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Антропометрия и Калории</div>
+        <div id="bmi-label" class="bmi-indicator">Ожидание данных...</div>
+        <div class="metrics-grid">
+            <input type="number" id="w-in" placeholder="Вес (кг)">
+            <input type="number" id="h-in" placeholder="Рост (см)">
+        </div>
+        <button class="btn-full btn-prime" onclick="processData()">ОБНОВИТЬ ПОКАЗАТЕЛИ</button>
+        <div id="cal-res" class="calorie-box" style="display:none;"></div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Протоколы биохакинга</div>
+        <div class="train-grid" id="train-grid"></div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Управление данными</div>
+        <div id="history-list"></div>
+        <button class="btn-full btn-sec" style="margin-top:20px;" onclick="wipeData()">ПОЛНЫЙ СБРОС СИСТЕМЫ</button>
+    </div>
+
+</div>
+
+<div id="bio-overlay">
+    <div class="bio-window">
+        <div id="bio-title" style="text-align:center; font-weight:800; color:var(--accent); font-size:18px; letter-spacing:2px;"></div>
+        <div id="bio-text" class="sci-text"></div>
+        <div id="mile-box"></div>
+        <button class="btn-full btn-prime" style="margin-top:20px;" onclick="closeBio()">ПРИНЯТЬ ОТЧЕТ</button>
     </div>
 </div>
 
@@ -161,130 +195,153 @@
     const tg = window.Telegram.WebApp;
     tg.expand();
 
-    // БАЗА ДАННЫХ
-    let db = JSON.parse(localStorage.getItem('ls_elite_v6')) || {
-        weight: [], workoutsHistory: [], dates: [], height: null, sessions: {}, energy: 'mid'
+    let storage = JSON.parse(localStorage.getItem('ls_elite_final')) || {
+        wHistory: [], tHistory: [], dLabels: [], height: null, logs: {}, energy: 'НОРМА'
     };
 
-    const protocols = [
-        {n: 'Стретчинг', sci: 'Снижение уровня кортизола. Мышечные фасции получают гидратацию, возвращая телу природную гибкость и снимая нейронное напряжение.'},
-        {n: 'Табата', sci: 'Протокол высокой интенсивности вызывает метаболический отклик EPOC: жиросжигание продолжается 24 часа после завершения сессии.'},
-        {n: 'МФР', sci: 'Миофасциальный релиз устраняет "склейки" в тканях, восстанавливая лимфодренаж и избавляя организм от метаболических продуктов распада.'},
-        {n: 'Sky Stretching', sci: 'Инверсионное воздействие улучшает микроциркуляцию головного мозга и декомпрессирует позвоночные сегменты.'},
-        {n: 'Body Sculpt', sci: 'Стимуляция синтеза белка и укрепление мышечного корсета. Повышение плотности митохондрий в клетках.'},
-        {n: 'Здоровая спина', sci: 'Восстановление биомеханики позвоночника. Улучшение проводимости нервных импульсов к внутренним органам.'}
+    const directions = [
+        {id: 'str', n: 'Стретчинг', sci: 'Снижение уровня кортизола. Мышечные фасции получают гидратацию, возвращая телу природную гибкость и снимая нейронное напряжение.'},
+        {id: 'tab', n: 'Табата', sci: 'Протокол высокой интенсивности вызывает метаболический отклик EPOC: жиросжигание продолжается 24 часа после завершения сессии.'},
+        {id: 'mfr', n: 'МФР', sci: 'Миофасциальный релиз устраняет "склейки" в тканях, восстанавливая лимфодренаж и избавляя организм от токсинов.'},
+        {id: 'sky', n: 'Sky Stretching', sci: 'Инверсионное воздействие улучшает микроциркуляцию мозга и декомпрессирует позвоночные сегменты в невесомости.'},
+        {id: 'scu', n: 'Body Sculpt', sci: 'Стимуляция синтеза белка и укрепление мышечного корсета. Повышение плотности митохондрий в клетках.'},
+        {id: 'bac', n: 'Здоровая спина', sci: 'Восстановление биомеханики позвоночника. Улучшение проводимости нервных импульсов к внутренним органам.'}
     ];
 
     const milestones = {
-        8: {t: "ЭТАП: АДАПТАЦИЯ", d: "Капилляры проснулись. Кровоток улучшился на 15%. На 16 занятиях ваше тело перейдет в режим глубокого восстановления."},
-        16: {t: "ЭТАП: ДОФАМИН", d: "Нервная система больше не видит в спорте стресс. Теперь каждая тренировка — источник чистой энергии."},
-        32: {t: "ЭТАП: ПЛАСТИЧНОСТЬ", d: "Ваши ткани стали эластичными как шелк. Осанка держится без усилий."},
-        96: {t: "ЭТАП: ГРАНД-МАСТЕР", d: "Биологический возраст снижен. Вы достигли пика эволюции Lady Stretch!"}
+        8: "ЭТАП 1: АДАПТАЦИЯ. Капилляры проснулись, кровоток +15%. Тело приняло новый ритм. Готовимся к 16 занятиям для запуска детокса.",
+        16: "ЭТАП 2: МЕТАБОЛИЗМ. Гормональный фон стабилизирован. Организм начал использовать жир как топливо. Цель — 32 занятия.",
+        32: "ЭТАП 3: ПЛАСТИЧНОСТЬ. Структура коллагена обновилась. Осанка держится за счет глубоких мышц. Впереди экватор — 48 занятий.",
+        48: "ЭТАП 4: ЭКВАТОР. 6 месяцев прогресса позади. Биологический возраст снижен на 2-3 года. Двигаемся к 64 занятиям.",
+        64: "ЭТАП 5: НЕЙРОСВЯЗИ. Паттерны движения стали идеальными. Тело работает как единый механизм. Цель — 80 занятий.",
+        80: "ЭТАП 6: ТРАНСФОРМАЦИЯ. Вы изменили композицию тела. Выносливость выросла на 40%. Финишная прямая к 96.",
+        96: "ЭТАП 7: ГОД ЭВОЛЮЦИИ. Вы достигли пика! Биологическое омоложение, идеальная гибкость и абсолютный контроль тела."
     };
 
-    // ИНИЦИАЛИЗАЦИЯ
     function init() {
-        renderProtocols();
-        renderStats();
+        setTimeout(() => {
+            document.getElementById('welcome-overlay').style.transform = 'translateY(-100%)';
+        }, 2200);
+
+        renderTrains();
+        renderHistory();
         updateChart();
-        if(db.height) document.getElementById('h-in').value = db.height;
+        if(storage.height) {
+            document.getElementById('h-in').value = storage.height;
+            const lastW = storage.wHistory[storage.wHistory.length-1];
+            if(lastW) calcMetrics(lastW, storage.height);
+        }
     }
 
-    function renderProtocols() {
+    function renderTrains() {
         const grid = document.getElementById('train-grid');
-        grid.innerHTML = protocols.map(p => `
-            <div class="t-btn" onclick="addWorkout('${p.n}', '${p.sci}')">
-                <span class="t-name">${p.n}</span>
-                <span style="font-size:9px; opacity:0.6">${db.sessions[p.n] || 0} РАЗ</span>
+        grid.innerHTML = directions.map(d => `
+            <div class="train-card" onclick="logWorkout('${d.id}')">
+                <span class="t-name">${d.n}</span>
+                <span class="t-count">СЕССИЙ: ${storage.logs[d.id] || 0}</span>
             </div>
         `).join('');
     }
 
-    function addWorkout(name, sci) {
-        db.sessions[name] = (db.sessions[name] || 0) + 1;
-        const total = Object.values(db.sessions).reduce((a,b)=>a+b,0);
+    function logWorkout(id) {
+        storage.logs[id] = (storage.logs[id] || 0) + 1;
+        const total = Object.values(storage.logs).reduce((a,b)=>a+b,0);
+        const d = directions.find(x => x.id === id);
+
+        document.getElementById('bio-title').innerText = d.n.toUpperCase();
+        document.getElementById('bio-text').innerText = d.sci;
         
-        // Показ модалки
-        const modal = document.getElementById('sci-modal');
-        const mBox = document.getElementById('milestone-box');
-        document.getElementById('sci-body').innerHTML = `<b>${name.toUpperCase()}</b><br><br>${sci}`;
+        const mBox = document.getElementById('mile-box');
+        let mKey = Object.keys(milestones).sort((a,b)=>a-b).find(k => total <= k);
         
         if(milestones[total]) {
-            mBox.style.display = 'block';
-            mBox.innerHTML = `<b>${milestones[total].t}</b><br><small>${milestones[total].d}</small>`;
+            mBox.innerHTML = `<div class="milestone-alert">${milestones[total]}</div>`;
         } else {
-            mBox.style.display = 'none';
+            mBox.innerHTML = `<div style="font-size:11px; text-align:center; opacity:0.5; margin-top:15px;">
+                Всего сессий: ${total} | Следующий этап: ${mKey || '96+'}
+            </div>`;
         }
 
-        modal.style.display = 'flex';
-        setTimeout(() => modal.style.opacity = '1', 10);
-        
-        saveDB();
-        renderProtocols();
-        renderStats();
+        document.getElementById('bio-overlay').style.display = 'flex';
+        document.getElementById('global-total').innerText = total;
+        save(); renderTrains(); renderHistory();
         tg.HapticFeedback.impactOccurred('medium');
     }
 
-    function manualEdit(name, delta) {
-        db.sessions[name] = (db.sessions[name] || 0) + delta;
-        if(db.sessions[name] < 0) db.sessions[name] = 0;
-        saveDB();
-        renderProtocols();
-        renderStats();
+    function editLog(id, delta) {
+        storage.logs[id] = Math.max(0, (storage.logs[id] || 0) + delta);
+        save(); renderTrains(); renderHistory();
     }
 
-    function renderStats() {
-        const total = Object.values(db.sessions).reduce((a,b)=>a+b,0);
-        document.getElementById('top-total').innerText = `SESSIONS: ${total}`;
-        
-        const list = document.getElementById('stats-list');
-        list.innerHTML = Object.entries(db.sessions).map(([name, count]) => count > 0 ? `
-            <div class="stat-row">
-                <span>${name}</span>
-                <div style="display:flex; align-items:center; gap:10px;">
-                    <button class="edit-btn" onclick="manualEdit('${name}', -1)">-</button>
-                    <span style="font-weight:700; min-width:20px; text-align:center;">${count}</span>
-                    <button class="edit-btn" onclick="manualEdit('${name}', 1)">+</button>
+    function renderHistory() {
+        const list = document.getElementById('history-list');
+        list.innerHTML = directions.map(d => `
+            <div class="history-row">
+                <span style="font-size:12px; font-weight:600;">${d.n}</span>
+                <div class="count-ctrl">
+                    <button class="c-btn" onclick="editLog('${d.id}', -1)">-</button>
+                    <b style="min-width:20px; text-align:center;">${storage.logs[d.id] || 0}</b>
+                    <button class="c-btn" onclick="editLog('${d.id}', 1)">+</button>
                 </div>
             </div>
-        ` : '').join('');
+        `).join('');
+        document.getElementById('global-total').innerText = Object.values(storage.logs).reduce((a,b)=>a+b,0);
     }
 
-    function saveMetrics() {
+    function processData() {
         const w = parseFloat(document.getElementById('w-in').value);
         const h = parseFloat(document.getElementById('h-in').value);
         if(!w || !h) return;
 
-        db.height = h;
-        db.weight.push(w);
-        db.dates.push(new Date().toLocaleDateString('ru', {day:'numeric', month:'short'}));
-        
-        const total = Object.values(db.sessions).reduce((a,b)=>a+b,0);
-        db.workoutsHistory.push(total);
+        storage.height = h;
+        storage.wHistory.push(w);
+        storage.dLabels.push(new Date().toLocaleDateString('ru', {day:'numeric', month:'short'}));
+        storage.tHistory.push(Object.values(storage.logs).reduce((a,b)=>a+b,0));
 
-        if(db.weight.length > 12) {
-            db.weight.shift(); db.dates.shift(); db.workoutsHistory.shift();
+        if(storage.wHistory.length > 12) {
+            storage.wHistory.shift(); storage.dLabels.shift(); storage.tHistory.shift();
         }
 
-        renderBMI(w, h);
-        saveDB();
-        updateChart();
+        calcMetrics(w, h);
+        save(); updateChart();
         tg.HapticFeedback.notificationOccurred('success');
     }
 
-    function renderBMI(w, h) {
+    function calcMetrics(w, h) {
+        // ИМТ
         const bmi = (w / ((h/100)**2)).toFixed(1);
-        let status = "Норма"; let color = varColor('--success');
-        
-        if(bmi < 18.5) { status = "Дефицит массы"; color = "#64d2ff"; }
-        else if(bmi >= 25 && bmi < 30) { status = "Предожирение"; color = varColor('--orange'); }
-        else if(bmi >= 30 && bmi < 35) { status = "Ожирение I ст."; color = varColor('--danger'); }
-        else if(bmi >= 35) { status = "Ожирение II-III ст."; color = "#7b0000"; }
+        let status = ""; let color = "";
+        if(bmi < 18.5) { status = "ДЕФИЦИТ МАССЫ"; color = "#64d2ff"; }
+        else if(bmi < 25) { status = "ИДЕАЛЬНАЯ НОРМА"; color = varColor('--success'); }
+        else if(bmi < 30) { status = "ИЗБЫТОЧНЫЙ ВЕС"; color = varColor('--orange'); }
+        else { status = "БЛИЗКО К ОЖИРЕНИЮ / ОЖИРЕНИЕ"; color = varColor('--danger'); }
 
-        document.getElementById('bmi-display').innerHTML = `ИМТ: <b style="font-size:18px">${bmi}</b><br><span style="color:${color}">${status}</span>`;
+        const bmiLabel = document.getElementById('bmi-label');
+        bmiLabel.innerHTML = `ИМТ: <b>${bmi}</b> — <span style="color:${color}">${status}</span>`;
+        bmiLabel.style.borderColor = color;
+
+        // КАЛОРИИ (Усредненная формула Миффлина-Сан Жеора для активных женщин)
+        const bmr = (10 * w) + (6.25 * h) - (5 * 25) - 161; // 25 лет как среднее
+        const tdee = Math.round(bmr * 1.375); // Средняя активность
+        
+        const calBox = document.getElementById('cal-res');
+        calBox.style.display = 'block';
+        calBox.innerHTML = `<span style="font-size:10px; opacity:0.7;">РЕКОМЕНДАЦИЯ ПО ПИТАНИЮ:</span><br>
+        <b style="font-size:18px; color:var(--success);">${tdee} ккал</b><br>
+        <span style="font-size:10px;">для поддержания баланса при текущих тренировках</span>`;
     }
 
-    function varColor(name) { return getComputedStyle(document.documentElement).getPropertyValue(name); }
+    function updateEnergy(type) {
+        document.querySelectorAll('.e-btn').forEach(b => b.classList.remove('active'));
+        const msgs = {
+            'ПИК': 'НЕЙРО-АКТИВАЦИЯ: Организм готов к нагрузкам Body Sculpt / Табата.',
+            'НОРМА': 'БАЛАНС: Оптимальное время для Стретчинга и Sky Stretching.',
+            'СПАД': 'РЕГЕНЕРАЦИЯ: Рекомендуется МФР и Здоровая спина.'
+        };
+        document.getElementById('energy-status').innerText = msgs[type];
+        document.getElementById('btn-' + (type === 'ПИК' ? 'high' : type === 'НОРМА' ? 'mid' : 'low')).classList.add('active');
+        tg.HapticFeedback.impactOccurred('light');
+    }
 
     let chart = null;
     function updateChart() {
@@ -293,55 +350,37 @@
         chart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: db.dates.length ? db.dates : ['Начало'],
+                labels: storage.dLabels,
                 datasets: [
-                    { label: 'Вес', data: db.weight, borderColor: '#b085ff', tension: 0.4, yAxisID: 'y', fill: true, backgroundColor: 'rgba(176,133,255,0.05)' },
-                    { label: 'Тренировки', data: db.workoutsHistory, borderColor: '#32d74b', tension: 0.3, yAxisID: 'y1', borderDash: [5,5] }
+                    { label: 'Вес', data: storage.wHistory, borderColor: '#b085ff', tension: 0.4, yAxisID: 'y', fill: true, backgroundColor: 'rgba(176,133,255,0.03)' },
+                    { label: 'Сессии', data: storage.tHistory, borderColor: '#32d74b', borderDash: [5,5], yAxisID: 'y1' }
                 ]
             },
             options: {
                 responsive: true, maintainAspectRatio: false,
                 scales: {
-                    x: { ticks: { color: '#666', font: {size: 10} }, grid: {display: false} },
-                    y: { position: 'left', ticks: {color: '#b085ff'}, grid: {color: 'rgba(255,255,255,0.05)'} },
-                    y1: { position: 'right', ticks: {color: '#32d74b'}, grid: {display: false} }
+                    y: { position: 'left', grid: { color: 'rgba(255,255,255,0.03)' } },
+                    y1: { position: 'right', grid: { display: false } }
                 },
                 plugins: { legend: { display: false } }
             }
         });
     }
 
-    function setEnergy(v, el) {
-        document.querySelectorAll('.energy-btn').forEach(b => b.classList.remove('active'));
-        el.classList.add('active');
-        const m = {
-            high: "НЕЙРО-ПИК: Ваша симпатическая система готова к Body Sculpt / Табата.",
-            mid: "ГОМЕОСТАЗ: Идеальный баланс для Стретчинга и Sky Stretching.",
-            low: "РЕЖИМ ВОССТАНОВЛЕНИЯ: Рекомендовано МФР или Здоровая спина."
-        };
-        document.getElementById('energy-rec').innerText = m[v];
-        tg.HapticFeedback.impactOccurred('light');
-    }
+    function closeBio() { document.getElementById('bio-overlay').style.display = 'none'; }
+    function save() { localStorage.setItem('ls_elite_final', JSON.stringify(storage)); }
+    function wipeData() { if(confirm("Внимание! Это удалит весь годовой прогресс. Уверены?")) { localStorage.clear(); location.reload(); } }
+    function varColor(n) { return getComputedStyle(document.documentElement).getPropertyValue(n); }
 
-    function closeSci() {
-        const m = document.getElementById('sci-modal');
-        m.style.opacity = '0';
-        setTimeout(() => m.style.display = 'none', 400);
-    }
-
-    function resetAll() { if(confirm("ВНИМАНИЕ: Это полностью удалит вашу историю тренировок и замеров. Продолжить?")) { localStorage.clear(); location.reload(); } }
-    function saveDB() { localStorage.setItem('ls_elite_v6', JSON.stringify(db)); }
-
-    // ЗВЕЗДЫ
+    // STARFIELD
     const cvs = document.getElementById('starfield');
     const sCtx = cvs.getContext('2d');
     let stars = [];
-    window.onresize = initStars;
     function initStars() {
         cvs.width = window.innerWidth; cvs.height = window.innerHeight;
         stars = Array.from({length: 400}, () => ({
             x: Math.random()*cvs.width, y: Math.random()*cvs.height,
-            r: Math.random()*1.6, t: Math.random()*Math.PI, s: 0.01 + Math.random()*0.02
+            r: Math.random()*1.5, t: Math.random()*Math.PI, s: 0.02
         }));
     }
     function draw() {
