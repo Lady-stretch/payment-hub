@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>LS Evolution Elite | ID</title>
+    
+    <script src="https://telegram.org/js/telegram-web-app.js?v=2.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #050507;
+            --glass: rgba(255, 255, 255, 0.01);
+            --border: rgba(255, 255, 255, 0.1);
+            --accent: #b085ff;
+            --success: #32d74b;
+            --danger: #ff453a;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            margin: 0; background: var(--bg); color: #fff;
+            font-family: 'Montserrat', sans-serif; overflow-x: hidden;
+            min-height: 100vh; padding-bottom: 50px;
+        }
+
+        #starfield { position: fixed; inset: 0; z-index: -1; }
+        
+        header {
+            position: sticky; top: 0; height: 65px;
+            background: rgba(5,5,7,0.8); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border); z-index: 100;
+            display: flex; align-items: center; justify-content: space-between; padding: 0 25px;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; display: grid; gap: 20px; }
+
+        .card {
+            background: var(--glass); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+            border: 1px solid var(--border); border-radius: 24px; padding: 20px;
+            box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .card-title { font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; display: block; }
+
+        /* ИМТ и Инпуты */
+        .bmi-res { font-size: 24px; font-weight: 200; text-align: center; margin: 10px 0; }
+        .grid-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        input {
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+            border-radius: 12px; padding: 12px; color: #fff; font-family: inherit; text-align: center;
+        }
+
+        /* Кнопки */
+        .btn-prime {
+            width: 100%; background: #fff; color: #000; border: none; padding: 15px;
+            border-radius: 15px; font-weight: 600; margin-top: 15px; font-size: 12px;
+        }
+
+        /* Журнал */
+        .train-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+        .t-item {
+            background: rgba(255,255,255,0.02); border: 1px solid var(--border);
+            border-radius: 15px; padding: 15px; text-align: center; transition: 0.2s;
+        }
+        .t-item:active { background: var(--accent); color: #000; }
+        
+        /* Статистика */
+        .stat-line { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px; }
+
+        /* Модалка */
+        .modal {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.9);
+            display: none; align-items: center; justify-content: center; z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="starfield"></canvas>
+
+<header>
+    <div style="letter-spacing: 4px; font-weight: 200;">LADY STRETCH</div>
+    <div style="font-size: 10px; opacity: 0.5;">ID: ELITE</div>
+</header>
+
+<div class="container">
+    <div class="card">
+        <span class="card-title">Прогресс</span>
+        <div style="height: 200px;"><canvas id="chart"></canvas></div>
+    </div>
+
+    <div class="card">
+        <span class="card-title">Параметры</span>
+        <div class="bmi-res" id="bmi-val">--</div>
+        <div class="grid-inputs">
+            <input type="number" id="w" placeholder="Вес">
+            <input type="number" id="h" placeholder="Рост">
+        </div>
+        <button class="btn-prime" onclick="saveM()">ОБНОВИТЬ ДАННЫЕ</button>
+    </div>
+
+    <div class="card">
+        <span class="card-title">Журнал активностей</span>
+        <div class="train-grid" id="btns"></div>
+    </div>
+</div>
+
+<div class="modal" id="m" onclick="this.style.display='none'">
+    <div style="background:#111; padding:30px; border-radius:30px; border:1px solid var(--accent); text-align:center; max-width:80%;">
+        <h2 id="mt"></h2>
+        <p id="mb" style="opacity:0.7; font-size:14px;"></p>
+        <button class="btn-prime">ПОНЯТНО</button>
+    </div>
+</div>
+
+<script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+
+    // НОВЫЙ КЛЮЧ БАЗЫ (ls_v4_final), чтобы старый кэш данных не мешал
+    let db = JSON.parse(localStorage.getItem('ls_v4_final')) || {
+        w: [], d: [], trains: {}, h: 0
+    };
+
+    const list = ['Пилатес', 'Стретчинг', 'МФР', 'Здоровая спина', 'Sky Stretching', 'Йога релакс', 'Табата', 'TRX'];
+
+    function init() {
+        const grid = document.getElementById('btns');
+        list.forEach(name => {
+            const count = db.trains[name] || 0;
+            grid.innerHTML += `<div class="t-item" onclick="add('${name}')">
+                <div style="font-size:11px;">${name}</div>
+                <div style="font-size:9px; opacity:0.5;">${count}</div>
+            </div>`;
+        });
+        if(db.h) document.getElementById('h').value = db.h;
+        updChart();
+        calcBMI();
+    }
+
+    function add(name) {
+        db.trains[name] = (db.trains[name] || 0) + 1;
+        save();
+        document.getElementById('mt').innerText = name;
+        document.getElementById('mb').innerText = "Данные о тренировке внесены в ваш личный профиль.";
+        document.getElementById('m').style.display = 'flex';
+        tg.HapticFeedback.impactOccurred('medium');
+    }
+
+    function saveM() {
+        const wVal = parseFloat(document.getElementById('w').value);
+        const hVal = parseFloat(document.getElementById('h').value);
+        if(wVal && hVal) {
+            db.w.push(wVal);
+            db.h = hVal;
+            db.d.push(new Date().toLocaleDateString('ru', {day:'numeric', month:'short'}));
+            if(db.w.length > 10) { db.w.shift(); db.d.shift(); }
+            save();
+            calcBMI();
+            updChart();
+            tg.HapticFeedback.notificationOccurred('success');
+        }
+    }
+
+    function calcBMI() {
+        const lastW = db.w[db.w.length-1];
+        if(lastW && db.h) {
+            const bmi = (lastW / ((db.h/100)**2)).toFixed(1);
+            document.getElementById('bmi-val').innerText = `ИМТ: ${bmi}`;
+        }
+    }
+
+    let chart;
+    function updChart() {
+        const ctx = document.getElementById('chart').getContext('2d');
+        if(chart) chart.destroy();
+        chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: db.d,
+                datasets: [{
+                    data: db.w,
+                    borderColor: '#b085ff',
+                    tension: 0.4,
+                    fill: true,
+                    backgroundColor: 'rgba(176,133,255,0.05)'
+                }]
+            },
+            options: { 
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { 
+                    y: { ticks: { color: '#444', font: {size: 9} }, grid: { color: 'rgba(255,255,255,0.03)' } },
+                    x: { ticks: { color: '#444', font: {size: 9} }, grid: { display: false } }
+                }
+            }
+        });
+    }
+
+    function save() { localStorage.setItem('ls_v4_final', JSON.stringify(db)); }
+
+    // Звезды
+    const c = document.getElementById('starfield');
+    const x = c.getContext('2d');
+    function stars() {
+        c.width = innerWidth; c.height = innerHeight;
+        x.fillStyle = "#fff";
+        for(let i=0; i<150; i++) {
+            x.globalAlpha = Math.random();
+            x.beginPath(); x.arc(Math.random()*innerWidth, Math.random()*innerHeight, 0.6, 0, 7); x.fill();
+        }
+    }
+    window.addEventListener('resize', stars);
+    stars(); init();
+</script>
+</body>
+</html>
