@@ -2,16 +2,12 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>LS Evolution Elite | ID</title>
+    <title>LS Evolution Elite | Cabinet</title>
     
-    <script src="https://telegram.org/js/telegram-web-app.js?v=2.0"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;600&display=swap" rel="stylesheet">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -21,64 +17,135 @@
             --accent: #b085ff;
             --success: #32d74b;
             --danger: #ff453a;
+            --text-sec: rgba(255, 255, 255, 0.5);
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
         body {
-            margin: 0; background: var(--bg); color: #fff;
+            margin: 0; padding: 0; background: var(--bg); color: #fff;
             font-family: 'Montserrat', sans-serif; overflow-x: hidden;
-            min-height: 100vh; padding-bottom: 50px;
+            min-height: 100vh;
         }
 
-        #starfield { position: fixed; inset: 0; z-index: -1; }
+        /* КОСМОС */
+        #starfield { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
         
+        /* ЛЭЙАУТ */
+        .app-container {
+            max-width: 1200px; margin: 0 auto; padding: 20px;
+            display: grid; 
+            grid-template-columns: 2fr 1fr;
+            grid-template-rows: auto auto 1fr;
+            gap: 20px;
+            padding-top: 80px;
+        }
+
+        @media (max-width: 900px) {
+            .app-container { grid-template-columns: 1fr; padding-top: 70px; }
+        }
+
+        /* КАРТОЧКИ */
+        .card {
+            background: var(--glass); 
+            backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+            border: 1px solid var(--border); 
+            border-radius: 24px; padding: 24px;
+            display: flex; flex-direction: column;
+            transition: transform 0.3s ease;
+            box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.15), 0 10px 30px rgba(0,0,0,0.5);
+        }
+        
+        .card-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;
+        }
+        .card-title { font-size: 14px; font-weight: 600; letter-spacing: 1px; color: var(--accent); text-transform: uppercase; }
+
+        /* HEADER */
         header {
-            position: sticky; top: 0; height: 65px;
+            position: fixed; top: 0; width: 100%; height: 60px;
             background: rgba(5,5,7,0.8); backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border); z-index: 100;
-            display: flex; align-items: center; justify-content: space-between; padding: 0 25px;
+            display: flex; align-items: center; justify-content: space-between; padding: 0 20px;
+        }
+        .logo { font-weight: 200; letter-spacing: 4px; font-size: 16px; }
+
+        /* МЕТРИКИ */
+        .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .metric-input {
+            background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px;
+            padding: 10px; color: #fff; width: 100%; font-family: inherit; font-size: 13px;
+        }
+        .bmi-box {
+            background: rgba(176, 133, 255, 0.1); border-radius: 12px; padding: 10px;
+            text-align: center; margin-bottom: 15px;
+        }
+        .stat-row { 
+            display: flex; justify-content: space-between; align-items: center; 
+            font-size: 12px; margin-bottom: 8px; color: var(--text-sec); 
+            padding-bottom: 5px; border-bottom: 1px solid rgba(255,255,255,0.02);
+        }
+        .stat-val { color: #fff; font-weight: 500; min-width: 20px; text-align: center; }
+        .edit-btn {
+            background: rgba(255,255,255,0.1); border: none; color: #fff;
+            width: 24px; height: 24px; border-radius: 6px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; font-size: 14px;
+            margin: 0 5px;
         }
 
-        .container { max-width: 900px; margin: 0 auto; padding: 20px; display: grid; gap: 20px; }
+        /* БИОХАКИНГ */
+        .bio-highlight { font-size: 13px; line-height: 1.6; font-weight: 300; color: #ddd; }
+        .bio-pulse { animation: glow 2s infinite alternate; color: var(--success); font-weight: 500; }
+        @keyframes glow { from { opacity: 0.7; } to { opacity: 1; text-shadow: 0 0 10px var(--success); } }
 
-        .card {
-            background: var(--glass); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
-            border: 1px solid var(--border); border-radius: 24px; padding: 20px;
-            box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
-        }
-
-        .card-title { font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; display: block; }
-
-        /* ИМТ и Инпуты */
-        .bmi-res { font-size: 24px; font-weight: 200; text-align: center; margin: 10px 0; }
-        .grid-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        input {
-            background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-            border-radius: 12px; padding: 12px; color: #fff; font-family: inherit; text-align: center;
-        }
-
-        /* Кнопки */
-        .btn-prime {
-            width: 100%; background: #fff; color: #000; border: none; padding: 15px;
-            border-radius: 15px; font-weight: 600; margin-top: 15px; font-size: 12px;
-        }
-
-        /* Журнал */
-        .train-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
-        .t-item {
-            background: rgba(255,255,255,0.02); border: 1px solid var(--border);
-            border-radius: 15px; padding: 15px; text-align: center; transition: 0.2s;
-        }
-        .t-item:active { background: var(--accent); color: #000; }
+        /* ТРЕНИРОВКИ */
+        .training-section { grid-column: 1 / -1; }
+        .category-title { font-size: 12px; opacity: 0.6; margin: 20px 0 10px; letter-spacing: 2px; text-transform: uppercase; }
+        .buttons-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
         
-        /* Статистика */
-        .stat-line { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px; }
-
-        /* Модалка */
-        .modal {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.9);
-            display: none; align-items: center; justify-content: center; z-index: 1000;
+        .t-btn {
+            background: rgba(255,255,255,0.03); 
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 16px; padding: 16px 10px; text-align: center; cursor: pointer;
+            transition: 0.2s; position: relative; overflow: hidden;
         }
+        .t-btn:active { transform: scale(0.98); background: rgba(176, 133, 255, 0.1); border-color: var(--accent); }
+        .t-name { font-size: 11px; font-weight: 500; display: block; margin-bottom: 5px; }
+        .t-count { font-size: 9px; opacity: 0.5; }
+        
+        .save-metrics-btn {
+            width: 100%; background: #fff; color: #000; border: none; padding: 14px;
+            border-radius: 12px; font-weight: 600; cursor: pointer; margin-top: 10px; font-size: 12px;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .reset-btn {
+            background: transparent; border: 1px solid var(--danger); color: var(--danger);
+            margin-top: 20px; opacity: 0.6; font-size: 10px; padding: 8px; width: 100%; border-radius: 8px; cursor: pointer;
+        }
+
+        /* МОДАЛКА */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(15px);
+            z-index: 999; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s;
+        }
+        .modal-content {
+            background: #111; border: 1px solid var(--accent); border-radius: 30px;
+            padding: 40px; width: 90%; max-width: 400px; text-align: center; transform: scale(0.8); transition: transform 0.3s;
+        }
+        .modal-active { display: flex; opacity: 1; }
+        .modal-active .modal-content { transform: scale(1); }
+        
+        .promo-code {
+            background: var(--accent); color: #fff; padding: 15px; border-radius: 10px;
+            font-size: 24px; font-weight: 700; margin: 20px 0; letter-spacing: 2px;
+        }
+
+        /* Кастомный скроллбар */
+        #stats-list::-webkit-scrollbar { width: 4px; }
+        #stats-list::-webkit-scrollbar-track { background: transparent; }
+        #stats-list::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+
     </style>
 </head>
 <body>
@@ -86,37 +153,74 @@
 <canvas id="starfield"></canvas>
 
 <header>
-    <div style="letter-spacing: 4px; font-weight: 200;">LADY STRETCH</div>
-    <div style="font-size: 10px; opacity: 0.5;">ID: ELITE</div>
+    <div class="logo">LADY STRETCH ID</div>
+    <div style="font-size: 10px; color: var(--accent); font-weight: 600; letter-spacing: 1px;">CABINET</div>
 </header>
 
-<div class="container">
-    <div class="card">
-        <span class="card-title">Прогресс</span>
-        <div style="height: 200px;"><canvas id="chart"></canvas></div>
-    </div>
-
-    <div class="card">
-        <span class="card-title">Параметры</span>
-        <div class="bmi-res" id="bmi-val">--</div>
-        <div class="grid-inputs">
-            <input type="number" id="w" placeholder="Вес">
-            <input type="number" id="h" placeholder="Рост">
+<div class="app-container">
+    
+    <div class="card" style="grid-row: span 2;">
+        <div class="card-header">
+            <span class="card-title">Динамика & Цели</span>
+            <div style="font-size: 10px; opacity: 0.7;" id="status-msg">Синхронизация...</div>
         </div>
-        <button class="btn-prime" onclick="saveM()">ОБНОВИТЬ ДАННЫЕ</button>
+        <div style="flex: 1; position: relative; min-height: 250px;">
+            <canvas id="mainChart"></canvas>
+        </div>
+        <div style="margin-top: 15px; font-size: 11px; opacity: 0.6; text-align: center; font-style: italic;">
+            Фиолетовый — вес, Зеленый — активность
+        </div>
+    </div>
+
+    <div class="card" id="bio-anchor">
+        <div class="card-header"><span class="card-title">Биохакинг тела</span></div>
+        <div id="bio-content" class="bio-highlight">
+            Выберите тренировку в журнале ниже, чтобы увидеть биохимический отклик вашего организма.
+        </div>
     </div>
 
     <div class="card">
-        <span class="card-title">Журнал активностей</span>
-        <div class="train-grid" id="btns"></div>
+        <div class="card-header"><span class="card-title">Результативность</span></div>
+        
+        <div class="bmi-box" id="bmi-display">Загрузка данных...</div>
+
+        <div class="metrics-grid">
+            <input type="number" id="w-in" class="metric-input" placeholder="Вес (кг)" step="0.1">
+            <input type="number" id="h-in" class="metric-input" placeholder="Рост (см)">
+            <input type="number" id="c-in" class="metric-input" placeholder="Грудь (см)">
+            <input type="number" id="ws-in" class="metric-input" placeholder="Талия (см)">
+        </div>
+        <button class="save-metrics-btn" onclick="saveMetrics()">Записать прогресс</button>
+
+        <div style="margin-top: 20px;">
+            <div class="stat-row"><span>Сессий в этом месяце:</span> <span class="stat-val" id="month-total">0</span></div>
+            <div id="stats-list" style="margin-top: 10px; max-height: 180px; overflow-y: auto; padding-right: 5px;">
+                </div>
+            <button class="reset-btn" onclick="resetGraph()">Очистить историю замеров</button>
+        </div>
     </div>
+
+    <div class="training-section card">
+        <div class="card-header"><span class="card-title">Журнал занятий</span></div>
+
+        <div class="category-title" style="color: #64d2ff;">Спокойные практики (Mind & Body)</div>
+        <div class="buttons-grid" id="calm-grid"></div>
+
+        <div class="category-title" style="color: #ff9f0a;">Активные практики (Power & Sculpt)</div>
+        <div class="buttons-grid" id="active-grid"></div>
+    </div>
+
 </div>
 
-<div class="modal" id="m" onclick="this.style.display='none'">
-    <div style="background:#111; padding:30px; border-radius:30px; border:1px solid var(--accent); text-align:center; max-width:80%;">
-        <h2 id="mt"></h2>
-        <p id="mb" style="opacity:0.7; font-size:14px;"></p>
-        <button class="btn-prime">ПОНЯТНО</button>
+<div class="modal-overlay" id="modal" onclick="closeModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <h2 id="m-title" style="font-weight: 100; font-size: 28px; margin: 0 0 15px;"></h2>
+        <p id="m-text" style="font-size: 14px; line-height: 1.6; opacity: 0.9;"></p>
+        <div id="m-promo-box" style="display:none;">
+            <div class="promo-code">VIP96-LS</div>
+            <p style="font-size: 10px;">Предъявите код для активации бонуса</p>
+        </div>
+        <button class="save-metrics-btn" style="background: transparent; border: 1px solid #fff; color: #fff; margin-top: 20px;" onclick="closeModal()">Принято</button>
     </div>
 </div>
 
@@ -124,101 +228,276 @@
     const tg = window.Telegram.WebApp;
     tg.expand();
 
-    // НОВЫЙ КЛЮЧ БАЗЫ (ls_v4_final), чтобы старый кэш данных не мешал
-    let db = JSON.parse(localStorage.getItem('ls_v4_final')) || {
-        w: [], d: [], trains: {}, h: 0
+    const initialData = {
+        metrics: { 
+            weight: [], chest: [], waist: [], height: null, dates: [], totalWorkoutsHistory: [] 
+        },
+        workouts: {},
+        lastFeedback: ""
     };
 
-    const list = ['Пилатес', 'Стретчинг', 'МФР', 'Здоровая спина', 'Sky Stretching', 'Йога релакс', 'Табата', 'TRX'];
+    let db = JSON.parse(localStorage.getItem('ls_elite_db_v3')) || initialData;
+
+    const calmList = ['Пилатес', 'Стретчинг', 'МФР', 'Здоровая спина', 'Sky Stretching', 'Йога релакс'];
+    const activeList = ['Подкачка+Шпагат', 'Ягодицы+Пресс', 'Круговая', 'Body Sculpt', 'Табата', 'TRX'];
+
+    const bioFacts = {
+        'Табата': 'Капиллярная сеть расширена. Метаболический отклик (EPOC) активирован на 24 часа. Жиросжигание в активной фазе.',
+        'Стретчинг': 'Снижение уровня кортизола. Фасциальные ткани увлажнены, лимфоток восстановлен.',
+        'Здоровая спина': 'Регидратация межпозвоночных дисков. Осанка стабилизирована, мышечные зажимы в шейном отделе сняты.',
+        'Sky Stretching': 'Антигравитационный эффект разгрузил суставы. Улучшен венозный отток, цвет лица стал свежее.',
+        'Body Sculpt': 'Активация синтеза миофибрилл. Ваш мышечный корсет становится плотнее, защищая внутренние органы.',
+        'МФР': 'Миофасциальный релиз устранил склейки в тканях. Устранение отечности и восстановление амплитуды движений.'
+    };
+
+    const milestones = {
+        1: {t: "Начало пути", d: "Кровоток в мышцах улучшился. Тело начинает привыкать к регулярному движению."},
+        8: {t: "8 ЗАНЯТИЙ", d: "Отечность уходит, уровень выносливости вырос. Вы заложили фундамент привычки."},
+        16: {t: "16 ЗАНЯТИЙ", d: "Дофаминовая петля сформирована. Тренировки теперь приносят радость, а не усталость."},
+        32: {t: "32 ЗАНЯТИЯ", d: "Ткани стали эластичными. Ваша осанка — ваша гордость. Продолжайте в том же духе!"},
+        64: {t: "64 ЗАНЯТИЯ", d: "Биологическое омоложение тканей. Ваше тело работает как часы."},
+        96: {t: "96 ЗАНЯТИЙ. MASTER", d: "Высшая ступень дисциплины. Вам доступна скидка 20% по промокоду ниже!", isFinal: true}
+    };
 
     function init() {
-        const grid = document.getElementById('btns');
-        list.forEach(name => {
-            const count = db.trains[name] || 0;
-            grid.innerHTML += `<div class="t-item" onclick="add('${name}')">
-                <div style="font-size:11px;">${name}</div>
-                <div style="font-size:9px; opacity:0.5;">${count}</div>
-            </div>`;
-        });
-        if(db.h) document.getElementById('h').value = db.h;
-        updChart();
-        calcBMI();
+        renderButtons();
+        updateStats();
+        updateChart();
+        checkBMI();
+        
+        if(db.metrics.height) document.getElementById('h-in').value = db.metrics.height;
+        const lastW = db.metrics.weight[db.metrics.weight.length-1];
+        if(lastW) document.getElementById('w-in').value = lastW;
+        const lastC = db.metrics.chest[db.metrics.chest.length-1];
+        if(lastC) document.getElementById('c-in').value = lastC;
+        const lastWS = db.metrics.waist[db.metrics.waist.length-1];
+        if(lastWS) document.getElementById('ws-in').value = lastWS;
     }
 
-    function add(name) {
-        db.trains[name] = (db.trains[name] || 0) + 1;
-        save();
-        document.getElementById('mt').innerText = name;
-        document.getElementById('mb').innerText = "Данные о тренировке внесены в ваш личный профиль.";
-        document.getElementById('m').style.display = 'flex';
-        tg.HapticFeedback.impactOccurred('medium');
+    function renderButtons() {
+        const createBtn = (name, parent) => {
+            const count = db.workouts[name] || 0;
+            const btn = document.createElement('div');
+            btn.className = 't-btn';
+            btn.innerHTML = `<span class="t-name">${name}</span><span class="t-count">${count} раз</span>`;
+            btn.onclick = () => addWorkout(name);
+            document.getElementById(parent).appendChild(btn);
+        };
+        document.getElementById('calm-grid').innerHTML = '';
+        document.getElementById('active-grid').innerHTML = '';
+        calmList.forEach(n => createBtn(n, 'calm-grid'));
+        activeList.forEach(n => createBtn(n, 'active-grid'));
     }
 
-    function saveM() {
-        const wVal = parseFloat(document.getElementById('w').value);
-        const hVal = parseFloat(document.getElementById('h').value);
-        if(wVal && hVal) {
-            db.w.push(wVal);
-            db.h = hVal;
-            db.d.push(new Date().toLocaleDateString('ru', {day:'numeric', month:'short'}));
-            if(db.w.length > 10) { db.w.shift(); db.d.shift(); }
-            save();
-            calcBMI();
-            updChart();
-            tg.HapticFeedback.notificationOccurred('success');
+    function addWorkout(name) {
+        if(!db.workouts[name]) db.workouts[name] = 0;
+        db.workouts[name]++;
+        
+        const total = Object.values(db.workouts).reduce((a,b)=>a+b,0);
+        document.getElementById('bio-anchor').scrollIntoView({behavior: "smooth"});
+
+        const fact = bioFacts[name] || "Эндорфины в крови. Ваше тело восстанавливается и становится сильнее.";
+        document.getElementById('bio-content').innerHTML = `<span class="bio-pulse">${name}:</span> ${fact}`;
+        
+        if(milestones[total]) showModal(milestones[total]);
+        else tg.HapticFeedback.impactOccurred('light');
+
+        saveDB();
+        renderButtons();
+        updateStats();
+    }
+
+    function manualEdit(name, delta) {
+        if(!db.workouts[name]) db.workouts[name] = 0;
+        db.workouts[name] += delta;
+        if(db.workouts[name] < 0) db.workouts[name] = 0;
+        
+        saveDB();
+        renderButtons();
+        updateStats();
+    }
+
+    function saveMetrics() {
+        const w = parseFloat(document.getElementById('w-in').value);
+        const h = parseFloat(document.getElementById('h-in').value);
+        const c = parseFloat(document.getElementById('c-in').value);
+        const ws = parseFloat(document.getElementById('ws-in').value);
+        const currentTotal = Object.values(db.workouts).reduce((a,b)=>a+b,0);
+
+        if(h) db.metrics.height = h;
+        if(w) db.metrics.weight.push(w);
+        if(c) db.metrics.chest.push(c);
+        if(ws) db.metrics.waist.push(ws);
+        
+        if(!db.metrics.totalWorkoutsHistory) db.metrics.totalWorkoutsHistory = [];
+        db.metrics.totalWorkoutsHistory.push(currentTotal);
+
+        const date = new Date().toLocaleDateString('ru-RU', {day:'numeric', month:'short'});
+        db.metrics.dates.push(date);
+
+        if(db.metrics.weight.length > 12) {
+            db.metrics.weight.shift();
+            db.metrics.dates.shift();
+            db.metrics.chest.shift();
+            db.metrics.waist.shift();
+            db.metrics.totalWorkoutsHistory.shift();
+        }
+
+        checkBMI();
+        analyzeProgress(w);
+        saveDB();
+        updateChart();
+        tg.HapticFeedback.notificationOccurred('success');
+    }
+
+    function checkBMI() {
+        const h = db.metrics.height;
+        const w = db.metrics.weight[db.metrics.weight.length-1];
+        const display = document.getElementById('bmi-display');
+        if(h && w) {
+            const bmi = (w / ((h/100)**2)).toFixed(1);
+            let status = bmi < 18.5 ? 'Дефицит' : (bmi < 25 ? 'Норма' : 'Избыток');
+            display.innerText = `ИМТ: ${bmi} (${status})`;
+        } else {
+            display.innerText = 'Введите рост и вес для анализа';
         }
     }
 
-    function calcBMI() {
-        const lastW = db.w[db.w.length-1];
-        if(lastW && db.h) {
-            const bmi = (lastW / ((db.h/100)**2)).toFixed(1);
-            document.getElementById('bmi-val').innerText = `ИМТ: ${bmi}`;
+    function analyzeProgress(currentW) {
+        const prevW = db.metrics.weight[db.metrics.weight.length-2];
+        const statusDiv = document.getElementById('status-msg');
+        if(!prevW) { statusDiv.innerText = "Данные обновлены"; return; }
+        
+        if(currentW < prevW) statusDiv.innerHTML = "<span style='color:var(--success)'>▼ Вес снижается</span>";
+        else if (currentW > prevW) statusDiv.innerHTML = "<span style='color:var(--danger)'>▲ Вес вырос</span>";
+        else statusDiv.innerText = "Вес стабилен";
+    }
+
+    function updateStats() {
+        const total = Object.values(db.workouts).reduce((a,b)=>a+b,0);
+        document.getElementById('month-total').innerText = total;
+
+        let listHtml = '';
+        for (const [key, val] of Object.entries(db.workouts)) {
+            if(val > 0) {
+                listHtml += `
+                <div class="stat-row">
+                    <span>${key}</span>
+                    <div style="display:flex; align-items:center;">
+                        <button class="edit-btn" onclick="manualEdit('${key}', -1)">-</button>
+                        <span class="stat-val">${val}</span>
+                        <button class="edit-btn" onclick="manualEdit('${key}', 1)">+</button>
+                    </div>
+                </div>`;
+            }
+        }
+        document.getElementById('stats-list').innerHTML = listHtml || '<div style="opacity:0.3; text-align:center; padding-top:20px;">Пока нет записей</div>';
+    }
+
+    function resetGraph() {
+        if(confirm("Очистить историю замеров? Сами тренировки сохранятся.")) {
+            db.metrics = { 
+                weight: [], chest: [], waist: [], 
+                height: db.metrics.height, dates: [], totalWorkoutsHistory: [] 
+            };
+            saveDB();
+            updateChart();
+            checkBMI();
         }
     }
 
-    let chart;
-    function updChart() {
-        const ctx = document.getElementById('chart').getContext('2d');
-        if(chart) chart.destroy();
-        chart = new Chart(ctx, {
+    let chartInstance = null;
+    function updateChart() {
+        const ctx = document.getElementById('mainChart').getContext('2d');
+        if(chartInstance) chartInstance.destroy();
+
+        const workoutData = db.metrics.totalWorkoutsHistory || [];
+
+        chartInstance = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: db.d,
-                datasets: [{
-                    data: db.w,
-                    borderColor: '#b085ff',
-                    tension: 0.4,
-                    fill: true,
-                    backgroundColor: 'rgba(176,133,255,0.05)'
-                }]
+                labels: db.metrics.dates.length ? db.metrics.dates : ['Начало'],
+                datasets: [
+                    {
+                        label: 'Вес',
+                        data: db.metrics.weight,
+                        borderColor: '#b085ff',
+                        backgroundColor: 'rgba(176, 133, 255, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'Активность',
+                        data: workoutData,
+                        borderColor: '#32d74b',
+                        borderDash: [5, 5],
+                        backgroundColor: 'transparent',
+                        tension: 0.3,
+                        yAxisID: 'y1'
+                    }
+                ]
             },
-            options: { 
-                responsive: true, maintainAspectRatio: false,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
-                scales: { 
-                    y: { ticks: { color: '#444', font: {size: 9} }, grid: { color: 'rgba(255,255,255,0.03)' } },
-                    x: { ticks: { color: '#444', font: {size: 9} }, grid: { display: false } }
+                scales: {
+                    x: { ticks: { color: '#666', font: {size: 10} }, grid: {display: false} },
+                    y: { 
+                        position: 'left',
+                        ticks: { color: '#b085ff', font: {size: 10} }, 
+                        grid: {color: 'rgba(255,255,255,0.05)'} 
+                    },
+                    y1: {
+                        position: 'right',
+                        ticks: { color: '#32d74b', font: {size: 10} },
+                        grid: { display: false }
+                    }
                 }
             }
         });
     }
 
-    function save() { localStorage.setItem('ls_v4_final', JSON.stringify(db)); }
-
-    // Звезды
-    const c = document.getElementById('starfield');
-    const x = c.getContext('2d');
-    function stars() {
-        c.width = innerWidth; c.height = innerHeight;
-        x.fillStyle = "#fff";
-        for(let i=0; i<150; i++) {
-            x.globalAlpha = Math.random();
-            x.beginPath(); x.arc(Math.random()*innerWidth, Math.random()*innerHeight, 0.6, 0, 7); x.fill();
-        }
+    function showModal(data) {
+        document.getElementById('m-title').innerText = data.t;
+        document.getElementById('m-text').innerText = data.d;
+        document.getElementById('m-promo-box').style.display = data.isFinal ? 'block' : 'none';
+        const m = document.getElementById('modal');
+        m.style.display = 'flex';
+        setTimeout(()=> m.classList.add('modal-active'), 10);
+        tg.HapticFeedback.notificationOccurred('success');
     }
-    window.addEventListener('resize', stars);
-    stars(); init();
+    function closeModal() {
+        const m = document.getElementById('modal');
+        m.classList.remove('modal-active');
+        setTimeout(()=> m.style.display = 'none', 300);
+    }
+
+    function saveDB() { localStorage.setItem('ls_elite_db_v3', JSON.stringify(db)); }
+
+    const cvs = document.getElementById('starfield');
+    const sCtx = cvs.getContext('2d');
+    let stars = [];
+    function initStars() {
+        cvs.width = window.innerWidth; cvs.height = window.innerHeight;
+        stars = Array.from({length: 1000}, () => ({
+            x: Math.random()*cvs.width, y: Math.random()*cvs.height,
+            r: Math.random()*1.2, t: Math.random()*Math.PI*2, s: 0.005 + Math.random()*0.01
+        }));
+    }
+    function drawStars() {
+        sCtx.clearRect(0,0,cvs.width, cvs.height);
+        stars.forEach(s => {
+            sCtx.globalAlpha = (Math.sin(s.t)+1)/2;
+            sCtx.beginPath(); sCtx.arc(s.x, s.y, s.r, 0, 7); sCtx.fillStyle = "#fff"; sCtx.fill();
+            s.t += s.s;
+        });
+        requestAnimationFrame(drawStars);
+    }
+
+    initStars(); drawStars();
+    init();
 </script>
 </body>
 </html>
