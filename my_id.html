@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Evolution Elite | Liquid Glass</title>
+    <title>Evolution Elite | Pro Analytics</title>
     
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -13,15 +13,12 @@
         :root {
             --glass-bg: rgba(20, 20, 20, 0.7);
             --glass-border: rgba(255, 255, 255, 0.1);
-            --glass-shine: rgba(255, 255, 255, 0.4);
-            
-            --glow-active: 0 0 20px rgba(255, 255, 255, 0.2), inset 0 0 10px rgba(255, 255, 255, 0.1);
             --text-main: #ffffff;
             --text-muted: rgba(255, 255, 255, 0.6);
             
-            --danger: #ff453a;
-            --warning: #ff9f0a;
-            --success: #32d74b;
+            --danger: #ff453a;   /* Red */
+            --warning: #ffd60a;  /* Yellow */
+            --success: #32d74b;  /* Green */
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
@@ -34,33 +31,33 @@
             background-size: cover;
             min-height: 100vh;
             overflow-x: hidden;
+            padding-bottom: 80px; /* Space for Undo button */
         }
-
-        /* WELCOME OVERLAY */
-        #welcome {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; z-index: 1000;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: opacity 1s ease;
-        }
-        .w-text { font-size: 14px; letter-spacing: 3px; font-weight: 300; opacity: 0; animation: fadeUp 1s forwards; text-align: center; }
-        .w-sub { font-size: 11px; color: var(--text-muted); margin-top: 20px; opacity: 0; animation: fadeUp 1s 0.8s forwards; max-width: 300px; line-height: 1.5; text-align: center; }
-        @keyframes fadeUp { from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);} }
 
         /* CONTAINER */
-        .container { max-width: 600px; margin: 0 auto; padding: 80px 16px 40px; }
+        .container { max-width: 600px; margin: 0 auto; padding: 90px 16px 40px; }
 
-        /* HEADER */
+        /* HEADER & STATUS RING */
         header {
-            position: fixed; top: 0; left: 0; width: 100%; height: 70px;
-            background: rgba(0,0,0,0.8); backdrop-filter: blur(20px);
+            position: fixed; top: 0; left: 0; width: 100%; height: 75px;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(20px);
             z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 20px;
             border-bottom: 1px solid var(--glass-border);
         }
         .brand { font-size: 14px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
-        .total-counter { font-size: 18px; font-weight: 300; font-variant-numeric: tabular-nums; }
+        
+        .status-wrapper {
+            display: flex; align-items: center; gap: 10px;
+        }
+        .status-dot {
+            width: 10px; height: 10px; border-radius: 50%;
+            background: var(--danger);
+            box-shadow: 0 0 10px var(--danger);
+            transition: 0.5s;
+        }
+        .total-counter { font-size: 20px; font-weight: 300; font-variant-numeric: tabular-nums; }
 
-        /* GLASS CARD COMMON */
+        /* GLASS PANELS */
         .glass-panel {
             background: var(--glass-bg);
             backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
@@ -68,7 +65,7 @@
             border-radius: 24px; padding: 24px; margin-bottom: 20px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
-        .panel-head { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); margin-bottom: 15px; }
+        .panel-head { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); margin-bottom: 15px; display: flex; justify-content: space-between; }
 
         /* INPUTS & METRICS */
         .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
@@ -84,43 +81,30 @@
         .d-val { font-size: 16px; font-weight: 700; display: block; margin-bottom: 4px; }
         .d-lbl { font-size: 9px; color: var(--text-muted); text-transform: uppercase; }
 
-        /* ENERGY BUTTONS: LIQUID GLASS EFFECT */
+        /* ENERGY BUTTONS */
         .energy-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 15px; }
         .liquid-btn {
             position: relative; padding: 16px 0; text-align: center; cursor: pointer;
             border-radius: 16px; border: 1px solid var(--glass-border);
             background: rgba(255,255,255,0.02); color: var(--text-muted);
             font-size: 11px; font-weight: 600; letter-spacing: 1px;
-            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-            overflow: hidden;
+            transition: all 0.4s; overflow: hidden;
         }
-        /* Active State: The "Drop" */
         .liquid-btn.active {
             color: #fff; border-color: rgba(255,255,255,0.5);
             background: rgba(255, 255, 255, 0.1);
-            box-shadow: 
-                inset 0 1px 0 rgba(255,255,255,0.5), /* Top Highlight */
-                inset 0 -10px 20px rgba(0,0,0,0.5),  /* Inner Depth */
-                0 0 20px rgba(255,255,255,0.15);     /* Outer Glow */
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 0 20px rgba(255,255,255,0.15);
         }
-        .liquid-btn.active::after {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 50%;
-            background: linear-gradient(to bottom, rgba(255,255,255,0.2), transparent);
-            border-radius: 16px 16px 50% 50%; opacity: 0.5;
-        }
-
         .advice-text {
             font-size: 12px; line-height: 1.5; color: #fff; padding: 15px;
             border-left: 2px solid rgba(255,255,255,0.5);
             background: linear-gradient(90deg, rgba(255,255,255,0.05), transparent);
             margin-top: 10px; display: none;
-            animation: fadeIn 0.5s;
         }
 
         /* WORKOUT GRID */
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         .w-card {
-            position: relative;
             background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border);
             border-radius: 18px; padding: 18px; min-height: 90px;
             cursor: pointer; transition: 0.3s;
@@ -131,62 +115,70 @@
         .w-name { font-size: 13px; font-weight: 600; }
         .w-count { font-size: 10px; color: var(--text-muted); margin-top: 5px; }
 
+        /* UNDO NOTIFICATION (TOAST) */
+        #undo-toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: #fff; color: #000;
+            padding: 12px 24px; border-radius: 30px;
+            display: flex; align-items: center; gap: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 3000;
+        }
+        #undo-toast.visible { transform: translateX(-50%) translateY(0); }
+        .undo-text { font-size: 12px; font-weight: 600; }
+        .undo-btn { 
+            background: #000; color: #fff; border: none; padding: 6px 12px; 
+            border-radius: 15px; font-size: 11px; font-weight: 700; cursor: pointer; 
+        }
+
         /* MODAL */
         #modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.85); backdrop-filter: blur(20px);
             z-index: 2000; display: none; align-items: center; justify-content: center;
-            opacity: 0; transition: opacity 0.4s;
         }
         .m-content {
             width: 85%; max-width: 400px;
             background: #111; border: 1px solid rgba(255,255,255,0.2);
-            box-shadow: 0 0 50px rgba(255,255,255,0.1);
             border-radius: 30px; padding: 30px;
-            transform: scale(0.9); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 50px rgba(255,255,255,0.1);
         }
-        .modal-active { display: flex !important; opacity: 1 !important; }
-        .modal-active .m-content { transform: scale(1); }
-
         .m-title { font-size: 24px; font-weight: 800; margin-bottom: 20px; }
         .m-desc { font-size: 13px; line-height: 1.6; color: #ccc; margin-bottom: 25px; border-left: 1px solid #555; padding-left: 15px; }
         .m-achieve { 
             background: linear-gradient(135deg, #eee, #999); color: #000; 
             padding: 15px; border-radius: 15px; font-size: 11px; font-weight: 700;
-            margin-bottom: 20px; box-shadow: 0 5px 20px rgba(255,255,255,0.2);
+            margin-bottom: 20px;
         }
         .btn-close {
             width: 100%; padding: 15px; background: transparent; border: 1px solid rgba(255,255,255,0.3);
-            color: #fff; border-radius: 12px; cursor: pointer; font-size: 12px;
+            color: #fff; border-radius: 12px; cursor: pointer; font-size: 12px; font-weight: 700;
         }
-
-        @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
 
     </style>
 </head>
 <body>
 
-<div id="welcome">
-    <div class="w-text">EVOLUTION ELITE SYSTEM</div>
-    <div class="w-sub">
-        Биоинженерия твоего тела.<br>
-        Инициализация протоколов...
-    </div>
-</div>
-
 <header>
-    <div class="brand">Lady Stretch <span style="opacity:0.5">Bio</span></div>
-    <div class="total-counter" id="head-total">0</div>
+    <div class="brand">Lady Stretch <span style="opacity:0.5">Analytics</span></div>
+    <div class="status-wrapper">
+        <div class="status-dot" id="activity-dot"></div>
+        <div class="total-counter" id="head-total">0</div>
+    </div>
 </header>
 
 <div class="container">
 
     <div class="glass-panel">
-        <div class="panel-head">Биометрический анализ</div>
+        <div class="panel-head">
+            <span>Биометрия</span>
+            <span id="weekly-count" style="color:var(--success)">0 за неделю</span>
+        </div>
         
         <div class="input-row">
-            <input type="number" id="w-in" class="g-input" placeholder="Вес (кг)" onchange="updateMetrics()">
-            <input type="number" id="h-in" class="g-input" placeholder="Рост (см)" onchange="updateMetrics()">
+            <input type="number" id="w-in" class="g-input" placeholder="Вес (кг)" onchange="updateMetrics(true)">
+            <input type="number" id="h-in" class="g-input" placeholder="Рост (см)" onchange="updateMetrics(true)">
         </div>
         
         <div class="diag-box">
@@ -200,48 +192,45 @@
             </div>
             <div class="d-item">
                 <span class="d-val" id="cal-val">--</span>
-                <span class="d-lbl">TDEE (Ккал)</span>
+                <span class="d-lbl">Ккал</span>
             </div>
-        </div>
-        <div id="diag-msg" style="font-size:10px; color:var(--text-muted); text-align:center; margin-top:10px;">
-            Введите данные для диагностики систем.
         </div>
     </div>
 
     <div class="glass-panel">
-        <div class="panel-head">Статус ЦНС и Энергии</div>
-        
+        <div class="panel-head">Энергия</div>
         <div class="energy-row">
             <div class="liquid-btn" id="btn-low" onclick="selectEnergy('low')">СПАД</div>
             <div class="liquid-btn active" id="btn-mid" onclick="selectEnergy('mid')">БАЛАНС</div>
             <div class="liquid-btn" id="btn-high" onclick="selectEnergy('high')">ПИК</div>
         </div>
-
-        <div id="energy-advice" class="advice-text">
-            Гормональный фон стабилен. Идеальное время для сложных координационных нагрузок (Пилатес, Гамаки). Мышцы готовы к умеренному стрессу.
-        </div>
+        <div id="energy-advice" class="advice-text"></div>
     </div>
 
     <div class="glass-panel">
-        <div class="panel-head">Протоколы нагрузки</div>
+        <div class="panel-head">Тренировки</div>
         <div class="grid" id="w-grid"></div>
     </div>
 
     <div class="glass-panel">
-        <div class="panel-head">График изменений</div>
+        <div class="panel-head">Динамика веса</div>
         <div style="height: 150px;">
             <canvas id="chart"></canvas>
         </div>
     </div>
+</div>
 
+<div id="undo-toast">
+    <span class="undo-text">Действие сохранено</span>
+    <button class="undo-btn" onclick="undoLast()">ОТМЕНИТЬ</button>
 </div>
 
 <div id="modal" onclick="closeModal()">
     <div class="m-content" onclick="event.stopPropagation()">
-        <div class="m-title" id="m-title">Title</div>
-        <div class="m-desc" id="m-desc">Description</div>
+        <div class="m-title" id="m-title"></div>
+        <div class="m-desc" id="m-desc"></div>
         <div id="m-achieve-box"></div>
-        <button class="btn-close" onclick="closeModal()">ПОДТВЕРДИТЬ ВЫПОЛНЕНИЕ</button>
+        <button class="btn-close" onclick="closeModal()">ПОДТВЕРДИТЬ</button>
     </div>
 </div>
 
@@ -249,228 +238,245 @@
     const tg = window.Telegram.WebApp;
     tg.expand();
 
-    // === DB ===
-    let db = JSON.parse(localStorage.getItem('ls_liquid_db')) || {
+    // === DB WITH DATES ===
+    let db = JSON.parse(localStorage.getItem('ls_pro_db')) || {
         log: {}, // {id: count}
-        history: { w:[], d:[], t:[] },
+        workoutDates: [], // [timestamp, timestamp...] for frequency tracking
+        history: { w:[], d:[] }, // Weight history
         metrics: { w: null, h: null }
     };
 
-    // === CONTENT: EXPERT SYSTEM ===
+    // === CONFIG ===
     const energyAdvice = {
-        low: "ВНИМАНИЕ: ЦНС перегружена. Высокий уровень остаточного кортизола. Силовая нагрузка сейчас вызовет катаболизм (разрушение мышц). Рекомендуется только: МФР, Дыхание, Вытяжение.",
-        mid: "ОПТИМУМ: Гормональный гомеостаз. Организм готов к работе над качеством тела. Идеально: Пилатес, Гамаки, Статодинамика.",
-        high: "АКТИВНОСТЬ: Высокий дофамин и запасы гликогена. Окно возможностей для метаболического разгона. Жги калории: Табата, TRX, Скульпт."
+        low: "ЦНС перегружена. Высокий кортизол. Только восстановление: МФР, Йога, Спина.",
+        mid: "Оптимум. Организм в балансе. Подходят: Пилатес, Гамаки, Шпагат.",
+        high: "Пик формы. Жги гликоген: Табата, TRX, Скульпт, Ягодицы."
     };
 
     const workouts = [
-        // CALM (Low Energy)
-        { id: 'mfr', n: 'МФР Терапия', type: 'low', desc: 'Гидратация фасциальной ткани. Устранение "слипания" коллагеновых волокон, восстановление лимфотока и снятие отечности.' },
-        { id: 'yoga', n: 'Йога Релакс', type: 'low', desc: 'Активация парасимпатической нервной системы. Снижение уровня гормонов стресса, улучшение нейропластичности мозга.' },
-        { id: 'back', n: 'Здоровая Спина', type: 'low', desc: 'Декомпрессия межпозвоночных дисков. Улучшение диффузного питания хрящевой ткани позвоночника.' },
-        { id: 'str', n: 'Стретчинг', type: 'low', desc: 'Увеличение саркомеров (мышечных единиц) в длину. Профилактика фиброза тканей.' },
-        // BALANCE (Mid Energy)
-        { id: 'pil', n: 'Пилатес', type: 'mid', desc: 'Включение глубоких мыщц-стабилизаторов. Укрепление поперечной мышцы живота (естественный корсет).' },
-        { id: 'sky', n: 'Sky Stretch', type: 'mid', desc: 'Инверсионная терапия. Отток венозной крови от малого таза, улучшение когнитивных функций за счет притока к мозгу.' },
-        { id: 'split', n: 'Шпагат+Подкачка', type: 'mid', desc: 'Комбинированный режим: пампинг кровью с последующим растяжением разогретых фасций.' },
-        { id: 'barre', n: 'Барре', type: 'mid', desc: 'Работа над красными мышечными волокнами (выносливость). Формирование изящного рельефа без объема.' },
-        // POWER (High Energy)
-        { id: 'tab', n: 'Табата', type: 'high', desc: 'EPOC-эффект: повышенное потребление кислорода после тренировки. Сжигание жиров продолжается до 24 часов.' },
-        { id: 'trx', n: 'TRX Петли', type: 'high', desc: 'Нестабильная опора вынуждает мозг включать 100% двигательных единиц. Максимальная нейромышечная связь.' },
-        { id: 'scu', n: 'Body Sculpt', type: 'high', desc: 'Гипертрофия миофибрилл. Увеличение плотности мышечной ткани и базового обмена веществ.' },
-        { id: 'glute', n: 'Ягодицы PRO', type: 'high', desc: 'Локальный метаболический стресс. Выброс соматотропина для упругости кожи в целевой зоне.' }
+        { id: 'mfr', n: 'МФР', type: 'low', desc: 'Миофасциальный релиз. Снятие отеков и зажимов.' },
+        { id: 'yoga', n: 'Йога', type: 'low', desc: 'Антистресс и гибкость позвоночника.' },
+        { id: 'back', n: 'Спина', type: 'low', desc: 'Осанка и здоровье позвонков.' },
+        { id: 'str', n: 'Стретчинг', type: 'low', desc: 'Глубокая растяжка и эластичность.' },
+        { id: 'pil', n: 'Пилатес', type: 'mid', desc: 'Контроль центра и глубоких мышц.' },
+        { id: 'sky', n: 'Гамаки', type: 'mid', desc: 'Декомпрессия и лимфодренаж.' },
+        { id: 'split', n: 'Шпагат', type: 'mid', desc: 'Растяжка с подкачкой.' },
+        { id: 'barre', n: 'Барре', type: 'mid', desc: 'Изящный рельеф балерины.' },
+        { id: 'tab', n: 'Табата', type: 'high', desc: 'Жиросжигание 24 часа после.' },
+        { id: 'trx', n: 'TRX', type: 'high', desc: 'Работа с весом тела в петлях.' },
+        { id: 'scu', n: 'Скульпт', type: 'high', desc: 'Силовая на все тело.' },
+        { id: 'glute', n: 'Ягодицы', type: 'high', desc: 'Акцент на ягодицы и пресс.' }
     ];
 
     const milestones = {
-        8: "УРОВЕНЬ 1: КАПИЛЛЯРИЗАЦИЯ. Проросли новые капилляры. Ткани получают на 20% больше кислорода.",
-        16: "УРОВЕНЬ 2: ЛИМФОДРЕНАЖ. Очищение межклеточного пространства. Ушла пастозность лица и тела.",
-        24: "УРОВЕНЬ 3: СУСТАВЫ. Выработка синовиальной жидкости увеличена. Движения стали «масляными».",
-        32: "УРОВЕНЬ 4: НЕЙРОСВЯЗЬ. Мозг научился включать спящие мышечные волокна. Вы управляете телом, а не инерция.",
-        40: "УРОВЕНЬ 5: ЛЕГКИЕ. Жизненная емкость легких выросла. Каждая клетка дышит полнее.",
-        48: "УРОВЕНЬ 6: ГОРМОНЫ. Снижен базовый уровень кортизола. Вы спокойнее реагируете на стресс.",
-        56: "УРОВЕНЬ 7: СЕРДЦЕ. Ударный объем сердца вырос. Пульс в покое снизился.",
-        64: "УРОВЕНЬ 8: КОСТИ. Остеобласты укрепили костную структуру благодаря осевой нагрузке.",
-        72: "УРОВЕНЬ 9: МИТОХОНДРИИ. Клеточные энергостанции обновились. Вы чувствуете бесконечный заряд.",
-        80: "УРОВЕНЬ 10: КОЖА. Улучшен синтез коллагена и эластина. Тургор кожи повышен.",
-        88: "УРОВЕНЬ 11: МИКРОБИОМ. Улучшение перистальтики и кровоснабжения кишечника.",
-        96: "ГРАНД МАСТЕР: МЕТАМОРФОЗА. Полное обновление клеточного состава. Вы биологически моложе паспорта."
+        8: "Капилляризация тканей", 16: "Лимфодренаж активен", 32: "Нейромышечная связь",
+        48: "Гормональный баланс", 64: "Укрепление костей", 96: "Глобальное обновление"
     };
 
     let currentEnergy = 'mid';
+    let lastAction = null; // For Undo
+    let undoTimer = null;
 
-    // === INITIALIZATION ===
-    setTimeout(() => {
-        document.getElementById('welcome').style.opacity = '0';
-        setTimeout(()=> document.getElementById('welcome').style.display='none', 1000);
-    }, 2500);
-
+    // === INIT ===
     function init() {
         if(db.metrics.w) document.getElementById('w-in').value = db.metrics.w;
         if(db.metrics.h) document.getElementById('h-in').value = db.metrics.h;
-        updateMetrics();
+        updateMetrics(false); // False = don't save just yet, only render
         renderGrid();
         renderChart();
-        document.getElementById('head-total').innerText = getTotal();
-        selectEnergy('mid'); // Default
+        updateWeeklyStats();
+        selectEnergy('mid');
     }
 
-    // === LOGIC: METRICS ===
-    function updateMetrics() {
+    // === UNDO SYSTEM ===
+    function showUndo() {
+        const toast = document.getElementById('undo-toast');
+        toast.classList.add('visible');
+        if(undoTimer) clearTimeout(undoTimer);
+        undoTimer = setTimeout(() => {
+            toast.classList.remove('visible');
+            lastAction = null;
+        }, 5000);
+    }
+
+    function undoLast() {
+        if(!lastAction) return;
+        
+        // Revert Workout
+        if(lastAction.type === 'workout') {
+            const id = lastAction.data;
+            if(db.log[id] > 0) db.log[id]--;
+            // Remove last timestamp
+            db.workoutDates.pop();
+        }
+        
+        // Revert Weight
+        if(lastAction.type === 'weight') {
+            db.history.w.pop();
+            db.history.d.pop();
+            // Restore previous value in input
+            const prevW = db.history.w[db.history.w.length-1];
+            if(prevW) {
+                db.metrics.w = prevW;
+                document.getElementById('w-in').value = prevW;
+            }
+        }
+
+        save();
+        updateMetrics(false);
+        renderGrid();
+        renderChart();
+        updateWeeklyStats();
+        
+        // Hide toast
+        document.getElementById('undo-toast').classList.remove('visible');
+        tg.HapticFeedback.notificationOccurred('warning');
+    }
+
+    // === LOGIC ===
+    function updateMetrics(saveToDb) {
         const w = parseFloat(document.getElementById('w-in').value);
         const h = parseFloat(document.getElementById('h-in').value);
         
         if(!w || !h) return;
 
-        db.metrics.w = w; db.metrics.h = h;
-        localStorage.setItem('ls_liquid_db', JSON.stringify(db));
+        // Save logic
+        if(saveToDb) {
+            // Check if weight changed significantly to log it
+            const lastW = db.history.w[db.history.w.length-1];
+            if(lastW !== w) {
+                db.metrics.w = w; db.metrics.h = h;
+                const dateStr = new Date().toLocaleDateString('ru', {day:'numeric', month:'short'});
+                
+                db.history.w.push(w);
+                db.history.d.push(dateStr);
+                
+                lastAction = { type: 'weight' };
+                showUndo();
+                save();
+                renderChart();
+            }
+        }
 
-        // BMI
+        // Calculations
         const bmi = (w / ((h/100)**2)).toFixed(1);
         const bmiEl = document.getElementById('bmi-val');
-        const bmiTxt = document.getElementById('bmi-text');
-        const msg = document.getElementById('diag-msg');
-        
         bmiEl.innerText = bmi;
         
-        let diag = "";
-        if(bmi < 18.5) { 
-            diag = "ДЕФИЦИТ МАССЫ"; 
-            bmiEl.style.color = "var(--warning)";
-            msg.innerText = "Внимание: Недостаток строительного материала для клеток.";
-        } else if(bmi < 25) { 
-            diag = "ИДЕАЛЬНАЯ НОРМА"; 
-            bmiEl.style.color = "var(--success)";
-            msg.innerText = "Системы функционируют в оптимальном режиме.";
-        } else if(bmi < 30) { 
-            diag = "ИЗБЫТОЧНЫЙ ВЕС"; 
-            bmiEl.style.color = "var(--warning)";
-            msg.innerText = "Повышенная нагрузка на суставы и сердечную мышцу.";
-        } else { 
-            diag = "ОЖИРЕНИЕ"; 
-            bmiEl.style.color = "var(--danger)";
-            msg.innerText = "КРИТИЧЕСКИЙ СТАТУС. Требуется метаболическая коррекция.";
-        }
-        bmiTxt.innerText = diag;
-
-        // WATER (30ml per kg)
-        const water = (w * 0.03).toFixed(1);
-        document.getElementById('water-val').innerText = water;
-
-        // TDEE (Simplified)
-        const tdee = Math.round((10*w) + (6.25*h) - (5*30) - 161 * 1.3);
-        document.getElementById('cal-val').innerText = tdee;
+        if(bmi < 18.5) bmiEl.style.color = "var(--warning)";
+        else if(bmi < 25) bmiEl.style.color = "var(--success)";
+        else bmiEl.style.color = "var(--danger)";
+        
+        document.getElementById('bmi-text').innerText = bmi < 25 ? (bmi < 18.5 ? "Дефицит" : "Норма") : "Избыток";
+        document.getElementById('water-val').innerText = (w * 0.03).toFixed(1);
+        document.getElementById('cal-val').innerText = Math.round((10*w) + (6.25*h) - (5*30) - 161 * 1.3);
     }
 
-    // === LOGIC: ENERGY & GRID ===
+    function updateWeeklyStats() {
+        const total = Object.values(db.log).reduce((a,b)=>a+b,0);
+        document.getElementById('head-total').innerText = total;
+
+        // Weekly Logic
+        const now = Date.now();
+        const oneWeek = 7 * 24 * 60 * 60 * 1000;
+        // Filter timestamps from last 7 days
+        const recent = db.workoutDates.filter(t => (now - t) < oneWeek).length;
+        
+        document.getElementById('weekly-count').innerText = `${recent} за 7 дней`;
+        
+        const dot = document.getElementById('activity-dot');
+        if(recent < 6) {
+            dot.style.background = "var(--danger)";
+            dot.style.boxShadow = "0 0 10px var(--danger)";
+        } else if (recent < 8) {
+            dot.style.background = "var(--warning)";
+            dot.style.boxShadow = "0 0 10px var(--warning)";
+        } else {
+            dot.style.background = "var(--success)";
+            dot.style.boxShadow = "0 0 10px var(--success)";
+        }
+    }
+
+    // === UI ===
     function selectEnergy(type) {
         currentEnergy = type;
-        
-        // Buttons
         document.querySelectorAll('.liquid-btn').forEach(b => b.classList.remove('active'));
         document.getElementById(`btn-${type}`).classList.add('active');
-
-        // Text
-        const adv = document.getElementById('energy-advice');
-        adv.innerText = energyAdvice[type];
-        adv.style.display = 'block';
-
+        document.getElementById('energy-advice').innerText = energyAdvice[type];
+        document.getElementById('energy-advice').style.display = 'block';
         renderGrid();
-        tg.HapticFeedback.selectionChanged();
     }
 
     function renderGrid() {
         const grid = document.getElementById('w-grid');
         grid.innerHTML = '';
-
         workouts.forEach(w => {
             const el = document.createElement('div');
-            // Dim logic: if energy is LOW, dim HIGH workouts
-            let isDimmed = false;
-            if(currentEnergy === 'low' && w.type === 'high') isDimmed = true;
-            if(currentEnergy === 'high' && w.type === 'low') isDimmed = true;
-
+            let isDimmed = (currentEnergy === 'low' && w.type === 'high') || (currentEnergy === 'high' && w.type === 'low');
             el.className = `w-card ${isDimmed ? 'dimmed' : ''}`;
-            el.innerHTML = `
-                <div class="w-name">${w.n}</div>
-                <div class="w-count">${db.log[w.id] || 0} сессий</div>
-            `;
+            el.innerHTML = `<div class="w-name">${w.n}</div><div class="w-count">${db.log[w.id] || 0}</div>`;
             el.onclick = () => openModal(w);
             grid.appendChild(el);
         });
     }
 
-    // === LOGIC: MODAL & SAVE ===
     let pendingWorkout = null;
-
     function openModal(w) {
         pendingWorkout = w;
         document.getElementById('m-title').innerText = w.n;
         document.getElementById('m-desc').innerText = w.desc;
         
-        // Check milestone PREVIEW
-        const currentTotal = getTotal();
-        const nextTotal = currentTotal + 1;
-        
-        let achieveHTML = '';
-        if(milestones[nextTotal]) {
-            achieveHTML = `<div class="m-achieve">⚠️ ДОСТИЖЕНИЕ РАЗБЛОКИРОВАНО<br><br>${milestones[nextTotal]}</div>`;
-        }
-        document.getElementById('m-achieve-box').innerHTML = achieveHTML;
+        const total = Object.values(db.log).reduce((a,b)=>a+b,0) + 1;
+        let achHtml = milestones[total] ? `<div class="m-achieve">🏆 ${milestones[total]}</div>` : '';
+        document.getElementById('m-achieve-box').innerHTML = achHtml;
 
-        const m = document.getElementById('modal');
-        m.style.display = 'flex';
-        setTimeout(()=> m.classList.add('modal-active'), 10);
+        document.getElementById('modal').style.display = 'flex';
     }
 
     function closeModal() {
         if(pendingWorkout) {
-            // Save
             db.log[pendingWorkout.id] = (db.log[pendingWorkout.id] || 0) + 1;
+            db.workoutDates.push(Date.now()); // Save timestamp for weekly stat
             
-            // History
-            if(db.metrics.w) {
-                db.history.w.push(db.metrics.w);
-                db.history.d.push(new Date().toLocaleDateString('ru',{day:'numeric',month:'numeric'}));
-                if(db.history.w.length > 8) { db.history.w.shift(); db.history.d.shift(); }
-            }
-
-            localStorage.setItem('ls_liquid_db', JSON.stringify(db));
-            
-            updateMetrics(); // Refresh stats
-            document.getElementById('head-total').innerText = getTotal();
-            renderChart();
+            lastAction = { type: 'workout', data: pendingWorkout.id };
+            showUndo();
+            save();
+            updateWeeklyStats();
             renderGrid();
-            
             pendingWorkout = null;
             tg.HapticFeedback.notificationOccurred('success');
         }
-
-        const m = document.getElementById('modal');
-        m.classList.remove('modal-active');
-        setTimeout(()=> m.style.display = 'none', 400);
+        document.getElementById('modal').style.display = 'none';
     }
 
-    function getTotal() {
-        return Object.values(db.log).reduce((a,b)=>a+b,0);
-    }
-
-    // === CHART ===
+    // === SMART CHART ===
     function renderChart() {
         const ctx = document.getElementById('chart').getContext('2d');
         if(window.myChart) window.myChart.destroy();
         
+        // Data prep
+        const weights = db.history.w.length ? db.history.w : [0];
+        const dates = db.history.d.length ? db.history.d : ['Start'];
+
         window.myChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: db.history.d.length ? db.history.d : ['Start'],
+                labels: dates,
                 datasets: [{
-                    label: 'Вес',
-                    data: db.history.w.length ? db.history.w : [0],
-                    borderColor: '#fff',
-                    borderWidth: 2,
+                    label: 'Weight',
+                    data: weights,
+                    borderWidth: 3,
                     pointBackgroundColor: '#fff',
-                    pointRadius: 3,
-                    tension: 0.4
+                    pointRadius: 4,
+                    tension: 0.3,
+                    // COLOR LOGIC: Green if down/equal, Red if up
+                    segment: {
+                        borderColor: ctx => {
+                            if (ctx.p0.parsed.y > ctx.p1.parsed.y) return '#32d74b'; // Down (Green)
+                            if (ctx.p0.parsed.y < ctx.p1.parsed.y) return '#ff453a'; // Up (Red)
+                            return '#32d74b'; // Equal (Green)
+                        }
+                    }
                 }]
             },
             options: {
@@ -481,6 +487,8 @@
         });
     }
 
+    function save() { localStorage.setItem('ls_pro_db', JSON.stringify(db)); }
+    
     init();
 
 </script>
