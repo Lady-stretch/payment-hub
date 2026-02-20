@@ -9,7 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;600;800&display=swap" rel="stylesheet">
     
-    <style>
+<style>
         :root {
             --glass-border: rgba(255, 255, 255, 0.18);
             --accent: #ffffff;
@@ -158,6 +158,14 @@
             font-weight: 800; font-size: 15px; cursor: pointer; transition: 0.3s;
         }
         .btn-confirm:active { transform: scale(0.95); }
+
+        .btn-reset {
+            background: none; border: 1px solid rgba(255,255,255,0.1); 
+            color: rgba(255,255,255,0.2); padding: 12px 25px; border-radius: 20px; 
+            font-size: 10px; font-weight: 800; text-transform: uppercase; 
+            margin-top: 40px; margin-bottom: 20px; cursor: pointer; transition: 0.3s;
+        }
+        .btn-reset:active { background: rgba(255,0,0,0.2); color: #fff; }
     </style>
 </head>
 <body>
@@ -213,6 +221,9 @@
 
     <div class="section-label">Живая активность (7 дней)</div>
     <div class="chart-box"><canvas id="aChart" height="150"></canvas></div>
+
+    <center><button class="btn-reset" onclick="resetData()">Сбросить всё</button></center>
+
 </div>
 
 <div id="modal" onclick="closeModal()">
@@ -227,6 +238,10 @@
 <script>
     const tg = window.Telegram.WebApp;
     tg.expand();
+
+let db = JSON.parse(localStorage.getItem('monolith_v6_2')) || {
+        log: {}, dates: [], weights: {v:[], d:[]}, m: {w:null, h:null, a:44, g:'m'}
+    };
 
     const workouts = [
         { id:'mfr', n:'МФР Терапия', type:'low', desc:'Гидратация фасциальной ткани. Устранение "слипания" коллагеновых волокон, восстановление лимфотока.' },
@@ -251,14 +266,10 @@
         96: "ГРАНД МАСТЕР: МЕТАМОРФОЗА. Полное обновление организма!"
     };
 
-    let db = JSON.parse(localStorage.getItem('monolith_v6_2')) || {
-        log: {}, dates: [], weights: {v:[], d:[]}, m: {w:null, h:null, a:44, g:'m'}
-    };
-
     let energy = 'mid';
     let pendingId = null;
 
-    window.onload = () => {
+window.onload = () => {
         setTimeout(() => {
             document.getElementById('preloader').style.opacity = '0';
             setTimeout(() => document.getElementById('preloader').style.visibility = 'hidden', 1000);
@@ -351,7 +362,14 @@
 
     function closeModal() { document.getElementById('modal').style.display = 'none'; }
 
-    function initCharts() {
+    function resetData() {
+        if(confirm("Николай, это полностью удалит историю тренировок и биометрию. Уверен?")) {
+            localStorage.removeItem('monolith_v6_2');
+            location.reload();
+        }
+    }
+
+function initCharts() {
         const ctxW = document.getElementById('wChart').getContext('2d');
         if(window.wChartObj) window.wChartObj.destroy();
         window.wChartObj = new Chart(ctxW, {
