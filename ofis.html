@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Evolution Elite | Monolith V6.2</title>
+    <title>Evolution Elite | Monolith V6.5</title>
     
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -18,14 +18,10 @@
             --success: #32d74b;
             --gold: #ffd700;
             --warning: #ffd60a;
-            --danger: #ff3b30; /* Яркий красный для кнопки сброса */
+            --danger: #ff3b30;
         }
 
-        * { 
-            box-sizing: border-box; 
-            -webkit-tap-highlight-color: transparent; 
-            margin: 0; padding: 0; 
-        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
         
         body {
             font-family: 'Inter', sans-serif;
@@ -33,17 +29,15 @@
             background: #000 url('bg.jpg') no-repeat center center fixed;
             background-size: cover;
             min-height: 100vh;
-            padding-bottom: 80px;
+            padding-bottom: 100px;
             overflow-x: hidden;
         }
 
-        /* ИСПРАВЛЕННЫЙ ПРЕЛОАДЕР (ЦЕНТРОВКА) */
         #preloader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 10000;
             display: flex; align-items: center; justify-content: center;
-            text-align: center;
-            transition: opacity 1s ease, visibility 1s;
+            text-align: center; transition: opacity 1s ease, visibility 1s;
         }
         .intro-title {
             font-weight: 100; letter-spacing: 15px; font-size: 22px; color: #fff;
@@ -53,7 +47,6 @@
         @keyframes cinematic {
             0% { opacity: 0; letter-spacing: 5px; transform: scale(0.9); }
             40% { opacity: 1; letter-spacing: 15px; transform: scale(1); }
-            70% { opacity: 1; transform: scale(1.05); }
             100% { opacity: 0; transform: translateY(-30px) scale(1.1); }
         }
 
@@ -67,16 +60,24 @@
         .container { max-width: 500px; margin: 0 auto; padding: 20px; }
 
         .gender-selector {
-            display: flex; gap: 8px; margin-bottom: 20px;
+            display: flex; gap: 8px; margin-bottom: 12px;
             background: rgba(255,255,255,0.05); padding: 5px; border-radius: 15px;
             border: 1px solid var(--glass-border);
         }
         .gen-btn {
-            flex: 1; padding: 10px; text-align: center; font-size: 11px; font-weight: 800;
+            flex: 1; padding: 12px; text-align: center; font-size: 11px; font-weight: 800;
             text-transform: uppercase; border-radius: 11px; cursor: pointer; transition: 0.3s;
             color: var(--text-muted);
         }
         .gen-btn.active { background: #fff; color: #000; }
+
+        /* Кнопка выбора активности */
+        .act-trigger {
+            width: 100%; padding: 12px; background: rgba(255,255,255,0.05);
+            border: 1px solid var(--glass-border); border-radius: 15px;
+            color: #fff; font-size: 10px; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 1px; margin-bottom: 20px; cursor: pointer;
+        }
 
         .bio-row { display: flex; gap: 10px; margin-bottom: 20px; }
         .g-input-wrap { flex: 1; }
@@ -89,12 +90,27 @@
 
         .results-grid {
             display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;
-            margin-bottom: 25px; text-shadow: 0 4px 15px rgba(0,0,0,1);
+            margin-bottom: 15px; text-shadow: 0 4px 15px rgba(0,0,0,1);
         }
         .res-item { text-align: center; }
         .res-val { font-size: 20px; font-weight: 800; display: block; margin-bottom: 4px; }
         .res-lbl { font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
-        #bmi-status { font-size: 10px; font-weight: 600; margin-top: 8px; text-align: center; color: var(--success); }
+        
+        #bmi-status { 
+            font-size: 11px; font-weight: 400; line-height: 1.4; padding: 15px;
+            background: rgba(255,255,255,0.03); border-radius: 15px; margin-bottom: 20px;
+        }
+
+        /* БЛОК БЖУ */
+        .pfc-box {
+            display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 25px;
+        }
+        .pfc-item {
+            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
+            padding: 12px; border-radius: 15px; text-align: center;
+        }
+        .pfc-val { font-size: 14px; font-weight: 800; display: block; }
+        .pfc-lbl { font-size: 8px; color: var(--text-muted); text-transform: uppercase; }
 
         .section-label { 
             font-size: 10px; text-transform: uppercase; letter-spacing: 2px; 
@@ -109,9 +125,9 @@
             padding: 16px 0; border-radius: 20px; text-align: center; color: #fff;
             font-size: 11px; font-weight: 800; text-transform: uppercase;
             backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden;
+            transition: 0.4s; position: relative; overflow: hidden;
         }
-        .liquid-btn.active { background: #fff; color: #000; border-color: #fff; transform: translateY(-2px); }
+        .liquid-btn.active { background: #fff; color: #000; border-color: #fff; }
         .e-hint { font-size: 8px; color: var(--text-muted); text-align: center; line-height: 1.2; }
 
         .workout-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
@@ -119,11 +135,9 @@
             background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
             border-radius: 25px; padding: 22px; min-height: 115px;
             display: flex; flex-direction: column; justify-content: space-between;
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            position: relative; overflow: hidden; transition: 0.3s;
+            backdrop-filter: blur(20px); transition: 0.3s;
         }
-        .w-card:active { transform: scale(0.96); }
-        .w-card.dimmed { opacity: 0.1; filter: grayscale(1); pointer-events: none; }
+        .w-card.dimmed { opacity: 0.15; filter: grayscale(1); pointer-events: none; }
         .w-name { font-size: 14px; font-weight: 600; line-height: 1.3; }
         .w-count { font-size: 11px; color: var(--text-muted); }
 
@@ -132,59 +146,28 @@
             border-radius: 25px; padding: 20px; margin-top: 10px;
         }
 
-        .ripple {
-            position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.4);
-            transform: scale(0); animation: ripple-anim 0.7s ease-out; pointer-events: none;
-        }
-        @keyframes ripple-anim { to { transform: scale(4); opacity: 0; } }
-
-        #modal {
+        /* МОДАЛЬНЫЕ ОКНА */
+        #modal, #act-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.95); backdrop-filter: blur(35px); z-index: 4000; 
             display: none; align-items: center; justify-content: center;
         }
-        .m-content { 
-            width: 90%; max-width: 400px; background: #000; border: 1px solid #333; 
-            border-radius: 45px; padding: 40px; 
+        .m-content { width: 90%; max-width: 400px; background: #000; border: 1px solid #333; border-radius: 40px; padding: 35px; }
+        
+        .act-option {
+            width: 100%; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 20px;
+            margin-bottom: 10px; border: 1px solid var(--glass-border); color: #fff; text-align: left;
         }
-        .m-title { font-size: 28px; font-weight: 800; margin-bottom: 15px; letter-spacing: -1px; }
-        .m-desc { 
-            font-size: 15px; color: #aaa; line-height: 1.7; 
-            border-left: 3px solid #fff; padding-left: 20px; margin-bottom: 25px; 
-        }
-        .m-achieve { 
-            background: var(--gold); color: #000; padding: 18px; border-radius: 20px; 
-            font-size: 12px; font-weight: 800; margin-bottom: 25px; text-transform: uppercase; text-align: center;
-            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.2);
-        }
-        .btn-confirm {
-            width: 100%; padding: 22px; background: #fff; border: none; border-radius: 24px;
-            font-weight: 800; font-size: 15px; cursor: pointer; transition: 0.3s;
-        }
-        .btn-confirm:active { transform: scale(0.95); }
+        .act-option.selected { border-color: #fff; background: rgba(255,255,255,0.1); }
+        .act-name { font-weight: 800; font-size: 14px; display: block; margin-bottom: 4px; }
+        .act-desc { font-size: 10px; color: var(--text-muted); }
 
-        /* ИСПРАВЛЕННАЯ КНОПКА СБРОСА (ЯРКАЯ И ЗАМЕТНАЯ) */
         .btn-reset {
-            background: rgba(255, 59, 48, 0.15); 
-            border: 2px solid var(--danger); 
-            color: var(--danger); 
-            padding: 15px 35px; 
-            border-radius: 25px; 
-            font-size: 11px; 
-            font-weight: 800; 
-            text-transform: uppercase; 
-            margin-top: 40px; 
-            margin-bottom: 30px; 
-            cursor: pointer; 
-            transition: 0.3s;
-            box-shadow: 0 0 15px rgba(255, 59, 48, 0.2);
-            letter-spacing: 1px;
-        }
-        .btn-reset:active { 
-            background: var(--danger); 
-            color: #fff; 
-            box-shadow: 0 0 25px rgba(255, 59, 48, 0.6);
-            transform: scale(0.95);
+            background: rgba(255, 59, 48, 0.1); border: 1px solid var(--danger); 
+            color: var(--danger); padding: 14px 30px; border-radius: 20px; 
+            font-size: 10px; font-weight: 800; text-transform: uppercase; 
+            margin-top: 40px; margin-bottom: 30px; cursor: pointer; transition: 0.3s;
+            box-shadow: 0 0 15px rgba(255, 59, 48, 0.1);
         }
     </style>
 </head>
@@ -198,11 +181,13 @@
 </header>
 
 <div class="container">
-    <div class="section-label">Биометрия и Пол</div>
+    <div class="section-label">Биометрия и Активность</div>
     <div class="gender-selector">
         <div class="gen-btn active" id="gen-m" onclick="setGender('m')">Мужчина</div>
         <div class="gen-btn" id="gen-f" onclick="setGender('f')">Женщина</div>
     </div>
+    
+    <button class="act-trigger" onclick="openActModal()">Уровень активности: <span id="act-label">Средняя</span></button>
 
     <div class="bio-row">
         <div class="g-input-wrap"><input type="number" id="w-in" class="g-input" placeholder="Вес" onchange="updateBio(true)"></div>
@@ -213,45 +198,59 @@
     <div class="results-grid">
         <div class="res-item"><span class="res-val" id="bmi-val">--</span><span class="res-lbl">ИМТ</span></div>
         <div class="res-item"><span class="res-val" id="h2o-val">--</span><span class="res-lbl">Вода (Л)</span></div>
-        <div class="res-item"><span class="res-val" id="bmr-val">--</span><span class="res-lbl">Ккал (Норма)</span></div>
+        <div class="res-item"><span class="res-val" id="bmr-val">--</span><span class="res-lbl">Ккал/Сутки</span></div>
     </div>
-    <div id="bmi-status">Введите данные для анализа</div>
+    
+    <div id="bmi-status">Введите данные для глубокого анализа состояния...</div>
+
+    <div class="section-label">Расчет БЖУ (Рекомендация)</div>
+    <div class="pfc-box">
+        <div class="pfc-item"><span class="pfc-val" id="p-val">--</span><span class="pfc-lbl">Белки (г)</span></div>
+        <div class="pfc-item"><span class="pfc-val" id="f-val">--</span><span class="pfc-lbl">Жиры (г)</span></div>
+        <div class="pfc-item"><span class="pfc-val" id="c-val">--</span><span class="pfc-lbl">Угли (г)</span></div>
+    </div>
 
     <div class="section-label">Состояние ресурса</div>
     <div class="energy-row">
-        <div class="e-col" onclick="setEnergy('low')">
-            <div class="liquid-btn" id="e-low">Спад</div>
-            <div class="e-hint">Мягкое<br>восстановление</div>
-        </div>
-        <div class="e-col" onclick="setEnergy('mid')">
-            <div class="liquid-btn active" id="e-mid">Баланс</div>
-            <div class="e-hint">Оптимальный<br>тренинг</div>
-        </div>
-        <div class="e-col" onclick="setEnergy('high')">
-            <div class="liquid-btn" id="e-high">Пик</div>
-            <div class="e-hint">Максимум<br>результата</div>
-        </div>
+        <div class="e-col" onclick="setEnergy('low')"><div class="liquid-btn" id="e-low">Спад</div><div class="e-hint">Мягкое<br>восстановление</div></div>
+        <div class="e-col" onclick="setEnergy('mid')"><div class="liquid-btn active" id="e-mid">Баланс</div><div class="e-hint">Оптимальный<br>тренинг</div></div>
+        <div class="e-col" onclick="setEnergy('high')"><div class="liquid-btn" id="e-high">Пик</div><div class="e-hint">Максимум<br>результата</div></div>
     </div>
 
     <div class="section-label">Протоколы тренировок</div>
     <div class="workout-grid" id="w-grid"></div>
 
-    <div class="section-label">Тренд массы тела</div>
-    <div class="chart-box"><canvas id="wChart" height="150"></canvas></div>
-
-    <div class="section-label">Живая активность (7 дней)</div>
-    <div class="chart-box"><canvas id="aChart" height="150"></canvas></div>
+    <div class="section-label">Аналитика</div>
+    <div class="chart-box"><canvas id="wChart" height="140"></canvas></div>
+    <div class="chart-box" style="margin-top:20px;"><canvas id="aChart" height="140"></canvas></div>
 
     <center><button class="btn-reset" onclick="resetData()">Сбросить прогресс</button></center>
+</div>
 
+<div id="act-modal" onclick="closeActModal()">
+    <div class="m-content" onclick="event.stopPropagation()">
+        <div style="font-size:20px; font-weight:800; margin-bottom:20px;">Ваш ритм жизни?</div>
+        <button class="act-option" onclick="setAct(1.2, 'Низкая')">
+            <span class="act-name">Низкая (Офис/Руль)</span>
+            <span class="act-desc">Минимум шагов, отсутствие спорта.</span>
+        </button>
+        <button class="act-option" onclick="setAct(1.55, 'Средняя')">
+            <span class="act-name">Средняя (Lady Stretch)</span>
+            <span class="act-desc">3-4 тренировки в неделю, активный быт.</span>
+        </button>
+        <button class="act-option" onclick="setAct(1.9, 'Высокая')">
+            <span class="act-name">Высокая (Атлет)</span>
+            <span class="act-desc">Ежедневный интенсив, тяжелый труд.</span>
+        </button>
+    </div>
 </div>
 
 <div id="modal" onclick="closeModal()">
     <div class="m-content" onclick="event.stopPropagation()">
-        <div id="m-title" class="m-title"></div>
-        <div id="m-desc" class="m-desc"></div>
+        <div id="m-title" style="font-size:24px; font-weight:800; margin-bottom:15px;"></div>
+        <div id="m-desc" style="font-size:14px; color:#aaa; line-height:1.6; border-left:2px solid #fff; padding-left:15px; margin-bottom:20px;"></div>
         <div id="m-achieve-box"></div>
-        <button class="btn-confirm" onclick="confirmWorkout()">ПОДТВЕРДИТЬ ТРЕНИРОВКУ</button>
+        <button style="width:100%; padding:20px; background:#fff; border:none; border-radius:20px; font-weight:800;" onclick="confirmWorkout()">ПОДТВЕРДИТЬ</button>
     </div>
 </div>
 
@@ -259,50 +258,33 @@
     const tg = window.Telegram.WebApp;
     tg.expand();
 
-let db = JSON.parse(localStorage.getItem('monolith_v6_2')) || {
-        log: {}, dates: [], weights: {v:[], d:[]}, m: {w:null, h:null, a:44, g:'m'}
+let db = JSON.parse(localStorage.getItem('monolith_v6_5')) || {
+        log: {}, dates: [], weights: {v:[], d:[]}, m: {w:null, h:null, a:44, g:'m', pal:1.55, palName:'Средняя'}
     };
 
     const workouts = [
-        { id:'mfr', n:'МФР Терапия', type:'low', desc:'Гидратация фасциальной ткани. Устранение "слипания" коллагеновых волокон, восстановление лимфотока.' },
-        { id:'yoga', n:'Йога Релакс', type:'low', desc:'Активация парасимпатической системы. Глубокое снижение уровня кортизола и ментальный баланс.' },
-        { id:'back', n:'Здоровая Спина', type:'low', desc:'Декомпрессия межпозвоночных дисков. Улучшение питания хрящевой ткани позвоночника.' },
-        { id:'str', n:'Стретчинг', type:'low', desc:'Увеличение саркомеров в длину. Профилактика фиброза и возрастных изменений тканей.' },
-        { id:'pil', n:'Пилатес', type:'mid', desc:'Включение глубоких мышц-стабилизаторов. Укрепление поперечной мышцы живота — ваш внутренний корсет.' },
-        { id:'sky', n:'Sky Stretch', type:'mid', desc:'Инверсионная терапия. Отток венозной крови от малого таза, улучшение когнитивных функций.' },
-        { id:'split', n:'Шпагат', type:'mid', desc:'Комбинированный режим: пампинг кровью с последующим растяжением разогретых фасций.' },
-        { id:'circ', n:'Круговая', type:'mid', desc:'Комплексная работа над всеми мышечными группами. Оптимизация гормонального отклика.' },
-        { id:'tab', n:'Табата', type:'high', desc:'EPOC-эффект: повышенное потребление кислорода после тренировки. Жиросжигание до 24 часов.' },
-        { id:'trx', n:'TRX Петли', type:'high', desc:'Нестабильная опора включает 100% двигательных единиц. Максимальная нейромышечная связь.' },
-        { id:'scu', n:'Body Sculpt', type:'high', desc:'Гипертрофия миофибрилл. Увеличение плотности мышц и вашего базового обмена веществ.' },
-        { id:'glute', n:'Ягодицы пресс', type:'high', desc:'Локальный метаболический стресс. Выброс гормонов для упругости кожи и тонуса зон.' }
+        { id:'mfr', n:'МФР Терапия', type:'low', desc:'Гидратация фасциальной ткани. Устранение "слипания" коллагеновых волокон.' },
+        { id:'yoga', n:'Йога Релакс', type:'low', desc:'Активация парасимпатической системы. Глубокое снижение уровня кортизола.' },
+        { id:'back', n:'Здоровая Спина', type:'low', desc:'Декомпрессия межпозвоночных дисков. Улучшение питания хрящевой ткани.' },
+        { id:'str', n:'Стретчинг', type:'low', desc:'Увеличение саркомеров в длину. Профилактика фиброза тканей.' },
+        { id:'pil', n:'Пилатес', type:'mid', desc:'Включение глубоких мышц-стабилизаторов. Ваш внутренний корсет.' },
+        { id:'sky', n:'Sky Stretch', type:'mid', desc:'Инверсионная терапия. Отток венозной крови, улучшение когнитивных функций.' },
+        { id:'split', n:'Шпагат', type:'mid', desc:'Пампинг кровью с последующим растяжением разогретых фасций.' },
+        { id:'circ', n:'Круговая', type:'mid', desc:'Оптимизация гормонального отклика и метаболическая работа.' },
+        { id:'tab', n:'Табата', type:'high', desc:'EPOC-эффект: Жиросжигание до 24 часов после тренировки.' },
+        { id:'trx', n:'TRX Петли', type:'high', desc:'Нестабильная опора включает 100% двигательных единиц.' },
+        { id:'scu', n:'Body Sculpt', type:'high', desc:'Гипертрофия миофибрилл. Увеличение плотности мышц и обмена веществ.' },
+        { id:'glute', n:'Ягодицы пресс', type:'high', desc:'Локальный метаболический стресс. Упругость кожи и тонус.' }
     ];
 
-    const milestones = {
-        8: "СЕРТИФИКАТ: КАПИЛЛЯРИЗАЦИЯ. Сосуды обновлены!",
-        16: "ЛИМФОДРЕНАЖ: Тело очищено от токсинов!",
-        24: "ДИПЛОМ: ЖЕЛЕЗНЫЙ КОРСЕТ. Осанка элиты!",
-        50: "СТАТУС: КРУТОЙ! ТАК ДЕРЖАТЬ! Вы в ТОП-5% клуба!",
-        96: "ГРАНД МАСТЕР: МЕТАМОРФОЗА. Полное обновление организма!"
-    };
-
-    let energy = 'mid';
-    let pendingId = null;
-
-window.onload = () => {
-        setTimeout(() => {
-            document.getElementById('preloader').style.opacity = '0';
-            setTimeout(() => document.getElementById('preloader').style.visibility = 'hidden', 1000);
-        }, 2500);
-
-        setGender(db.m.g || 'm');
+    window.onload = () => {
+        setTimeout(() => { document.getElementById('preloader').style.opacity = '0'; }, 2000);
+        setGender(db.m.g);
+        document.getElementById('act-label').innerText = db.m.palName;
         document.getElementById('w-in').value = db.m.w;
         document.getElementById('h-in').value = db.m.h;
         document.getElementById('a-in').value = db.m.a;
-        
-        updateBio(false);
-        render();
-        initCharts();
+        updateBio(false); render(); initCharts();
     };
 
     function setGender(g) {
@@ -312,26 +294,52 @@ window.onload = () => {
         updateBio(true);
     }
 
+    function openActModal() { document.getElementById('act-modal').style.display = 'flex'; }
+    function closeActModal() { document.getElementById('act-modal').style.display = 'none'; }
+    
+    function setAct(val, name) {
+        db.m.pal = val; db.m.palName = name;
+        document.getElementById('act-label').innerText = name;
+        closeActModal(); updateBio(true);
+    }
+
     function updateBio(save) {
         const w = parseFloat(document.getElementById('w-in').value);
         const h = parseFloat(document.getElementById('h-in').value);
         const a = parseInt(document.getElementById('a-in').value) || 30;
         
         if(w && h) {
-            db.m = {w, h, a, g: db.m.g};
+            db.m.w = w; db.m.h = h; db.m.a = a;
             const bmi = (w / ((h/100)**2)).toFixed(1);
             document.getElementById('bmi-val').innerText = bmi;
             
-            const statusEl = document.getElementById('bmi-status');
-            if(bmi < 18.5) { statusEl.innerText = "Дефицит массы. Требуется питание."; statusEl.style.color = "var(--warning)"; }
-            else if(bmi < 25) { statusEl.innerText = "Идеальный баланс тела."; statusEl.style.color = "var(--success)"; }
-            else if(bmi < 30) { statusEl.innerText = "Формирование рельефа."; statusEl.style.color = "var(--gold)"; }
-            else { statusEl.innerText = "Активная фаза метаморфозы."; statusEl.style.color = "var(--warning)"; }
+            // Динамическая трактовка ИМТ
+            let status = "";
+            let color = "var(--success)";
+            if(db.m.pal <= 1.2) { // Низкая активность
+                if(bmi > 25) { status = `ИМТ ${bmi}: Риск избытка жира при малоподвижности. Замените шоколад на белок, начните МФР.`; color = "var(--danger)"; }
+                else { status = "Вес в норме, но тонус мышц требует внимания."; }
+            } else if(db.m.pal >= 1.9) { // Высокая активность
+                if(bmi > 26) { status = `ИМТ ${bmi}: Мощный мышечный каркас. Продолжайте Body Sculpt и TRX.`; }
+                else { status = "Высокая плотность мышц. Требуется больше воды!"; }
+            } else {
+                status = bmi < 25 ? "Идеальный баланс. Поддерживайте ритм Lady Stretch." : "Пограничное состояние. Работаем над рельефом.";
+            }
+            const stEl = document.getElementById('bmi-status');
+            stEl.innerText = status; stEl.style.color = color;
 
-            document.getElementById('h2o-val').innerText = (w * 0.033).toFixed(1);
-            let bmr = (10 * w) + (6.25 * h) - (5 * a);
-            bmr = db.m.g === 'm' ? bmr + 5 : bmr - 161;
-            document.getElementById('bmr-val').innerText = Math.round(bmr * 1.4); 
+            // Расчет воды (с учетом активности)
+            const water = (w * (db.m.pal > 1.5 ? 0.04 : 0.033)).toFixed(1);
+            document.getElementById('h2o-val').innerText = water;
+
+            // Ккал и БЖУ
+            let bmr = (10 * w) + (6.25 * h) - (5 * a) + (db.m.g === 'm' ? 5 : -161);
+            let totalKcal = Math.round(bmr * db.m.pal);
+            document.getElementById('bmr-val').innerText = totalKcal;
+
+            document.getElementById('p-val').innerText = Math.round(w * (db.m.pal > 1.5 ? 2 : 1.5));
+            document.getElementById('f-val').innerText = Math.round(w * 0.8);
+            document.getElementById('c-val').innerText = Math.round((totalKcal - (w*2*4 + w*0.8*9)) / 4);
 
             if(save) {
                 if(db.weights.v[db.weights.v.length-1] !== w) {
@@ -358,7 +366,7 @@ window.onload = () => {
             const el = document.createElement('div');
             el.className = `w-card ${dim ? 'dimmed' : ''}`;
             el.innerHTML = `<div class="w-name">${w.n}</div><div class="w-count">${db.log[w.id] || 0} зан.</div>`;
-            el.onclick = (e) => { createRipple(e); if(!dim) openModal(w); };
+            el.onclick = () => { if(!dim) openModal(w); };
             grid.appendChild(el);
         });
         document.getElementById('head-total').innerText = Object.values(db.log).reduce((a,b)=>a+b,0);
@@ -368,8 +376,6 @@ window.onload = () => {
         pendingId = w.id;
         document.getElementById('m-title').innerText = w.n;
         document.getElementById('m-desc').innerText = w.desc;
-        const total = (Object.values(db.log).reduce((a,b)=>a+b,0) || 0) + 1;
-        document.getElementById('m-achieve-box').innerHTML = milestones[total] ? `<div class="m-achieve">🏆 ${milestones[total]}</div>` : '';
         document.getElementById('modal').style.display = 'flex';
     }
 
@@ -381,15 +387,10 @@ window.onload = () => {
     }
 
     function closeModal() { document.getElementById('modal').style.display = 'none'; }
+    function saveDb() { localStorage.setItem('monolith_v6_5', JSON.stringify(db)); }
+    function resetData() { if(confirm("Сбросить всё?")) { localStorage.removeItem('monolith_v6_5'); location.reload(); } }
 
-    function resetData() {
-        if(confirm("Николай, это полностью удалит историю тренировок и биометрию. Уверен?")) {
-            localStorage.removeItem('monolith_v6_2');
-            location.reload();
-        }
-    }
-
-function initCharts() {
+    function initCharts() {
         const ctxW = document.getElementById('wChart').getContext('2d');
         if(window.wChartObj) window.wChartObj.destroy();
         window.wChartObj = new Chart(ctxW, {
@@ -399,14 +400,7 @@ function initCharts() {
         });
 
         const activityData = [0,0,0,0,0,0,0];
-        const now = Date.now();
-        db.dates.forEach(d => {
-            if((now - d) < 604800000) {
-                const day = new Date(d).getDay();
-                activityData[day]++;
-            }
-        });
-
+        db.dates.forEach(d => { if((Date.now() - d) < 604800000) activityData[new Date(d).getDay()]++; });
         const ctxA = document.getElementById('aChart').getContext('2d');
         if(window.aChartObj) window.aChartObj.destroy();
         window.aChartObj = new Chart(ctxA, {
@@ -415,20 +409,6 @@ function initCharts() {
             options: { plugins:{legend:{display:false}}, scales:{ x:{ticks:{color:'#666'}}, y:{display:false} } }
         });
     }
-
-    function createRipple(e) {
-        const t = e.currentTarget;
-        const c = document.createElement("span");
-        const d = Math.max(t.clientWidth, t.clientHeight);
-        c.className = "ripple";
-        c.style.width = c.style.height = d + "px";
-        c.style.left = e.clientX - t.getBoundingClientRect().left - d/2 + "px";
-        c.style.top = e.clientY - t.getBoundingClientRect().top - d/2 + "px";
-        t.appendChild(c);
-        setTimeout(() => c.remove(), 700);
-    }
-
-    function saveDb() { localStorage.setItem('monolith_v6_2', JSON.stringify(db)); }
 </script>
 </body>
 </html>
