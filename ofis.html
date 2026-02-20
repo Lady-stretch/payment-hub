@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Evolution Elite | Monolith V2.7</title>
+    <title>Evolution Elite | Monolith V6.2 Final</title>
     
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -20,11 +20,7 @@
             --warning: #ffd60a;
         }
 
-        * { 
-            box-sizing: border-box; 
-            -webkit-tap-highlight-color: transparent; 
-            margin: 0; padding: 0; 
-        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
         
         body {
             font-family: 'Inter', sans-serif;
@@ -32,20 +28,26 @@
             background: #000 url('bg.jpg') no-repeat center center fixed;
             background-size: cover;
             min-height: 100vh;
-            padding-bottom: 80px;
+            padding-bottom: 100px;
             overflow-x: hidden;
         }
 
-        /* КИНЕМАТОГРАФИЧНАЯ ЗАСТАВКА */
+        /* КИНЕМАТОГРАФИЧНАЯ ЗАСТАВКА (ВОССТАНОВЛЕНО) */
         #preloader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 10000;
-            display: flex; align-items: center; justify-content: center;
-            transition: opacity 1s ease, visibility 1s;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1), visibility 1.5s;
+        }
+        .intro-logo {
+            width: 60px; height: 60px; border: 2px solid #fff; border-radius: 50%;
+            margin-bottom: 30px; position: relative;
+            animation: pulse-logo 2.5s infinite ease-in-out;
         }
         .intro-title {
-            font-weight: 100; letter-spacing: 15px; font-size: 22px; color: #fff;
-            text-transform: uppercase; animation: cinematic 3.5s ease-in-out forwards;
+            font-weight: 100; letter-spacing: 12px; font-size: 22px; color: #fff;
+            text-transform: uppercase; text-align: center;
+            animation: cinematic 3.5s ease-in-out forwards;
         }
         @keyframes cinematic {
             0% { opacity: 0; letter-spacing: 5px; transform: scale(0.9); }
@@ -53,144 +55,114 @@
             70% { opacity: 1; transform: scale(1.05); }
             100% { opacity: 0; transform: translateY(-30px) scale(1.1); }
         }
+        @keyframes pulse-logo {
+            0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.4); }
+            70% { box-shadow: 0 0 0 20px rgba(255,255,255,0); }
+            100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+        }
 
         header {
             position: sticky; top: 0; width: 100%; height: 75px;
-            background: rgba(0,0,0,0.5); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
             z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 20px;
             border-bottom: 1px solid var(--glass-border);
         }
 
         .container { max-width: 500px; margin: 0 auto; padding: 20px; }
 
-        /* ВЫБОР ПОЛА */
         .gender-selector {
             display: flex; gap: 8px; margin-bottom: 20px;
-            background: rgba(255,255,255,0.05); padding: 5px; border-radius: 15px;
+            background: rgba(255,255,255,0.05); padding: 5px; border-radius: 18px;
             border: 1px solid var(--glass-border);
         }
         .gen-btn {
-            flex: 1; padding: 10px; text-align: center; font-size: 11px; font-weight: 800;
-            text-transform: uppercase; border-radius: 11px; cursor: pointer; transition: 0.3s;
+            flex: 1; padding: 12px; text-align: center; font-size: 11px; font-weight: 800;
+            text-transform: uppercase; border-radius: 14px; cursor: pointer; transition: 0.3s;
             color: var(--text-muted);
         }
         .gen-btn.active { background: #fff; color: #000; }
 
-        /* БИОМЕТРИЯ В РЯД */
-        .bio-row { display: flex; gap: 10px; margin-bottom: 20px; }
-        .g-input-wrap { flex: 1; }
+        .bio-row { display: flex; gap: 10px; margin-bottom: 25px; }
         .g-input {
-            width: 100%; background: rgba(255,255,255,0.08); border: 1px solid var(--glass-border);
-            border-radius: 15px; padding: 15px 5px; color: #fff; text-align: center; 
+            flex: 1; background: rgba(255,255,255,0.08); border: 1px solid var(--glass-border);
+            border-radius: 18px; padding: 18px 5px; color: #fff; text-align: center; 
             font-size: 16px; font-family: inherit; transition: 0.3s;
         }
-        .g-input:focus { border-color: #fff; background: rgba(255,255,255,0.15); }
 
-        /* УМНЫЕ РЕЗУЛЬТАТЫ */
         .results-grid {
             display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;
             margin-bottom: 25px; text-shadow: 0 4px 15px rgba(0,0,0,1);
         }
         .res-item { text-align: center; }
-        .res-val { font-size: 20px; font-weight: 800; display: block; margin-bottom: 4px; }
+        .res-val { font-size: 22px; font-weight: 800; display: block; margin-bottom: 4px; }
         .res-lbl { font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
         #bmi-status { font-size: 10px; font-weight: 600; margin-top: 8px; text-align: center; color: var(--success); }
 
-        .section-label { 
-            font-size: 10px; text-transform: uppercase; letter-spacing: 2px; 
-            color: var(--text-muted); margin: 35px 0 15px 5px; 
-            display: flex; justify-content: space-between; align-items: center;
-        }
+        .section-label { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); margin: 40px 0 15px 5px; }
 
-        /* КНОПКИ РЕСУРСА */
         .energy-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
-        .e-col { display: flex; flex-direction: column; align-items: center; gap: 8px; }
         .liquid-btn {
-            width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
-            padding: 16px 0; border-radius: 20px; text-align: center; color: #fff;
+            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
+            padding: 18px 0; border-radius: 22px; text-align: center; color: #fff;
             font-size: 11px; font-weight: 800; text-transform: uppercase;
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden;
+            backdrop-filter: blur(15px); transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .liquid-btn.active { background: #fff; color: #000; border-color: #fff; transform: translateY(-2px); }
-        .e-hint { font-size: 8px; color: var(--text-muted); text-align: center; line-height: 1.2; }
+        .liquid-btn.active { background: #fff; color: #000; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(255,255,255,0.1); }
+        .e-hint { font-size: 8px; color: var(--text-muted); text-align: center; margin-top: 5px; line-height: 1.2; }
 
-        /* ТРЕНИРОВКИ (ПРОЗРАЧНЫЕ) */
         .workout-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .w-card {
-            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
-            border-radius: 25px; padding: 22px; min-height: 115px;
+            background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border);
+            border-radius: 28px; padding: 24px; min-height: 120px;
             display: flex; flex-direction: column; justify-content: space-between;
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            position: relative; overflow: hidden; transition: 0.3s;
+            backdrop-filter: blur(20px); transition: 0.3s;
+            position: relative; overflow: hidden;
         }
-        .w-card:active { transform: scale(0.96); }
-        .w-card.dimmed { opacity: 0.1; filter: grayscale(1); pointer-events: none; }
+        .w-card.dimmed { opacity: 0.08; filter: grayscale(1); pointer-events: none; }
         .w-name { font-size: 14px; font-weight: 600; line-height: 1.3; }
         .w-count { font-size: 11px; color: var(--text-muted); }
 
-        /* ГРАФИКИ ПРЯМО НА ФОНЕ */
-        .chart-box {
-            background: rgba(0,0,0,0.25); border: 1px solid var(--glass-border);
-            border-radius: 25px; padding: 20px; margin-top: 10px;
-        }
+        .chart-box { background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 28px; padding: 22px; margin-top: 10px; }
 
-        /* ЭФФЕКТ КАПЛИ (RIPPLE) */
-        .ripple {
-            position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.4);
-            transform: scale(0); animation: ripple-anim 0.7s ease-out; pointer-events: none;
-        }
-        @keyframes ripple-anim { to { transform: scale(4); opacity: 0; } }
-
-        /* МОДАЛЬНОЕ ОКНО */
         #modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); backdrop-filter: blur(35px); z-index: 4000; 
+            background: rgba(0,0,0,0.97); backdrop-filter: blur(40px); z-index: 4000; 
             display: none; align-items: center; justify-content: center;
         }
-        .m-content { 
-            width: 90%; max-width: 400px; background: #000; border: 1px solid #333; 
-            border-radius: 45px; padding: 40px; 
-        }
-        .m-title { font-size: 28px; font-weight: 800; margin-bottom: 15px; letter-spacing: -1px; }
-        .m-desc { 
-            font-size: 15px; color: #aaa; line-height: 1.7; 
-            border-left: 3px solid #fff; padding-left: 20px; margin-bottom: 25px; 
-        }
-        .m-achieve { 
-            background: var(--gold); color: #000; padding: 18px; border-radius: 20px; 
-            font-size: 12px; font-weight: 800; margin-bottom: 25px; text-transform: uppercase; text-align: center;
-            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.2);
-        }
-        .btn-confirm {
-            width: 100%; padding: 22px; background: #fff; border: none; border-radius: 24px;
-            font-weight: 800; font-size: 15px; cursor: pointer; transition: 0.3s;
-        }
-        .btn-confirm:active { transform: scale(0.95); }
+        .m-content { width: 92%; max-width: 400px; padding: 45px; border-radius: 50px; border: 1px solid #333; background: #000; }
+        .m-title { font-size: 28px; font-weight: 800; margin-bottom: 15px; }
+        .m-desc { font-size: 15px; color: #bbb; line-height: 1.7; border-left: 3px solid #fff; padding-left: 20px; margin-bottom: 30px; }
+        .m-achieve { background: var(--gold); color: #000; padding: 20px; border-radius: 22px; font-size: 12px; font-weight: 800; margin-bottom: 30px; text-align: center; }
 
+        .btn-reset { background: none; border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.2); padding: 14px 30px; border-radius: 35px; font-size: 10px; font-weight: 800; text-transform: uppercase; margin-top: 40px; }
+
+        .ripple { position: absolute; border-radius: 50%; background: rgba(255,255,255,0.3); transform: scale(0); animation: ripple-anim 0.7s ease-out; pointer-events: none; }
+        @keyframes ripple-anim { to { transform: scale(4); opacity: 0; } }
     </style>
 </head>
 <body>
 
-<div id="preloader"><div class="intro-title">Evolution Elite</div></div>
+<div id="preloader">
+    <div class="intro-logo"></div>
+    <div class="intro-title">Evolution Elite</div>
+</div>
 
 <header>
-    <div style="font-weight:800; font-size:16px; letter-spacing:1px;">LADY STRETCH</div>
-    <div id="head-total" style="font-size:24px; font-weight:200;">0</div>
+    <div style="font-weight:800; font-size:17px; letter-spacing:1px;">LADY STRETCH</div>
+    <div id="head-total" style="font-size:26px; font-weight:200;">0</div>
 </header>
 
 <div class="container">
-    
-    <div class="section-label">Биометрия и Пол</div>
+    <div class="section-label">Ваш профиль и цель</div>
     <div class="gender-selector">
         <div class="gen-btn active" id="gen-m" onclick="setGender('m')">Мужчина</div>
         <div class="gen-btn" id="gen-f" onclick="setGender('f')">Женщина</div>
     </div>
 
     <div class="bio-row">
-        <div class="g-input-wrap"><input type="number" id="w-in" class="g-input" placeholder="Вес" onchange="updateBio(true)"></div>
-        <div class="g-input-wrap"><input type="number" id="h-in" class="g-input" placeholder="Рост" onchange="updateBio(true)"></div>
-        <div class="g-input-wrap"><input type="number" id="a-in" class="g-input" placeholder="Лет" onchange="updateBio(true)"></div>
+        <input type="number" id="w-in" class="g-input" placeholder="Вес">
+        <input type="number" id="h-in" class="g-input" placeholder="Рост">
+        <input type="number" id="a-in" class="g-input" placeholder="Лет">
     </div>
     
     <div class="results-grid">
@@ -202,29 +174,30 @@
 
     <div class="section-label">Состояние ресурса</div>
     <div class="energy-row">
-        <div class="e-col" onclick="setEnergy('low')">
-            <div class="liquid-btn" id="e-low">Спад</div>
+        <div class="e-col">
+            <div class="liquid-btn" id="e-low" onclick="setEnergy('low')">Спад</div>
             <div class="e-hint">Мягкое<br>восстановление</div>
         </div>
-        <div class="e-col" onclick="setEnergy('mid')">
-            <div class="liquid-btn active" id="e-mid">Баланс</div>
+        <div class="e-col">
+            <div class="liquid-btn active" id="e-mid" onclick="setEnergy('mid')">Баланс</div>
             <div class="e-hint">Оптимальный<br>тренинг</div>
         </div>
-        <div class="e-col" onclick="setEnergy('high')">
-            <div class="liquid-btn" id="e-high">Пик</div>
+        <div class="e-col">
+            <div class="liquid-btn" id="e-high" onclick="setEnergy('high')">Пик</div>
             <div class="e-hint">Максимум<br>результата</div>
         </div>
     </div>
 
-    <div class="section-label">Протоколы тренировок</div>
+    <div class="section-label">Протоколы занятий</div>
     <div class="workout-grid" id="w-grid"></div>
 
     <div class="section-label">Тренд массы тела</div>
     <div class="chart-box"><canvas id="wChart" height="150"></canvas></div>
 
-    <div class="section-label">Живая активность (7 дней)</div>
+    <div class="section-label">Активность за неделю</div>
     <div class="chart-box"><canvas id="aChart" height="150"></canvas></div>
 
+    <center><button class="btn-reset" onclick="resetData()">Сбросить всё</button></center>
 </div>
 
 <div id="modal" onclick="closeModal()">
@@ -232,7 +205,7 @@
         <div id="m-title" class="m-title"></div>
         <div id="m-desc" class="m-desc"></div>
         <div id="m-achieve-box"></div>
-        <button class="btn-confirm" onclick="confirmWorkout()">ПОДТВЕРДИТЬ ТРЕНИРОВКУ</button>
+        <button style="width:100%; padding:22px; background:#fff; border:none; border-radius:24px; font-weight:800;" onclick="confirmWorkout()">ПОДТВЕРДИТЬ</button>
     </div>
 </div>
 
@@ -240,12 +213,6 @@
     const tg = window.Telegram.WebApp;
     tg.expand();
 
-    // БАЗА ДАННЫХ V2.7
-    let db = JSON.parse(localStorage.getItem('monolith_v2_7')) || {
-        log: {}, dates: [], weights: {v:[], d:[]}, m: {w:null, h:null, a:44, g:'m'}
-    };
-
-    // ЭКСПЕРТНЫЕ ОПИСАНИЯ
     const workouts = [
         { id:'mfr', n:'МФР Терапия', type:'low', desc:'Гидратация фасциальной ткани. Устранение "слипания" коллагеновых волокон, восстановление лимфотока.' },
         { id:'yoga', n:'Йога Релакс', type:'low', desc:'Активация парасимпатической системы. Глубокое снижение уровня кортизола и ментальный баланс.' },
@@ -269,25 +236,12 @@
         96: "ГРАНД МАСТЕР: МЕТАМОРФОЗА. Полное обновление организма!"
     };
 
+    let db = JSON.parse(localStorage.getItem('monolith_v6_2')) || {
+        log: {}, dates: [], weights: {v:[], d:[]}, m: {w:null, h:null, a:44, g:'m'}
+    };
+
     let energy = 'mid';
     let pendingId = null;
-
-    window.onload = () => {
-        setTimeout(() => {
-            document.getElementById('preloader').style.opacity = '0';
-            setTimeout(() => document.getElementById('preloader').style.visibility = 'hidden', 1000);
-        }, 2500);
-
-        // Восстановление данных
-        setGender(db.m.g || 'm');
-        document.getElementById('w-in').value = db.m.w;
-        document.getElementById('h-in').value = db.m.h;
-        document.getElementById('a-in').value = db.m.a;
-        
-        updateBio(false);
-        render();
-        initCharts();
-    };
 
     function setGender(g) {
         db.m.g = g;
@@ -300,11 +254,8 @@
         const w = parseFloat(document.getElementById('w-in').value);
         const h = parseFloat(document.getElementById('h-in').value);
         const a = parseInt(document.getElementById('a-in').value) || 30;
-        
         if(w && h) {
             db.m = {w, h, a, g: db.m.g};
-            
-            // Расчет ИМТ
             const bmi = (w / ((h/100)**2)).toFixed(1);
             document.getElementById('bmi-val').innerText = bmi;
             
@@ -314,15 +265,10 @@
             else if(bmi < 30) { statusEl.innerText = "Формирование рельефа."; statusEl.style.color = "var(--gold)"; }
             else { statusEl.innerText = "Активная фаза метаморфозы."; statusEl.style.color = "var(--warning)"; }
 
-            // Расчет воды
             document.getElementById('h2o-val').innerText = (w * 0.033).toFixed(1);
-
-            // УМНЫЙ расчет Ккал (База * 1.4 Коэффициент активности)
-            let bmr = (10 * w) + (6.25 * h) - (5 * a);
+            let bmr = (10*w)+(6.25*h)-(5*a);
             bmr = db.m.g === 'm' ? bmr + 5 : bmr - 161;
-            const smartCal = Math.round(bmr * 1.4); 
-            document.getElementById('bmr-val').innerText = smartCal;
-
+            document.getElementById('bmr-val').innerText = Math.round(bmr * 1.4);
             if(save) {
                 if(db.weights.v[db.weights.v.length-1] !== w) {
                     db.weights.v.push(w);
@@ -332,6 +278,25 @@
             }
         }
     }
+
+    window.onload = () => {
+        setTimeout(() => {
+            document.getElementById('preloader').style.opacity = '0';
+            setTimeout(() => document.getElementById('preloader').style.visibility = 'hidden', 1500);
+        }, 3000);
+
+        document.getElementById('w-in').value = db.m.w;
+        document.getElementById('h-in').value = db.m.h;
+        document.getElementById('a-in').value = db.m.a;
+        setGender(db.m.g || 'm');
+        
+        ['w-in','h-in','a-in'].forEach(id => {
+            document.getElementById(id).addEventListener('change', () => updateBio(true));
+        });
+
+        render();
+        initCharts();
+    };
 
     function setEnergy(t) {
         energy = t;
@@ -372,30 +337,29 @@
 
     function closeModal() { document.getElementById('modal').style.display = 'none'; }
 
+    function resetData() {
+        if(confirm("Николай, это удалит все данные тренировок. Уверен?")) {
+            localStorage.removeItem('monolith_v6_2');
+            location.reload();
+        }
+    }
+
     function initCharts() {
         const ctxW = document.getElementById('wChart').getContext('2d');
         if(window.wChartObj) window.wChartObj.destroy();
         window.wChartObj = new Chart(ctxW, {
             type: 'line',
-            data: { labels: db.weights.d.slice(-7), datasets: [{ data: db.weights.v.slice(-7), borderColor: '#fff', tension: 0.4, fill: false, pointRadius: 3 }] },
+            data: { labels: db.weights.d.slice(-7), datasets: [{ data: db.weights.v.slice(-7), borderColor: '#fff', tension: 0.4, fill: false, pointRadius: 2 }] },
             options: { plugins:{legend:{display:false}}, scales:{ x:{display:false}, y:{display:false} } }
         });
 
-        // Живая активность
         const activityData = [0,0,0,0,0,0,0];
-        const now = Date.now();
-        db.dates.forEach(d => {
-            if((now - d) < 604800000) {
-                const day = new Date(d).getDay();
-                activityData[day]++;
-            }
-        });
-
+        db.dates.forEach(d => { if((Date.now() - d) < 604800000) activityData[new Date(d).getDay()]++; });
         const ctxA = document.getElementById('aChart').getContext('2d');
         if(window.aChartObj) window.aChartObj.destroy();
         window.aChartObj = new Chart(ctxA, {
             type: 'bar',
-            data: { labels: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'], datasets: [{ data: activityData, backgroundColor: 'rgba(50, 215, 75, 0.6)', borderRadius: 10 }] },
+            data: { labels: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'], datasets: [{ data: activityData, backgroundColor: 'rgba(50, 215, 75, 0.7)', borderRadius: 10 }] },
             options: { plugins:{legend:{display:false}}, scales:{ x:{ticks:{color:'#666'}}, y:{display:false} } }
         });
     }
@@ -412,7 +376,7 @@
         setTimeout(() => c.remove(), 700);
     }
 
-    function saveDb() { localStorage.setItem('monolith_v2_7', JSON.stringify(db)); }
+    function saveDb() { localStorage.setItem('monolith_v6_2', JSON.stringify(db)); }
 </script>
 </body>
 </html>
