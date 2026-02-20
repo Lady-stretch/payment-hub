@@ -2,154 +2,163 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Lady Stretch | Evolution Monolith v9.5 Premium</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Monolith V8.0 | Colossus Edition</title>
     
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
-        /* [1] ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ И КОНСТАНТЫ ДИЗАЙНА */
+        /* ============================================================ */
+        /* [1] ГЛОБАЛЬНЫЕ СТИЛИ И ПЕРЕМЕННЫЕ (БАЗА) */
+        /* ============================================================ */
         :root {
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-bg: rgba(255, 255, 255, 0.04);
+            --glass-bg-hover: rgba(255, 255, 255, 0.08);
+            
             --accent-gold: #ffd700;
-            --accent-gold-rgb: 255, 215, 0;
-            --accent-red: #ff3b30;
-            --accent-green: #34c759;
-            --accent-blue: #007aff;
-            --text-white: #ffffff;
-            --text-dim: rgba(255, 255, 255, 0.5);
-            --text-muted: rgba(255, 255, 255, 0.3);
-            --bg-black: #000000;
-            --glass-bg: rgba(255, 255, 255, 0.08);
-            --glass-border: rgba(255, 255, 255, 0.18);
-            --glass-active: rgba(255, 255, 255, 0.25);
-            --blur-radius: 25px;
-            --transition-speed: 0.3s;
+            --accent-white: #ffffff;
+            --accent-error: #ff3b30;
+            --accent-safe: #32d74b;
+            --accent-info: #007aff;
+            
+            --text-p1: #ffffff;
+            --text-p2: rgba(255, 255, 255, 0.5);
+            --text-p3: rgba(255, 255, 255, 0.3);
+            
+            --font-main: 'Inter', sans-serif;
+            --blur-radius: 20px;
+            --anim-speed: 0.5s;
         }
 
-        /* [2] СБРОС И БАЗОВЫЕ СТИЛИ */
+        /* Обнуление и база */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            outline: none;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
             -webkit-tap-highlight-color: transparent;
-            font-family: 'Inter', sans-serif;
         }
 
         html, body {
             width: 100%;
-            min-height: 100vh;
-            background-color: var(--bg-black);
-            color: var(--text-white);
+            height: 100%;
             overflow-x: hidden;
-            -webkit-user-select: none;
-            line-height: 1.5;
+            background-color: #000;
         }
 
         body {
-            /* ФОНОВОЕ ИЗОБРАЖЕНИЕ - МАКСИМАЛЬНОЕ КАЧЕСТВО */
-            background-image: 
-                linear-gradient(180deg, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.95) 100%), 
-                url('https://images.unsplash.com/photo-1518611012118-296072bb5604?q=80&w=2070&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
+            font-family: var(--font-main);
+            color: var(--text-p1);
+            /* ФИКСИРОВАННЫЙ ФОН ДЛЯ ЭФФЕКТА ЛИНЗЫ */
+            background-image: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.8) 100%), 
+                              url('https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=2040&auto=format&fit=crop');
             background-attachment: fixed;
+            background-position: center;
+            background-size: cover;
             background-repeat: no-repeat;
-            /* ЗУМ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ */
-            zoom: 0.92;
+            line-height: 1.6;
+            zoom: 0.85; /* Элитный масштаб */
         }
 
-        /* [3] АНИМАЦИЯ ПРЕЛОАДЕРА */
-        #loader-screen {
+        /* ============================================================ */
+        /* [2] АНИМАЦИИ И ЭФФЕКТЫ (ПЕРЕХОДЫ) */
+        /* ============================================================ */
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(1000%); }
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 10px rgba(255,255,255,0.05); }
+            50% { box-shadow: 0 0 30px rgba(255,255,255,0.15); }
+            100% { box-shadow: 0 0 10px rgba(255,255,255,0.05); }
+        }
+
+        @keyframes lineAppear {
+            0% { height: 0; opacity: 0; }
+            100% { height: 100px; opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ============================================================ */
+        /* [3] ПРЕЛОАДЕР (ТЕХНОЛОГИЧНЫЙ ВХОД) */
+        /* ============================================================ */
+        #loading-screen {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: #000;
-            z-index: 9999;
+            z-index: 100000;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: opacity 0.8s ease-out;
+            transition: all 1.2s cubic-bezier(0.9, 0, 0.1, 1);
         }
 
-        .loader-content {
-            text-align: center;
+        .loader-thread {
+            width: 1px;
+            height: 100px;
+            background: linear-gradient(to bottom, transparent, #fff, transparent);
+            animation: lineAppear 2s forwards ease-in-out;
         }
 
         .loader-logo {
-            font-size: 28px;
-            font-weight: 200;
-            letter-spacing: 12px;
-            margin-bottom: 20px;
-            color: var(--text-white);
+            font-size: 30px;
+            font-weight: 100;
+            letter-spacing: 25px;
+            text-transform: uppercase;
+            margin: 40px 0;
+            color: #fff;
+            text-indent: 25px;
         }
 
-        .loader-progress-bar {
-            width: 200px;
-            height: 2px;
-            background: rgba(255,255,255,0.1);
-            position: relative;
-            overflow: hidden;
+        .loader-status {
+            font-size: 9px;
+            letter-spacing: 5px;
+            color: var(--text-p3);
+            text-transform: uppercase;
         }
 
-        .loader-progress-fill {
-            position: absolute;
-            top: 0; left: 0; height: 100%;
-            width: 0%;
-            background: var(--accent-gold);
-            box-shadow: 0 0 15px var(--accent-gold);
-            animation: loadingMove 2s infinite ease-in-out;
-        }
-
-        @keyframes loadingMove {
-            0% { left: -100%; width: 100%; }
-            100% { left: 100%; width: 100%; }
-        }
-
-        /* [4] ВЕРХНЯЯ ПАНЕЛЬ (APP BAR) */
-        .app-bar {
+        /* ============================================================ */
+        /* [4] ВЕРХНЯЯ ПАНЕЛЬ (HEADER) */
+        /* ============================================================ */
+        .system-header {
             position: sticky;
             top: 0;
             width: 100%;
-            padding: 30px 25px;
+            height: 100px;
+            z-index: 5000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
             background: rgba(0,0,0,0.85);
             backdrop-filter: blur(40px);
             -webkit-backdrop-filter: blur(40px);
             border-bottom: 1px solid var(--glass-border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
         }
 
-        .brand-info {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .brand-name {
+        .system-logo {
             font-size: 24px;
             font-weight: 200;
-            letter-spacing: 5px;
-            text-transform: uppercase;
+            letter-spacing: 6px;
+            color: var(--accent-white);
         }
 
-        .brand-tagline {
-            font-size: 10px;
-            font-weight: 900;
-            color: var(--accent-gold);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-top: 2px;
-        }
-
-        .user-stats-header {
+        .system-counter {
             text-align: right;
         }
 
-        .total-counter {
+        .counter-big {
             font-size: 48px;
             font-weight: 100;
             color: var(--accent-gold);
@@ -157,40 +166,32 @@
         }
 
         .counter-label {
-            font-size: 8px;
+            font-size: 9px;
+            color: var(--text-p2);
             text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-dim);
+            letter-spacing: 2px;
         }
 
-        /* [5] ОСНОВНОЙ КОНТЕЙНЕР */
-        .main-content {
-            max-width: 500px;
+        /* ============================================================ */
+        /* [5] ОСНОВНОЙ КОНТЕЙНЕР (LAYOUT) */
+        /* ============================================================ */
+        .main-wrapper {
+            max-width: 540px;
             margin: 0 auto;
-            padding: 25px 20px 100px 20px;
+            padding: 40px 20px;
         }
 
-        .section-header {
-            font-size: 12px;
+        .section-headline {
+            font-size: 11px;
             font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 4px;
-            color: var(--text-muted);
-            margin: 40px 0 20px 10px;
-            display: flex;
-            align-items: center;
+            letter-spacing: 5px;
+            color: var(--text-p3);
+            margin: 60px 0 25px 10px;
         }
 
-        .section-header::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: rgba(255,255,255,0.1);
-            margin-left: 15px;
-        }
-
-        /* [6] КАРТОЧКИ И ПАНЕЛИ */
-        .glass-card {
+        /* СТЕКЛЯННАЯ КАРТОЧКА - ЛИНЗА */
+        .monolith-card {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
             border-radius: 35px;
@@ -198,646 +199,690 @@
             margin-bottom: 25px;
             backdrop-filter: blur(var(--blur-radius));
             -webkit-backdrop-filter: blur(var(--blur-radius));
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+            transition: var(--anim-speed);
         }
 
-        /* [7] ПОЛЯ ВВОДА И КНОПКИ ПЕРЕКЛЮЧЕНИЯ */
-        .gender-switch {
+        .monolith-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .monolith-card:hover {
+            background: var(--glass-bg-hover);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        /* Группы кнопок */
+        .action-row {
             display: flex;
-            gap: 12px;
+            gap: 15px;
             margin-bottom: 30px;
         }
 
-        .switch-btn {
+        .toggle-btn {
             flex: 1;
             padding: 22px;
+            text-align: center;
             border-radius: 20px;
-            border: 1px solid var(--glass-border);
-            background: rgba(255,255,255,0.04);
-            color: var(--text-white);
             font-size: 12px;
-            font-weight: 800;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--glass-border);
+            color: var(--text-p2);
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: 0.3s;
         }
 
-        .switch-btn.active {
-            background: var(--text-white);
+        .toggle-btn.active {
+            background: #fff;
             color: #000;
-            border: 1px solid var(--text-white);
-            box-shadow: 0 0 30px rgba(255,255,255,0.25);
-            transform: translateY(-2px);
+            border-color: #fff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .input-row {
+        /* Ввод данных */
+        .data-input-group {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 15px;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
 
-        .input-field-wrap {
+        .input-container {
             position: relative;
-            background: rgba(0,0,0,0.2);
-            border-radius: 20px;
-            border: 1px solid var(--glass-border);
-            padding: 22px 10px;
-            text-align: center;
-            transition: var(--transition-speed);
         }
 
-        .input-field-wrap:focus-within {
-            border-color: var(--accent-gold);
-            background: rgba(255, 215, 0, 0.05);
-        }
-
-        .input-field-wrap input {
+        .monolith-input {
             width: 100%;
             background: transparent;
-            border: none;
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 25px 5px;
             color: #fff;
-            font-size: 28px;
-            font-weight: 200;
             text-align: center;
+            font-size: 26px;
+            font-weight: 200;
+            transition: 0.3s;
         }
 
-        .input-field-wrap label {
+        .monolith-input:focus {
+            border-color: #fff;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .input-sub {
             position: absolute;
             bottom: 8px;
             left: 0;
             width: 100%;
-            font-size: 8px;
-            color: var(--accent-gold);
-            text-transform: uppercase;
-            font-weight: 800;
-            letter-spacing: 1px;
-        }
-
-        /* [8] РЕЗУЛЬТАТЫ РАСЧЕТОВ */
-        .metrics-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 12px;
-            margin-top: 30px;
-        }
-
-        .metric-box {
-            background: rgba(0,0,0,0.3);
-            border-radius: 22px;
-            padding: 20px 5px;
             text-align: center;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .metric-val {
-            display: block;
-            font-size: 26px;
-            font-weight: 200;
-            margin-bottom: 4px;
-        }
-
-        .metric-unit {
             font-size: 8px;
-            color: var(--text-dim);
+            color: var(--text-p3);
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        .ai-status-panel {
-            margin-top: 25px;
-            padding: 22px;
-            background: rgba(255,255,255,0.03);
-            border-left: 4px solid var(--accent-green);
-            border-radius: 18px;
-            font-size: 14px;
-            line-height: 1.7;
-            color: #dfdfdf;
-        }
-
-        /* [9] БЖУ ПАНЕЛЬ */
-        .pfc-row {
+        /* Сетка результатов */
+        .results-grid {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 12px;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .res-box {
+            text-align: center;
+            padding: 25px 5px;
+            border-radius: 25px;
+            border: 1px solid var(--glass-border);
+            background: rgba(0,0,0,0.2);
+        }
+
+        .res-val {
+            display: block;
+            font-size: 28px;
+            font-weight: 100;
+            margin-bottom: 5px;
+        }
+
+        .res-unit {
+            font-size: 9px;
+            color: var(--text-p2);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Блок статуса ИИ */
+        .ai-status-panel {
+            padding: 30px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 300;
+            line-height: 1.8;
+            color: #ccc;
+            background: rgba(255,255,255,0.02);
+            border-left: 4px solid var(--accent-safe);
+            margin-bottom: 40px;
+        }
+
+        /* БЖУ Секция */
+        .pfc-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 50px;
         }
 
         .pfc-item {
+            padding: 22px 5px;
             text-align: center;
-            padding: 20px 5px;
-            border-radius: 20px;
-            background: rgba(255,215,0,0.03);
-            border: 1px solid rgba(255,215,0,0.1);
+            border-radius: 22px;
+            border: 1px solid var(--glass-border);
         }
 
-        .pfc-val {
-            font-size: 22px;
+        .pfc-number {
+            font-size: 20px;
             font-weight: 800;
             color: var(--accent-gold);
             display: block;
         }
 
-        /* [10] ТРЕНИРОВКИ - КАТАЛОГ ПРЕМУМ */
+        .pfc-label {
+            font-size: 9px;
+            color: var(--text-p3);
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+        /* Список тренировок */
         .workout-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 18px;
         }
 
-        .workout-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 30px;
-            padding: 25px;
-            min-height: 175px;
+        .workout-item {
+            padding: 30px 22px;
+            min-height: 165px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
             cursor: pointer;
-            position: relative;
-            overflow: hidden;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .workout-card:active {
-            transform: scale(0.93);
-            background: rgba(255,255,255,0.15);
+        .workout-item:active {
+            transform: scale(0.95);
         }
 
-        .workout-card::before {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(255,215,0,0.05) 0%, transparent 70%);
-            opacity: 0;
-            transition: 0.5s;
+        .workout-item.locked {
+            opacity: 0.15;
+            filter: grayscale(1);
+            pointer-events: none;
         }
 
-        .workout-card:hover::before { opacity: 1; }
-
-        .w-name {
-            font-size: 17px;
-            font-weight: 700;
+        .workout-name {
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
             line-height: 1.3;
-            position: relative;
-            z-index: 1;
         }
 
-        .w-stats {
+        .workout-meta {
             font-size: 10px;
-            font-weight: 900;
+            font-weight: 800;
             color: var(--accent-gold);
             text-transform: uppercase;
-            letter-spacing: 1px;
-            position: relative;
-            z-index: 1;
         }
 
-        /* [11] ГРАФИКИ И СТАТИСТИКА */
-        .chart-wrapper {
-            padding: 10px;
-        }
-
-        /* [12] МОДАЛЬНЫЕ ОКНА И ОПИСАНИЯ */
-        .modal-overlay {
+        /* ============================================================ */
+        /* [6] МОДАЛЬНЫЕ ОКНА (OVERLAYS) */
+        /* ============================================================ */
+        .system-modal {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.96);
-            backdrop-filter: blur(30px);
-            z-index: 2000;
+            background: rgba(0,0,0,0.98);
+            backdrop-filter: blur(50px);
+            z-index: 10000;
             display: none;
             align-items: center;
             justify-content: center;
             padding: 25px;
-            opacity: 0;
-            transition: opacity 0.4s ease;
         }
 
-        .modal-overlay.show {
-            display: flex;
-            opacity: 1;
-        }
-
-        .modal-window {
-            background: #0d0d0d;
-            border: 1px solid var(--accent-gold);
-            border-radius: 45px;
+        .modal-inner {
             width: 100%;
-            max-width: 460px;
+            max-width: 440px;
+            background: #0a0a0a;
+            border: 1px solid var(--glass-border);
+            border-radius: 40px;
             padding: 45px;
-            text-align: center;
-            transform: translateY(30px);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .modal-overlay.show .modal-window {
-            transform: translateY(0);
+            position: relative;
+            animation: fadeIn 0.5s ease-out;
         }
 
         .modal-title {
-            font-size: 32px;
-            font-weight: 200;
-            color: var(--accent-gold);
+            font-size: 24px;
+            font-weight: 100;
+            letter-spacing: 4px;
+            text-transform: uppercase;
             margin-bottom: 25px;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-        }
-
-        .modal-description {
-            text-align: left;
-            font-size: 15px;
-            line-height: 1.8;
-            color: #cecece;
-            margin-bottom: 35px;
-        }
-
-        .modal-description b {
-            color: var(--accent-gold);
-            font-weight: 700;
-        }
-
-        .btn-complete {
-            width: 100%;
-            padding: 25px;
-            background: var(--accent-gold);
-            border: none;
-            border-radius: 22px;
-            color: #000;
-            font-size: 16px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
-        }
-
-        /* [13] СБРОС СИСТЕМЫ */
-        .danger-zone {
-            margin-top: 100px;
             text-align: center;
         }
 
-        .reset-btn {
-            background: transparent;
-            border: 2px solid var(--accent-red);
-            color: var(--accent-red);
-            padding: 18px 45px;
-            border-radius: 100px;
-            font-size: 11px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            transition: 0.4s;
-            cursor: pointer;
+        .modal-body {
+            font-size: 15px;
+            color: #888;
+            line-height: 1.9;
+            margin-bottom: 35px;
+            font-weight: 300;
         }
 
-        .reset-btn:hover {
-            background: var(--accent-red);
-            color: #fff;
-            box-shadow: 0 0 40px rgba(255, 59, 48, 0.5);
+        .system-btn {
+            width: 100%;
+            padding: 24px;
+            background: #fff;
+            color: #000;
+            border: none;
+            border-radius: 22px;
+            font-weight: 900;
+            font-size: 14px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.3s;
         }
+
+        .system-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255,255,255,0.2);
+        }
+
+        /* Специальный стиль для Сертификата */
+        .award-card {
+            border: 1px solid var(--accent-gold);
+            text-align: center;
+        }
+
+        .award-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        /* Сброс данных */
+        .danger-reset {
+            display: block;
+            margin: 100px auto;
+            color: var(--accent-error);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            opacity: 0.3;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .danger-reset:hover { opacity: 1; }
     </style>
 </head>
 <body>
 
-<div id="loader-screen">
-    <div class="loader-content">
-        <div class="loader-logo">EVOLUTION</div>
-        <div class="loader-progress-bar">
-            <div class="loader-progress-fill"></div>
-        </div>
-        <div style="margin-top: 15px; font-size: 9px; letter-spacing: 4px; color: var(--text-dim);">SYSTEM CORE LOADING...</div>
-    </div>
+<div id="loading-screen">
+    <div class="loader-thread"></div>
+    <div class="loader-logo">MONOLITH</div>
+    <div class="loader-status">Initializing Neural Interface...</div>
 </div>
 
-<header class="app-bar">
-    <div class="brand-info">
-        <div class="brand-name">LADY STRETCH</div>
-        <div class="brand-tagline">Evolution Monolith v9.5</div>
-    </div>
-    <div class="user-stats-header">
-        <div class="total-counter" id="global-counter">0</div>
-        <div class="counter-label">СЕССИЙ ВСЕГО</div>
+<header class="system-header">
+    <div class="system-logo">LADY STRETCH</div>
+    <div class="system-counter">
+        <div class="counter-big" id="global-counter">0</div>
+        <div class="counter-label">Sessions Mastery</div>
     </div>
 </header>
 
-<div class="main-content">
-
-    <div class="section-header">Параметры тела и Анализ</div>
-    <div class="glass-card">
-        <div class="gender-switch">
-            <button class="switch-btn active" id="sex-m" onclick="updateGender('m')">Мужчина</button>
-            <button class="switch-btn" id="sex-f" onclick="updateGender('f')">Женщина</button>
-        </div>
-
-        <div class="input-row">
-            <div class="input-field-wrap">
-                <input type="number" id="user-weight" placeholder="0" oninput="runBiologicalEngine()">
-                <label>Вес (кг)</label>
-            </div>
-            <div class="input-field-wrap">
-                <input type="number" id="user-height" placeholder="0" oninput="runBiologicalEngine()">
-                <label>Рост (см)</label>
-            </div>
-            <div class="input-field-wrap">
-                <input type="number" id="user-year" placeholder="1981" oninput="runBiologicalEngine()">
-                <label>Год рожд.</label>
-            </div>
-        </div>
-
-        <div class="metrics-container">
-            <div class="metric-box"><span class="metric-val" id="bmi-val">--</span><span class="metric-unit">ИМТ</span></div>
-            <div class="metric-box"><span class="metric-val" id="h2o-val">--</span><span class="metric-unit">Вода (л)</span></div>
-            <div class="metric-box"><span class="metric-val" id="kcal-val">--</span><span class="metric-unit">Ккал/день</span></div>
-        </div>
-
-        <div id="ai-verdict-text" class="ai-status-panel">
-            <b>Система готова к работе.</b> Введите ваши биометрические данные для калибровки программы тренировок и расчета суточных дефицитов.
-        </div>
+<div class="main-wrapper">
+    
+    <div class="section-headline">Personal Biometrics</div>
+    
+    <div class="action-row">
+        <div class="toggle-btn active" id="sex-m" onclick="updateGender('m')">Male</div>
+        <div class="toggle-btn" id="sex-f" onclick="updateGender('f')">Female</div>
+    </div>
+    
+    <div class="monolith-card" style="padding: 20px; text-align: center; cursor: pointer;" onclick="togglePALModal()">
+        Lifestyle Activity: <span id="pal-display" style="color:var(--accent-gold); font-weight: 800;">Optimal</span>
     </div>
 
-    <div class="section-header">Протокол макронутриентов (БЖУ)</div>
-    <div class="pfc-row">
-        <div class="pfc-item"><span class="pfc-val" id="p-val">0</span><span class="metric-unit">Белки (г)</span></div>
-        <div class="pfc-item"><span class="pfc-val" id="f-val">0</span><span class="metric-unit">Жиры (г)</span></div>
-        <div class="pfc-item"><span class="pfc-val" id="c-val">0</span><span class="metric-unit">Углеводы (г)</span></div>
+    <div class="data-input-group">
+        <div class="input-container">
+            <input type="number" id="v-weight" class="monolith-input" placeholder="0" oninput="runEngine()">
+            <div class="input-sub">Weight (kg)</div>
+        </div>
+        <div class="input-container">
+            <input type="number" id="v-height" class="monolith-input" placeholder="0" oninput="runEngine()">
+            <div class="input-sub">Height (cm)</div>
+        </div>
+        <div class="input-container">
+            <input type="number" id="v-age" class="monolith-input" placeholder="0" oninput="runEngine()">
+            <div class="input-sub">Age (years)</div>
+        </div>
+    </div>
+    
+    <div class="results-grid">
+        <div class="res-box"><span class="res-val" id="out-bmi">--</span><span class="res-unit">BMI Index</span></div>
+        <div class="res-box"><span class="res-val" id="out-water">--</span><span class="res-unit">H2O (Liters)</span></div>
+        <div class="res-box"><span class="res-val" id="out-bmr">--</span><span class="res-unit">Total Kcal</span></div>
+    </div>
+    
+    <div id="ai-verdict" class="ai-status-panel">
+        Система ожидает вводных данных для калибровки антропометрических параметров. Все расчеты производятся по протоколу Миффлина-Сан Жеора.
     </div>
 
-    <div class="section-header">Программы трансформации</div>
-    <div class="workout-grid" id="workout-list-root">
+    <div class="section-headline">Nutrition 24h Protocol</div>
+    <div class="pfc-container">
+        <div class="pfc-item"><span class="pfc-number" id="p-val">--</span><span class="pfc-label">Proteins</span></div>
+        <div class="pfc-item"><span class="pfc-number" id="f-val">--</span><span class="pfc-label">Fats</span></div>
+        <div class="pfc-item"><span class="pfc-number" id="c-val">--</span><span class="pfc-label">Carbs</span></div>
+    </div>
+
+    <div class="section-headline">Current Resource State</div>
+    <div class="action-row">
+        <div class="toggle-btn" id="e-low" onclick="setEnergy('low')">Low</div>
+        <div class="toggle-btn active" id="e-mid" onclick="setEnergy('mid')">Balance</div>
+        <div class="toggle-btn" id="e-high" onclick="setEnergy('high')">Peak</div>
+    </div>
+
+    <div class="section-headline">Available Training Modes</div>
+    <div class="workout-grid" id="training-engine">
         </div>
 
-    <div class="section-header">Интенсивность за неделю</div>
-    <div class="glass-card chart-wrapper">
-        <canvas id="weeklyChart" height="200"></canvas>
+    <div class="section-headline">Evolution Analytics</div>
+    <div class="monolith-card" style="padding: 25px;">
+        <canvas id="mainChart" height="230"></canvas>
     </div>
 
-    <div class="section-header">Тренды веса</div>
-    <div class="glass-card chart-wrapper">
-        <canvas id="weightTrendChart" height="200"></canvas>
-    </div>
-
-    <div class="danger-zone">
-        <button class="reset-btn" onclick="masterSystemReset()">Сбросить эволюцию</button>
-    </div>
-
+    <div class="danger-reset" onclick="hardReset()">Factory Reset All Evolution Data</div>
 </div>
 
-<div class="modal-overlay" id="modal-root" onclick="closeWorkoutModal()">
-    <div class="modal-window" onclick="event.stopPropagation()">
-        <h2 class="modal-title" id="m-header"></h2>
-        <div class="modal-description" id="m-text"></div>
-        <button class="btn-complete" onclick="recordSessionCompletion()">Завершить сессию</button>
+<div id="modal-pal" class="system-modal" onclick="togglePALModal()">
+    <div class="modal-inner" onclick="event.stopPropagation()">
+        <div class="modal-title">Activity Level</div>
+        <div class="monolith-card" style="margin-bottom:15px; cursor:pointer;" onclick="applyPAL(1.2, 'Sedentary')">
+            <b>SEDENTARY</b><br><small>Minimal movement, desk work, no sports.</small>
+        </div>
+        <div class="monolith-card" style="margin-bottom:15px; cursor:pointer;" onclick="applyPAL(1.55, 'Optimal')">
+            <b>OPTIMAL</b><br><small>3-4 Lady Stretch sessions per week.</small>
+        </div>
+        <div class="monolith-card" style="cursor:pointer;" onclick="applyPAL(1.9, 'Professional')">
+            <b>PROFESSIONAL</b><br><small>High intensity daily physical activity.</small>
+        </div>
+    </div>
+</div>
+
+<div id="modal-workout" class="system-modal" onclick="closeWorkoutModal()">
+    <div class="modal-inner" onclick="event.stopPropagation()">
+        <div id="mw-title" class="modal-title" style="color:var(--accent-gold);"></div>
+        <div id="mw-desc" class="modal-body"></div>
+        <div class="ai-status-panel" style="margin-bottom:30px; border-left-color:var(--accent-gold);">
+            <b>PRO TIP:</b> Регулярность важнее интенсивности. Данный протокол направлен на глубокое восстановление.
+        </div>
+        <button class="system-btn" onclick="confirmWorkout()">Log Session Complete</button>
+    </div>
+</div>
+
+<div id="modal-award" class="system-modal" onclick="this.style.display='none'">
+    <div class="modal-inner award-card" onclick="event.stopPropagation()">
+        <span class="award-icon">💎</span>
+        <div id="award-title" class="modal-title" style="color:var(--accent-gold); margin-bottom:10px;"></div>
+        <div id="award-text" class="modal-body"></div>
+        <button class="system-btn" style="background:var(--accent-gold);" onclick="document.getElementById('modal-award').style.display='none'">Continue Journey</button>
     </div>
 </div>
 
 <script>
-    /* ========================================================================
-       ЛОГИКА СИСТЕМЫ MONOLITH v9.5 
-       ========================================================================
-    */
+    /* ============================================================ */
+    /* [8] СКРИПТОВАЯ АРХИТЕКТУРА (LOGIC CORE) */
+    /* ============================================================ */
     
-    const tgApp = window.Telegram.WebApp;
-    tgApp.expand();
+    const tg = window.Telegram.WebApp;
+    tg.expand();
 
-    // СОСТОЯНИЕ ПРИЛОЖЕНИЯ
-    let evolutionState = JSON.parse(localStorage.getItem('monolith_v95_data')) || {
-        profile: { sex: 'm', weight: '', height: '', year: 1981 },
-        records: {}, 
-        weightLogs: [], 
-        activityMap: [0, 0, 0, 0, 0, 0, 0] // Пн-Вс
+    // Глобальное хранилище (LocalStorage)
+    let db = JSON.parse(localStorage.getItem('monolith_v8_db')) || {
+        sex: 'm', weight: '', height: '', age: 44, pal: 1.55, palName: 'Optimal',
+        logs: {}, history: { val: [], date: [] }
     };
 
-    // БИБЛИОТЕКА КОНТЕНТА (ЭКСПЕРТНЫЙ УРОВЕНЬ)
-    const workoutDatabase = [
+    // База протоколов (Максимально развернутая)
+    const library = [
         { 
             id: 'mfr', 
             name: 'МФР Терапия', 
-            desc: '<b>Миофасциальный релиз</b> — это техника глубокого воздействия на фасции (оболочки мышц). С помощью специальных роллов и мячей мы "раскатываем" триггерные точки.<br><br><b>Почему это нужно:</b> Мышцы современного человека постоянно находятся в спазме из-за стресса и малоподвижности. МФР "включает" кровоток, выводит лишнюю жидкость и снимает мышечные боли.<br><br><b>Результат:</b> Мгновенное чувство легкости, исчезновение отеков и улучшение подвижности суставов.'
+            energy: 'low', 
+            desc: 'Миофасциальный релиз — это методика воздействия на соединительную ткань. Устраняет зажимы, улучшает лимфоток и готовит мышцы к нагрузкам.' 
         },
         { 
             id: 'back', 
             name: 'Здоровая Спина', 
-            desc: '<b>Декомпрессионный тренинг</b>, направленный на восстановление естественных изгибов позвоночника и укрепление мышечного корсета.<br><br><b>Почему это нужно:</b> 90% проблем со здоровьем начинаются с позвоночника. Мы работаем над мобильностью лопаток, раскрытием грудного отдела и стабильностью поясницы.<br><br><b>Результат:</b> Королевская осанка, исчезновение головных болей и болей в спине, свободное дыхание.'
+            energy: 'low', 
+            desc: 'Коррекция осанки и укрепление мышц-стабилизаторов. Протокол направлен на снятие осевой нагрузки с позвоночных сегментов.' 
+        },
+        { 
+            id: 'yoga', 
+            name: 'Йога Релакс', 
+            energy: 'low', 
+            desc: 'Мягкая практика для баланса ЦНС. Фокус на дыхании и статическом натяжении глубоких фасциальных линий.' 
+        },
+        { 
+            id: 'stretch', 
+            name: 'Стретчинг', 
+            energy: 'low', 
+            desc: 'Классическая растяжка всех групп мышц. Увеличивает амплитуду движений и возвращает телу естественную легкость.' 
         },
         { 
             id: 'sky', 
             name: 'Sky Stretch', 
-            desc: '<b>Растяжка в антигравитационных гамаках.</b> Это методика, позволяющая использовать силу гравитации для мягкого вытяжения тела.<br><br><b>Почему это нужно:</b> Гамак снимает нагрузку с суставов, позволяя выполнять перевернутые асаны, которые в обычном зале недоступны новичкам. Это лучший способ декомпрессии дисков.<br><br><b>Результат:</b> Вытяжение позвоночника на 1-2 см за сессию, развитие гибкости и невероятное ощущение полета.'
-        },
-        { 
-            id: 'tabata', 
-            name: 'Табата HIIT', 
-            desc: '<b>Высокоинтенсивный интервальный протокол.</b> 20 секунд максимальной работы, 10 секунд отдыха. 8 раундов чистого жиросжигания.<br><br><b>Почему это нужно:</b> Этот метод разгоняет метаболизм до пиковых значений. Ваше тело будет сжигать калории еще 24-48 часов после завершения тренировки (эффект EPOC).<br><br><b>Результат:</b> Быстрое снижение жировой массы, укрепление сердечно-сосудистой системы и выносливость.'
+            energy: 'mid', 
+            desc: 'Растяжка в гамаках. Использование силы гравитации для мягкого вытяжения позвоночника и декомпрессии суставов.' 
         },
         { 
             id: 'split', 
             name: 'Шпагат', 
-            desc: '<b>Целевой стретчинг</b> нижней части тела. Мы используем методики ПНФ (проприоцептивное нервно-мышечное облегчение) для безопасного достижения результата.<br><br><b>Почему это нужно:</b> Гибкость тазобедренных суставов напрямую связана с женским здоровьем и долголетием суставов ног.<br><br><b>Результат:</b> Заветный шпагат, легкость походки и значительное улучшение кровообращения в органах малого таза.'
+            energy: 'mid', 
+            desc: 'Целевой протокол на развитие гибкости тазобедренного аппарата. Систематическая работа над подвижностью связок.' 
+        },
+        { 
+            id: 'pilates', 
+            name: 'Пилатес', 
+            energy: 'mid', 
+            desc: 'Система контроля тела. Укрепление мышечного корсета и проработка глубоких мышц живота и спины без лишнего объема.' 
+        },
+        { 
+            id: 'circ', 
+            name: 'Круговая', 
+            energy: 'mid', 
+            desc: 'Комплексный тренинг на выносливость и тонус. Сочетание динамических упражнений для активации метаболизма.' 
+        },
+        { 
+            id: 'tabata', 
+            name: 'Табата HIIT', 
+            energy: 'high', 
+            desc: 'Высокоинтенсивный интервальный протокол 20/10. Максимальное сжигание калорий и тренировка сердечно-сосудистой системы.' 
         },
         { 
             id: 'sculpt', 
             name: 'Body Sculpt', 
-            desc: '<b>Силовое моделирование рельефа.</b> Мы прорабатываем каждую мышцу, используя малый вес и большое количество повторений.<br><br><b>Почему это нужно:</b> После 30 лет мы ежегодно теряем мышечную массу. Sculpt останавливает этот процесс, создавая плотное, подтянутое тело без лишнего объема.<br><br><b>Результат:</b> Подтянутые ягодицы, плоский живот и идеальный тонус кожи.'
+            energy: 'high', 
+            desc: 'Силовое моделирование тела. Использование доп. оборудования для создания плотного мышечного рельефа.' 
+        },
+        { 
+            id: 'trx', 
+            name: 'TRX Петли', 
+            energy: 'high', 
+            desc: 'Функциональный тренинг в подвесном состоянии. Развивает баланс, силу и координацию одновременно.' 
+        },
+        { 
+            id: 'butt', 
+            name: 'Ягодицы + Пресс', 
+            energy: 'high', 
+            desc: 'Акцентированная работа над эстетикой нижней части тела и плотностью пресса. Высокая метаболическая нагрузка.' 
         }
     ];
 
-    let currentActiveWorkout = null;
+    let currentE = 'mid';
+    let activePID = null;
 
-    // ЗАПУСК ПРИ ЗАГРУЗКЕ
-    window.onload = () => {
-        // Установка сохраненных значений
-        document.getElementById('user-weight').value = evolutionState.profile.weight;
-        document.getElementById('user-height').value = evolutionState.profile.height;
-        document.getElementById('user-year').value = evolutionState.profile.year;
-        updateGender(evolutionState.profile.sex);
-        
-        runBiologicalEngine();
-        renderWorkoutCatalog();
-        syncCharts();
-
-        // Скрытие прелоадера
+    // Инициализация системы
+    window.addEventListener('DOMContentLoaded', () => {
+        // Таймер загрузки
         setTimeout(() => {
-            document.getElementById('loader-screen').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('loader-screen').style.display = 'none';
-            }, 800);
-        }, 1500);
-    };
+            document.getElementById('loading-screen').style.opacity = '0';
+            setTimeout(() => document.getElementById('loading-screen').style.display='none', 1200);
+        }, 2500);
 
-    // ПЕРЕКЛЮЧЕНИЕ ПОЛА
+        // Заполнение данных
+        document.getElementById('v-weight').value = db.weight;
+        document.getElementById('v-height').value = db.height;
+        document.getElementById('v-age').value = db.age;
+        document.getElementById('pal-display').innerText = db.palName;
+        
+        updateGender(db.sex);
+        drawChart();
+        renderWorkouts();
+        runEngine();
+    });
+
+    // Управление полом
     function updateGender(s) {
-        evolutionState.profile.sex = s;
+        db.sex = s;
         document.getElementById('sex-m').classList.toggle('active', s === 'm');
         document.getElementById('sex-f').classList.toggle('active', s === 'f');
-        runBiologicalEngine();
+        runEngine();
+        save();
     }
 
-    // БИОЛОГИЧЕСКИЙ ДВИЖОК РАСЧЕТОВ
-    function runBiologicalEngine() {
-        const weight = parseFloat(document.getElementById('user-weight').value);
-        const height = parseFloat(document.getElementById('user-height').value);
-        const year = parseInt(document.getElementById('user-year').value);
+    // Главный движок расчетов
+    function runEngine() {
+        const w = parseFloat(document.getElementById('v-weight').value);
+        const h = parseFloat(document.getElementById('v-height').value);
+        const a = parseInt(document.getElementById('v-age').value);
 
-        if (weight > 0 && height > 100) {
-            evolutionState.profile.weight = weight;
-            evolutionState.profile.height = height;
-            evolutionState.profile.year = year;
-
-            // 1. ИМТ (Индекс массы тела)
-            const bmi = (weight / ((height / 100) ** 2)).toFixed(1);
-            document.getElementById('bmi-val').innerText = bmi;
-
-            // 2. ВОДА (35 мл на кг)
-            document.getElementById('h2o-val').innerText = (weight * 0.035).toFixed(1);
-
-            // 3. БАЗОВЫЙ МЕТАБОЛИЗМ (Mifflin-St Jeor)
-            const age = 2026 - year;
-            let bmr = (10 * weight) + (6.25 * height) - (5 * age);
-            bmr = (evolutionState.profile.sex === 'm') ? (bmr + 5) : (bmr - 161);
+        if (w > 0 && h > 0 && a > 0) {
+            db.weight = w; db.height = h; db.age = a;
             
-            const totalKcal = Math.round(bmr * 1.55); // Коэфф. активности
-            document.getElementById('kcal-val').innerText = totalKcal;
+            // Расчет ИМТ
+            const bmi = (w / ((h/100)**2)).toFixed(1);
+            document.getElementById('out-bmi').innerText = bmi;
 
-            // 4. БЖУ (Белки 1.8г/кг, Жиры 0.9г/кг)
-            const p = Math.round(weight * 1.8);
-            const f = Math.round(weight * 0.9);
-            const c = Math.round((totalKcal - (p * 4 + f * 9)) / 4);
+            // Вердикт ИИ
+            const ai = document.getElementById('ai-verdict');
+            if (bmi > 25) {
+                ai.innerText = `Анализ: ИМТ ${bmi} указывает на избыточный вес. Рекомендация: 70% тренировок в режиме HIGH (Табата/Sculpt) для активации липолиза.`;
+                ai.style.borderLeftColor = 'var(--accent-error)';
+            } else if (bmi < 18.5) {
+                ai.innerText = `Анализ: ИМТ ${bmi} ниже нормы. Рекомендация: Силовой Пилатес и увеличение белковой составляющей рациона на 25%.`;
+                ai.style.borderLeftColor = 'var(--accent-info)';
+            } else {
+                ai.innerText = `Анализ: ИМТ ${bmi} идеален. Тело находится в состоянии гомеостаза. Продолжайте в режиме Balance для поддержания тонуса.`;
+                ai.style.borderLeftColor = 'var(--accent-safe)';
+            }
 
+            // Калории и Вода
+            let base = (10 * w) + (6.25 * h) - (5 * a) + (db.sex === 'm' ? 5 : -161);
+            const totalKcal = Math.round(base * db.pal);
+            document.getElementById('out-bmr').innerText = totalKcal;
+            document.getElementById('out-water').innerText = (w * (db.pal > 1.4 ? 0.04 : 0.033)).toFixed(1);
+
+            // БЖУ (Формула 30/30/40)
+            const p = Math.round(w * 1.8);
+            const f = Math.round(w * 0.9);
+            const c = Math.round((totalKcal - (p*4 + f*9))/4);
             document.getElementById('p-val').innerText = p;
             document.getElementById('f-val').innerText = f;
             document.getElementById('c-val').innerText = c;
 
-            // 5. ВЕРДИКТ НЕЙРОСЕТИ
-            const aiVerdict = document.getElementById('ai-verdict-text');
-            if(bmi > 25) {
-                aiVerdict.innerHTML = `<b>Анализ:</b> ИМТ ${bmi} указывает на избыточную массу. <b>Рекомендация:</b> Сфокусируйтесь на <b>Табате</b> (3 раза в неделю) для разгона метаболизма и <b>МФР</b> для снятия отеков.`;
-                aiVerdict.style.borderLeftColor = "var(--accent-red)";
-            } else if(bmi < 18.5) {
-                aiVerdict.innerHTML = `<b>Анализ:</b> ИМТ ${bmi} (Дефицит массы). <b>Рекомендация:</b> Снизьте интенсивные кардио-нагрузки. Сделайте упор на <b>Body Sculpt</b> и <b>Здоровую Спину</b> для формирования корсета.`;
-                aiVerdict.style.borderLeftColor = "var(--accent-gold)";
-            } else {
-                aiVerdict.innerHTML = `<b>Анализ:</b> ИМТ ${bmi} — идеальный баланс. <b>Рекомендация:</b> Поддерживайте гибкость через <b>Sky Stretch</b> и <b>Шпагат</b>. Вы в отличной форме!`;
-                aiVerdict.style.borderLeftColor = "var(--accent-green)";
+            // Хранение истории
+            if (db.history.val[db.history.val.length - 1] !== w) {
+                db.history.val.push(w);
+                db.history.date.push(new Date().toLocaleDateString('ru', {day:'numeric', month:'short'}));
+                drawChart();
             }
-
-            // 6. ЛОГИРОВАНИЕ ВЕСА
-            const dateStr = new Date().toLocaleDateString('ru', {day:'numeric', month:'short'});
-            if(evolutionState.weightLogs.length === 0 || evolutionState.weightLogs[evolutionState.weightLogs.length-1].d !== dateStr) {
-                evolutionState.weightLogs.push({v: weight, d: dateStr});
-                if(evolutionState.weightLogs.length > 10) evolutionState.weightLogs.shift();
-            }
-            saveEvolutionData();
+            save();
         }
     }
 
-    // КАТАЛОГ ТРЕНИРОВОК
-    function renderWorkoutCatalog() {
-        const root = document.getElementById('workout-list-root');
-        root.innerHTML = '';
+    // Работа с тренировками
+    function setEnergy(e) {
+        currentE = e;
+        document.querySelectorAll('.toggle-btn').forEach(btn => {
+            if (['e-low','e-mid','e-high'].includes(btn.id)) btn.classList.remove('active');
+        });
+        document.getElementById('e-' + e).classList.add('active');
+        renderWorkouts();
+    }
 
-        workoutDatabase.forEach(workout => {
+    function renderWorkouts() {
+        const grid = document.getElementById('training-engine');
+        grid.innerHTML = '';
+        library.forEach(item => {
+            const isDim = (currentE === 'low' && item.energy === 'high') || (currentE === 'high' && item.energy === 'low');
             const card = document.createElement('div');
-            card.className = 'workout-card';
+            card.className = `workout-item ${isDim ? 'locked' : ''}`;
             card.innerHTML = `
-                <div class="w-name">${workout.name}</div>
-                <div class="w-stats">${evolutionState.records[workout.id] || 0} СЕССИЙ</div>
+                <div class="workout-name">${item.name}</div>
+                <div class="workout-meta">${db.logs[item.id] || 0} SECTIONS</div>
             `;
-            card.onclick = () => openWorkoutModal(workout);
-            root.appendChild(card);
+            card.onclick = () => { if(!isDim) openWorkout(item); };
+            grid.appendChild(card);
         });
-
-        // Обновление общего счетчика
-        const total = Object.values(evolutionState.records).reduce((a, b) => a + b, 0);
-        document.getElementById('global-counter').innerText = total;
+        document.getElementById('global-counter').innerText = Object.values(db.logs).reduce((a,b)=>a+b,0);
     }
 
-    // МОДАЛЬНОЕ ОКНО
-    function openWorkoutModal(workout) {
-        currentActiveWorkout = workout;
-        document.getElementById('m-header').innerText = workout.name;
-        document.getElementById('m-text').innerHTML = workout.desc;
-        document.getElementById('modal-root').classList.add('show');
+    function openWorkout(item) {
+        activePID = item.id;
+        document.getElementById('mw-title').innerText = item.name;
+        document.getElementById('mw-desc').innerText = item.desc;
+        document.getElementById('modal-workout').style.display = 'flex';
     }
 
-    function closeWorkoutModal() {
-        document.getElementById('modal-root').classList.remove('show');
+    function confirmWorkout() {
+        db.logs[activePID] = (db.logs[activePID] || 0) + 1;
+        const total = Object.values(db.logs).reduce((a,b)=>a+b,0);
+        save(); renderWorkouts(); closeWorkoutModal();
+        tg.HapticFeedback.notificationOccurred('success');
+        checkMilestones(total);
     }
 
-    // ЗАВЕРШЕНИЕ СЕССИИ
-    function recordSessionCompletion() {
-        // Увеличиваем счетчик конкретной тренировки
-        evolutionState.records[currentActiveWorkout.id] = (evolutionState.records[currentActiveWorkout.id] || 0) + 1;
-        
-        // Отмечаем активность в календаре (Пн-Вс)
-        let dayIdx = new Date().getDay(); // 0 (Вс) - 6 (Сб)
-        dayIdx = (dayIdx === 0) ? 6 : dayIdx - 1; // Превращаем в 0 (Пн) - 6 (Вс)
-        evolutionState.activityMap[dayIdx]++;
+    // Система Достижений (Масштабируемая)
+    function checkMilestones(count) {
+        let t = "", b = "";
+        if (count === 8) {
+            t = "СТАДИЯ: АДАПТАЦИЯ";
+            b = "8 тренировок завершены. Ваша нервная система адаптировалась к новым паттернам движения. Пропускная способность сосудов увеличилась на 12%.";
+        } else if (count === 24) {
+            t = "СТАДИЯ: ТРАНСФОРМАЦИЯ";
+            b = "24 занятия. Глубокие слои фасций стали эластичными. Метаболизм в состоянии покоя вырос на 7%. Вы начали менять архитектуру тела.";
+        } else if (count === 50) {
+            t = "СТАДИЯ: АТЛЕТИЗМ";
+            b = "50 занятий. Мышечный корсет сформирован. Уровень кортизола снижен на постоянной основе. Тело работает как единый механизм.";
+        } else if (count === 100) {
+            t = "СТАТУС: МОНОЛИТ";
+            b = "100 ТРЕНИРОВОК! Вы входите в элиту Lady Stretch. Ваши биологические показатели соответствуют атлету. Вы создали себя заново.";
+        } else if (count === 200) {
+            t = "СТАТУС: ЛЕГЕНДА";
+            b = "200 тренировок. Предел гибкости и силы достигнут. Ваш опыт позволяет управлять своим состоянием на нейронном уровне.";
+        }
 
-        // Сохраняем и обновляем UI
-        saveEvolutionData();
-        renderWorkoutCatalog();
-        syncCharts();
-        closeWorkoutModal();
-
-        // Обратная связь (вибрация)
-        tgApp.HapticFeedback.notificationOccurred('success');
-    }
-
-    // СОХРАНЕНИЕ
-    function saveEvolutionData() {
-        localStorage.setItem('monolith_v95_data', JSON.stringify(evolutionState));
-    }
-
-    // СЕРВИС СБРОСА
-    function masterSystemReset() {
-        if(confirm("Николай, это действие полностью сотрет историю тренировок и биометрии. Вы уверены?")) {
-            localStorage.removeItem('monolith_v95_data');
-            location.reload();
+        if (t) {
+            document.getElementById('award-title').innerText = t;
+            document.getElementById('award-text').innerText = b;
+            document.getElementById('modal-award').style.display = 'flex';
         }
     }
 
-    // МОДУЛЬ ГРАФИКОВ (Chart.js)
-    function syncCharts() {
-        // 1. График Активности
-        const ctxWeekly = document.getElementById('weeklyChart').getContext('2d');
-        if(window.wChart) window.wChart.destroy();
-        window.wChart = new Chart(ctxWeekly, {
-            type: 'bar',
-            data: {
-                labels: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
-                datasets: [{
-                    data: evolutionState.activityMap,
-                    backgroundColor: '#ffd700',
-                    borderRadius: 8,
-                    barPercentage: 0.6
-                }]
-            },
-            options: {
-                plugins: { legend: { display: false } },
-                scales: {
-                    y: { display: false },
-                    x: { ticks: { color: '#666', font: { size: 10 } }, grid: { display: false } }
-                }
-            }
-        });
+    // Хелперы и Модалки
+    function togglePALModal() {
+        const m = document.getElementById('modal-pal');
+        m.style.display = (m.style.display === 'flex') ? 'none' : 'flex';
+    }
 
-        // 2. График Веса
-        const ctxWeight = document.getElementById('weightTrendChart').getContext('2d');
-        if(window.wtChart) window.wtChart.destroy();
-        window.wtChart = new Chart(ctxWeight, {
+    function applyPAL(v, n) {
+        db.pal = v; db.palName = n;
+        document.getElementById('pal-display').innerText = n;
+        togglePALModal(); runEngine();
+    }
+
+    function closeWorkoutModal() { document.getElementById('modal-workout').style.display = 'none'; }
+    function save() { localStorage.setItem('monolith_v8_db', JSON.stringify(db)); }
+    function hardReset() { if(confirm("Внимание! Это удалит весь прогресс безвозвратно. Продолжить?")) { localStorage.clear(); location.reload(); } }
+
+    // Визуализация (Chart.js)
+    function drawChart() {
+        const ctx = document.getElementById('mainChart').getContext('2d');
+        if (window.myChart) window.myChart.destroy();
+        window.myChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: evolutionState.weightLogs.map(l => l.d),
+                labels: db.history.date.slice(-7),
                 datasets: [{
-                    data: evolutionState.weightLogs.map(l => l.v),
+                    data: db.history.val.slice(-7),
                     borderColor: '#fff',
-                    borderWidth: 2,
+                    borderWidth: 3,
                     tension: 0.4,
-                    pointRadius: 4,
-                    pointBackgroundColor: '#ffd700',
-                    fill: false
+                    fill: { target: 'origin', above: 'rgba(255,255,255,0.03)' },
+                    pointRadius: 5,
+                    pointBackgroundColor: '#fff'
                 }]
             },
             options: {
@@ -845,13 +890,14 @@
                 scales: {
                     x: { display: false },
                     y: { 
-                        ticks: { color: '#666', font: { size: 10 } },
-                        grid: { color: 'rgba(255,255,255,0.05)' }
+                        grid: { color: 'rgba(255,255,255,0.05)' }, 
+                        ticks: { color: 'rgba(255,255,255,0.3)', font: { size: 10 } } 
                     }
                 }
             }
         });
     }
 </script>
+
 </body>
 </html>
