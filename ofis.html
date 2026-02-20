@@ -18,6 +18,7 @@
             --success: #32d74b;
             --gold: #ffd700;
             --warning: #ffd60a;
+            --danger: #ff3b30; /* Яркий красный для кнопки сброса */
         }
 
         * { 
@@ -36,15 +37,18 @@
             overflow-x: hidden;
         }
 
+        /* ИСПРАВЛЕННЫЙ ПРЕЛОАДЕР (ЦЕНТРОВКА) */
         #preloader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 10000;
             display: flex; align-items: center; justify-content: center;
+            text-align: center;
             transition: opacity 1s ease, visibility 1s;
         }
         .intro-title {
             font-weight: 100; letter-spacing: 15px; font-size: 22px; color: #fff;
             text-transform: uppercase; animation: cinematic 3.5s ease-in-out forwards;
+            width: 100%;
         }
         @keyframes cinematic {
             0% { opacity: 0; letter-spacing: 5px; transform: scale(0.9); }
@@ -159,13 +163,29 @@
         }
         .btn-confirm:active { transform: scale(0.95); }
 
+        /* ИСПРАВЛЕННАЯ КНОПКА СБРОСА (ЯРКАЯ И ЗАМЕТНАЯ) */
         .btn-reset {
-            background: none; border: 1px solid rgba(255,255,255,0.1); 
-            color: rgba(255,255,255,0.2); padding: 12px 25px; border-radius: 20px; 
-            font-size: 10px; font-weight: 800; text-transform: uppercase; 
-            margin-top: 40px; margin-bottom: 20px; cursor: pointer; transition: 0.3s;
+            background: rgba(255, 59, 48, 0.15); 
+            border: 2px solid var(--danger); 
+            color: var(--danger); 
+            padding: 15px 35px; 
+            border-radius: 25px; 
+            font-size: 11px; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            margin-top: 40px; 
+            margin-bottom: 30px; 
+            cursor: pointer; 
+            transition: 0.3s;
+            box-shadow: 0 0 15px rgba(255, 59, 48, 0.2);
+            letter-spacing: 1px;
         }
-        .btn-reset:active { background: rgba(255,0,0,0.2); color: #fff; }
+        .btn-reset:active { 
+            background: var(--danger); 
+            color: #fff; 
+            box-shadow: 0 0 25px rgba(255, 59, 48, 0.6);
+            transform: scale(0.95);
+        }
     </style>
 </head>
 <body>
@@ -222,7 +242,7 @@
     <div class="section-label">Живая активность (7 дней)</div>
     <div class="chart-box"><canvas id="aChart" height="150"></canvas></div>
 
-    <center><button class="btn-reset" onclick="resetData()">Сбросить всё</button></center>
+    <center><button class="btn-reset" onclick="resetData()">Сбросить прогресс</button></center>
 
 </div>
 
