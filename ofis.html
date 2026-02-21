@@ -9,7 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;600;800&display=swap" rel="stylesheet">
     
-<style>
+    <style>
         :root {
             --glass-border: rgba(255, 255, 255, 0.18);
             --accent: #ffffff;
@@ -31,32 +31,96 @@
         body {
             font-family: 'Inter', sans-serif;
             color: var(--text-main);
-            background: #000 url('bg.jpg') no-repeat center center fixed;
+            background: #000;
             background-size: cover;
             min-height: 100vh;
             padding-bottom: 120px;
             overflow-x: hidden;
         }
 
-        /* ЦЕНТРИРОВАННАЯ КИНЕМАТОГРАФИЧНАЯ ЗАСТАВКА */
+        /* ============================================================
+           НОВАЯ ВЕРСИЯ ЗАСТАВКИ (MONOLITH LASER)
+           ============================================================ */
         #preloader {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; z-index: 10000;
-            display: flex; align-items: center; justify-content: center;
-            text-align: center;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000000;
+            z-index: 100000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
             transition: opacity 1s ease, visibility 1s;
         }
-        .intro-title {
-            font-weight: 100; letter-spacing: 15px; font-size: 26px; color: #fff;
-            text-transform: uppercase; animation: cinematic 3.5s ease-in-out forwards;
+
+        .laser-scanner {
             width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent 0%, var(--gold) 50%, transparent 100%);
+            box-shadow: 0 0 20px var(--gold), 0 0 40px var(--gold);
+            position: absolute;
+            top: -10%;
+            left: 0;
+            opacity: 0;
+            animation: laserScan 3s infinite cubic-bezier(0.4, 0, 0.2, 1);
         }
-        @keyframes cinematic {
-            0% { opacity: 0; letter-spacing: 5px; transform: scale(0.9); }
-            40% { opacity: 1; letter-spacing: 15px; transform: scale(1); }
-            70% { opacity: 1; transform: scale(1.05); }
-            100% { opacity: 0; transform: translateY(-30px) scale(1.1); }
+
+        @keyframes laserScan {
+            0% { top: 0%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
         }
+
+        .preloader-content {
+            text-align: center;
+            z-index: 10;
+        }
+
+        .brand-logo {
+            font-size: 32px;
+            font-weight: 100;
+            letter-spacing: 12px;
+            color: #ffffff;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .sub-logo {
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 6px;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            opacity: 0.8;
+        }
+
+        .status-container { width: 200px; margin: 0 auto; }
+        .status-bar {
+            width: 100%; height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px; overflow: hidden; margin-bottom: 15px;
+        }
+        .status-progress {
+            width: 0%; height: 100%;
+            background: var(--gold);
+            box-shadow: 0 0 10px var(--gold);
+            animation: progressLoad 2.5s forwards ease-in-out;
+        }
+        @keyframes progressLoad {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+        }
+        .status-text {
+            font-size: 8px; font-weight: 800;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 2px; text-transform: uppercase;
+        }
+
+        /* [КОНЕЦ СТИЛЕЙ ЗАСТАВКИ] */
 
         header {
             position: sticky; top: 0; width: 100%; height: 80px;
@@ -209,7 +273,17 @@
 </head>
 <body>
 
-<div id="preloader"><div class="intro-title">Evolution Elite</div></div>
+<div id="preloader">
+    <div class="laser-scanner"></div>
+    <div class="preloader-content">
+        <div class="brand-logo">LADY STRETCH</div>
+        <div class="sub-logo">EVOLUTION ELITE V6.5</div>
+        <div class="status-container">
+            <div class="status-bar"><div class="status-progress"></div></div>
+            <div class="status-text">ПОДГОТОВКА МОНОЛИТА...</div>
+        </div>
+    </div>
+</div>
 
 <header>
     <div style="font-weight:800; font-size:18px; letter-spacing:1px;">LADY STRETCH</div>
@@ -334,7 +408,7 @@
         weightHistory: {v: [], d: []}
     };
 
-    // СПИСОК ТРЕНИРОВОК С ПОЛНЫМ ОПИСАНИЕМ
+    // СПИСОК ТРЕНИРОВОК
     const workoutData = [
         { id:'mfr', n:'МФР Терапия', type:'low', desc:'Проработка триггерных точек. Устранение "зажимов" в фасциях, улучшение лимфотока и подвижности суставов.' },
         { id:'yoga', n:'Йога Релакс', type:'low', desc:'Снижение уровня кортизола через глубокое дыхание и статические асаны. Восстановление нервной системы.' },
@@ -353,15 +427,15 @@
     let currentEnergy = 'mid';
     let activeWorkoutId = null;
 
-    // ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ
     window.onload = () => {
-        // Убираем заставку через 3 сек
+        // УПРАВЛЕНИЕ ЗАСТАВКОЙ (Новое)
         setTimeout(() => {
-            document.getElementById('preloader').style.opacity = '0';
-            setTimeout(() => document.getElementById('preloader').style.display = 'none', 1000);
-        }, 3000);
+            const loader = document.getElementById('preloader');
+            loader.style.opacity = '0';
+            setTimeout(() => loader.style.display = 'none', 1000);
+        }, 3500); // 3.5 секунды для полного цикла сканера
 
-        // Загружаем значения в поля
+        // Загружаем значения
         document.getElementById('w-in').value = db.weight;
         document.getElementById('h-in').value = db.height;
         document.getElementById('a-in').value = db.age;
@@ -373,7 +447,6 @@
         runCalculations();
     };
 
-    // ФУНКЦИЯ ВЫБОРА ПОЛА
     function handleGender(g) {
         db.gender = g;
         document.getElementById('gen-m').classList.toggle('active', g === 'm');
@@ -382,7 +455,6 @@
         saveDB();
     }
 
-    // МЕНЮ АКТИВНОСТИ
     function openActivityMenu() { document.getElementById('act-modal').style.display = 'flex'; }
     function closeActivityMenu() { document.getElementById('act-modal').style.display = 'none'; }
     
@@ -395,7 +467,6 @@
         saveDB();
     }
 
-    // ГЛАВНЫЙ КАЛЬКУЛЯТОР
     function runCalculations() {
         const weight = parseFloat(document.getElementById('w-in').value);
         const height = parseFloat(document.getElementById('h-in').value);
@@ -403,49 +474,34 @@
 
         if (weight > 0 && height > 0 && age > 0) {
             db.weight = weight; db.height = height; db.age = age;
-            
-            // 1. ИМТ
             const bmi = (weight / ((height/100) ** 2)).toFixed(1);
             document.getElementById('bmi-val').innerText = bmi;
 
-            // 2. ДИНАМИЧЕСКИЙ СТАТУС ИМТ
             let status = "";
             let color = "var(--success)";
-            
             if (db.pal <= 1.2) {
-                if (bmi > 25) { 
-                    status = `Внимание! ИМТ ${bmi} при низкой активности — это избыток жировой ткани. Риск для сосудов. Срочно замените быстрые угли (шоколад) на белок и начните МФР!`; 
-                    color = "var(--danger)";
-                } else { status = "Вес в норме, но при текущей активности мышцы теряют тонус. Рекомендуем Sky Stretch."; }
-            } else if (db.pal >= 1.9) {
-                if (bmi > 26) { status = `Мощно! ИМТ ${bmi} при высокой активности говорит о плотной мышечной массе. Вы настоящий атлет!`; }
-                else { status = "Высокий метаболизм. Требуется усиленное питание и контроль электролитов."; }
-            } else {
-                status = bmi < 25 ? "Идеальный баланс. Вы в отличной форме для Lady Stretch!" : "Есть небольшой излишек. Рекомендуем Tabata и Body Sculpt.";
-            }
+                if (bmi > 25) { status = `Внимание! ИМТ ${bmi}. Избыток при низкой активности. Рекомендуем МФР!`; color = "var(--danger)"; }
+                else { status = "Вес в норме, но мышцам нужен тонус. Рекомендуем Sky Stretch."; }
+            } else { status = bmi < 25 ? "Идеальный баланс. Вы в отличной форме!" : "Есть излишек. Рекомендуем Tabata."; }
+            
             const stEl = document.getElementById('bmi-status');
             stEl.innerText = status; stEl.style.borderLeftColor = color;
 
-            // 3. ККАЛ (Миффлин-Сан Жеор)
             let bmr = (10 * weight) + (6.25 * height) - (5 * age);
             bmr = db.gender === 'm' ? bmr + 5 : bmr - 161;
             const totalKcal = Math.round(bmr * db.pal);
             document.getElementById('bmr-val').innerText = totalKcal;
 
-            // 4. ВОДА
             const water = (weight * (db.pal > 1.5 ? 0.04 : 0.033)).toFixed(1);
             document.getElementById('h2o-val').innerText = water;
 
-            // 5. БЖУ (БЕЛКИ ЖИРЫ УГЛЕВОДЫ)
             const prot = Math.round(weight * (db.pal > 1.5 ? 2.0 : 1.5));
             const fat = Math.round(weight * 0.9);
             const carb = Math.round((totalKcal - (prot * 4 + fat * 9)) / 4);
-            
             document.getElementById('p-val').innerText = prot;
             document.getElementById('f-val').innerText = fat;
             document.getElementById('c-val').innerText = carb;
 
-            // Сохранение истории веса для графика
             if (db.weightHistory.v[db.weightHistory.v.length-1] !== weight) {
                 db.weightHistory.v.push(weight);
                 db.weightHistory.d.push(new Date().toLocaleDateString('ru',{day:'numeric',month:'short'}));
@@ -455,7 +511,6 @@
         }
     }
 
-    // УПРАВЛЕНИЕ ЭНЕРГИЕЙ
     function changeEnergy(type) {
         currentEnergy = type;
         document.querySelectorAll('.liquid-btn').forEach(b => b.classList.remove('active'));
@@ -463,7 +518,6 @@
         renderAllWorkouts();
     }
 
-    // ОТРИСОВКА ТРЕНИРОВОК
     function renderAllWorkouts() {
         const grid = document.getElementById('w-grid');
         grid.innerHTML = '';
@@ -471,17 +525,13 @@
             const isDimmed = (currentEnergy === 'low' && w.type === 'high') || (currentEnergy === 'high' && w.type === 'low');
             const card = document.createElement('div');
             card.className = `w-card ${isDimmed ? 'dimmed' : ''}`;
-            card.innerHTML = `
-                <div class="w-name">${w.n}</div>
-                <div class="w-count">${db.logs[w.id] || 0} занятий</div>
-            `;
+            card.innerHTML = `<div class="w-name">${w.n}</div><div class="w-count">${db.logs[w.id] || 0} занятий</div>`;
             card.onclick = () => { if(!isDimmed) openWorkoutModal(w); };
             grid.appendChild(card);
         });
         document.getElementById('head-total').innerText = Object.values(db.logs).reduce((a,b) => a+b, 0);
     }
 
-    // МОДАЛКА ТРЕНИРОВКИ
     function openWorkoutModal(w) {
         activeWorkoutId = w.id;
         document.getElementById('m-title').innerText = w.n;
@@ -501,60 +551,36 @@
         tg.HapticFeedback.notificationOccurred('success');
     }
 
-    // ГРАФИКИ
     function updateCharts() {
-        // График веса
         const ctxW = document.getElementById('wChart').getContext('2d');
         if (window.weightChartObj) window.weightChartObj.destroy();
         window.weightChartObj = new Chart(ctxW, {
             type: 'line',
             data: {
                 labels: db.weightHistory.d.slice(-10),
-                datasets: [{
-                    data: db.weightHistory.v.slice(-10),
-                    borderColor: '#fff',
-                    borderWidth: 2,
-                    tension: 0.4,
-                    fill: false,
-                    pointBackgroundColor: '#fff'
-                }]
+                datasets: [{ data: db.weightHistory.v.slice(-10), borderColor: '#fff', borderWidth: 2, tension: 0.4, fill: false, pointBackgroundColor: '#fff' }]
             },
             options: { plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } } }
         });
 
-        // График активности (за последние 7 дней)
         const activityCounts = [0,0,0,0,0,0,0];
         const now = Date.now();
-        db.dates.forEach(timestamp => {
-            if (now - timestamp < 604800000) {
-                const day = new Date(timestamp).getDay();
-                activityCounts[day]++;
-            }
-        });
+        db.dates.forEach(timestamp => { if (now - timestamp < 604800000) activityCounts[new Date(timestamp).getDay()]++; });
         const ctxA = document.getElementById('aChart').getContext('2d');
         if (window.actChartObj) window.actChartObj.destroy();
         window.actChartObj = new Chart(ctxA, {
             type: 'bar',
             data: {
                 labels: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
-                datasets: [{
-                    data: activityCounts,
-                    backgroundColor: 'rgba(50, 215, 75, 0.6)',
-                    borderRadius: 8
-                }]
+                datasets: [{ data: activityCounts, backgroundColor: 'rgba(50, 215, 75, 0.6)', borderRadius: 8 }]
             },
             options: { plugins: { legend: { display: false } }, scales: { x: { ticks: { color: '#666' } }, y: { display: false } } }
         });
     }
 
-    // СИСТЕМНЫЕ
     function saveDB() { localStorage.setItem('monolith_v6_5_full', JSON.stringify(db)); }
-    
     function resetAllData() {
-        if (confirm("ВНИМАНИЕ: Все данные профиля и история тренировок будут удалены безвозвратно. Сбросить?")) {
-            localStorage.removeItem('monolith_v6_5_full');
-            location.reload();
-        }
+        if (confirm("Сбросить все данные?")) { localStorage.removeItem('monolith_v6_5_full'); location.reload(); }
     }
 </script>
 </body>
