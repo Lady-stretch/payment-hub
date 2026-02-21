@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>LS Evolution Elite | Premium Edition</title>
+    <title>LS Evolution Elite | Russian Premium</title>
     
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -12,12 +12,12 @@
     <style>
         :root {
             --bg: #050507;
-            --glass: rgba(255, 255, 255, 0.02);
+            --glass: rgba(255, 255, 255, 0.03);
             --border: rgba(255, 255, 255, 0.1);
             --accent: #b085ff;
-            --bronze: #cd7f32;
             --success: #32d74b;
             --danger: #ff453a;
+            --gold: #ffd700;
             --text-sec: rgba(255, 255, 255, 0.5);
         }
 
@@ -31,11 +31,11 @@
         #splash-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 9999; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; transition: opacity 1s ease;
+            align-items: center; justify-content: center; transition: opacity 0.8s ease;
         }
-        .laser-container { position: relative; }
+        .laser-container { position: relative; text-align: center; padding: 20px; }
         .laser-text {
-            font-size: 18px; font-weight: 800; letter-spacing: 6px; color: #333;
+            font-size: 14px; font-weight: 800; letter-spacing: 4px; color: #1a1a1a;
             text-transform: uppercase; position: relative;
         }
         .laser-text::after {
@@ -43,192 +43,170 @@
             position: absolute; left: 0; top: 0; color: var(--accent);
             width: 0; overflow: hidden; white-space: nowrap;
             border-right: 3px solid #fff;
-            animation: laser-scan 2.5s steps(40) forwards;
-            filter: drop-shadow(0 0 8px var(--accent));
+            animation: laser-scan 2s steps(40) forwards;
+            filter: drop-shadow(0 0 10px var(--accent));
         }
-        @keyframes laser-scan {
-            0% { width: 0; }
-            100% { width: 100%; }
-        }
+        @keyframes laser-scan { 0% { width: 0; } 100% { width: 100%; } }
 
-        /* 2. КОСМОС */
         #starfield { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
         
-        /* 3. КОНТЕЙНЕР */
-        .app-container {
-            max-width: 1200px; margin: 0 auto; padding: 20px;
-            display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; padding-top: 80px;
-        }
-        @media (max-width: 900px) { .app-container { grid-template-columns: 1fr; } }
-
+        /* 2. ШАПКА */
         header {
             position: fixed; top: 0; width: 100%; height: 60px;
-            background: rgba(5,5,7,0.8); backdrop-filter: blur(20px);
+            background: rgba(5,5,7,0.9); backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border); z-index: 100;
             display: flex; align-items: center; justify-content: space-between; padding: 0 20px;
         }
-        .logo { font-weight: 200; letter-spacing: 4px; font-size: 14px; }
-        .logo b { font-weight: 800; color: var(--accent); }
+        .logo { font-weight: 200; letter-spacing: 3px; font-size: 14px; }
+        .logo b { font-weight: 900; color: var(--accent); }
+
+        /* 3. КОНТЕНТ (MOBILE FIRST) */
+        .app-container {
+            max-width: 600px; margin: 0 auto; padding: 80px 15px 40px;
+            display: flex; flex-direction: column; gap: 15px;
+        }
 
         .card {
-            background: var(--glass); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
-            border: 1px solid var(--border); border-radius: 24px; padding: 24px;
-            box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1), 0 10px 40px rgba(0,0,0,0.5);
-            margin-bottom: 20px;
+            background: var(--glass); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--border); border-radius: 20px; padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .card-header { margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px; }
-        .card-title { font-size: 12px; font-weight: 800; letter-spacing: 2px; color: var(--accent); text-transform: uppercase; }
+        .card-header { margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px; }
+        .card-title { font-size: 11px; font-weight: 800; letter-spacing: 1px; color: var(--accent); text-transform: uppercase; }
 
-        /* СЕЛЕКТОРЫ */
-        .selector-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; }
+        /* СЕЛЕКТОРЫ КНОПОК */
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 15px; }
         .sel-btn {
             background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 12px;
-            padding: 12px 5px; color: var(--text-sec); font-size: 10px; font-weight: 600;
-            text-align: center; cursor: pointer; transition: 0.3s; text-transform: uppercase;
+            padding: 12px 5px; color: var(--text-sec); font-size: 10px; font-weight: 700;
+            text-align: center; cursor: pointer; transition: 0.2s; text-transform: uppercase;
         }
-        .sel-btn.active { background: var(--accent); color: #000; border-color: #fff; box-shadow: 0 0 15px rgba(176, 133, 255, 0.4); }
+        .sel-btn.active { background: var(--accent); color: #000; border-color: #fff; }
 
         /* ИНПУТЫ */
-        .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
-        .metric-input {
-            background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px;
-            padding: 12px; color: #fff; width: 100%; font-family: inherit; font-size: 13px; text-align: center;
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .input-box {
+            background: rgba(0,0,0,0.4); border: 1px solid var(--border); border-radius: 12px;
+            padding: 14px; color: #fff; width: 100%; font-family: inherit; font-size: 14px; text-align: center;
         }
 
         /* БЖУ ПАНЕЛЬ */
-        .bju-panel { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
-        .bju-box { background: rgba(0,0,0,0.2); padding: 15px 5px; border-radius: 15px; text-align: center; border: 1px solid rgba(255,255,255,0.03); }
-        .bju-val { display: block; font-size: 18px; font-weight: 800; color: #fff; }
-        .bju-lbl { font-size: 9px; color: var(--text-sec); text-transform: uppercase; letter-spacing: 1px; }
+        .stats-panel { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .stat-item { background: rgba(0,0,0,0.2); padding: 12px 5px; border-radius: 12px; text-align: center; border: 1px solid rgba(255,255,255,0.03); }
+        .stat-val { display: block; font-size: 16px; font-weight: 900; color: #fff; }
+        .stat-lbl { font-size: 8px; color: var(--text-sec); text-transform: uppercase; }
 
         /* ТРЕНИРОВКИ */
-        .buttons-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+        .workouts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .t-btn {
-            background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-            border-radius: 20px; padding: 20px 15px; text-align: center; cursor: pointer; transition: 0.3s;
+            background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+            border-radius: 15px; padding: 18px 10px; text-align: center; cursor: pointer;
         }
-        .t-btn:active { transform: scale(0.95); background: rgba(176, 133, 255, 0.1); }
-        .t-btn.locked { opacity: 0.15; filter: grayscale(1); pointer-events: none; }
-        .t-name { font-size: 12px; font-weight: 700; display: block; margin-bottom: 5px; }
-        .t-dur { font-size: 9px; color: var(--accent); font-weight: 800; }
+        .t-btn.locked { opacity: 0.2; filter: grayscale(1); pointer-events: none; }
+        .t-name { font-size: 11px; font-weight: 700; display: block; margin-bottom: 4px; }
+        .t-dur { font-size: 8px; color: var(--accent); font-weight: 900; }
 
-        .btn-main {
-            width: 100%; background: #fff; color: #000; border: none; padding: 15px;
-            border-radius: 15px; font-weight: 800; font-size: 12px; text-transform: uppercase; 
-            letter-spacing: 1px; cursor: pointer; margin-top: 10px;
+        .btn-action {
+            width: 100%; background: #fff; color: #000; border: none; padding: 16px;
+            border-radius: 14px; font-weight: 900; font-size: 11px; text-transform: uppercase; 
+            letter-spacing: 1px; margin-top: 10px;
         }
 
         /* МОДАЛКА */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); backdrop-filter: blur(15px);
-            z-index: 1000; display: none; align-items: center; justify-content: center;
+            background: rgba(0,0,0,0.95); backdrop-filter: blur(15px);
+            z-index: 2000; display: none; align-items: center; justify-content: center; padding: 20px;
         }
         .modal-content {
-            background: #0a0a0c; border: 1px solid var(--accent); border-radius: 30px;
-            padding: 40px; width: 90%; max-width: 400px; text-align: center;
+            background: #0a0a0c; border: 2px solid var(--accent); border-radius: 25px;
+            padding: 30px 20px; width: 100%; max-width: 350px; text-align: center;
+            box-shadow: 0 0 50px rgba(176, 133, 255, 0.3);
         }
 
-        #mainChart { min-height: 250px; }
+        /* ДИПЛОМ */
+        .diploma {
+            border: 4px double var(--gold); padding: 20px; margin-top: 10px;
+            background: linear-gradient(45deg, #1a1a1a, #000);
+        }
+
+        #mainChart { height: 220px !important; }
     </style>
 </head>
 <body>
 
 <div id="splash-screen">
-    <div class="laser-container">
-        <div class="laser-text">LADY STRETCH PREMIUM EVOLUTION</div>
-    </div>
+    <div class="laser-container"><div class="laser-text">LADY STRETCH PREMIUM EVOLUTION</div></div>
 </div>
 
 <canvas id="starfield"></canvas>
 
 <header>
     <div class="logo">LADY <b>STRETCH</b></div>
-    <div style="font-size: 9px; font-weight: 800; color: var(--accent); letter-spacing: 2px;">EVOLUTION ELITE</div>
+    <div id="total-count-top" style="font-size: 10px; font-weight: 800; color: var(--accent);">СЕАНСОВ: 0</div>
 </header>
 
 <div class="app-container">
     
-    <div class="left-col">
-        <div class="card">
-            <div class="card-header">
-                <span class="card-title">Метаболическая матрица</span>
-                <div id="status-msg" style="font-size: 10px; float: right; color: var(--success);">Система активна</div>
-            </div>
-            
-            <div class="selector-row">
-                <div class="sel-btn active" id="g-f" onclick="app.setGender('f')">Woman</div>
-                <div class="sel-btn" id="g-m" onclick="app.setGender('m')">Man</div>
-                <div style="display: flex; align-items: center; justify-content: center; font-size: 9px; opacity: 0.5;">ПОЛ</div>
-            </div>
-
-            <div class="metrics-grid">
-                <input type="number" id="in-w" class="metric-input" placeholder="Вес (кг)" oninput="app.calc()">
-                <input type="number" id="in-h" class="metric-input" placeholder="Рост (см)" oninput="app.calc()">
-                <input type="number" id="in-a" class="metric-input" placeholder="Возраст" oninput="app.calc()">
-                <div style="background: rgba(176,133,255,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px;" id="out-bmi">ИМТ: --</div>
-            </div>
-
-            <span style="font-size: 9px; color: var(--text-sec); letter-spacing: 2px; text-transform: uppercase;">Уровень активности</span>
-            <div class="selector-row" style="margin-top: 10px;">
-                <div class="sel-btn" id="act-1" onclick="app.setAct(1.2, 1)">Low</div>
-                <div class="sel-btn active" id="act-2" onclick="app.setAct(1.5, 2)">Mid</div>
-                <div class="sel-btn" id="act-3" onclick="app.setAct(1.8, 3)">High</div>
-            </div>
-
-            <div class="bju-panel">
-                <div class="bju-box"><span class="bju-val" id="out-k">--</span><span class="bju-lbl">Kcal</span></div>
-                <div class="bju-box"><span class="bju-val" id="out-p">--</span><span class="bju-lbl">Prot</span></div>
-                <div class="bju-box"><span class="bju-val" id="out-f">--</span><span class="bju-lbl">Fat</span></div>
-                <div class="bju-box"><span class="bju-val" id="out-c">--</span><span class="bju-lbl">Carb</span></div>
-                <div class="bju-box" style="grid-column: span 2; border-color: var(--accent);"><span class="bju-val" id="out-h2o" style="color:var(--accent)">--</span><span class="bju-lbl">Water (L)</span></div>
-            </div>
-            
-            <button class="btn-main" onclick="app.saveData()">Зафиксировать параметры</button>
+    <div class="card">
+        <div class="card-header"><span class="card-title">Состояние на сегодня</span></div>
+        <div class="grid-3">
+            <div class="sel-btn" id="res-1" onclick="app.setRes('СПАД', 0.8, 1)">Спад</div>
+            <div class="sel-btn active" id="res-2" onclick="app.setRes('НОРМА', 1.0, 2)">Норма</div>
+            <div class="sel-btn" id="res-3" onclick="app.setRes('ПИК', 1.2, 3)">Пик</div>
         </div>
-
-        <div class="card">
-            <div class="card-header"><span class="card-title">Прогрессия тела</span></div>
-            <div style="height: 280px;">
-                <canvas id="mainChart"></canvas>
-            </div>
-        </div>
+        <div id="res-info" style="font-size: 10px; color: var(--text-sec); text-align: center;">Режим «Норма»: Тело готово к стандартным нагрузкам.</div>
     </div>
 
-    <div class="right-col">
-        <div class="card">
-            <div class="card-header"><span class="card-title">Матрица ресурса</span></div>
-            <div class="selector-row">
-                <div class="sel-btn" id="res-1" onclick="app.setRes('СПАД', 0.8, 1)">Спад</div>
-                <div class="sel-btn active" id="res-2" onclick="app.setRes('НОРМА', 1.0, 2)">Норма</div>
-                <div class="sel-btn" id="res-3" onclick="app.setRes('ПИК', 1.2, 3)">Пик</div>
-            </div>
-            <div id="bio-content" style="font-size: 11px; line-height: 1.6; color: #ccc; font-style: italic; border-left: 2px solid var(--accent); padding-left: 15px;">
-                Выберите тренировку, чтобы активировать биологический анализ...
-            </div>
+    <div class="card">
+        <div class="card-header"><span class="card-title">Биометрический анализ</span></div>
+        <div class="grid-3" style="margin-bottom: 10px;">
+            <div class="sel-btn active" id="g-f" onclick="app.setGender('f')">Она</div>
+            <div class="sel-btn" id="g-m" onclick="app.setGender('m')">Он</div>
+            <div style="font-size: 8px; opacity: 0.5; display:flex; align-items:center; justify-content:center;">ВАШ ПОЛ</div>
         </div>
+        <div class="grid-2">
+            <input type="number" id="in-w" class="input-box" placeholder="Вес (кг)" oninput="app.calc()">
+            <input type="number" id="in-h" class="input-box" placeholder="Рост (см)" oninput="app.calc()">
+        </div>
+        <input type="number" id="in-a" class="input-box" style="margin-bottom:15px;" placeholder="Ваш возраст" oninput="app.calc()">
 
-        <div class="card">
-            <div class="card-header">
-                <span class="card-title">Журнал сеансов (50 мин)</span>
-                <span id="total-count" style="float:right; font-weight: 800; color: var(--accent);">0</span>
-            </div>
-            
-            <div style="font-size: 10px; opacity: 0.5; margin-bottom: 10px; letter-spacing: 2px;">MIND & BODY</div>
-            <div class="buttons-grid" id="grid-soft"></div>
-            
-            <div style="font-size: 10px; opacity: 0.5; margin: 20px 0 10px; letter-spacing: 2px;">POWER & SCULPT</div>
-            <div class="buttons-grid" id="grid-hard"></div>
+        <div class="stats-panel">
+            <div class="stat-item"><span class="stat-val" id="out-k">--</span><span class="stat-lbl">Ккал</span></div>
+            <div class="stat-item"><span class="stat-val" id="out-p">--</span><span class="stat-lbl">Белки</span></div>
+            <div class="stat-item"><span class="stat-val" id="out-f">--</span><span class="stat-lbl">Жиры</span></div>
         </div>
+        <div class="stats-panel" style="margin-top:8px;">
+            <div class="stat-item"><span class="stat-val" id="out-c">--</span><span class="stat-lbl">Углеводы</span></div>
+            <div class="stat-item" style="grid-column: span 2; border-color: var(--accent);"><span class="stat-val" id="out-h2o" style="color:var(--accent)">--</span><span class="stat-lbl">Вода (Литры)</span></div>
+        </div>
+        <button class="btn-action" onclick="app.saveData()">Сохранить замеры</button>
     </div>
+
+    <div class="card">
+        <div class="card-header"><span class="card-title">Динамика веса и активности</span></div>
+        <canvas id="mainChart"></canvas>
+    </div>
+
+    <div class="card">
+        <div class="card-header"><span class="card-title">Выбор практики (50 мин)</span></div>
+        <div style="font-size: 9px; opacity: 0.5; margin-bottom: 10px; letter-spacing: 1px;">МЯГКОЕ ВОССТАНОВЛЕНИЕ</div>
+        <div class="workouts-grid" id="grid-soft"></div>
+        
+        <div style="font-size: 9px; opacity: 0.5; margin: 20px 0 10px; letter-spacing: 1px;">ИНТЕНСИВНЫЙ ТРЕНИНГ</div>
+        <div class="workouts-grid" id="grid-hard"></div>
+    </div>
+
+    <button style="background:none; border:none; color:var(--danger); font-size:10px; padding:20px; text-transform:uppercase; letter-spacing:1px; opacity:0.5;" onclick="app.resetAll()">Сбросить всю историю</button>
 
 </div>
 
 <div class="modal-overlay" id="modal" onclick="app.closeModal()">
     <div class="modal-content" onclick="event.stopPropagation()">
-        <h2 id="m-title" style="font-weight: 800; font-size: 24px; color: var(--accent); margin-bottom: 15px;"></h2>
-        <p id="m-text" style="font-size: 14px; line-height: 1.6; color: #fff;"></p>
-        <button class="btn-main" style="background: transparent; border: 1px solid #fff; color: #fff; margin-top: 30px;" onclick="app.closeModal()">Принято</button>
+        <h2 id="m-title" style="margin:0 0 15px; font-weight:900; color:var(--accent); font-size:20px; text-transform:uppercase;"></h2>
+        <p id="m-text" style="font-size:13px; line-height:1.6; color:#ddd; text-align:left;"></p>
+        <div id="m-special"></div>
+        <button class="btn-action" style="margin-top:25px;" onclick="app.closeModal()">Продолжить</button>
     </div>
 </div>
 
@@ -236,28 +214,24 @@
     const tg = window.Telegram.WebApp;
     tg.expand();
 
-    const softWorkouts = [
-        { id: 'w1', name: 'Пилатес', fact: 'Глубокая стабилизация позвоночника. Формируем "корсет" здоровья.' },
-        { id: 'w2', name: 'Стретчинг', fact: 'Снятие фасциальных зажимов. Ваше тело становится пластичным, как шелк.' },
-        { id: 'w3', name: 'МФР', fact: 'Лимфодренажный эффект. Убираем отеки и запускаем регенерацию тканей.' },
-        { id: 'w4', name: 'Здоровая спина', fact: 'Декомпрессия дисков. Возвращаем правильную биомеханику движения.' },
-        { id: 'w5', name: 'Sky Stretching', fact: 'Антигравитация. Улучшаем кровоснабжение мозга и вытягиваем позвоночник.' },
-        { id: 'w6', name: 'Йога релакс', fact: 'Снижение кортизола. Глубокое ментальное восстановление.' }
+    const dataSoft = [
+        { id: 's1', name: 'Пилатес', fact: '<b>Биохакинг:</b> Активирует глубокие мышцы-стабилизаторы. Улучшает связь "мозг-тело". Исправляет осанку за счет декомпрессии.' },
+        { id: 's2', name: 'Стретчинг', fact: '<b>Биохакинг:</b> Снижает уровень кортизола. Растяжка фасций улучшает микроциркуляцию крови и лимфодренаж.' },
+        { id: 's3', name: 'МФР', fact: '<b>Биохакинг:</b> "Прокатка" тканей убирает триггерные точки. Эффект сравним с глубоким спортивным массажем.' },
+        { id: 's4', name: 'Sky Stretch', fact: '<b>Биохакинг:</b> Гравитационная вытяжка в гамаках. Улучшает кровоснабжение головного мозга и цвет лица.' }
     ];
 
-    const hardWorkouts = [
-        { id: 'w7', name: 'Подкачка+Шпагат', fact: 'Гибридный тренинг. Сила мышц и экстремальная гибкость.' },
-        { id: 'w8', name: 'Ягодицы+Пресс', fact: 'Гормональный отклик. Работа над самым мощным метаболическим узлом.' },
-        { id: 'w9', name: 'Круговая', fact: 'Энергозатраты пикового уровня. Жиросжигание в течение 24 часов.' },
-        { id: 'w10', name: 'Body Sculpt', fact: 'Архитектура тела. Создаем плотный рельеф и тонус.' },
-        { id: 'w11', name: 'Табата', fact: 'Максимальный VO2 max. Разгон метаболизма до предела.' },
-        { id: 'w12', name: 'TRX', fact: 'Функциональное превосходство. Работа с собственным весом в 3D плоскости.' }
+    const dataHard = [
+        { id: 'h1', name: 'Подкачка', fact: '<b>Биохакинг:</b> Создает метаболический отклик. Мышцы продолжают сжигать калории даже после тренировки.' },
+        { id: 'h2', name: 'Ягодицы+Пресс', fact: '<b>Биохакинг:</b> Работа с крупными мышечными группами стимулирует выработку соматотропина.' },
+        { id: 'h3', name: 'Табата', fact: '<b>Биохакинг:</b> Экстремальный разгон метаболизма. Увеличивает выносливость сердца и сосудов.' },
+        { id: 'h4', name: 'Body Sculpt', fact: '<b>Биохакинг:</b> Формирует мышечный рельеф и плотность костей. Замедляет процессы старения.' }
     ];
 
-    class MonolithApp {
+    class EvolutionApp {
         constructor() {
-            this.db = JSON.parse(localStorage.getItem('ls_evolution_v6')) || {
-                gender: 'f', weight: [], height: null, age: null, actVal: 1.5, actIdx: 2,
+            this.db = JSON.parse(localStorage.getItem('ls_elite_v6.3')) || {
+                gender: 'f', weight: [], height: null, age: null,
                 resName: 'НОРМА', resVal: 1.0, resIdx: 2,
                 logs: {}, historyDates: [], workoutHistory: []
             };
@@ -266,51 +240,40 @@
         }
 
         init() {
-            // Заставка
-            setTimeout(() => {
+            setTimeout(() => { 
                 document.getElementById('splash-screen').style.opacity = '0';
-                setTimeout(() => document.getElementById('splash-screen').style.display = 'none', 1000);
-            }, 2600);
+                setTimeout(() => document.getElementById('splash-screen').style.display = 'none', 800);
+            }, 2200);
 
-            // Рендер данных
             if(this.db.height) document.getElementById('in-h').value = this.db.height;
             if(this.db.age) document.getElementById('in-a').value = this.db.age;
             const lastW = this.db.weight[this.db.weight.length-1];
             if(lastW) document.getElementById('in-w').value = lastW;
 
             this.setGender(this.db.gender, false);
-            this.setAct(this.db.actVal, this.db.actIdx, false);
             this.setRes(this.db.resName, this.db.resVal, this.db.resIdx, false);
-            
             this.renderGrids();
             this.calc();
             this.initChart();
             this.initStars();
         }
 
-        setGender(g, update = true) {
+        setGender(g, update=true) {
             this.db.gender = g;
             document.getElementById('g-f').classList.toggle('active', g === 'f');
             document.getElementById('g-m').classList.toggle('active', g === 'm');
             if(update) this.calc();
         }
 
-        setAct(val, idx, update = true) {
-            this.db.actVal = val; this.db.actIdx = idx;
-            [1,2,3].forEach(i => document.getElementById('act-'+i).classList.remove('active'));
-            document.getElementById('act-'+idx).classList.add('active');
-            if(update) this.calc();
-        }
-
-        setRes(name, val, idx, update = true) {
+        setRes(name, val, idx, update=true) {
             this.db.resName = name; this.db.resVal = val; this.db.resIdx = idx;
             [1,2,3].forEach(i => document.getElementById('res-'+i).classList.remove('active'));
             document.getElementById('res-'+idx).classList.add('active');
             
-            const bio = document.getElementById('bio-content');
-            if(name === 'СПАД') bio.innerHTML = "<b style='color:var(--danger)'>ВНИМАНИЕ:</b> Ресурс низкий. Силовые нагрузки заблокированы. Фокус на восстановление (Mind & Body).";
-            else if(name === 'ПИК') bio.innerHTML = "<b style='color:var(--success)'>АНАЛИЗ:</b> Тело в суперкомпенсации. Идеальное время для рекордов и Power-протоколов.";
-            else bio.innerHTML = "Ресурс в норме. Сбалансированный тренинг разрешен.";
+            const info = document.getElementById('res-info');
+            if(name === 'СПАД') info.innerHTML = "<b style='color:var(--danger)'>ВНИМАНИЕ:</b> Ресурс низкий. Силовые нагрузки заблокированы. Только мягкие практики.";
+            else if(name === 'ПИК') info.innerHTML = "<b style='color:var(--success)'>АНАЛИЗ:</b> Вы на пике формы! Идеально для интенсивных жиросжигающих сессий.";
+            else info.innerHTML = "Ресурс в норме. Тело готово к стандартным нагрузкам.";
 
             if(update) { this.calc(); this.renderGrids(); }
         }
@@ -321,77 +284,96 @@
             const a = parseInt(document.getElementById('in-a').value);
 
             if(w && h && a) {
-                const bmi = (w / ((h/100)**2)).toFixed(1);
-                document.getElementById('out-bmi').innerText = `ИМТ: ${bmi}`;
-
-                // Mifflin-St Jeor
                 let bmr = (10 * w) + (6.25 * h) - (5 * a);
                 bmr = this.db.gender === 'm' ? bmr + 5 : bmr - 161;
+                const kcal = Math.round(bmr * 1.4 * this.db.resVal);
                 
-                const kcal = Math.round(bmr * this.db.actVal * this.db.resVal);
-                const p = Math.round(w * (this.db.gender === 'm' ? 1.8 : 1.5));
-                const f = Math.round(w * 0.9);
-                const c = Math.round((kcal - (p*4) - (f*9)) / 4);
-
                 document.getElementById('out-k').innerText = kcal;
-                document.getElementById('out-p').innerText = p;
-                document.getElementById('out-f').innerText = f;
-                document.getElementById('out-c').innerText = c;
+                document.getElementById('out-p').innerText = Math.round(w * (this.db.gender === 'm' ? 1.7 : 1.4));
+                document.getElementById('out-f').innerText = Math.round(w * 0.9);
+                document.getElementById('out-c').innerText = Math.round((kcal * 0.4) / 4);
                 document.getElementById('out-h2o').innerText = (w * 0.035).toFixed(1);
             }
         }
 
         renderGrids() {
-            const render = (list, target, isHard) => {
-                const container = document.getElementById(target);
-                container.innerHTML = '';
+            const draw = (list, target, isHard) => {
+                const box = document.getElementById(target);
+                box.innerHTML = '';
                 list.forEach(item => {
-                    const count = this.db.logs[item.id] || 0;
                     const locked = isHard && this.db.resName === 'СПАД';
                     const div = document.createElement('div');
                     div.className = `t-btn ${locked ? 'locked' : ''}`;
-                    div.innerHTML = `<span class="t-name">${item.name}</span><span class="t-dur">50 МИН</span><br><span style="font-size:9px; opacity:0.5">${count} сессий</span>`;
-                    div.onclick = () => this.addWorkout(item);
-                    container.appendChild(div);
+                    div.innerHTML = `<span class="t-name">${item.name}</span><span class="t-dur">50 МИНУТ</span>`;
+                    div.onclick = () => this.showExpertModal(item);
+                    box.appendChild(div);
                 });
             };
-            render(softWorkouts, 'grid-soft', false);
-            render(hardWorkouts, 'grid-hard', true);
+            draw(dataSoft, 'grid-soft', false);
+            draw(dataHard, 'grid-hard', true);
             
             const total = Object.values(this.db.logs).reduce((a,b)=>a+b,0);
-            document.getElementById('total-count').innerText = total;
+            document.getElementById('total-count-top').innerText = `СЕАНСОВ: ${total}`;
         }
 
-        addWorkout(item) {
-            this.db.logs[item.id] = (this.db.logs[item.id] || 0) + 1;
-            document.getElementById('bio-content').innerHTML = `<b style='color:var(--accent)'>${item.name}:</b> ${item.fact}`;
+        showExpertModal(item) {
+            document.getElementById('m-title').innerText = item.name;
+            document.getElementById('m-text').innerHTML = item.fact + "<br><br><b>Мнение эксперта:</b> Регулярное посещение этой тренировки в Lady Stretch меняет биохимию крови и подтягивает силуэт уже через 4 недели.";
             
-            tg.HapticFeedback.impactOccurred('medium');
-            this.saveData(false);
-            this.renderGrids();
+            const special = document.getElementById('m-special');
+            special.innerHTML = `<button class="btn-action" onclick="app.logWorkout('${item.id}', '${item.name}')">Засчитать тренировку</button>`;
+            
+            document.getElementById('modal').style.display = 'flex';
         }
 
-        saveData(withMetrics = true) {
+        logWorkout(id, name) {
+            this.db.logs[id] = (this.db.logs[id] || 0) + 1;
+            tg.HapticFeedback.impactOccurred('heavy');
+            this.closeModal();
+            this.renderGrids();
+            this.saveData(false);
+            
+            const total = Object.values(this.db.logs).reduce((a,b)=>a+b,0);
+            if(total === 8 || total === 32 || total === 96) this.showDiploma(total);
+        }
+
+        showDiploma(count) {
+            const m = document.getElementById('modal');
+            document.getElementById('m-title').innerText = "ДОСТИЖЕНИЕ!";
+            let rank = count === 96 ? "ГРАНД-МАСТЕР" : "АТЛЕТ ПРЕМИУМ";
+            document.getElementById('m-text').innerHTML = `Вы выполнили <b>${count} тренировок</b>. Это невероятный показатель дисциплины!`;
+            document.getElementById('m-special').innerHTML = `
+                <div class="diploma">
+                    <div style="font-size:10px; color:var(--gold)">LADY STRETCH EVOLUTION</div>
+                    <div style="font-size:18px; font-weight:900; margin:10px 0;">ДИПЛОМ: ${rank}</div>
+                    <div style="font-size:9px;">Это подтверждает вашу трансформацию</div>
+                </div>
+                <p style="font-size:9px; margin-top:10px;">Сделайте скриншот и отметьте нас!</p>
+            `;
+            m.style.display = 'flex';
+        }
+
+        saveData(withMetrics=true) {
             if(withMetrics) {
                 const w = parseFloat(document.getElementById('in-w').value);
-                const h = parseFloat(document.getElementById('in-h').value);
-                const a = parseInt(document.getElementById('in-a').value);
                 if(w) {
                     this.db.weight.push(w);
-                    this.db.height = h;
-                    this.db.age = a;
+                    this.db.height = document.getElementById('in-h').value;
+                    this.db.age = document.getElementById('in-a').value;
                     this.db.historyDates.push(new Date().toLocaleDateString('ru', {day:'numeric', month:'short'}));
                     const total = Object.values(this.db.logs).reduce((a,b)=>a+b,0);
                     this.db.workoutHistory.push(total);
-                    
-                    if(this.db.weight.length > 10) {
-                        this.db.weight.shift(); this.db.historyDates.shift(); this.db.workoutHistory.shift();
-                    }
                 }
-                tg.HapticFeedback.notificationOccurred('success');
             }
-            localStorage.setItem('ls_evolution_v6', JSON.stringify(this.db));
+            localStorage.setItem('ls_elite_v6.3', JSON.stringify(this.db));
             this.updateChart();
+        }
+
+        resetAll() {
+            if(confirm("Вы уверены? Весь прогресс будет стерт!")) {
+                localStorage.removeItem('ls_elite_v6.3');
+                location.reload();
+            }
         }
 
         initChart() {
@@ -399,69 +381,44 @@
             this.chart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: this.db.historyDates.length ? this.db.historyDates : ['Start'],
+                    labels: this.db.historyDates.length ? this.db.historyDates : ['Старт'],
                     datasets: [
-                        {
-                            label: 'Weight',
-                            data: this.db.weight,
-                            borderColor: '#b085ff',
-                            backgroundColor: 'rgba(176, 133, 255, 0.1)',
-                            fill: true, tension: 0.4, yAxisID: 'y'
-                        },
-                        {
-                            label: 'Workouts',
-                            data: this.db.workoutHistory,
-                            borderColor: '#32d74b',
-                            borderDash: [5,5],
-                            tension: 0.2, yAxisID: 'y1'
-                        }
+                        { label: 'Вес', data: this.db.weight, borderColor: '#b085ff', backgroundColor: 'rgba(176,133,255,0.1)', fill: true, tension: 0.4, yAxisID: 'y' },
+                        { label: 'Тренировки', data: this.db.workoutHistory, borderColor: '#32d74b', borderDash: [5,5], tension: 0.2, yAxisID: 'y1' }
                     ]
                 },
                 options: {
                     responsive: true, maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: {
-                        x: { ticks: { color: '#555', font: {size: 9} }, grid: {display: false} },
-                        y: { position: 'left', ticks: { color: '#b085ff' }, grid: {color: 'rgba(255,255,255,0.05)'} },
-                        y1: { position: 'right', ticks: { color: '#32d74b' }, grid: {display: false} }
+                        x: { ticks: { color: '#444', font: {size: 8} }, grid: {display: false} },
+                        y: { position: 'left', ticks: { color: '#b085ff', font: {size: 8} } },
+                        y1: { position: 'right', ticks: { color: '#32d74b', font: {size: 8} }, grid: {display: false} }
                     }
                 }
             });
         }
 
-        updateChart() {
-            if(this.chart) {
-                this.chart.data.labels = this.db.historyDates;
-                this.chart.data.datasets[0].data = this.db.weight;
-                this.chart.data.datasets[1].data = this.db.workoutHistory;
-                this.chart.update();
-            }
-        }
-
-        closeModal() { document.getElementById('modal').style.display = 'none'; }
+        updateChart() { if(this.chart) { this.chart.data.labels = this.db.historyDates; this.chart.data.datasets[0].data = this.db.weight; this.chart.data.datasets[1].data = this.db.workoutHistory; this.chart.update(); } }
+        closeModal() { document.getElementById('modal').style.display = 'none'; document.getElementById('m-special').innerHTML = ''; }
 
         initStars() {
-            const canvas = document.getElementById('starfield');
-            const ctx = canvas.getContext('2d');
-            let stars = [];
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            for(let i=0; i<400; i++) {
-                stars.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*1, o: Math.random(), s: Math.random()*0.02 });
-            }
-            const anim = () => {
-                ctx.clearRect(0,0,canvas.width, canvas.height);
+            const cvs = document.getElementById('starfield'); const ctx = cvs.getContext('2d');
+            cvs.width = window.innerWidth; cvs.height = window.innerHeight;
+            let stars = Array.from({length: 150}, () => ({ x: Math.random()*cvs.width, y: Math.random()*cvs.height, r: Math.random()*1, o: Math.random(), s: Math.random()*0.01 }));
+            const draw = () => {
+                ctx.clearRect(0,0,cvs.width, cvs.height);
                 stars.forEach(s => {
-                    ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
-                    ctx.fillStyle = `rgba(255,255,255,${s.o})`; ctx.fill();
+                    ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 7); ctx.fillStyle = `rgba(255,255,255,${s.o})`; ctx.fill();
                     s.o += s.s; if(s.o > 1 || s.o < 0) s.s = -s.s;
                 });
-                requestAnimationFrame(anim);
+                requestAnimationFrame(draw);
             };
-            anim();
+            draw();
         }
     }
 
-    const app = new MonolithApp();
+    const app = new EvolutionApp();
 </script>
 
 </body>
