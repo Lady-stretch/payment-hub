@@ -1,326 +1,354 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <script type="text/javascript">
-      (function(m,e,t,r,i,k,a){
-          m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-          m[i].l=1*new Date();
-          for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-          k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
-      })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=106320674', 'ym');
-      ym(106320674, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true});
-  </script>
-
-  <meta charset="UTF-8">
-  <title>Магия 2026 | Lady Stretch</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-  
-  <style>
-    :root { 
-        --pink: #FFD1DC; 
-        --purple: #5D3E8E; 
-        --gold: #D4AF37; 
-        --glass-bg: rgba(255, 255, 255, 0.45);
-        --glow: rgba(255, 209, 220, 0.5);
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Lady Stretch | Absolute Monolith 11.2</title>
     
-    body { 
-        background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); 
-        color: #2D1B3E; margin: 0; font-family: 'Inter', sans-serif; 
-        overflow-x: hidden; min-height: 100vh; 
-    }
-
-    header.fut-header {
-      position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
-      padding: 0 25px; display: flex; align-items: center; justify-content: space-between;
-      background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.5); height: 75px; box-sizing: border-box;
-    }
-    .header-logo { width: 150px; }
-    .header-center { color: var(--purple); font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-style: italic; opacity: 0.7; }
-    .header-nav { width: 150px; text-align: right; }
-    .nav-back { text-decoration: none; color: var(--purple); font-size: 0.75rem; font-weight: 700; border: 1px solid var(--purple); padding: 8px 18px; border-radius: 50px; text-transform: uppercase; transition: 0.3s; }
-    .nav-back:hover { background: var(--purple); color: white; }
-
-    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; max-width: 1200px; margin: 40px auto; padding: 0 20px; }
-    .card { background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.8); padding: 30px; border-radius: 28px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 15px 35px rgba(0,0,0,0.03); transition: 0.4s; position: relative; }
-    .card:hover { transform: translateY(-10px); background: rgba(255, 255, 255, 0.8); box-shadow: 0 20px 40px var(--glow); }
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;600;700;800;900&display=swap" rel="stylesheet">
     
-    .card.recommended { border: 1.5px solid var(--gold); background: rgba(255, 252, 242, 0.8); }
-    .card.recommended::before { content: "ТРЕНЕР РЕКОМЕНДУЕТ"; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #fff; padding: 4px 15px; font-size: 0.6rem; font-weight: 800; border-radius: 20px; white-space: nowrap; }
+    <style>
+        :root {
+            --accent: #CD7F32; /* Премиальная бронза */
+            --accent-glow: rgba(205, 127, 50, 0.4);
+            --bg-deep: #050505;
+            --panel-bg: rgba(15, 15, 15, 0.95);
+            --border: rgba(205, 127, 50, 0.2);
+            --text: #ffffff;
+            --text-dim: #888;
+        }
 
-    .card h3 { color: var(--purple); font-family: 'Cormorant Garamond', serif; margin: 0; font-size: 1.6rem; }
-    .price-big { font-size: 2rem; font-weight: 900; margin: 15px 0; color: var(--purple); }
-    
-    .btn-buy { display: block; background: var(--purple); color: #fff; text-align: center; padding: 16px; text-decoration: none; font-weight: 800; text-transform: uppercase; font-size: 0.75rem; border-radius: 14px; margin-top: 10px; transition: 0.3s; cursor: pointer; border: none; width: 100%; box-sizing: border-box; }
-    .link-loan { display: block; margin-top: 12px; font-size: 0.65rem; color: var(--purple); text-align: center; font-weight: 700; text-decoration: none; text-transform: uppercase; opacity: 0.6; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg-deep); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; overflow-x: hidden; }
 
-    .calc-container { max-width: 600px; margin: 20px auto 40px; padding: 35px; background: rgba(255,255,255,0.4); backdrop-filter: blur(25px); border-radius: 35px; border: 1px solid rgba(255,255,255,0.6); box-shadow: 0 20px 50px rgba(0,0,0,0.05); }
-    .calc-input { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); margin-top: 5px; font-size: 1rem; box-sizing: border-box; }
-    .calc-res-box { display: none; margin-top: 25px; animation: fadeIn 0.6s ease; }
-    .res-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-    .res-item { background: white; padding: 15px; border-radius: 15px; text-align: center; border: 1px solid rgba(0,0,0,0.03); }
-    .res-item span { display: block; font-size: 1.3rem; font-weight: 800; color: var(--purple); }
-    .ai-analysis-report { background: rgba(93, 62, 142, 0.05); padding: 20px; border-radius: 20px; border-left: 4px solid var(--purple); font-size: 0.85rem; line-height: 1.5; text-align: left; }
+        /* ФОН КОТОРЫЙ НЕ ГУЛЯЕТ */
+        .bg-fixed {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%);
+            z-index: -1; transform: translateZ(0);
+        }
 
-    .falling-item { position: absolute; cursor: pointer; font-size: 2rem; z-index: 50; user-select: none; }
-    .pred-bubble { position: absolute; background: var(--purple); color: #fff; padding: 10px 15px; border-radius: 12px; font-size: 0.75rem; animation: fadeUp 2.5s forwards; z-index: 100; text-align: center; width: 150px; font-weight: 600; line-height: 1.3; }
-    
-    @keyframes fadeUp { 0% { opacity: 0; transform: translateY(0); } 20% { opacity: 1; transform: translateY(-30px); } 100% { opacity: 0; transform: translateY(-70px); } }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    
-    #game-stat { position: fixed; top: 90px; right: 25px; background: #fff; padding: 8px 15px; border-radius: 14px; font-size: 0.7rem; border: 1px solid var(--purple); z-index: 1000; font-weight: 700; color: var(--purple); }
+        /* ЛАЗЕРНЫЙ СКАНЕР */
+        #scanner {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 10000; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; transition: 1.5s ease-in-out;
+        }
+        .laser {
+            position: absolute; width: 100%; height: 2px; background: var(--accent);
+            box-shadow: 0 0 25px var(--accent); animation: scan 2.5s infinite ease-in-out;
+        }
+        @keyframes scan { 0% { top: 0%; opacity: 0; } 50% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
 
-    /* ПОБЕДНОЕ ОКНО */
-    #win-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(45, 27, 62, 0.9); z-index: 5000; backdrop-filter: blur(10px); align-items: center; justify-content: center; }
-    .win-card { background: white; padding: 40px; border-radius: 35px; text-align: center; max-width: 400px; width: 85%; border: 3px solid var(--gold); box-shadow: 0 0 30px var(--gold); }
+        /* ШАПКА */
+        header {
+            position: sticky; top: 0; width: 100%; height: 90px;
+            background: rgba(0,0,0,0.95); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border); z-index: 1000;
+            display: flex; align-items: center; justify-content: space-between; padding: 0 25px;
+        }
+        .logo { font-size: 18px; font-weight: 200; letter-spacing: 6px; }
+        .logo b { color: var(--accent); font-weight: 900; }
+        .counter { text-align: right; }
+        .counter-num { font-size: 34px; font-weight: 900; color: var(--accent); line-height: 0.8; }
+        .counter-label { font-size: 8px; font-weight: 900; color: var(--text-dim); letter-spacing: 2px; margin-top: 5px; }
 
-    .quiz-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(25px); padding: 40px; border-radius: 35px; max-width: 480px; width: 90%; margin: 140px auto 50px; text-align: center; box-shadow: 0 20px 45px rgba(0,0,0,0.06); }
-    .quiz-option { display: block; width: 100%; padding: 18px; margin: 10px 0; background: #fff; border: 1px solid rgba(0,0,0,0.05); border-radius: 15px; cursor: pointer; text-align: center; transition: 0.3s; font-size: 0.95rem; font-weight: 600; }
-    .quiz-option:hover { background: var(--pink); transform: translateX(5px); }
+        /* КОНТЕЙНЕР */
+        .container { padding: 25px; max-width: 500px; margin: 0 auto; }
 
-    footer { 
-        margin-top: 80px; padding: 40px 20px; text-align: center; 
-        background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(10px); 
-        border-top: 1px solid rgba(255, 255, 255, 0.8);
-    }
-    .footer-link { font-size: 0.75rem; color: var(--purple); text-decoration: none; opacity: 0.6; font-weight: 700; transition: 0.3s; text-transform: uppercase; letter-spacing: 0.5px; }
-    .footer-link:hover { opacity: 1; color: var(--gold); }
-    .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 600; color: var(--purple); margin-top: 15px; letter-spacing: 2px; }
+        .label {
+            font-size: 11px; font-weight: 900; color: var(--accent);
+            text-transform: uppercase; letter-spacing: 3px;
+            margin: 35px 0 15px 5px; display: block;
+        }
 
-    @media (max-width: 992px) { .grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } .header-center { display: none; } .quiz-card { margin-top: 110px; } }
-  </style>
+        .panel {
+            background: var(--panel-bg); border: 1px solid var(--border);
+            border-radius: 24px; padding: 25px; margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        /* БИОМЕТРИЯ В РЯД */
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
+        .bio-box { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 18px; text-align: center; }
+        .bio-box label { font-size: 8px; font-weight: 900; color: var(--accent); display: block; margin-bottom: 8px; }
+        .bio-box input { width: 100%; background: transparent; border: none; color: #fff; font-size: 24px; font-weight: 700; text-align: center; outline: none; }
+
+        /* СЕЛЕКТОРЫ */
+        .selector { display: flex; gap: 10px; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 20px; }
+        .sel-btn { flex: 1; padding: 15px 5px; font-size: 10px; font-weight: 900; border-radius: 15px; text-align: center; color: var(--text-dim); cursor: pointer; transition: 0.4s; text-transform: uppercase; }
+        .sel-btn.active { background: var(--accent); color: #000; box-shadow: 0 0 20px var(--accent-glow); }
+
+        /* БЛОК БЖУ */
+        .bju-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); }
+        .bju-card { text-align: center; padding: 15px 5px; background: rgba(205, 127, 50, 0.05); border-radius: 15px; border: 1px solid rgba(205, 127, 50, 0.1); }
+        .bju-card .val { font-size: 20px; font-weight: 800; display: block; margin-bottom: 4px; }
+        .bju-card .unit { font-size: 8px; font-weight: 900; color: var(--accent); }
+
+        /* ЭКСПЕРТНЫЕ СКОБКИ */
+        .expert-advice {
+            border-left: 4px solid var(--accent); background: rgba(205, 127, 50, 0.05);
+            padding: 20px; border-radius: 0 20px 20px 0; margin: 30px 0;
+        }
+        .expert-advice h6 { font-size: 9px; font-weight: 900; color: var(--accent); margin-bottom: 10px; }
+        .expert-advice p { font-size: 14px; line-height: 1.6; color: #ddd; font-weight: 400; }
+
+        /* ТРЕНИРОВКИ */
+        .w-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .w-item {
+            background: var(--panel-bg); border: 1px solid var(--border);
+            border-radius: 22px; padding: 25px 15px; text-align: center; transition: 0.3s;
+        }
+        .w-item.locked { opacity: 0.15; filter: grayscale(1); pointer-events: none; }
+        .w-item h4 { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+        .w-item span { font-size: 9px; color: var(--accent); font-weight: 900; letter-spacing: 1px; }
+
+        /* ГРАФИКИ */
+        .chart-box { background: var(--panel-bg); border: 1px solid var(--border); border-radius: 24px; padding: 20px; margin-bottom: 20px; }
+        .chart-label { font-size: 9px; font-weight: 900; color: var(--text-dim); margin-bottom: 15px; text-transform: uppercase; text-align: center; }
+
+        /* МОДАЛКА */
+        .modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.98); z-index: 5000; display: none;
+            align-items: center; justify-content: center; padding: 30px;
+        }
+        .modal-inner { background: #111; border: 2px solid var(--accent); border-radius: 35px; padding: 45px 30px; width: 100%; text-align: center; }
+        .modal-inner h2 { color: var(--accent); font-size: 24px; margin-bottom: 20px; font-weight: 800; }
+        .modal-inner p { font-size: 15px; line-height: 1.7; color: #bbb; margin-bottom: 30px; }
+        .confirm-btn { width: 100%; padding: 22px; background: var(--accent); color: #000; border: none; border-radius: 18px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; }
+
+        /* ДИПЛОМ */
+        #diploma-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 10001; display: none; flex-direction: column;
+            align-items: center; justify-content: center; padding: 40px; text-align: center;
+            border: 20px solid var(--accent);
+        }
+    </style>
 </head>
 <body>
 
-  <div id="win-overlay">
-    <div class="win-card">
-      <h2 style="font-family: 'Cormorant Garamond', serif; color: var(--purple); font-size: 2rem;">Магия активирована! ✨</h2>
-      <p>Вы собрали все магические знаки.</p>
-      <div style="background: var(--pink); padding: 15px; border-radius: 15px; margin: 20px 0; font-weight: 800; color: var(--purple);">
-        🎁 ВАШ БОНУС:<br>+2 ЗАНЯТИЯ К ЛЮБОМУ АБОНЕМЕНТУ
-      </div>
-      <p style="font-size: 0.7rem; opacity: 0.7;">Сделайте скриншот и покажите администратору в Сыктывкаре!</p>
-      <button class="btn-buy" onclick="document.getElementById('win-overlay').style.display='none'">Вернуться к ценам</button>
-    </div>
-  </div>
+<div class="bg-fixed"></div>
 
-  <header class="fut-header">
-    <div class="header-logo"><img src="logo_header_final.png" alt="Lady Stretch" style="height:24px;"></div>
-    <div class="header-center">Ваш путь к легкости</div>
-    <div class="header-nav"><a href="index.html" class="nav-back">← На главную</a></div>
-  </header>
-
-  <div id="game-stat">МАГИЯ: <span id="score">0</span>/20</div>
-
-  <main id="quiz-view">
-    <div class="quiz-card">
-      <h2 id="q-title" style="font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; margin-bottom: 20px;">Какую цель вы ставите на 2026 год?</h2>
-      <div id="options-box">
-        <button class="quiz-option" onclick="handleChoice('health')">✨ Здоровая спина и осанка</button>
-        <button class="quiz-option" onclick="handleChoice('fit')">💃 Похудение и тонус мышц</button>
-        <button class="quiz-option" onclick="handleChoice('flex')">🌸 Гибкость, шпагат и легкость</button>
-      </div>
-    </div>
-  </main>
-
-  <section id="packages-view" style="display:none; padding-top: 100px;">
-    
-    <div class="calc-container">
-      <h3 style="text-align:center; font-family: 'Cormorant Garamond', serif; margin-bottom: 25px;">Биометрический анализ</h3>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-        <div><label style="font-size:0.6rem; font-weight:700; opacity:0.6;">ВЕС (КГ)</label><input type="number" id="weight" class="calc-input" placeholder="60"></div>
-        <div><label style="font-size:0.6rem; font-weight:700; opacity:0.6;">РОСТ (СМ)</label><input type="number" id="height" class="calc-input" placeholder="170"></div>
-      </div>
-      <div style="margin-bottom: 20px;"><label style="font-size:0.6rem; font-weight:700; opacity:0.6;">ВОЗРАСТ</label><input type="number" id="age" class="calc-input" placeholder="25"></div>
-      <button class="btn-buy" style="border:none;" onclick="runAnalysis()">Рассчитать показатели</button>
-
-      <div id="calc-results" class="calc-res-box">
-        <div class="res-grid">
-          <div class="res-item"><span id="res-kcal">0</span><label style="font-size:0.55rem; opacity:0.5;">Ккал/день</label></div>
-          <div class="res-item"><span id="res-water">0</span><label style="font-size:0.55rem; opacity:0.5;">Вода (л)</label></div>
-        </div>
-        <div class="ai-analysis-report">
-          <header style="font-weight:800; font-size:0.6rem; color:var(--purple); letter-spacing:1px; margin-bottom:10px;">✦ ЭКСПЕРТНОЕ ЗАКЛЮЧЕНИЕ</header>
-          <div id="ai-text"></div>
-        </div>
-      </div>
-    </div>
-
-    <center><div id="coach-msg" style="padding: 20px; font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--purple); max-width: 600px;"></div></center>
-    
-    <div class="grid">
-      <div class="card" id="c-64">
-        <div><h3>64 занятия</h3><p style="font-size:0.7rem; color:#666;">Полная перезагрузка тела</p><div class="price-big">38 080 ₽</div></div>
-        <div>
-          <a href="https://checkout.tochka.com/b880ee38-1c68-4215-85e8-1ca8081ec51a" class="btn-buy">Купить</a>
-          <a href="https://ecom.otpbank.ru/smart-form?config=20f5d944-cf78-4d48-99b7-b7c791aff1ba" class="link-loan">Рассрочка на 12 мес.</a>
-        </div>
-      </div>
-
-      <div class="card" id="c-32">
-        <div><h3>32 занятия</h3><p style="font-size:0.7rem; color:#666;">Результат, который заметят все</p><div class="price-big">20 160 ₽</div></div>
-        <div>
-          <a href="https://checkout.tochka.com/b880ee38-1c68-4215-85e8-1ca8081ec51a" class="btn-buy">Купить</a>
-          <a href="https://ecom.otpbank.ru/smart-form?config=0d5d1d9f-2491-464b-b356-bea9d09bc09e" class="link-loan">Рассрочка на 6 мес.</a>
-        </div>
-      </div>
-
-      <div class="card" id="c-16">
-        <div><h3>16 занятий</h3><p style="font-size:0.7rem; color:#666;">Мягкое знакомство с растяжкой</p><div class="price-big">10 640 ₽</div></div>
-        <a href="https://checkout.tochka.com/b880ee38-1c68-4215-85e8-1ca8081ec51a" class="btn-buy">Купить</a>
-      </div>
-
-      <div class="card" id="c-trial" style="background: rgba(255, 209, 220, 0.2);">
-        <div><h3>Пробное</h3><p style="font-size:0.7rem; color:#666;">Первый шаг к мечте</p><div class="price-big">455 ₽</div></div>
-        <a href="https://checkout.tochka.com/b880ee38-1c68-4215-85e8-1ca8081ec51a" class="btn-buy" style="background: #E08FA3;">Записаться</a>
-      </div>
-
-      <div class="card" id="c-unlimit" style="background: rgba(93, 62, 142, 0.05); border: 1.5px solid #5D3E8E; border-radius: 12px; padding: 20px; text-align: center;">
-    <div>
-        <h3 style="margin-bottom: 5px;">LS-CLUB PASS</h3>
-        <p style="font-size:0.8rem; color:#666; margin-bottom: 15px;">Залы Сыктывкара + Онлайн-платформа</p>
-        <div class="price-big" style="font-weight: bold; font-size: 1.5rem; margin-bottom: 20px;">5 000 ₽ <span style="font-size: 0.9rem; font-weight: normal;">/ мес</span></div>
-    </div>
-    <a href="https://t.me/LS_Club_Syktyvkar_bot" class="btn-buy" style="background:#2D1B3E; color: white; padding: 10px 20px; text-decoration: none; border-radius: 8px; display: block;">Вступить в клуб</a>
-    <p style="font-size: 0.6rem; color: #999; margin-top: 10px;">Автоматическое продление. Отмена в любой момент.</p>
+<div id="scanner">
+    <div class="laser"></div>
+    <h2 style="letter-spacing: 15px; font-weight: 100;">MONOLITH</h2>
+    <p style="font-size: 10px; color: var(--accent); font-weight: 900; margin-top: 10px;">LADY STRETCH SYKTYVKAR</p>
 </div>
 
-      <div class="card" id="c-online">
-        <div><h3>Lady Online</h3><p style="font-size:0.7rem; color:#666;">Твой зал в твоем кармане</p><div class="price-big">999 ₽</div></div>
-        <a href="https://t.me/LS_Club_Syktyvkar_bot" class="btn-buy" style="background:#0088cc;">Вступить в клуб</a>
-      </div>
+<header>
+    <div class="logo">LADY <b>STRETCH</b></div>
+    <div class="counter">
+        <div id="total-count" class="counter-num">0</div>
+        <div class="counter-label">ЗАНЯТИЙ</div>
+    </div>
+</header>
+
+<div class="container">
+    
+    <span class="label">🧬 Генетическая база</span>
+    <div class="panel">
+        <div class="selector" style="margin-bottom: 20px;">
+            <div class="sel-btn active" id="gen-f" onclick="core.updateGen('f')">Женщина</div>
+            <div class="sel-btn" id="gen-m" onclick="core.updateGen('m')">Мужчина</div>
+        </div>
+        <div class="grid-3">
+            <div class="bio-box"><label>ВЕС (КГ)</label><input type="number" id="in-w" placeholder="00" oninput="core.calculate()"></div>
+            <div class="bio-box"><label>РОСТ (СМ)</label><input type="number" id="in-h" placeholder="000" oninput="core.calculate()"></div>
+            <div class="bio-box"><label>ВОЗРАСТ</label><input type="number" id="in-a" placeholder="00" oninput="core.calculate()"></div>
+        </div>
     </div>
 
-    <footer>
-      <a href="https://vk.com/ladystretch_syktyvkar" class="footer-link">Вопросы по абонементам --> Написать нам в ВК</a>
-      <div class="footer-logo">LADY STRETCH 2026</div>
-    </footer>
-  </section>
+    <span class="label">🍏 Энергетический баланс и БЖУ</span>
+    <div class="panel">
+        <div class="grid-3" style="border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px;">
+            <div style="text-align: center;"><span id="out-bmi" style="font-size: 22px; font-weight: 800;">--</span><br><span style="font-size: 8px; color: var(--accent); font-weight: 900;">ИМТ</span></div>
+            <div style="text-align: center;"><span id="out-h2o" style="font-size: 22px; font-weight: 800;">--</span><br><span style="font-size: 8px; color: var(--accent); font-weight: 900;">ВОДА (Л)</span></div>
+            <div style="text-align: center;"><span id="out-kcal" style="font-size: 22px; font-weight: 800;">--</span><br><span style="font-size: 8px; color: var(--accent); font-weight: 900;">ККАЛ/ДЕНЬ</span></div>
+        </div>
+        <div class="bju-grid">
+            <div class="bju-card"><span id="out-b" class="val">--</span><span class="unit">БЕЛКИ (Г)</span></div>
+            <div class="bju-card"><span id="out-j" class="val">--</span><span class="unit">ЖИРЫ (Г)</span></div>
+            <div class="bju-card"><span id="out-u" class="val">--</span><span class="unit">УГЛЕВ. (Г)</span></div>
+        </div>
+    </div>
 
-  <script>
-    // МАГИЯ И ЛОШАДКИ
-    let score = parseInt(localStorage.getItem('magic_score_2026')) || 0;
-    const predictions = [
-        "2026 — год твоей легкости!", "Твое тело скажет спасибо!", "Шпагат станет реальностью!", 
-        "Время вдохновлять окружающих!", "Твоя энергия на пике!", "Лошадка приносит удачу!",
-        "Сегодня идеальный день для тренировки!", "Ты сияешь ярче всех звезд!", "Гибкость — это твоя суперсила!",
-        "Скоро ты почувствуешь невероятную легкость!", "Твои цели достижимы, действуй!", "Красивая осанка — твой залог уверенности!",
-        "Магия происходит там, где ты работаешь над собой!", "2026 подарит тебе новое тело!", "Твой прогресс восхищает!",
-        "С каждым днем ты становишься лучше!", "Растяжка — это любовь к себе!", "Доверься процессу, результат близко!",
-        "Ты — воплощение грации!", "Твой путь к мечте начался сегодня!"
-    ];
-    
-    document.getElementById('score').innerText = score;
+    <span class="label">🔋 Управление ресурсом</span>
+    <div class="panel selector">
+        <div class="sel-btn" id="res-1" onclick="core.updateRes('СПАД', 0.85, 1)">СПАД</div>
+        <div class="sel-btn active" id="res-2" onclick="core.updateRes('НОРМА', 1.0, 2)">НОРМА</div>
+        <div class="sel-btn" id="res-3" onclick="core.updateRes('ПИК', 1.15, 3)">ПИК</div>
+    </div>
 
-    function spawn() {
-      if(score >= 20) {
-          clearInterval(spawnInterval);
-          return;
-      }
-      const el = document.createElement('div');
-      el.className = 'falling-item';
-      const items = ['✨','🌸','💎','🐎','✨','🐎','💎']; 
-      el.innerText = items[Math.floor(Math.random()*items.length)];
-      el.style.left = Math.random()*90+'%'; 
-      el.style.top = '70px';
-      document.body.appendChild(el);
+    <span class="label">🏃 Коэффициент активности</span>
+    <div class="panel selector">
+        <div class="sel-btn active" id="act-1" onclick="core.updateAct(1.2, 1)">Низкая</div>
+        <div class="sel-btn" id="act-2" onclick="core.updateAct(1.375, 2)">Средняя</div>
+        <div class="sel-btn" id="act-3" onclick="core.updateAct(1.55, 3)">Высокая</div>
+        <div class="sel-btn" id="act-4" onclick="core.updateAct(1.9, 4)">MAX</div>
+    </div>
 
-      const animation = el.animate([
-        {top: '70px', transform: 'rotate(0deg)'}, 
-        {top: '100vh', transform: 'rotate(360deg)'}
-      ], {
-        duration: 7000 + Math.random() * 3000,
-        easing: 'linear'
-      });
+    <div class="expert-advice">
+        <h6>ЗАКЛЮЧЕНИЕ ЭКСПЕРТА:</h6>
+        <p id="expert-opinion">Система ожидает ввод биометрических данных для формирования стратегии тренировок.</p>
+    </div>
 
-      animation.onfinish = () => el.remove();
+    <span class="label">📊 Динамика изменений (ВЕС)</span>
+    <div class="chart-box">
+        <canvas id="weightChart"></canvas>
+    </div>
 
-      el.onclick = (e) => {
-        if(score >= 20) return;
-        score++; 
-        localStorage.setItem('magic_score_2026', score);
-        document.getElementById('score').innerText = score;
-        
-        const b = document.createElement('div'); 
-        b.className = 'pred-bubble';
-        b.innerText = predictions[Math.floor(Math.random()*predictions.length)];
-        b.style.left = (e.pageX - 75) + 'px'; 
-        b.style.top = (e.pageY - 50) + 'px';
-        document.body.appendChild(b); 
-        
-        el.remove();
-        setTimeout(() => b.remove(), 2500);
+    <span class="label">📅 Дисциплина (ПОСЕЩЕНИЯ)</span>
+    <div class="chart-box">
+        <canvas id="disciplineChart"></canvas>
+    </div>
 
-        if(score === 20) {
-            clearInterval(spawnInterval);
-            document.querySelectorAll('.falling-item').forEach(i => i.remove());
-            document.getElementById('win-overlay').style.display = 'flex';
+    <span class="label">🧘 Протоколы тренировок (50 мин)</span>
+    <div class="w-grid" id="workouts"></div>
+
+</div>
+
+<div id="modal-w" class="modal" onclick="core.closeModal()">
+    <div class="modal-inner" onclick="event.stopPropagation()">
+        <h2 id="modal-title"></h2>
+        <p id="modal-desc"></p>
+        <button class="confirm-btn" onclick="core.logWorkout()">Зафиксировать тренировку</button>
+    </div>
+</div>
+
+<div id="diploma-layer" onclick="this.style.display='none'">
+    <h1 style="color: var(--accent); font-size: 50px; font-weight: 900;">ДИПЛОМ</h1>
+    <h3 style="letter-spacing: 5px; margin-top: 10px;">СТАТУС: МОНОЛИТ</h3>
+    <div style="width: 100px; height: 1px; background: var(--accent); margin: 30px 0;"></div>
+    <p id="diploma-text" style="line-height: 2; font-size: 16px; max-width: 320px;"></p>
+    <p style="margin-top: 40px; font-size: 10px; color: var(--accent); font-weight: 900;">LADY STRETCH SYKTYVKAR</p>
+    <p style="font-size: 12px; font-weight: 800;">Николай Худяков & Ольга</p>
+</div>
+
+<script>
+const protocols = [
+    { id: 'p1', n: 'Пилатес', t: 'soft', d: 'Интеллектуальный подход к телу. Работаем над глубокой стабилизацией, исправляем осанку и создаем «умный» мышечный корсет. Идеально для тех, кто ценит точность движений.' },
+    { id: 'p2', n: 'МФР', t: 'soft', d: 'Миофасциальный релиз. Глубокое воздействие на соединительную ткань (фасции). Убираем «забитость» мышц, улучшаем лимфоток и снимаем отечность.' },
+    { id: 'p3', n: 'Здоровая спина', t: 'soft', d: 'Терапевтический протокол. Снимаем нагрузку с поясницы и шейного отдела, восстанавливаем мобильность позвоночника и возвращаем легкость движений.' },
+    { id: 'p4', n: 'Стретчинг', t: 'soft', d: 'Развитие эластичности и гибкости. Мы не просто тянемся — мы увеличиваем амплитуду движений и делаем тело грациозным.' },
+    { id: 'p5', n: 'Sky Stretching', t: 'soft', d: 'Аэро-стретчинг в гамаках. Декомпрессия позвоночника под собственным весом. Ощущение невесомости и максимальная эффективность растяжки.' },
+    { id: 'p6', n: 'Подкачка + Растяжка', t: 'hard', d: 'Функциональный микс. Сначала создаем правильный тонус мышц, затем растягиваем их, формируя длинный и сухой рельеф без лишнего объема.' },
+    { id: 'p7', n: 'Ягодицы + Пресс', t: 'hard', d: 'Силовой акцент на самые важные зоны. Интенсивная проработка большой ягодичной мышцы и укрепление мышц живота.' },
+    { id: 'p8', n: 'Круговая', t: 'hard', d: 'Метаболический взрыв. Высокая интенсивность, работа на выносливость и активное жиросжигание. Проверка вашего характера.' },
+    { id: 'p9', n: 'Body Sculpt', t: 'hard', d: 'Силовая архитектура. Работа с оборудованием над каждой группой мышц для создания идеальных контуров тела.' },
+    { id: 'p10', n: 'Табата', t: 'hard', d: 'Японская система интервалов 20/10. Максимальный разгон метаболизма, который продолжает работать даже после тренировки.' },
+    { id: 'p11', n: 'Функционал', t: 'hard', d: 'Развитие 5 физических качеств. Подготовка тела к любым жизненным нагрузкам через сложные многосуставные движения.' },
+    { id: 'p12', n: 'Йога Релакс', t: 'soft', d: 'Психосоматическая разгрузка. Работа с дыханием и глубокой статикой для снижения уровня стресса и кортизола.' }
+];
+
+class MonolithCore {
+    constructor() {
+        this.data = JSON.parse(localStorage.getItem('ls_monolith_absolute')) || {
+            gen: 'f', w: '', h: '', a: '', act: 1.2, actI: 1, res: 1.0, resI: 2, resN: 'НОРМА',
+            logs: {}, weightHistory: [], activityHistory: [0,0,0,0,0,0,0], dates: []
+        };
+        this.activeId = null;
+        this.init();
+    }
+
+    init() {
+        setTimeout(() => { document.getElementById('scanner').style.opacity = '0'; setTimeout(()=>document.getElementById('scanner').style.display='none', 1500); }, 2500);
+        document.getElementById('in-w').value = this.data.w;
+        document.getElementById('in-h').value = this.data.h;
+        document.getElementById('in-a').value = this.data.a;
+        this.updateGen(this.data.gen);
+        this.updateAct(this.data.act, this.data.actI);
+        this.updateRes(this.data.resN, this.data.res, this.data.resI);
+        this.renderWorkouts();
+        this.calculate();
+        this.renderCharts();
+    }
+
+    updateGen(g) { this.data.gen = g; document.getElementById('gen-f').classList.toggle('active', g==='f'); document.getElementById('gen-m').classList.toggle('active', g==='m'); this.calculate(); }
+    updateAct(v, i) { this.data.act = v; this.data.actI = i; for(let j=1;j<=4;j++) document.getElementById('act-'+j).classList.remove('active'); document.getElementById('act-'+i).classList.add('active'); this.calculate(); }
+    updateRes(n, v, i) { this.data.resN = n; this.data.res = v; this.data.resI = i; for(let j=1;j<=3;j++) document.getElementById('res-'+j).classList.remove('active'); document.getElementById('res-'+i).classList.add('active'); this.calculate(); this.renderWorkouts(); }
+
+    calculate() {
+        const w = parseFloat(document.getElementById('in-w').value);
+        const h = parseFloat(document.getElementById('in-h').value);
+        const a = parseInt(document.getElementById('in-a').value);
+        if(w && h && a) {
+            this.data.w = w; this.data.h = h; this.data.a = a;
+            const bmi = (w / ((h/100)**2)).toFixed(1);
+            let bmr = (10 * w + 6.25 * h - 5 * a + (this.data.gen==='m'?5:-161)) * this.data.act * this.data.res;
+            
+            document.getElementById('out-bmi').innerText = bmi;
+            document.getElementById('out-h2o').innerText = (w * 0.035).toFixed(1);
+            document.getElementById('out-kcal').innerText = Math.round(bmr);
+            document.getElementById('out-b').innerText = Math.round((bmr * 0.3) / 4);
+            document.getElementById('out-j').innerText = Math.round((bmr * 0.25) / 9);
+            document.getElementById('out-u').innerText = Math.round((bmr * 0.45) / 4);
+
+            const exp = document.getElementById('expert-opinion');
+            if(this.data.resN === 'СПАД') exp.innerHTML = "<b>КРИТИЧЕСКИЙ РЕСУРС.</b> Организм в режиме энергосбережения. Силовые нагрузки заблокированы. Рекомендуем МФР для детоксикации и восстановления.";
+            else if(bmi > 25) exp.innerHTML = "<b>АНАЛИЗ:</b> ИМТ выше нормы. Акцент на жиросжигающие протоколы (Табата, Круговая) и контроль углеводного окна.";
+            else exp.innerHTML = "<b>НОРМА:</b> Тело готово к прогрессии. Сочетайте функциональный тренинг со Sky Stretching для баланса силы и гибкости.";
+
+            if(this.data.weightHistory[this.data.weightHistory.length-1] !== w) {
+                this.data.weightHistory.push(w);
+                this.data.dates.push(new Date().toLocaleDateString('ru',{day:'numeric',month:'short'}));
+                this.renderCharts();
+            }
+            this.save();
         }
-      };
-    }
-    const spawnInterval = setInterval(spawn, 2500);
-
-    // КВИЗ
-    let tempGoal = "";
-    function handleChoice(val) {
-      const box = document.getElementById('options-box');
-      const title = document.getElementById('q-title');
-      if(!tempGoal) {
-        tempGoal = val; 
-        title.innerText = "Где вам удобнее тренироваться?";
-        box.innerHTML = `
-          <button class="quiz-option" onclick="showFinal('studio')">🏢 В студии (Сыктывкар)</button>
-          <button class="quiz-option" onclick="showFinal('online')">⏳ Дома (онлайн-курс)</button>
-          <button class="quiz-option" onclick="showFinal('hybrid')">🏠 Гибридный формат</button>
-        `;
-      }
     }
 
-    function showFinal(type) {
-      document.getElementById('quiz-view').style.display = 'none';
-      document.getElementById('packages-view').style.display = 'block';
-      const msg = document.getElementById('coach-msg');
-      if(type === 'online') { 
-          document.getElementById('c-online').classList.add('recommended'); 
-          msg.innerHTML = "Для ваших целей идеально подходит:<br><strong>ONLINE-КЛУБ</strong>"; 
-      }
-      else if(type === 'hybrid') { 
-          document.getElementById('c-32').classList.add('recommended'); 
-          msg.innerHTML = "Оптимальный старт для вас:<br><strong>32 ЗАНЯТИЯ</strong>"; 
-      }
-      else { 
-          document.getElementById('c-64').classList.add('recommended'); 
-          msg.innerHTML = "Максимальный результат даст:<br><strong>64 ЗАНЯТИЯ</strong>"; 
-      }
-      window.scrollTo({top: 0, behavior: 'smooth'});
+    renderWorkouts() {
+        const grid = document.getElementById('workouts'); grid.innerHTML = '';
+        protocols.forEach(p => {
+            const count = this.data.logs[p.id] || 0;
+            const locked = this.data.resN === 'СПАД' && p.t === 'hard';
+            grid.innerHTML += `<div class="w-item ${locked?'locked':''}" onclick="core.openModal('${p.id}')"><h4>${p.n}</h4><span>${count} СЕАНСОВ</span></div>`;
+        });
+        document.getElementById('total-count').innerText = Object.values(this.data.logs).reduce((a,b)=>a+b,0);
+        if(Object.values(this.data.logs).reduce((a,b)=>a+b,0) >= 150) this.showDiploma();
     }
 
-    // БИОМЕТРИЯ
-    function runAnalysis() {
-      const w = parseFloat(document.getElementById('weight').value);
-      const h = parseFloat(document.getElementById('height').value);
-      const a = parseFloat(document.getElementById('age').value);
-      if(!w || !h || !a) return alert("Пожалуйста, заполните данные для расчета");
-      
-      const bmr = (10 * w) + (6.25 * h) - (5 * a) - 161;
-      const maintenance = Math.round(bmr * 1.375);
-      const bmi = w / ((h/100)**2);
+    openModal(id) { this.activeId = id; const p = protocols.find(x=>x.id===id); document.getElementById('modal-title').innerText = p.n; document.getElementById('modal-desc').innerText = p.d; document.getElementById('modal-w').style.display='flex'; }
+    closeModal() { document.getElementById('modal-w').style.display='none'; }
 
-      document.getElementById('res-kcal').innerText = maintenance;
-      document.getElementById('res-water').innerText = (w * 0.033).toFixed(1);
-
-      let report = "";
-      if (bmi < 18.5) report = "Вашему телу необходим бережный тонус. Акцент на Sky Stretching поможет укрепить мышечный корсет без нагрузки на суставы, сохраняя изящность.";
-      else if (bmi > 25) report = "Приоритетная задача — запуск лимфодренажа. МФР и растяжка позволят снизить отечность и ускорить метаболизм уже в первый месяц.";
-      else report = "Ваши показатели в норме. Рекомендуем фокус на эластичности связок и глубоком расслаблении — это снизит биологический возраст сосудов и улучшит сон.";
-
-      document.getElementById('ai-text').innerText = report;
-      document.getElementById('calc-results').style.display = 'block';
-      document.getElementById('calc-results').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    logWorkout() {
+        this.data.logs[this.activeId] = (this.data.logs[this.activeId] || 0) + 1;
+        const day = new Date().getDay();
+        this.data.activityHistory[day === 0 ? 6 : day - 1]++;
+        window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
+        this.save(); this.renderWorkouts(); this.renderCharts(); this.closeModal();
     }
-  </script>
+
+    renderCharts() {
+        const ctxW = document.getElementById('weightChart').getContext('2d');
+        if(this.chW) this.chW.destroy();
+        this.chW = new Chart(ctxW, {
+            type: 'line',
+            data: { labels: this.data.dates.slice(-7), datasets: [{ data: this.data.weightHistory.slice(-7), borderColor: '#CD7F32', tension: 0.4, borderWeight: 3, pointRadius: 2, fill: true, backgroundColor: 'rgba(205,127,50,0.05)' }] },
+            options: { plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { grid: { color: '#222' }, ticks: { color: '#555' } } } }
+        });
+
+        const ctxA = document.getElementById('disciplineChart').getContext('2d');
+        if(this.chA) this.chA.destroy();
+        this.chA = new Chart(ctxA, {
+            type: 'bar',
+            data: { labels: ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'], datasets: [{ data: this.data.activityHistory, backgroundColor: '#CD7F32', borderRadius: 8 }] },
+            options: { plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { beginAtZero: true, grid: { color: '#222' }, ticks: { color: '#555', stepSize: 1 } } } }
+        });
+    }
+
+    showDiploma() {
+        document.getElementById('diploma-text').innerText = "Николай Худяков и Ольга поздравляют вас! Пройдя 150 сессий, вы достигли состояния МОНОЛИТ. Это высшая степень владения своим телом и дисциплиной.";
+        document.getElementById('diploma-layer').style.display = 'flex';
+    }
+
+    save() { localStorage.setItem('ls_monolith_absolute', JSON.stringify(this.data)); }
+}
+const core = new MonolithCore();
+</script>
 </body>
 </html>
