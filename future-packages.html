@@ -1,428 +1,326 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Lady Stretch | Absolute Monolith</title>
+  <script type="text/javascript">
+      (function(m,e,t,r,i,k,a){
+          m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+          m[i].l=1*new Date();
+          for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+          k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+      })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=106320674', 'ym');
+      ym(106320674, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true});
+  </script>
+
+  <meta charset="UTF-8">
+  <title>Магия 2026 | Lady Stretch</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root { 
+        --pink: #FFD1DC; 
+        --purple: #5D3E8E; 
+        --gold: #D4AF37; 
+        --glass-bg: rgba(255, 255, 255, 0.45);
+        --glow: rgba(255, 209, 220, 0.5);
+    }
     
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    body { 
+        background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); 
+        color: #2D1B3E; margin: 0; font-family: 'Inter', sans-serif; 
+        overflow-x: hidden; min-height: 100vh; 
+    }
+
+    header.fut-header {
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+      padding: 0 25px; display: flex; align-items: center; justify-content: space-between;
+      background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.5); height: 75px; box-sizing: border-box;
+    }
+    .header-logo { width: 150px; }
+    .header-center { color: var(--purple); font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-style: italic; opacity: 0.7; }
+    .header-nav { width: 150px; text-align: right; }
+    .nav-back { text-decoration: none; color: var(--purple); font-size: 0.75rem; font-weight: 700; border: 1px solid var(--purple); padding: 8px 18px; border-radius: 50px; text-transform: uppercase; transition: 0.3s; }
+    .nav-back:hover { background: var(--purple); color: white; }
+
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+    .card { background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.8); padding: 30px; border-radius: 28px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 15px 35px rgba(0,0,0,0.03); transition: 0.4s; position: relative; }
+    .card:hover { transform: translateY(-10px); background: rgba(255, 255, 255, 0.8); box-shadow: 0 20px 40px var(--glow); }
     
-    <style>
-        :root {
-            /* Премиальная палитра: Графит, Глубокий черный и Матовая Бронза (никакого дешевого желтого) */
-            --bronze: #B87333;
-            --bronze-dim: rgba(184, 115, 51, 0.15);
-            --bg-main: #050505;
-            --bg-panel: #121212;
-            --border-color: #2a2a2a;
-            --text-main: #ffffff;
-            --text-muted: #888888;
-        }
+    .card.recommended { border: 1.5px solid var(--gold); background: rgba(255, 252, 242, 0.8); }
+    .card.recommended::before { content: "ТРЕНЕР РЕКОМЕНДУЕТ"; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #fff; padding: 4px 15px; font-size: 0.6rem; font-weight: 800; border-radius: 20px; white-space: nowrap; }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg-main); color: var(--text-main); font-family: 'Inter', sans-serif; padding-bottom: 60px; overflow-x: hidden; }
+    .card h3 { color: var(--purple); font-family: 'Cormorant Garamond', serif; margin: 0; font-size: 1.6rem; }
+    .price-big { font-size: 2rem; font-weight: 900; margin: 15px 0; color: var(--purple); }
+    
+    .btn-buy { display: block; background: var(--purple); color: #fff; text-align: center; padding: 16px; text-decoration: none; font-weight: 800; text-transform: uppercase; font-size: 0.75rem; border-radius: 14px; margin-top: 10px; transition: 0.3s; cursor: pointer; border: none; width: 100%; box-sizing: border-box; }
+    .link-loan { display: block; margin-top: 12px; font-size: 0.65rem; color: var(--purple); text-align: center; font-weight: 700; text-decoration: none; text-transform: uppercase; opacity: 0.6; }
 
-        /* HEADER */
-        header {
-            position: sticky; top: 0; z-index: 1000;
-            background: rgba(5, 5, 5, 0.9); backdrop-filter: blur(15px);
-            border-bottom: 1px solid var(--border-color);
-            padding: 20px 25px; display: flex; justify-content: space-between; align-items: center;
-        }
-        .brand { font-size: 18px; font-weight: 300; letter-spacing: 4px; text-transform: uppercase; }
-        .brand b { color: var(--bronze); font-weight: 900; }
-        .stats-header { text-align: right; }
-        .stats-header .val { font-size: 28px; font-weight: 900; color: var(--bronze); line-height: 1; }
-        .stats-header .lbl { font-size: 9px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; margin-top: 4px; }
+    .calc-container { max-width: 600px; margin: 20px auto 40px; padding: 35px; background: rgba(255,255,255,0.4); backdrop-filter: blur(25px); border-radius: 35px; border: 1px solid rgba(255,255,255,0.6); box-shadow: 0 20px 50px rgba(0,0,0,0.05); }
+    .calc-input { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); margin-top: 5px; font-size: 1rem; box-sizing: border-box; }
+    .calc-res-box { display: none; margin-top: 25px; animation: fadeIn 0.6s ease; }
+    .res-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+    .res-item { background: white; padding: 15px; border-radius: 15px; text-align: center; border: 1px solid rgba(0,0,0,0.03); }
+    .res-item span { display: block; font-size: 1.3rem; font-weight: 800; color: var(--purple); }
+    .ai-analysis-report { background: rgba(93, 62, 142, 0.05); padding: 20px; border-radius: 20px; border-left: 4px solid var(--purple); font-size: 0.85rem; line-height: 1.5; text-align: left; }
 
-        .container { padding: 25px; max-width: 600px; margin: 0 auto; }
+    .falling-item { position: absolute; cursor: pointer; font-size: 2rem; z-index: 50; user-select: none; }
+    .pred-bubble { position: absolute; background: var(--purple); color: #fff; padding: 10px 15px; border-radius: 12px; font-size: 0.75rem; animation: fadeUp 2.5s forwards; z-index: 100; text-align: center; width: 150px; font-weight: 600; line-height: 1.3; }
+    
+    @keyframes fadeUp { 0% { opacity: 0; transform: translateY(0); } 20% { opacity: 1; transform: translateY(-30px); } 100% { opacity: 0; transform: translateY(-70px); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    
+    #game-stat { position: fixed; top: 90px; right: 25px; background: #fff; padding: 8px 15px; border-radius: 14px; font-size: 0.7rem; border: 1px solid var(--purple); z-index: 1000; font-weight: 700; color: var(--purple); }
 
-        .section-title {
-            font-size: 11px; font-weight: 900; color: var(--bronze);
-            text-transform: uppercase; letter-spacing: 3px;
-            margin: 35px 0 15px 5px; display: block;
-        }
+    /* ПОБЕДНОЕ ОКНО */
+    #win-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(45, 27, 62, 0.9); z-index: 5000; backdrop-filter: blur(10px); align-items: center; justify-content: center; }
+    .win-card { background: white; padding: 40px; border-radius: 35px; text-align: center; max-width: 400px; width: 85%; border: 3px solid var(--gold); box-shadow: 0 0 30px var(--gold); }
 
-        .card { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    .quiz-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(25px); padding: 40px; border-radius: 35px; max-width: 480px; width: 90%; margin: 140px auto 50px; text-align: center; box-shadow: 0 20px 45px rgba(0,0,0,0.06); }
+    .quiz-option { display: block; width: 100%; padding: 18px; margin: 10px 0; background: #fff; border: 1px solid rgba(0,0,0,0.05); border-radius: 15px; cursor: pointer; text-align: center; transition: 0.3s; font-size: 0.95rem; font-weight: 600; }
+    .quiz-option:hover { background: var(--pink); transform: translateX(5px); }
 
-        /* БИОМЕТРИЯ */
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-        .input-box { background: #1a1a1a; padding: 15px 10px; border-radius: 15px; text-align: center; border: 1px solid transparent; transition: 0.3s; }
-        .input-box:focus-within { border-color: var(--bronze); background: #000; }
-        .input-box label { font-size: 9px; color: var(--bronze); display: block; margin-bottom: 8px; font-weight: 900; letter-spacing: 1px; }
-        .input-box input { width: 100%; background: transparent; border: none; color: #fff; font-size: 24px; font-weight: 700; text-align: center; outline: none; }
+    footer { 
+        margin-top: 80px; padding: 40px 20px; text-align: center; 
+        background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(10px); 
+        border-top: 1px solid rgba(255, 255, 255, 0.8);
+    }
+    .footer-link { font-size: 0.75rem; color: var(--purple); text-decoration: none; opacity: 0.6; font-weight: 700; transition: 0.3s; text-transform: uppercase; letter-spacing: 0.5px; }
+    .footer-link:hover { opacity: 1; color: var(--gold); }
+    .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 600; color: var(--purple); margin-top: 15px; letter-spacing: 2px; }
 
-        /* БЖУ */
-        .bju-container { margin-top: 25px; padding-top: 25px; border-top: 1px solid var(--border-color); }
-        .bju-header { display: flex; justify-content: space-between; margin-bottom: 15px; text-align: center; }
-        .bju-header div { flex: 1; }
-        .bju-header .v { font-size: 22px; font-weight: 900; display: block; }
-        .bju-header .l { font-size: 9px; color: var(--text-muted); font-weight: 700; }
-        
-        .bju-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .bju-item { background: var(--bronze-dim); border: 1px solid rgba(184, 115, 51, 0.3); padding: 15px 5px; border-radius: 12px; text-align: center; }
-        .bju-item .v { font-size: 18px; font-weight: 900; color: #fff; display: block; margin-bottom: 4px; }
-        .bju-item .l { font-size: 8px; color: var(--bronze); font-weight: 900; text-transform: uppercase; }
-
-        /* СЕЛЕКТОРЫ */
-        .selector-wrap { display: flex; gap: 8px; background: #1a1a1a; padding: 6px; border-radius: 16px; }
-        .selector-btn { flex: 1; padding: 16px 5px; text-align: center; font-size: 10px; font-weight: 900; border-radius: 12px; color: var(--text-muted); cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px; }
-        .selector-btn.active { background: var(--bronze); color: #000; box-shadow: 0 4px 15px rgba(184, 115, 51, 0.3); }
-
-        /* ЭКСПЕРТНЫЙ БЛОК */
-        .expert-block { border-left: 4px solid var(--bronze); background: linear-gradient(90deg, #1a1a1a 0%, transparent 100%); padding: 25px; margin: 25px 0; border-radius: 0 15px 15px 0; }
-        .expert-block h4 { font-size: 11px; color: var(--bronze); margin-bottom: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; }
-        .expert-block p { font-size: 14px; line-height: 1.7; color: #d1d1d1; font-weight: 300; }
-
-        /* ГРАФИКИ */
-        .chart-wrapper { height: 260px; width: 100%; position: relative; }
-
-        /* ТРЕНИРОВКИ */
-        .workouts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .workout-card { background: #1a1a1a; border: 1px solid var(--border-color); padding: 25px 15px; border-radius: 18px; text-align: center; transition: 0.3s; position: relative; overflow: hidden; }
-        .workout-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--bronze); opacity: 0; transition: 0.3s; }
-        .workout-card:active::before { opacity: 1; }
-        .workout-card.locked { opacity: 0.2; filter: grayscale(100%); pointer-events: none; border-color: transparent; }
-        .workout-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 8px; color: #fff; }
-        .workout-card .duration { font-size: 9px; color: var(--text-muted); display: block; margin-bottom: 8px; font-weight: 600; }
-        .workout-card .count { font-size: 10px; color: var(--bronze); font-weight: 900; letter-spacing: 1px; background: var(--bronze-dim); padding: 4px 8px; border-radius: 6px; display: inline-block; }
-
-        /* МОДАЛЬНОЕ ОКНО */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; opacity: 0; transition: opacity 0.3s; }
-        .modal-overlay.active { display: flex; opacity: 1; }
-        .modal-content { background: var(--bg-panel); border: 1px solid var(--bronze); padding: 35px 25px; border-radius: 24px; text-align: center; width: 100%; max-width: 400px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
-        .modal-content h2 { color: var(--bronze); font-size: 22px; font-weight: 900; margin-bottom: 15px; text-transform: uppercase; }
-        .modal-content p { font-size: 15px; line-height: 1.6; color: #ccc; margin-bottom: 30px; font-weight: 300; }
-        .btn-confirm { width: 100%; padding: 20px; background: var(--bronze); color: #000; border: none; border-radius: 15px; font-size: 14px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; }
-
-        /* ДИПЛОМ */
-        .diploma-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 3000; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 30px; text-align: center; border: 10px solid var(--bronze); }
-        .diploma-overlay h1 { color: var(--bronze); font-size: 42px; font-weight: 900; letter-spacing: 8px; margin-bottom: 20px; }
-        .diploma-overlay p { font-size: 16px; color: #fff; line-height: 1.8; margin-bottom: 40px; }
-        .diploma-overlay .sign { font-size: 12px; color: var(--bronze); font-weight: 900; letter-spacing: 2px; text-transform: uppercase; }
-    </style>
+    @media (max-width: 992px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } .header-center { display: none; } .quiz-card { margin-top: 110px; } }
+  </style>
 </head>
 <body>
 
-<header>
-    <div class="brand">LADY <b>STRETCH</b><br><span style="font-size: 8px; color: var(--text-muted); font-weight: 700; letter-spacing: 2px;">SYKTYVKAR</span></div>
-    <div class="stats-header">
-        <div id="total-sessions" class="val">0</div>
-        <div class="lbl">СЕАНСОВ</div>
+  <div id="win-overlay">
+    <div class="win-card">
+      <h2 style="font-family: 'Cormorant Garamond', serif; color: var(--purple); font-size: 2rem;">Магия активирована! ✨</h2>
+      <p>Вы собрали все магические знаки.</p>
+      <div style="background: var(--pink); padding: 15px; border-radius: 15px; margin: 20px 0; font-weight: 800; color: var(--purple);">
+        🎁 ВАШ БОНУС:<br>+2 ЗАНЯТИЯ К ЛЮБОМУ АБОНЕМЕНТУ
+      </div>
+      <p style="font-size: 0.7rem; opacity: 0.7;">Сделайте скриншот и покажите администратору в Сыктывкаре!</p>
+      <button class="btn-buy" onclick="document.getElementById('win-overlay').style.display='none'">Вернуться к ценам</button>
     </div>
-</header>
+  </div>
 
-<div class="container">
+  <header class="fut-header">
+    <div class="header-logo"><img src="logo_header_final.png" alt="Lady Stretch" style="height:24px;"></div>
+    <div class="header-center">Ваш путь к легкости</div>
+    <div class="header-nav"><a href="index.html" class="nav-back">← На главную</a></div>
+  </header>
+
+  <div id="game-stat">МАГИЯ: <span id="score">0</span>/20</div>
+
+  <main id="quiz-view">
+    <div class="quiz-card">
+      <h2 id="q-title" style="font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; margin-bottom: 20px;">Какую цель вы ставите на 2026 год?</h2>
+      <div id="options-box">
+        <button class="quiz-option" onclick="handleChoice('health')">✨ Здоровая спина и осанка</button>
+        <button class="quiz-option" onclick="handleChoice('fit')">💃 Похудение и тонус мышц</button>
+        <button class="quiz-option" onclick="handleChoice('flex')">🌸 Гибкость, шпагат и легкость</button>
+      </div>
+    </div>
+  </main>
+
+  <section id="packages-view" style="display:none; padding-top: 100px;">
     
-    <span class="section-title">🧬 Биометрия и Энергия</span>
-    <div class="card">
-        <div class="selector-wrap" style="margin-bottom: 20px;">
-            <div class="selector-btn active" id="gen-f" onclick="app.setGender('f')">Женщина</div>
-            <div class="selector-btn" id="gen-m" onclick="app.setGender('m')">Мужчина</div>
+    <div class="calc-container">
+      <h3 style="text-align:center; font-family: 'Cormorant Garamond', serif; margin-bottom: 25px;">Биометрический анализ</h3>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+        <div><label style="font-size:0.6rem; font-weight:700; opacity:0.6;">ВЕС (КГ)</label><input type="number" id="weight" class="calc-input" placeholder="60"></div>
+        <div><label style="font-size:0.6rem; font-weight:700; opacity:0.6;">РОСТ (СМ)</label><input type="number" id="height" class="calc-input" placeholder="170"></div>
+      </div>
+      <div style="margin-bottom: 20px;"><label style="font-size:0.6rem; font-weight:700; opacity:0.6;">ВОЗРАСТ</label><input type="number" id="age" class="calc-input" placeholder="25"></div>
+      <button class="btn-buy" style="border:none;" onclick="runAnalysis()">Рассчитать показатели</button>
+
+      <div id="calc-results" class="calc-res-box">
+        <div class="res-grid">
+          <div class="res-item"><span id="res-kcal">0</span><label style="font-size:0.55rem; opacity:0.5;">Ккал/день</label></div>
+          <div class="res-item"><span id="res-water">0</span><label style="font-size:0.55rem; opacity:0.5;">Вода (л)</label></div>
         </div>
-        <div class="grid-3">
-            <div class="input-box"><label>ВЕС (КГ)</label><input type="number" id="inp-w" placeholder="00" oninput="app.calculate()"></div>
-            <div class="input-box"><label>РОСТ (СМ)</label><input type="number" id="inp-h" placeholder="000" oninput="app.calculate()"></div>
-            <div class="input-box"><label>ВОЗРАСТ</label><input type="number" id="inp-a" placeholder="00" oninput="app.calculate()"></div>
+        <div class="ai-analysis-report">
+          <header style="font-weight:800; font-size:0.6rem; color:var(--purple); letter-spacing:1px; margin-bottom:10px;">✦ ЭКСПЕРТНОЕ ЗАКЛЮЧЕНИЕ</header>
+          <div id="ai-text"></div>
         </div>
+      </div>
+    </div>
 
-        <div class="bju-container">
-            <div class="bju-header">
-                <div><span id="out-bmi" class="v">--</span><span class="l">ИМТ</span></div>
-                <div><span id="out-h2o" class="v">--</span><span class="l">ВОДА (Л)</span></div>
-                <div><span id="out-kcal" class="v" style="color: var(--bronze);">--</span><span class="l">ККАЛ / СУТКИ</span></div>
-            </div>
-            <div class="bju-grid">
-                <div class="bju-item"><span id="out-b" class="v">--</span><span class="l">Белки</span></div>
-                <div class="bju-item"><span id="out-j" class="v">--</span><span class="l">Жиры</span></div>
-                <div class="bju-item"><span id="out-u" class="v">--</span><span class="l">Углеводы</span></div>
-            </div>
+    <center><div id="coach-msg" style="padding: 20px; font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--purple); max-width: 600px;"></div></center>
+    
+    <div class="grid">
+      <div class="card" id="c-64">
+        <div><h3>64 занятия</h3><p style="font-size:0.7rem; color:#666;">Полная перезагрузка тела</p><div class="price-big">38 080 ₽</div></div>
+        <div>
+          <a href="https://checkout.tochka.com/b880ee38-1c68-4215-85e8-1ca8081ec51a" class="btn-buy">Купить</a>
+          <a href="https://ecom.otpbank.ru/smart-form?config=20f5d944-cf78-4d48-99b7-b7c791aff1ba" class="link-loan">Рассрочка на 12 мес.</a>
         </div>
+      </div>
+
+      <div class="card" id="c-32">
+        <div><h3>32 занятия</h3><p style="font-size:0.7rem; color:#666;">Результат, который заметят все</p><div class="price-big">20 160 ₽</div></div>
+        <div>
+          <a href="https://checkout.tochka.com/b880ee38-1c68-4215-85e8-1ca8081ec51a" class="btn-buy">Купить</a>
+          <a href="https://ecom.otpbank.ru/smart-form?config=0d5d1d9f-2491-464b-b356-bea9d09bc09e" class="link-loan">Рассрочка на 6 мес.</a>
+        </div>
+      </div>
+
+      <div class="card" id="c-16">
+        <div><h3>16 занятий</h3><p style="font-size:0.7rem; color:#666;">Мягкое знакомство с растяжкой</p><div class="price-big">10 640 ₽</div></div>
+        <a href="https://checkout.tochka.com/b880ee38-1c68-4215-85e8-1ca8081ec51a" class="btn-buy">Купить</a>
+      </div>
+
+      <div class="card" id="c-trial" style="background: rgba(255, 209, 220, 0.2);">
+        <div><h3>Пробное</h3><p style="font-size:0.7rem; color:#666;">Первый шаг к мечте</p><div class="price-big">455 ₽</div></div>
+        <a href="https://checkout.tochka.com/b880ee38-1c68-4215-85e8-1ca8081ec51a" class="btn-buy" style="background: #E08FA3;">Записаться</a>
+      </div>
+
+      <div class="card" id="c-unlimit" style="background: rgba(93, 62, 142, 0.05); border: 1.5px solid #5D3E8E; border-radius: 12px; padding: 20px; text-align: center;">
+    <div>
+        <h3 style="margin-bottom: 5px;">LS-CLUB PASS</h3>
+        <p style="font-size:0.8rem; color:#666; margin-bottom: 15px;">Залы Сыктывкара + Онлайн-платформа</p>
+        <div class="price-big" style="font-weight: bold; font-size: 1.5rem; margin-bottom: 20px;">5 000 ₽ <span style="font-size: 0.9rem; font-weight: normal;">/ мес</span></div>
     </div>
-
-    <span class="section-title">🔋 Матрица Ресурса</span>
-    <div class="card selector-wrap">
-        <div class="selector-btn" id="res-1" onclick="app.setResource('СПАД', 0.85, 1)">Спад</div>
-        <div class="selector-btn active" id="res-2" onclick="app.setResource('НОРМА', 1.0, 2)">Норма</div>
-        <div class="selector-btn" id="res-3" onclick="app.setResource('ПИК', 1.15, 3)">Пик</div>
-    </div>
-
-    <div class="expert-block">
-        <h4>ЗАКЛЮЧЕНИЕ ТРЕНЕРА:</h4>
-        <p id="expert-text">Ожидаю ввод данных для формирования стратегии. Введите вес, рост и возраст.</p>
-    </div>
-
-    <span class="section-title">📊 Аналитика: Вес</span>
-    <div class="card chart-wrapper">
-        <canvas id="weightChart"></canvas>
-    </div>
-
-    <span class="section-title">📅 Аналитика: Дисциплина</span>
-    <div class="card chart-wrapper">
-        <canvas id="activityChart"></canvas>
-    </div>
-
-    <span class="section-title">🧘 Протоколы Трансформации</span>
-    <div class="workouts-grid" id="workouts-render"></div>
-
+    <a href="https://t.me/LS_Club_Syktyvkar_bot" class="btn-buy" style="background:#2D1B3E; color: white; padding: 10px 20px; text-decoration: none; border-radius: 8px; display: block;">Вступить в клуб</a>
+    <p style="font-size: 0.6rem; color: #999; margin-top: 10px;">Автоматическое продление. Отмена в любой момент.</p>
 </div>
 
-<div id="modal-workout" class="modal-overlay" onclick="app.closeModal()">
-    <div class="modal-content" onclick="event.stopPropagation()">
-        <h2 id="mw-title">Протокол</h2>
-        <span style="display: block; font-size: 11px; color: var(--bronze); font-weight: 900; margin-bottom: 20px; text-transform: uppercase;">Длительность: 50 минут</span>
-        <p id="mw-desc">Описание</p>
-        <button class="btn-confirm" onclick="app.confirmWorkout()">Зафиксировать сеанс</button>
+      <div class="card" id="c-online">
+        <div><h3>Lady Online</h3><p style="font-size:0.7rem; color:#666;">Твой зал в твоем кармане</p><div class="price-big">999 ₽</div></div>
+        <a href="https://t.me/LS_Club_Syktyvkar_bot" class="btn-buy" style="background:#0088cc;">Вступить в клуб</a>
+      </div>
     </div>
-</div>
 
-<div id="diploma" class="diploma-overlay" onclick="this.style.display='none'">
-    <h1>МОНОЛИТ</h1>
-    <h3 style="color: var(--text-muted); letter-spacing: 5px; margin-bottom: 30px; font-weight: 300;">СТАТУС ДОСТИГНУТ</h3>
-    <p>Вы прошли 150 тренировочных сессий. Это показатель стальной дисциплины, уважения к своему телу и высочайшего уровня осознанности. Вы доказали, что способны на всё.</p>
-    <div class="sign">С уважением,<br><br>Студия Lady Stretch (Сыктывкар)<br>Тренер Ольга</div>
-</div>
+    <footer>
+      <a href="https://vk.com/ladystretch_syktyvkar" class="footer-link">Вопросы по абонементам --> Написать нам в ВК</a>
+      <div class="footer-logo">LADY STRETCH 2026</div>
+    </footer>
+  </section>
 
-<script>
-// ПОЛНАЯ БАЗА 12 ПРОТОКОЛОВ (БЕЗ СОКРАЩЕНИЙ)
-const workoutsData = [
-    { id: 'w1', name: 'Пилатес', type: 'soft', desc: 'Интеллектуальный фитнес. Глубокая проработка мышц-стабилизаторов, восстановление нейромышечной связи и формирование жесткого мышечного корсета. Идеально для осанки.' },
-    { id: 'w2', name: 'МФР', type: 'soft', desc: 'Миофасциальный релиз. Мощный лимфодренаж и снятие спазмов с помощью роллов. Раскатываем фасции, убираем «забитость» и ускоряем восстановление.' },
-    { id: 'w3', name: 'Здоровая спина', type: 'soft', desc: 'Терапевтический протокол. Снимаем компрессию с позвонков, убираем боли в шейном и поясничном отделах. Возвращаем легкость каждому движению.' },
-    { id: 'w4', name: 'Стретчинг', type: 'soft', desc: 'Классическая растяжка для развития эластичности связок и мышц. Увеличиваем амплитуду движений, работаем над грацией и снимаем физическое напряжение.' },
-    { id: 'w5', name: 'Sky Stretching', type: 'soft', desc: 'Растяжка в гамаках. Мягкая декомпрессия позвоночника под воздействием собственного веса. Работа с вестибулярным аппаратом и глубокое расслабление.' },
-    { id: 'w6', name: 'Подкачка + Растяжка', type: 'hard', desc: 'Идеальный баланс. Сначала даем силовой стимул для тонуса мышц, затем вытягиваем их, формируя длинный, эстетичный и рельефный силуэт.' },
-    { id: 'w7', name: 'Ягодицы + Пресс', type: 'hard', desc: 'Таргетированная силовая работа. Изолированная и базовая нагрузка на большую ягодичную мышцу и укрепление всех слоев мышц живота.' },
-    { id: 'w8', name: 'Круговая', type: 'hard', desc: 'Метаболический тренинг. Работа на станциях с минимальным отдыхом. Сжигает максимум калорий и развивает силовую выносливость. Только для готовых пахать.' },
-    { id: 'w9', name: 'Body Sculpt', type: 'hard', desc: 'Силовая архитектура тела. Использование дополнительного оборудования для создания плотной мышечной массы и выраженного рельефа.' },
-    { id: 'w10', name: 'Табата', type: 'hard', desc: 'Экстремальный высокоинтенсивный интервальный тренинг (ВИИТ). Разгоняет метаболизм так, что жиросжигание продолжается даже после окончания сеанса.' },
-    { id: 'w11', name: 'Функционал', type: 'hard', desc: 'Тренировка естественных движений. Включает в работу всё тело сразу, развивая силу, скорость, гибкость и координацию одновременно.' },
-    { id: 'w12', name: 'Йога Релакс', type: 'soft', desc: 'Практика для нервной системы. Статические асаны и работа с дыханием для радикального снижения уровня кортизола и снятия стресса.' }
-];
+  <script>
+    // МАГИЯ И ЛОШАДКИ
+    let score = parseInt(localStorage.getItem('magic_score_2026')) || 0;
+    const predictions = [
+        "2026 — год твоей легкости!", "Твое тело скажет спасибо!", "Шпагат станет реальностью!", 
+        "Время вдохновлять окружающих!", "Твоя энергия на пике!", "Лошадка приносит удачу!",
+        "Сегодня идеальный день для тренировки!", "Ты сияешь ярче всех звезд!", "Гибкость — это твоя суперсила!",
+        "Скоро ты почувствуешь невероятную легкость!", "Твои цели достижимы, действуй!", "Красивая осанка — твой залог уверенности!",
+        "Магия происходит там, где ты работаешь над собой!", "2026 подарит тебе новое тело!", "Твой прогресс восхищает!",
+        "С каждым днем ты становишься лучше!", "Растяжка — это любовь к себе!", "Доверься процессу, результат близко!",
+        "Ты — воплощение грации!", "Твой путь к мечте начался сегодня!"
+    ];
+    
+    document.getElementById('score').innerText = score;
 
-class MonolithApp {
-    constructor() {
-        this.db = JSON.parse(localStorage.getItem('monolith_data_v6_2')) || {
-            gen: 'f', weight: '', height: '', age: '', 
-            resName: 'НОРМА', resVal: 1.0, resIdx: 2,
-            logs: {}, weightHistory: [], activityHistory: [0,0,0,0,0,0,0], dates: []
-        };
-        this.currentWorkoutId = null;
-        this.init();
-    }
+    function spawn() {
+      if(score >= 20) {
+          clearInterval(spawnInterval);
+          return;
+      }
+      const el = document.createElement('div');
+      el.className = 'falling-item';
+      const items = ['✨','🌸','💎','🐎','✨','🐎','💎']; 
+      el.innerText = items[Math.floor(Math.random()*items.length)];
+      el.style.left = Math.random()*90+'%'; 
+      el.style.top = '70px';
+      document.body.appendChild(el);
 
-    init() {
-        // Восстановление данных в интерфейсе
-        document.getElementById('inp-w').value = this.db.weight;
-        document.getElementById('inp-h').value = this.db.height;
-        document.getElementById('inp-a').value = this.db.age;
-        this.setGender(this.db.gen, false);
-        this.setResource(this.db.resName, this.db.resVal, this.db.resIdx, false);
+      const animation = el.animate([
+        {top: '70px', transform: 'rotate(0deg)'}, 
+        {top: '100vh', transform: 'rotate(360deg)'}
+      ], {
+        duration: 7000 + Math.random() * 3000,
+        easing: 'linear'
+      });
+
+      animation.onfinish = () => el.remove();
+
+      el.onclick = (e) => {
+        if(score >= 20) return;
+        score++; 
+        localStorage.setItem('magic_score_2026', score);
+        document.getElementById('score').innerText = score;
         
-        this.calculate();
-        this.renderWorkouts();
-        this.initCharts();
-    }
-
-    setGender(g, calc = true) {
-        this.db.gen = g;
-        document.getElementById('gen-f').classList.toggle('active', g === 'f');
-        document.getElementById('gen-m').classList.toggle('active', g === 'm');
-        if(calc) this.calculate();
-    }
-
-    setResource(name, val, idx, calc = true) {
-        this.db.resName = name; this.db.resVal = val; this.db.resIdx = idx;
-        for(let j=1; j<=3; j++) document.getElementById('res-'+j).classList.remove('active');
-        document.getElementById('res-'+idx).classList.add('active');
-        if(calc) { this.calculate(); this.renderWorkouts(); }
-    }
-
-    calculate() {
-        const w = parseFloat(document.getElementById('inp-w').value);
-        const h = parseFloat(document.getElementById('inp-h').value);
-        const a = parseInt(document.getElementById('inp-a').value);
-
-        if(w && h && a) {
-            this.db.weight = w; this.db.height = h; this.db.age = a;
-            
-            // Расчеты ИМТ и Воды
-            const bmi = (w / Math.pow(h/100, 2)).toFixed(1);
-            const water = (w * 0.035).toFixed(1);
-            
-            // Формула Миффлина-Сан Жеора (Базовый обмен * Коэффициент активности 1.2 * Ресурс)
-            let bmr = (10 * w) + (6.25 * h) - (5 * a);
-            bmr = this.db.gen === 'm' ? bmr + 5 : bmr - 161;
-            const totalKcal = Math.round(bmr * 1.2 * this.db.resVal);
-
-            // БЖУ: Белки (1.5г/кг), Жиры (0.8г/кг), Углеводы (остаток калорий)
-            const protein = Math.round(w * 1.5);
-            const fat = Math.round(w * 0.8);
-            const carbsKcal = totalKcal - (protein * 4) - (fat * 9);
-            const carbs = Math.round(carbsKcal > 0 ? carbsKcal / 4 : 0);
-
-            // Обновление DOM
-            document.getElementById('out-bmi').innerText = bmi;
-            document.getElementById('out-h2o').innerText = water;
-            document.getElementById('out-kcal').innerText = totalKcal;
-            document.getElementById('out-b').innerText = protein;
-            document.getElementById('out-j').innerText = fat;
-            document.getElementById('out-u').innerText = carbs;
-
-            // Логика Эксперта
-            const expertBlock = document.getElementById('expert-text');
-            if (this.db.resName === 'СПАД') {
-                expertBlock.innerHTML = "<b>КРИТИЧЕСКИЙ УРОВЕНЬ РЕСУРСА.</b><br>Силовые (Hard) тренировки программно заблокированы во избежание травм и перетренированности. Сегодня показан только МФР, Здоровая спина или Йога. Восстановитесь.";
-            } else if (bmi > 25) {
-                expertBlock.innerHTML = "<b>АНАЛИЗ:</b> ИМТ указывает на избыток массы. Рекомендуется фокус на жиросжигающие протоколы (Круговая, Табата) в сочетании со строгим контролем углеводов.";
-            } else {
-                expertBlock.innerHTML = "<b>АНАЛИЗ:</b> Биометрия в норме. Тело готово к прогрессии. Чередуйте силовые протоколы с растяжкой для формирования идеального рельефа.";
-            }
-
-            // Запись истории веса
-            const today = new Date().toLocaleDateString('ru', {day: 'numeric', month: 'short'});
-            if(this.db.weightHistory.length === 0 || this.db.weightHistory[this.db.weightHistory.length-1] !== w) {
-                this.db.weightHistory.push(w);
-                this.db.dates.push(today);
-                this.updateCharts();
-            }
-            this.saveData();
-        }
-    }
-
-    renderWorkouts() {
-        const container = document.getElementById('workouts-render');
-        container.innerHTML = '';
-        let total = 0;
-
-        workoutsData.forEach(w => {
-            const count = this.db.logs[w.id] || 0;
-            total += count;
-            
-            // ЖЕСТКАЯ БЛОКИРОВКА
-            const isLocked = (this.db.resName === 'СПАД' && w.type === 'hard');
-            
-            container.innerHTML += `
-                <div class="workout-card ${isLocked ? 'locked' : ''}" onclick="app.openModal('${w.id}')">
-                    <h3>${w.name}</h3>
-                    <span class="duration">50 МИНУТ</span>
-                    <span class="count">${count} СЕАНСОВ</span>
-                </div>
-            `;
-        });
-
-        document.getElementById('total-sessions').innerText = total;
-        if (total >= 150) document.getElementById('diploma').style.display = 'flex';
-    }
-
-    openModal(id) {
-        this.currentWorkoutId = id;
-        const workout = workoutsData.find(w => w.id === id);
-        document.getElementById('mw-title').innerText = workout.name;
-        document.getElementById('mw-desc').innerText = workout.desc;
-        document.getElementById('modal-workout').classList.add('active');
-        // Хаптик фидбек для Telegram WebApp (если доступен)
-        if(window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
-            window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
-        }
-    }
-
-    closeModal() {
-        document.getElementById('modal-workout').classList.remove('active');
-    }
-
-    confirmWorkout() {
-        // Увеличиваем счетчик тренировки
-        this.db.logs[this.currentWorkoutId] = (this.db.logs[this.currentWorkoutId] || 0) + 1;
+        const b = document.createElement('div'); 
+        b.className = 'pred-bubble';
+        b.innerText = predictions[Math.floor(Math.random()*predictions.length)];
+        b.style.left = (e.pageX - 75) + 'px'; 
+        b.style.top = (e.pageY - 50) + 'px';
+        document.body.appendChild(b); 
         
-        // Обновляем статистику посещений по дням недели (0 - Пн, 6 - Вс)
-        let dayIdx = new Date().getDay() - 1;
-        if (dayIdx === -1) dayIdx = 6; // Воскресенье
-        this.db.activityHistory[dayIdx]++;
-        
-        if(window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
-            window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
+        el.remove();
+        setTimeout(() => b.remove(), 2500);
+
+        if(score === 20) {
+            clearInterval(spawnInterval);
+            document.querySelectorAll('.falling-item').forEach(i => i.remove());
+            document.getElementById('win-overlay').style.display = 'flex';
         }
+      };
+    }
+    const spawnInterval = setInterval(spawn, 2500);
 
-        this.saveData();
-        this.renderWorkouts();
-        this.updateCharts();
-        this.closeModal();
+    // КВИЗ
+    let tempGoal = "";
+    function handleChoice(val) {
+      const box = document.getElementById('options-box');
+      const title = document.getElementById('q-title');
+      if(!tempGoal) {
+        tempGoal = val; 
+        title.innerText = "Где вам удобнее тренироваться?";
+        box.innerHTML = `
+          <button class="quiz-option" onclick="showFinal('studio')">🏢 В студии (Сыктывкар)</button>
+          <button class="quiz-option" onclick="showFinal('online')">⏳ Дома (онлайн-курс)</button>
+          <button class="quiz-option" onclick="showFinal('hybrid')">🏠 Гибридный формат</button>
+        `;
+      }
     }
 
-    initCharts() {
-        Chart.defaults.color = '#888';
-        Chart.defaults.font.family = 'Inter';
-
-        const ctxW = document.getElementById('weightChart').getContext('2d');
-        this.chartW = new Chart(ctxW, {
-            type: 'line',
-            data: { 
-                labels: this.db.dates.slice(-10), 
-                datasets: [{ 
-                    data: this.db.weightHistory.slice(-10), 
-                    borderColor: '#B87333', 
-                    borderWidth: 3,
-                    tension: 0.4, 
-                    pointBackgroundColor: '#B87333',
-                    pointRadius: 4,
-                    fill: true, 
-                    backgroundColor: 'rgba(184, 115, 51, 0.1)' 
-                }] 
-            },
-            options: { 
-                responsive: true, maintainAspectRatio: false,
-                plugins: { legend: { display: false } }, 
-                scales: { 
-                    x: { grid: { display: false } }, 
-                    y: { grid: { color: '#2a2a2a' }, beginAtZero: false } 
-                } 
-            }
-        });
-
-        const ctxA = document.getElementById('activityChart').getContext('2d');
-        this.chartA = new Chart(ctxA, {
-            type: 'bar',
-            data: { 
-                labels: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'], 
-                datasets: [{ 
-                    data: this.db.activityHistory, 
-                    backgroundColor: '#B87333', 
-                    borderRadius: 6 
-                }] 
-            },
-            options: { 
-                responsive: true, maintainAspectRatio: false,
-                plugins: { legend: { display: false } }, 
-                scales: { 
-                    x: { grid: { display: false } }, 
-                    y: { grid: { color: '#2a2a2a' }, beginAtZero: true, ticks: { stepSize: 1 } } 
-                } 
-            }
-        });
+    function showFinal(type) {
+      document.getElementById('quiz-view').style.display = 'none';
+      document.getElementById('packages-view').style.display = 'block';
+      const msg = document.getElementById('coach-msg');
+      if(type === 'online') { 
+          document.getElementById('c-online').classList.add('recommended'); 
+          msg.innerHTML = "Для ваших целей идеально подходит:<br><strong>ONLINE-КЛУБ</strong>"; 
+      }
+      else if(type === 'hybrid') { 
+          document.getElementById('c-32').classList.add('recommended'); 
+          msg.innerHTML = "Оптимальный старт для вас:<br><strong>32 ЗАНЯТИЯ</strong>"; 
+      }
+      else { 
+          document.getElementById('c-64').classList.add('recommended'); 
+          msg.innerHTML = "Максимальный результат даст:<br><strong>64 ЗАНЯТИЯ</strong>"; 
+      }
+      window.scrollTo({top: 0, behavior: 'smooth'});
     }
 
-    updateCharts() {
-        if(this.chartW) {
-            this.chartW.data.labels = this.db.dates.slice(-10);
-            this.chartW.data.datasets[0].data = this.db.weightHistory.slice(-10);
-            this.chartW.update();
-        }
-        if(this.chartA) {
-            this.chartA.data.datasets[0].data = this.db.activityHistory;
-            this.chartA.update();
-        }
-    }
+    // БИОМЕТРИЯ
+    function runAnalysis() {
+      const w = parseFloat(document.getElementById('weight').value);
+      const h = parseFloat(document.getElementById('height').value);
+      const a = parseFloat(document.getElementById('age').value);
+      if(!w || !h || !a) return alert("Пожалуйста, заполните данные для расчета");
+      
+      const bmr = (10 * w) + (6.25 * h) - (5 * a) - 161;
+      const maintenance = Math.round(bmr * 1.375);
+      const bmi = w / ((h/100)**2);
 
-    saveData() {
-        localStorage.setItem('monolith_data_v6_2', JSON.stringify(this.db));
-    }
-}
+      document.getElementById('res-kcal').innerText = maintenance;
+      document.getElementById('res-water').innerText = (w * 0.033).toFixed(1);
 
-// Инициализация приложения
-const app = new MonolithApp();
-</script>
+      let report = "";
+      if (bmi < 18.5) report = "Вашему телу необходим бережный тонус. Акцент на Sky Stretching поможет укрепить мышечный корсет без нагрузки на суставы, сохраняя изящность.";
+      else if (bmi > 25) report = "Приоритетная задача — запуск лимфодренажа. МФР и растяжка позволят снизить отечность и ускорить метаболизм уже в первый месяц.";
+      else report = "Ваши показатели в норме. Рекомендуем фокус на эластичности связок и глубоком расслаблении — это снизит биологический возраст сосудов и улучшит сон.";
+
+      document.getElementById('ai-text').innerText = report;
+      document.getElementById('calc-results').style.display = 'block';
+      document.getElementById('calc-results').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  </script>
 </body>
 </html>
