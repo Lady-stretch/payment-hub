@@ -443,38 +443,53 @@
             const h = parseFloat(document.getElementById('in-height').value) || 0;
             const a = parseFloat(document.getElementById('in-age').value) || 0;
 
-            // ИМТ
+            // 1. Расчет ИМТ
             const bmi = (w / ((h/100)**2)).toFixed(1);
             document.getElementById('res-bmi').innerText = bmi;
 
-            // Вода
+            // 2. Расчет Воды
             const water = (w * 0.035).toFixed(1);
             document.getElementById('res-water').innerText = water + 'л';
 
-            // Калории (Миффлин-Сан Жеор)
+            // 3. Расчет Калорий (Миффлин-Сан Жеор)
             let bmr = (10 * w) + (6.25 * h) - (5 * a);
             bmr = state.gender === 'female' ? bmr - 161 : bmr + 5;
             const kcal = Math.round(bmr * state.activity);
             document.getElementById('res-kcal').innerText = kcal;
 
-            // БЖУ
+            // 4. Расчет БЖУ
             document.getElementById('res-p').innerText = Math.round(w * 1.6) + 'г';
             document.getElementById('res-f').innerText = Math.round(w * 0.9) + 'г';
             document.getElementById('res-c').innerText = Math.round((kcal - (w*1.6*4) - (w*0.9*9)) / 4) + 'г';
 
-            // Экспертное заключение
+            // 5. ЭКСПЕРТНОЕ ЗАКЛЮЧЕНИЕ (Умная логика Lady Stretch)
             const text = document.getElementById('expert-text');
             const line = document.getElementById('status-color');
-            if(bmi < 18.5) {
-                text.innerText = "Дефицит массы. Рекомендуем Подкачку и профицит калорий.";
+
+            // Сценарий А: Возраст 40+ и лишний вес при низкой активности (Твой случай)
+            if (a >= 40 && bmi > 26 && state.activity <= 1.25) {
+                text.innerHTML = `<span style="color:var(--accent); font-weight:bold;">ЭКСПЕРТНЫЙ ПЛАН:</span> В вашем возрасте при ИМТ ${bmi} важно беречь суставы. Начинаем с <b>МФР</b> и <b>Здоровой спины</b>. Интенсивные нагрузки пока исключаем.`;
                 line.style.background = 'var(--warning)';
-            } else if(bmi > 25) {
-                text.innerText = "Превышение ИМТ. Рекомендуем Табата и Круговые тренировки 3х в неделю.";
+                line.style.boxShadow = '0 0 15px var(--warning)';
+            } 
+            // Сценарий Б: Дефицит массы
+            else if (bmi < 18.5) {
+                text.innerText = "Дефицит массы. Рекомендуем Подкачку и профицит калорий для построения мышечного корсета.";
+                line.style.background = 'var(--warning)';
+            } 
+            // Сценарий В: Ожирение или высокий ИМТ у молодых/активных
+            else if (bmi > 25) {
+                text.innerText = "Превышение ИМТ. Рекомендуем жиросжигающий протокол: Круговые тренировки и Табата при отсутствии противопоказаний.";
                 line.style.background = 'var(--danger)';
-            } else {
-                text.innerText = "Ваши показатели в идеальной норме. Сохраняйте баланс через растяжку.";
+            } 
+            // Сценарий Г: Норма
+            else {
+                text.innerText = "Ваши показатели в идеальной норме. Сохраняйте биобаланс через растяжку и пилатес.";
                 line.style.background = 'var(--safe)';
             }
+
+            // Автоматическое обновление списка тренировок под новые условия
+            renderTrainings(); 
             saveData();
         }
 
