@@ -47,29 +47,34 @@
             padding: 60px; /* Больше воздуха вокруг бренда */
         }
 
+        /* Подключаем Roboto из Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
         .logo-text {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.8rem; /* Уменьшили для изящества */
-            font-weight: 200; /* Тончайшее начертание */
-            font-style: italic; /* Женственный курсив */
-            letter-spacing: 22px; /* Премиальная разрядка */
+            font-family: 'Roboto', sans-serif;
+            font-size: 2.2rem; /* Оптимальный размер, чтобы не "кричал" */
+            font-weight: 300; /* Тонкое, но уверенное начертание */
+            letter-spacing: 25px; /* Очень широкая разрядка для премиальности */
             color: #fff;
             text-align: center;
             text-transform: uppercase;
-            /* Убрали грубую тень, оставили легкое свечение */
-            filter: drop-shadow(0 0 5px rgba(255,255,255,0.2));
-            opacity: 0.95;
+            
+            /* Делаем буквы средне-высокими (вытягиваем по вертикали на 10%) */
+            display: inline-block;
+            transform: scaleY(1.1); 
+            
+            opacity: 0.85;
+            filter: drop-shadow(0 0 2px rgba(255,255,255,0.1));
         }
 
-        /* ТОНКИЙ ЛАЗЕРНЫЙ СКАНЕР (НИТЬ СВЕТА) */
+        /* Лазер оставляем тонким (1px), он теперь идеально сочетается с Roboto */
         .laser-scanner {
             position: absolute;
-            left: 15%; /* Лазер теперь не касается краев экрана */
-            width: 70%;
-            height: 1px; /* Тонкий как волос */
-            /* Градиент делает лазер мягким по бокам */
+            left: 20%;
+            width: 60%;
+            height: 1px;
             background: linear-gradient(90deg, transparent, #fff, transparent);
-            box-shadow: 0 0 10px 1px var(--accent);
+            box-shadow: 0 0 12px 1px var(--accent);
             z-index: 10;
             animation: laserMove 4s infinite ease-in-out;
         }
