@@ -38,40 +38,39 @@
             background: #000;
             display: flex;
             flex-direction: column;
-            align-items: center; /* Центровка по горизонтали */
-            justify-content: center; /* Центровка по вертикали */
+            align-items: center; 
+            justify-content: center; 
             z-index: 9999;
-            overflow: hidden; /* Чтобы ничего не вылетало */
+            overflow: hidden; 
         }
 
         .logo-wrapper {
             position: relative;
-            width: 100%; /* Контейнер на всю ширину */
+            width: 100%; 
             display: flex;
             justify-content: center;
             align-items: center;
-            perspective: 1000px;
         }
 
         .logo-text {
             font-family: 'Big Shoulders Display', sans-serif;
-            font-size: 2.5rem; /* Уменьшили размер, чтобы влезло */
+            font-size: 1.6rem; /* Уменьшили до элегантного минимума */
             font-weight: 100;
-            letter-spacing: 12px; /* Умеренный разлет для центровки */
+            letter-spacing: 10px; /* Утонченный разлет */
             color: #fff;
             text-transform: uppercase;
-            white-space: nowrap; /* В одну строку */
+            white-space: nowrap; 
             
-            /* Сверх-высокие пропорции */
+            /* Эффект бесконечной высоты */
             display: inline-block;
-            transform: scaleY(1.7); /* Вытягиваем вверх еще сильнее */
+            transform: scaleY(2.2); /* Еще больше вытянули! Теперь это "Иглы" */
             
-            /* Эффект платины */
-            background: linear-gradient(90deg, #333 0%, #fff 50%, #333 100%);
+            /* Платиновый блик */
+            background: linear-gradient(90deg, #222 0%, #fff 50%, #222 100%);
             background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: silverFlow 5s linear infinite;
+            animation: silverFlow 4s linear infinite;
         }
 
         @keyframes silverFlow {
@@ -79,7 +78,7 @@
             100% { background-position: -200% center; }
         }
 
-        /* Лазер на всю ширину */
+        /* Лазер-ниточка на весь экран */
         .laser-scanner {
             position: absolute;
             left: 0;
@@ -88,23 +87,22 @@
             background: linear-gradient(
                 90deg, 
                 transparent 0%, 
-                var(--accent) 15%, 
+                rgba(225, 152, 177, 0.8) 20%, 
                 #fff 50%, 
-                var(--accent) 85%, 
+                rgba(225, 152, 177, 0.8) 80%, 
                 transparent 100%
             );
-            box-shadow: 0 0 15px 1px var(--accent);
+            box-shadow: 0 0 10px 1px var(--accent);
             z-index: 10;
-            animation: laserMove 4s infinite ease-in-out;
-            opacity: 0.8;
+            animation: laserMove 5s infinite ease-in-out;
         }
 
         @keyframes laserMove {
-            0% { top: -200%; opacity: 0; }
+            0% { top: -150%; opacity: 0; }
             30% { opacity: 1; }
-            50% { top: 200%; opacity: 1; } /* Ходит глубоко вверх-вниз сквозь текст */
+            50% { top: 150%; opacity: 1; } 
             70% { opacity: 1; }
-            100% { top: -200%; opacity: 0; }
+            100% { top: -150%; opacity: 0; }
         }
         @keyframes laserMove {
             0% { top: -10%; opacity: 0; }
