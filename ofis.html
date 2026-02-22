@@ -1,270 +1,458 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>LS BLACK DIAMOND 13.0</title>
-    
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;900&display=swap" rel="stylesheet">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Lady Stretch | Biohacking App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --gold: #FFD700; /* Яркое золото */
-            --accent: #FFFFFF;
-            --bg: #000000;
-            --card-bg: rgba(25, 25, 25, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --accent: #e198b1; /* Фирменный Lady Stretch */
+            --bg: #0a0a0b;
+            --text: #ffffff;
+            --safe: #4ade80;
+            --warning: #fbbf24;
+            --danger: #f87171;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
         body {
-            margin: 0; background: var(--bg); color: #fff;
-            font-family: 'Montserrat', sans-serif; overflow-x: hidden;
-            background-image: radial-gradient(circle at 50% 0%, #1a1a1a 0%, #000 80%);
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            background-image: radial-gradient(circle at top right, #1a1a1c, #0a0a0b);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* МГНОВЕННЫЙ ПРЕМИУМ-ЛОАДЕР */
+        /* --- SPLASH SCREEN (HOLLYWOOD STYLE) --- */
         #splash {
-            position: fixed; inset: 0; background: #000; z-index: 10000;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: 0.5s ease-out;
+            position: fixed;
+            inset: 0;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 1s ease-out;
         }
-        .diamond {
-            width: 60px; height: 60px; border: 2px solid var(--gold);
-            transform: rotate(45deg); animation: pulse 1s infinite alternate;
-            box-shadow: 0 0 30px var(--gold);
-        }
-        @keyframes pulse { to { transform: rotate(45deg) scale(1.2); box-shadow: 0 0 60px var(--gold); } }
 
-        .app { max-width: 500px; margin: 0 auto; padding: 100px 15px 140px; }
+        .logo-anim {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            letter-spacing: 8px;
+            background: linear-gradient(to bottom, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            transform: scale(0.9);
+            animation: cinematic 3s forwards ease-in-out;
+        }
+
+        @keyframes cinematic {
+            0% { opacity: 0; transform: scale(0.8); filter: blur(10px); }
+            50% { opacity: 1; filter: blur(0px); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* --- LAYOUT --- */
+        .container {
+            padding: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+            display: none; /* Покажет после сплэша */
+        }
 
         header {
-            position: fixed; top: 0; width: 100%; height: 75px;
-            background: rgba(0,0,0,0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            z-index: 1000; display: flex; align-items: center; justify-content: space-between;
-            padding: 0 20px; border-bottom: 1px solid var(--glass-border);
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+            backdrop-filter: blur(15px);
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 25px;
         }
-        .logo { font-weight: 900; letter-spacing: 3px; font-size: 16px; color: var(--gold); text-transform: uppercase; }
 
-        /* ЭФФЕКТ СТЕКЛА */
+        header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+        }
+
         .glass-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--glass-border); border-radius: 24px;
-            padding: 25px; margin-bottom: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 20px;
         }
 
-        .label {
-            font-size: 10px; font-weight: 900; color: var(--gold);
-            text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; display: block;
+        /* --- UI ELEMENTS --- */
+        .btn-group { display: flex; gap: 10px; margin-bottom: 15px; }
+        .btn {
+            flex: 1;
+            padding: 15px;
+            border-radius: 15px;
+            border: 1px solid var(--glass-border);
+            background: var(--glass);
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn.active { background: var(--accent); border-color: var(--accent); }
+
+        .input-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .input-box { text-align: center; }
+        .input-box label { display: block; font-size: 0.7rem; opacity: 0.6; margin-bottom: 5px; }
+        .input-box input {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            padding: 10px;
+            color: #fff;
+            text-align: center;
+            font-size: 1.1rem;
         }
 
-        /* ИНПУТЫ ДЛЯ СМАРТФОНА */
-        .input-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .input-lux {
-            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
-            border-radius: 12px; padding: 18px 5px; color: #fff;
-            font-size: 20px; font-weight: 600; text-align: center;
+        /* --- CALCULATOR RESULTS --- */
+        .results-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid var(--glass-border);
         }
-        .input-lux:focus { border-color: var(--gold); background: rgba(255,215,0,0.1); }
+        .res-item { text-align: center; }
+        .res-val { display: block; font-size: 1.2rem; font-weight: 700; color: var(--accent); }
+        .res-lbl { font-size: 0.65rem; opacity: 0.6; text-transform: uppercase; }
 
-        .btn-action {
-            width: 100%; background: var(--gold); border: none;
-            padding: 20px; border-radius: 16px; color: #000;
-            font-weight: 900; font-size: 14px; text-transform: uppercase;
-            letter-spacing: 1px; cursor: pointer; transition: 0.2s;
+        .expert-box {
+            margin-top: 20px;
+            padding-left: 15px;
+            border-left: 3px solid var(--safe);
+            font-size: 0.9rem;
+            line-height: 1.4;
+            transition: 0.5s;
         }
-        .btn-action:active { transform: scale(0.95); opacity: 0.8; }
 
-        /* БЖУ СЕТКА */
-        .result-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 25px; display: none; }
-        .res-item {
-            background: rgba(255,255,255,0.03); border-radius: 15px; padding: 15px 5px;
-            text-align: center; border: 1px solid var(--glass-border);
+        /* --- TRAINING GRID --- */
+        .train-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
         }
-        .res-v { display: block; font-size: 18px; font-weight: 900; color: var(--gold); }
-        .res-l { font-size: 8px; text-transform: uppercase; opacity: 0.6; }
-
-        /* КАРТОЧКИ ТРЕНИРОВОК */
-        .workout-list { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .workout-card {
-            background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border);
-            border-radius: 20px; padding: 20px; position: relative;
+        .train-btn {
+            padding: 12px;
+            font-size: 0.8rem;
+            text-align: left;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--glass-border);
+            color: #ccc;
         }
-        .workout-card h3 { font-size: 13px; margin: 0; font-weight: 600; color: #fff; }
-        .workout-card span { font-size: 8px; color: var(--gold); text-transform: uppercase; margin-top: 5px; display: block; }
-        .count { position: absolute; top: 10px; right: 15px; font-size: 12px; color: var(--gold); font-weight: 900; }
 
-        /* МОДАЛКА */
+        /* --- MODAL --- */
         .modal {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.95);
-            z-index: 5000; display: none; align-items: center; justify-content: center; padding: 20px;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            padding: 20px;
         }
-        .modal-c { background: #111; border: 1px solid var(--gold); padding: 30px; border-radius: 30px; text-align: center; width: 100%; }
+        .modal-content {
+            background: linear-gradient(135deg, rgba(40,40,45,0.9), rgba(20,20,22,0.9));
+            border: 1px solid var(--accent);
+            padding: 30px;
+            border-radius: 30px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
 
-        .price-row { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .price-v { font-weight: 900; color: var(--gold); }
+        /* --- CHARTS (DUMMY) --- */
+        .chart-placeholder {
+            height: 100px;
+            background: linear-gradient(90deg, transparent 0%, rgba(225,152,177,0.1) 50%, transparent 100%);
+            border-radius: 15px;
+            margin-top: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reset-btn {
+            margin-top: 30px;
+            width: 100%;
+            background: transparent;
+            color: #555;
+            border: none;
+            text-decoration: underline;
+            font-size: 0.8rem;
+        }
     </style>
 </head>
 <body>
 
-<div id="splash">
-    <div class="diamond"></div>
-    <div style="margin-top: 40px; font-weight: 900; letter-spacing: 5px; color: var(--gold);">LADY STRETCH</div>
-</div>
+    <div id="splash">
+        <div class="logo-anim">LADY STRETCH</div>
+        <p style="letter-spacing: 3px; font-size: 0.7rem; opacity: 0.5; margin-top: 10px;">EST. 2026 | PREMIUM BIOHACKING</p>
+    </div>
 
-<header>
-    <div class="logo">LS <b>SUPREME</b></div>
-    <div id="u-tag" style="font-size: 9px; background: var(--gold); color: #000; padding: 5px 12px; border-radius: 20px; font-weight: 900;">SYKTYVKAR</div>
-</header>
+    <div class="container" id="mainApp">
+        <header>
+            <h1>LADY STRETCH</h1>
+        </header>
 
-<div class="app">
+        <div class="glass-card">
+            <div class="btn-group">
+                <button class="btn active" onclick="setGender('female', this)">WOMAN</button>
+                <button class="btn" onclick="setGender('male', this)">MAN</button>
+            </div>
+            <button class="btn" style="width: 100%; margin-bottom: 15px;" onclick="openModal('activityModal')">ACTIVITY: <span id="actLbl">Medium</span></button>
+            
+            <div class="input-grid">
+                <div class="input-box">
+                    <label>WEIGHT (KG)</label>
+                    <input type="number" id="weight" value="60" oninput="calculate()">
+                </div>
+                <div class="input-box">
+                    <label>HEIGHT (CM)</label>
+                    <input type="number" id="height" value="170" oninput="calculate()">
+                </div>
+                <div class="input-box">
+                    <label>AGE</label>
+                    <input type="number" id="age" value="25" oninput="calculate()">
+                </div>
+            </div>
 
-    <span class="label">01 // Body Scanner</span>
-    <div class="glass-card">
-        <div class="input-row">
-            <input type="number" id="w" class="input-lux" placeholder="ВЕС">
-            <input type="number" id="h" class="input-lux" placeholder="РОСТ">
-            <input type="number" id="a" class="input-lux" placeholder="ЛЕТ">
+            <div class="results-bar">
+                <div class="res-item">
+                    <span class="res-val" id="bmiVal">20.8</span>
+                    <span class="res-lbl">BMI (ИМТ)</span>
+                </div>
+                <div class="res-item">
+                    <span class="res-val" id="waterVal">2.1L</span>
+                    <span class="res-lbl">WATER</span>
+                </div>
+                <div class="res-item">
+                    <span class="res-val" id="kcalVal">1850</span>
+                    <span class="res-lbl">KCAL</span>
+                </div>
+            </div>
+
+            <div class="expert-box" id="expertBox">
+                Your parameters are within the healthy range. Keep up the activity!
+            </div>
+            
+            <div style="margin-top: 15px; display: flex; justify-content: space-around; font-size: 0.75rem;">
+                <span>P: <b id="pVal">90g</b></span>
+                <span>F: <b id="fVal">60g</b></span>
+                <span>C: <b id="cVal">220g</b></span>
+            </div>
         </div>
-        
-        <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-            <button class="input-lux" style="flex:1; font-size:12px;" id="g-f" onclick="app.setG('f')">ЖЕНЩИНА</button>
-            <button class="input-lux" style="flex:1; font-size:12px;" id="g-m" onclick="app.setG('m')">МУЖЧИНА</button>
+
+        <div class="glass-card">
+            <h3 style="font-size: 0.9rem; margin-bottom: 15px; opacity: 0.8;">CURRENT RESOURCE</h3>
+            <div class="btn-group">
+                <button class="btn" onclick="setResource('low', this)">LOW</button>
+                <button class="btn active" onclick="setResource('norm', this)">NORMAL</button>
+                <button class="btn" onclick="setResource('peak', this)">PEAK</button>
+            </div>
+
+            <div class="train-grid" id="trainGrid">
+                </div>
         </div>
 
-        <button class="btn-action" onclick="app.scan()">Рассчитать показатели</button>
+        <div class="glass-card">
+            <h3 style="font-size: 0.9rem; margin-bottom: 10px; opacity: 0.8;">BODY DYNAMICS</h3>
+            <div class="chart-placeholder">
+                <svg width="100%" height="100%" viewBox="0 0 100 40" preserveAspectRatio="none">
+                    <path d="M0 35 Q 25 30, 50 20 T 100 5" fill="none" stroke="var(--accent)" stroke-width="2" />
+                </svg>
+            </div>
+            <h3 style="font-size: 0.9rem; margin: 20px 0 10px 0; opacity: 0.8;">TRAINING FREQUENCY</h3>
+            <div class="chart-placeholder">
+                <div style="display:flex; align-items: flex-end; height: 100%; gap: 5px; padding: 10px;">
+                    <div style="flex:1; height:40%; background: var(--glass-border); border-radius: 4px;"></div>
+                    <div style="flex:1; height:70%; background: var(--accent); border-radius: 4px;"></div>
+                    <div style="flex:1; height:55%; background: var(--glass-border); border-radius: 4px;"></div>
+                    <div style="flex:1; height:90%; background: var(--accent); border-radius: 4px;"></div>
+                </div>
+            </div>
 
-        <div class="result-grid" id="res-grid">
-            <div class="res-item"><span class="res-v" id="r-bmi">-</span><span class="res-l">ИМТ</span></div>
-            <div class="res-item"><span class="res-v" id="r-kcal">-</span><span class="res-l">Ккал</span></div>
-            <div class="res-item"><span class="res-v" id="r-p">-</span><span class="res-l">Белки</span></div>
-            <div class="res-item"><span class="res-v" id="r-f">-</span><span class="res-l">Жиры</span></div>
-            <div class="res-item"><span class="res-v" id="r-c">-</span><span class="res-l">Углеводы</span></div>
-            <div class="res-item"><span class="res-v" id="r-h2o">-</span><span class="res-l">Вода</span></div>
+            <button class="btn active" style="width: 100%; margin-top: 25px;" onclick="window.open('https://ladystretch.ru', '_blank')">RENEW SUBSCRIPTION</button>
+            <button class="reset-btn" onclick="resetData()">Reset all data</button>
         </div>
     </div>
 
-    <span class="label">02 // Analytics</span>
-    <div class="glass-card" style="height: 250px; padding: 15px;">
-        <canvas id="chart"></canvas>
+    <div id="activityModal" class="modal" onclick="closeModal('activityModal')">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <h2 style="margin-bottom: 20px;">Daily Activity</h2>
+            <button class="btn" style="width: 100%; margin-bottom: 10px;" onclick="setActivity(1.2, 'Low')">Low (Sedentary)</button>
+            <button class="btn" style="width: 100%; margin-bottom: 10px;" onclick="setActivity(1.5, 'Medium')">Medium (Training)</button>
+            <button class="btn" style="width: 100%; margin-bottom: 10px;" onclick="setActivity(1.9, 'High')">High (Pro Athlete)</button>
+        </div>
     </div>
 
-    <span class="label">03 // Training Protocols</span>
-    <div class="workout-list" id="w-list"></div>
-
-    <span class="label">04 // Memberships</span>
-    <div class="glass-card">
-        <div class="price-row"><span>16 занятий</span><span class="price-v">11 200 ₽</span></div>
-        <div class="price-row"><span>32 занятия</span><span class="price-v">22 400 ₽</span></div>
-        <div class="price-row"><span>64 занятия</span><span class="price-v">44 800 ₽</span></div>
-        <button class="btn-action" style="margin-top:20px;" onclick="window.open('https://ladystretch.ru/syktyvkar')">Купить абонемент</button>
+    <div id="levelModal" class="modal" onclick="closeModal('levelModal')">
+        <div class="modal-content">
+            <div style="font-size: 4rem; margin-bottom: 10px;">🏆</div>
+            <h2 id="levelTitle">Level Up!</h2>
+            <p id="levelDesc" style="margin: 15px 0; font-size: 0.9rem; opacity: 0.8;"></p>
+            <button class="btn active" onclick="closeModal('levelModal')">ACCEPT</button>
+        </div>
     </div>
 
-</div>
+    <script>
+        let userData = {
+            gender: 'female',
+            activity: 1.5,
+            actName: 'Medium',
+            resource: 'norm',
+            trainings: 0,
+            level: 0
+        };
 
-<div class="modal" id="modal" onclick="app.closeM()">
-    <div class="modal-c" onclick="event.stopPropagation()">
-        <div id="m-body"></div>
-        <button class="btn-action" style="margin-top:20px;" onclick="app.closeM()">Закрыть</button>
-    </div>
-</div>
+        const levels = [
+            { count: 0, name: 'Explorer', desc: 'Welcome! Your journey to a perfect body starts today.' },
+            { count: 8, name: 'Adept', desc: '8 sessions done! Muscle elasticity increased by 15%, blood circulation improved.' },
+            { count: 30, name: 'Transformation', desc: '30 sessions! Posture is stabilized, cortisol levels significantly lower.' },
+            { count: 50, name: 'Master', desc: '50 sessions! Metabolism accelerated. You are in elite shape.' },
+            { count: 100, name: 'Expert', desc: '100 sessions! New quality of life. Deep muscle core is indestructible.' },
+            { count: 150, name: 'Legend', desc: '150 sessions! You are a Lady Stretch icon. Total body control.' }
+        ];
 
-<script>
-    const tg = window.Telegram.WebApp;
-    tg.expand();
-    tg.headerColor = "#000000";
+        const trainMap = {
+            relax: ["Pilates", "Stretching", "Classic Stretch", "MFR", "Sky Stretching", "Yoga Relax", "Healthy Back"],
+            active: ["Power Stretch", "Circuit", "Body Sculpt", "Butts & Abs", "Tabata", "Functional"]
+        };
 
-    const dataList = [
-        {id:'1', name:'Classic Stretch', tag:'Гибкость'},
-        {id:'2', name:'Pilates', tag:'Осанка'},
-        {id:'3', name:'МФР Релиз', tag:'Восстановление'},
-        {id:'4', name:'Здоровая Спина', tag:'Терапия'},
-        {id:'5', name:'Sky Stretching', tag:'Аэро'},
-        {id:'6', name:'Йога', tag:'Баланс'},
-        {id:'7', name:'Шпагат', tag:'Результат'},
-        {id:'8', name:'Body Sculpt', tag:'Рельеф'},
-        {id:'9', name:'ABS + Booty', tag:'Форма'},
-        {id:'10', name:'Tabata', tag:'Жиросжигание'},
-        {id:'11', name:'TRX', tag:'Сила'},
-        {id:'12', name:'Aero Art', tag:'Эстетика'}
-    ];
+        // Initialize
+        window.onload = () => {
+            setTimeout(() => {
+                document.getElementById('splash').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('splash').style.display = 'none';
+                    document.getElementById('mainApp').style.display = 'block';
+                    renderTrainings();
+                    calculate();
+                }, 1000);
+            }, 3000);
+        };
 
-    class App {
-        constructor() {
-            this.state = JSON.parse(localStorage.getItem('ls_13')) || { g:'f', logs:{}, wH:[], dates:[] };
-            this.chart = null;
-            this.init();
+        function setGender(g, el) {
+            userData.gender = g;
+            updateBtns(el);
+            calculate();
         }
-        init() {
-            setTimeout(() => document.getElementById('splash').style.display='none', 800);
-            this.setG(this.state.g, false);
-            this.render();
-            this.initChart();
+
+        function setActivity(val, name) {
+            userData.activity = val;
+            document.getElementById('actLbl').innerText = name;
+            closeModal('activityModal');
+            calculate();
         }
-        setG(g, save=true) {
-            this.state.g = g;
-            document.getElementById('g-f').style.borderColor = g === 'f' ? 'var(--gold)' : 'var(--glass-border)';
-            document.getElementById('g-m').style.borderColor = g === 'm' ? 'var(--gold)' : 'var(--glass-border)';
-            if(save) this.save();
+
+        function setResource(res, el) {
+            userData.resource = res;
+            updateBtns(el);
+            renderTrainings();
         }
-        scan() {
-            const w = parseFloat(document.getElementById('w').value), h = parseFloat(document.getElementById('h').value), a = parseInt(document.getElementById('a').value);
-            if(!w || !h || !a) return;
+
+        function updateBtns(el) {
+            [...el.parentElement.children].forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        function calculate() {
+            const w = parseFloat(document.getElementById('weight').value);
+            const h = parseFloat(document.getElementById('height').value);
+            const a = parseFloat(document.getElementById('age').value);
+
+            // BMI
             const bmi = (w / ((h/100)**2)).toFixed(1);
+            document.getElementById('bmiVal').innerText = bmi;
+
+            // Water
+            const water = (w * 0.035).toFixed(1);
+            document.getElementById('waterVal').innerText = water + 'L';
+
+            // KCAL (Mifflin-St Jeor)
             let bmr = (10 * w) + (6.25 * h) - (5 * a);
-            bmr = this.state.g === 'f' ? bmr - 161 : bmr + 5;
-            const kcal = Math.round(bmr * 1.35);
+            bmr = userData.gender === 'female' ? bmr - 161 : bmr + 5;
+            const kcal = Math.round(bmr * userData.activity);
+            document.getElementById('kcalVal').innerText = kcal;
 
-            document.getElementById('res-grid').style.display = 'grid';
-            document.getElementById('r-bmi').innerText = bmi;
-            document.getElementById('r-kcal').innerText = kcal;
-            document.getElementById('r-p').innerText = Math.round(w * 1.8) + 'g';
-            document.getElementById('r-f').innerText = Math.round(w * 0.9) + 'g';
-            document.getElementById('r-c').innerText = Math.round((kcal - (w*1.8*4 + w*0.9*9)) / 4) + 'g';
-            document.getElementById('r-h2o').innerText = (w * 0.033).toFixed(1) + 'L';
+            // Macros
+            document.getElementById('pVal').innerText = Math.round(w * 1.5) + 'g';
+            document.getElementById('fVal').innerText = Math.round(w * 0.8) + 'g';
+            document.getElementById('cVal').innerText = Math.round((kcal - (w*1.5*4) - (w*0.8*9)) / 4) + 'g';
 
-            this.state.wH.push(w);
-            this.state.dates.push(new Date().toLocaleDateString('ru',{day:'2-digit',month:'2-digit'}));
-            this.save();
-            tg.HapticFeedback.impactOccurred('heavy');
+            // Expert Conclusion
+            const box = document.getElementById('expertBox');
+            if(bmi < 18.5) {
+                box.innerText = "Underweight. Recommended: Power Stretch + focus on Proteins.";
+                box.style.borderColor = 'var(--warning)';
+            } else if(bmi > 25) {
+                box.innerText = "Slightly above norm. Recommended: Active workouts (Tabata, Circuit) 3x/week.";
+                box.style.borderColor = 'var(--danger)';
+            } else {
+                box.innerText = "Ideal BMI. Keep your current resource level with Stretching & Yoga.";
+                box.style.borderColor = 'var(--safe)';
+            }
         }
-        render() {
-            document.getElementById('w-list').innerHTML = dataList.map(d => `
-                <div class="workout-card" onclick="app.openD('${d.id}')">
-                    <div class="count">${this.state.logs[d.id] || 0}</div>
-                    <span>${d.tag}</span><h3>${d.name}</h3>
-                </div>`).join('');
-        }
-        openD(id) {
-            const d = dataList.find(x => x.id === id);
-            document.getElementById('m-body').innerHTML = `<h2 style="color:var(--gold);">${d.name}</h2><p>50 минут интенсивной работы над собой.</p><button class="btn-action" onclick="app.log('${id}')">Засчитать тренировку</button>`;
-            document.getElementById('modal').style.display = 'flex';
-        }
-        log(id) {
-            this.state.logs[id] = (this.state.logs[id] || 0) + 1;
-            this.save(); this.render(); this.closeM();
-            tg.HapticFeedback.notificationOccurred('success');
-        }
-        closeM() { document.getElementById('modal').style.display = 'none'; }
-        save() { 
-            localStorage.setItem('ls_13', JSON.stringify(this.state));
-            if(this.chart) { this.chart.data.labels = this.state.dates; this.chart.data.datasets[0].data = this.state.wH; this.chart.update(); }
-        }
-        initChart() {
-            const ctx = document.getElementById('chart').getContext('2d');
-            this.chart = new Chart(ctx, {
-                type: 'line',
-                data: { labels: this.state.dates, datasets: [{ label: 'Weight', data: this.state.wH, borderColor: '#FFD700', tension: 0.4, fill: true, backgroundColor: 'rgba(255,215,0,0.05)' }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { grid: { color: 'rgba(255,255,255,0.05)' } } } }
+
+        function renderTrainings() {
+            const grid = document.getElementById('trainGrid');
+            grid.innerHTML = '';
+            const list = userData.resource === 'peak' ? trainMap.active : trainMap.relax;
+            
+            list.forEach(t => {
+                const btn = document.createElement('button');
+                btn.className = 'train-btn';
+                btn.innerHTML = `<b>${t}</b><br><span style="font-size:0.6rem; opacity:0.6">Tap to log session</span>`;
+                btn.onclick = () => logTraining(t);
+                grid.appendChild(btn);
             });
         }
-    }
-    const app = new App();
-</script>
+
+        function logTraining(name) {
+            userData.trainings++;
+            checkLevel();
+            alert(`Logged: ${name}. You've completed ${userData.trainings} sessions!`);
+        }
+
+        function checkLevel() {
+            const nextLevel = levels.filter(l => userData.trainings >= l.count).pop();
+            if (nextLevel && nextLevel.count !== userData.lastNotifiedLevel) {
+                document.getElementById('levelTitle').innerText = nextLevel.name;
+                document.getElementById('levelDesc').innerText = nextLevel.desc;
+                openModal('levelModal');
+                userData.lastNotifiedLevel = nextLevel.count;
+            }
+        }
+
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        
+        function resetData() {
+            if(confirm('Reset all progress?')) {
+                location.reload();
+            }
+        }
+    </script>
 </body>
 </html>
