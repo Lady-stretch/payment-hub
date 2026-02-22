@@ -104,29 +104,6 @@
             70% { opacity: 1; }
             100% { top: -150%; opacity: 0; }
         }
-        @keyframes laserMove {
-            0% { top: -10%; opacity: 0; }
-            30% { opacity: 1; }
-            50% { top: 110%; opacity: 1; }
-            70% { opacity: 1; }
-            100% { top: -10%; opacity: 0; }
-        }
-
-        @keyframes laserMove {
-            0% { top: 0%; opacity: 0; }
-            15% { opacity: 1; }
-            50% { top: 100%; opacity: 1; }
-            85% { opacity: 1; }
-            100% { top: 0%; opacity: 0; }
-        }
-
-        @keyframes laserMove {
-            0% { top: 0%; opacity: 0; }
-            20% { opacity: 1; }
-            50% { top: 100%; opacity: 1; }
-            80% { opacity: 1; }
-            100% { top: 0%; opacity: 0; }
-        }
 
         /* --- ОСНОВНОЙ ИНТЕРФЕЙС --- */
         .container {
@@ -372,24 +349,18 @@
             <p id="session-count" style="font-size: 0.7rem; opacity: 0.5;">Пройдено занятий: 0</p>
             
             <div style="margin-top: 20px;">
-                <p style="font-size: 0.75rem; opacity: 0.8;">Динамика веса</p>
+                <p style="font-size: 0.75rem; opacity: 0.8;">Динамика веса (год)</p>
                 <div class="chart-container">
-                    <svg class="chart-svg" viewBox="0 0 100 40">
-                        <path d="M0 35 Q 25 32, 50 25 T 100 15" fill="none" stroke="var(--accent)" stroke-width="1.5" />
-                        <circle cx="100" cy="15" r="2" fill="var(--accent)" />
+                    <svg class="chart-svg" viewBox="0 0 200 60">
+                        <path id="weight-path" d="" fill="none" stroke="var(--accent)" stroke-width="2" />
                     </svg>
                 </div>
             </div>
 
             <div style="margin-top: 10px;">
-                <p style="font-size: 0.75rem; opacity: 0.8;">Активность тренировок</p>
-                <div class="chart-container" style="display:flex; align-items:flex-end; gap:8px; padding-bottom:5px;">
-                    <div style="flex:1; height:30%; background:var(--glass-border); border-radius:4px;"></div>
-                    <div style="flex:1; height:60%; background:var(--accent); border-radius:4px;"></div>
-                    <div style="flex:1; height:45%; background:var(--glass-border); border-radius:4px;"></div>
-                    <div style="flex:1; height:90%; background:var(--accent); border-radius:4px;"></div>
-                    <div style="flex:1; height:20%; background:var(--glass-border); border-radius:4px;"></div>
-                </div>
+                <p style="font-size: 0.75rem; opacity: 0.8;">Активность (неделя)</p>
+                <div id="activity-chart" class="chart-container" style="display:flex; align-items:flex-end; gap:8px; padding-bottom:5px;">
+                    </div>
             </div>
 
             <button class="btn-glass active" style="width: 100%; margin-top: 25px;" onclick="window.open('https://ladystretch.ru', '_blank')">ОБНОВИТЬ АБОНЕМЕНТ</button>
@@ -486,6 +457,8 @@
                     setTimeout(() => app.style.opacity = '1', 50);
                     runBiohacking();
                     renderTrainings();
+                    renderWeightChart();
+                    renderActivityChart();
                 }, 1500);
             }, 3500);
         };
@@ -543,6 +516,7 @@
             // Автоматическое обновление списка тренировок под новые условия
             renderTrainings(); 
             saveData();
+            renderWeightChart();
         }
 
         function renderTrainings() {
@@ -573,6 +547,7 @@
             toggleModal('trainModal', false);
             updateLevelDisplay();
             checkLevelUp();
+            renderActivityChart();
             saveData();
         }
 
@@ -641,6 +616,42 @@
             if(confirm('Вы уверены, что хотите обнулить весь прогресс?')) {
                 localStorage.removeItem('ls_bio_state');
                 location.reload();
+            }
+        }
+
+        // ФУНКЦИИ ГРАФИКОВ
+        function renderWeightChart() {
+            const path = document.getElementById('weight-path');
+            if(!path) return;
+            const w = parseFloat(document.getElementById('in-weight').value) || 60;
+            
+            // Имитация данных за 6 месяцев для наглядности
+            const points = [w+2, w+1.5, w+1, w+0.5, w+0.2, w]; 
+            let d = "M 0 40";
+            points.forEach((p, i) => {
+                const x = i * 40;
+                const y = 60 - (p - (w-5)) * 4; // Масштабирование
+                d += ` L ${x} ${y}`;
+            });
+            path.setAttribute('d', d);
+        }
+
+        function renderActivityChart() {
+            const container = document.getElementById('activity-chart');
+            if(!container) return;
+            container.innerHTML = '';
+            
+            // Генерируем 7 баров
+            for(let i=0; i<7; i++) {
+                const bar = document.createElement('div');
+                bar.style.flex = "1";
+                // Случайная высота + акцент на текущий прогресс
+                const height = Math.floor(Math.random() * 40) + (state.sessions > 0 ? 30 : 10);
+                bar.style.height = height + '%';
+                bar.style.background = i === 6 ? 'var(--accent)' : 'var(--glass-border)';
+                bar.style.borderRadius = "4px";
+                bar.style.transition = "height 1s ease";
+                container.appendChild(bar);
             }
         }
     </script>
