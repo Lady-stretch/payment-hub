@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Lady Stretch | Monolith Biohacking v6.2</title>
+    <title>Lady Stretch | Биохакинг тела</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,700;1,700&family=Big+Shoulders+Display:wght@100;400;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -249,7 +249,7 @@
             <div class="laser"></div>
             <div class="logo-text">Lady Stretch</div>
         </div>
-        <p style="margin-top: 40px; letter-spacing: 8px; font-size: 0.7rem; opacity: 0.4; font-weight: 300;">BIOHACKING SYSTEM v6.2</p>
+        <p style="margin-top: 40px; letter-spacing: 8px; font-size: 0.7rem; opacity: 0.4; font-weight: 300;">СИСТЕМА БИОХАКИНГА</p>
     </div>
 
     <div class="app-wrapper" id="app">
@@ -342,10 +342,16 @@
             <button class="btn-main" style="margin-top: 20px;" onclick="window.open('https://checkout.tochka.com/c4d58065-16a3-4f41-ad8d-744657f1f69b', '_blank')">Купить абонемент</button>
             
             <div class="course-card">
-                <span class="course-tag">BESTSELLER</span>
-                <h4 style="margin: 8px 0 5px;">Онлайн-курс «ДЕТОКС»</h4>
-                <p style="font-size: 0.75rem; opacity: 0.7; margin-bottom: 12px;">Очищение организма и минус 3-5 кг за 21 день под контролем экспертов.</p>
-                <button class="btn-outline" style="margin:0; border-color: var(--gold); color: var(--gold);" onclick="alert('Переход к оплате курса Детокс (999₽)')">УЗНАТЬ ПОДРОБНЕЕ</button>
+                <span class="course-tag">БЕСТСЕЛЛЕР</span>
+                <h4 style="margin: 10px 0; font-family: 'Playfair Display', serif; letter-spacing: 1px;">Курс «ДЕТОКС»</h4>
+                <p style="font-size: 0.75rem; opacity: 0.7; margin-bottom: 15px; line-height: 1.4;">
+                    Авторская программа очищения организма. Минус 3-5 кг, чистая кожа и невероятная легкость.
+                </p>
+                <button class="btn-main" 
+                    style="background: none; border: 1px solid var(--gold); color: var(--gold); font-size: 0.8rem; height: 50px;" 
+                    onclick="window.open('https://t.me/LS_Club_Syktyvkar_bot', '_blank')">
+                    ПОСМОТРЕТЬ В ТЕЛЕГРАМ
+                </button>
             </div>
 
             <center><button class="btn-outline" style="opacity: 0.3; border: none;" onclick="resetData()">Сбросить всё</button></center>
@@ -414,7 +420,7 @@
                 tags: ["Массаж", "Лимфодренаж"]
             },
             "Ягодицы + Пресс": {
-                d: "Функциональный тренинг с акцентом на самые востребованные зоны. Формируем округлые формы и стальной центр.",
+                d: "Функциональная тренировка с акцентом на самые востребованные зоны. Формируем округлые формы и стальной центр.",
                 e: "Здесь горит жир. Интенсивная работа мышц таза улучшает кровоснабжение, что важно для женского здоровья.",
                 tags: ["Тонус", "Формы"]
             },
@@ -428,7 +434,7 @@
                 e: "Золотая середина. Мышцы получают нагрузку, но не становятся 'короткими', сохраняя эластичность и женственность.",
                 tags: ["Сила", "Гибкость"]
             },
-            "Body sculpt": {
+            "Делай тело": {
                 d: "Силовой урок, направленный на развитие всех крупных мышечных групп с использованием оборудования.",
                 e: "Создаем атлетичный, но изящный силуэт. Укрепляем костную ткань и связки.",
                 tags: ["Рельеф", "Мышцы"]
@@ -447,8 +453,8 @@
 
         const resources = {
             low: ["МФР", "Йога релакс", "Здоровая спина", "Стретчинг", "Аэростретчинг"],
-            norm: ["Пилатес", "Подкачка с растяжкой", "Body sculpt", "Функциональный тренинг", "Стретчинг"],
-            peak: ["Круговая тренировка", "Табата", "Ягодицы + Пресс", "Body sculpt", "Функциональный тренинг"]
+            norm: ["Пилатес", "Подкачка с растяжкой", "Делай тело", "Функциональная тренировка", "Стретчинг"],
+            peak: ["Круговая тренировка", "Табата", "Ягодицы + Пресс", "Делай тело", "Функциональная тренировка"]
         };
 
         const levels = [
@@ -509,7 +515,7 @@
             const vLine = document.getElementById('v-line');
             
             if (bmi < 18.5) {
-                vText.innerHTML = "<b>ДЕФИЦИТ МАССЫ:</b> Твоему телу не хватает ресурса. Рекомендуем <i>Body Sculpt</i> и увеличение калорийности.";
+                vText.innerHTML = "<b>ДЕФИЦИТ МАССЫ:</b> Твоему телу не хватает ресурса. Рекомендуем тренировку <i>Делай тело</i> и увеличение калорийности.";
                 vLine.style.background = 'var(--warning)';
             } else if (bmi >= 18.5 && bmi <= 24.9) {
                 vText.innerHTML = "<b>ИДЕАЛЬНЫЙ БАЛАНС:</b> Ты в отличной форме! Поддерживай гибкость и тонус через <i>Аэростретчинг</i>.";
