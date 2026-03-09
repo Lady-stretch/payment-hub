@@ -238,13 +238,88 @@
     const tg = window.Telegram.WebApp;
     tg.expand();
 
-    // === DB WITH DATES ===
-    let db = JSON.parse(localStorage.getItem('ls_pro_db')) || {
-        log: {}, // {id: count}
-        workoutDates: [], // [timestamp, timestamp...] for frequency tracking
-        history: { w:[], d:[] }, // Weight history
+    // === БЛОК 1: DB & API СВЯЗЬ С PYTHON 3.12 / LISTOK ===
+    // Сохраняем базовую структуру, но готовим ее к приему данных с сервера
+    let db = {
+        log: {}, 
+        workoutDates: [], 
+        history: { w:[], d:[] }, 
         metrics: { w: null, h: null }
     };
+
+    // Асинхронная загрузка данных (сейчас берет из кэша, потом заменим на запрос к боту)
+    async function loadData() {
+        try {
+            // В будущем здесь будет: const response = await fetch('твой_url_яндекс_функции/get_user_data');
+            const localData = JSON.parse(localStorage.getItem('ls_pro_db'));
+            if (localData) {
+                db = { ...db, ...localData }; // При апгрейде логики всё только прибавляется
+            }
+        } catch (e) {
+            console.error("Ошибка загрузки данных", e);
+        }
+    }
+
+    // Функция отправки данных в твой Монолит Бот 6.2 (работает в фоне)
+    function sendToServer(actionType, payload) {
+        const dataPacket = {
+            user_id: tg.initDataUnsafe?.user?.id || 'test_user',
+            action: actionType,
+            data: payload,
+            timestamp: Date.now()
+        };
+        // Отправляем данные в бота для фиксации в Listok CRM
+        tg.sendData(JSON.stringify(dataPacket));
+        
+        // Дублируем в локальный сторадж для надежности
+        localStorage.setItem('ls_pro_db', JSON.stringify(db));
+    }
+
+    // === ИСПРАВЛЕННЫЙ SMART CHART ===
+    // Вынесли наверх, чтобы инициализировать сразу после загрузки данных
+    function renderChart() {
+        const ctx = document.getElementById('chart').getContext('2d');
+        if(window.myChart) window.myChart.destroy();
+        
+        // Защита от пустых данных: если истории нет, ставим стартовую точку
+        const weights = db.history.w.length > 0 ? db.history.w : [db.metrics.w || 0];
+        const dates = db.history.d.length > 0 ? db.history.d : ['Старт'];
+
+        window.myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [{
+                    label: 'Динамика',
+                    data: weights,
+                    borderWidth: 3,
+                    pointBackgroundColor: '#fff',
+                    pointRadius: 4,
+                    tension: 0.3,
+                    segment: {
+                        borderColor: ctx => {
+                            if (!ctx.p0.parsed || !ctx.p1.parsed) return '#32d74b';
+                            if (ctx.p0.parsed.y > ctx.p1.parsed.y) return '#32d74b'; // Зеленый (вес падает)
+                            if (ctx.p0.parsed.y < ctx.p1.parsed.y) return '#ff453a'; // Красный (вес растет)
+                            return '#32d74b'; 
+                        }
+                    }
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: {display:false} },
+                scales: { 
+                    x: {display:false}, 
+                    y: {
+                        display:false,
+                        suggestedMin: Math.min(...weights) - 2, // Чтобы график не прилипал к краям
+                        suggestedMax: Math.max(...weights) + 2
+                    } 
+                }
+            }
+        });
+    }
 
     // === CONFIG ===
     const energyAdvice = {
