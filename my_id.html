@@ -244,7 +244,8 @@
         log: {}, 
         workoutDates: [], 
         history: { w:[], d:[] }, 
-        metrics: { w: null, h: null }
+        metrics: { w: null, h: null, age: null, gender: 'female' }, // Добавили age
+        currentEnergy: 'mid' // Чтобы энергия не слетала
     };
 
     // Асинхронная загрузка данных (сейчас берет из кэша, потом заменим на запрос к боту)
@@ -366,14 +367,16 @@
     let undoTimer = null;
 
     // === INIT ===
-    function init() {
+    async function init() {
+        await loadData(); // СНАЧАЛА ГРУЗИМ ИЗ КЕША
         if(db.metrics.w) document.getElementById('w-in').value = db.metrics.w;
         if(db.metrics.h) document.getElementById('h-in').value = db.metrics.h;
-        updateMetrics(false); // False = don't save just yet, only render
+        
+        updateMetrics(false); 
         renderGrid();
         renderChart();
         updateWeeklyStats();
-        selectEnergy('mid');
+        selectEnergy(db.currentEnergy || 'mid'); // Берем сохраненную энергию
     }
 
     // === UNDO SYSTEM ===
@@ -428,23 +431,26 @@
         
         if(!w || !h) return;
 
-        // Save logic
+        // ОБЯЗАТЕЛЬНО: Записываем текущие значения в db, чтобы save() их подцепил
+        db.metrics.w = w; 
+        db.metrics.h = h;
+
         if(saveToDb) {
-            // Check if weight changed significantly to log it
             const lastW = db.history.w[db.history.w.length-1];
             if(lastW !== w) {
-                db.metrics.w = w; db.metrics.h = h;
                 const dateStr = new Date().toLocaleDateString('ru', {day:'numeric', month:'short'});
-                
                 db.history.w.push(w);
                 db.history.d.push(dateStr);
-                
                 lastAction = { type: 'weight' };
                 showUndo();
-                save();
                 renderChart();
             }
+            // Вызываем сохранение при любом изменении цифр
+            save(); 
         }
+        
+        // ... далее твои расчеты ИМТ и Ккал ...
+    }
 
         // Calculations
         const bmi = (w / ((h/100)**2)).toFixed(1);
@@ -486,13 +492,15 @@
     }
 
     // === UI ===
-    function selectEnergy(type) {
-        currentEnergy = type;
+   function selectEnergy(type) {
+        db.currentEnergy = type; // Запоминаем выбор
+        currentEnergy = type; 
         document.querySelectorAll('.liquid-btn').forEach(b => b.classList.remove('active'));
         document.getElementById(`btn-${type}`).classList.add('active');
         document.getElementById('energy-advice').innerText = energyAdvice[type];
         document.getElementById('energy-advice').style.display = 'block';
         renderGrid();
+        save(); // Сохраняем в кеш, чтобы после обновления не сбросилось на 'mid'
     }
 
     function renderGrid() {
