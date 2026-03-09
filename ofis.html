@@ -3,681 +3,640 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Lady Stretch | Biohacking App v6.2</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <title>Lady Stretch | Monolith Biohacking v6.2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,700;1,700&family=Big+Shoulders+Display:wght@100;400;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --glass: rgba(255, 255, 255, 0.07);
-            --glass-border: rgba(255, 255, 255, 0.15);
-            --accent: #e198b1;
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-heavy: rgba(20, 20, 20, 0.95);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --accent: #e198b1; /* Твой фирменный цвет Lady Stretch */
+            --accent-glow: rgba(225, 152, 177, 0.4);
             --bg: #050505;
             --text: #ffffff;
             --safe: #4ade80;
             --warning: #fbbf24;
             --danger: #f87171;
-            --laser: rgba(255, 255, 255, 0.9);
+            --gold: #d4af37;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { 
+            margin: 0; padding: 0; box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+            font-family: 'Inter', sans-serif;
+        }
 
         body {
-            font-family: 'Inter', sans-serif;
             background: var(--bg);
             color: var(--text);
             min-height: 100vh;
             overflow-x: hidden;
-            background-image: radial-gradient(circle at 50% 0%, #1c1c1e, #050505);
+            background-image: 
+                radial-gradient(circle at 10% 10%, #1a1a1c 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, #121212 0%, transparent 40%);
         }
 
-      /* Импорт технологичного и высокого шрифта */
-        @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@100;300&display=swap');
-
+        /* --- ПРЕМИАЛЬНЫЙ СПЛЕШ-ЭКРАН --- */
         #splash {
-            position: fixed;
-            inset: 0;
-            background: #000;
-            display: flex;
-            flex-direction: column;
-            align-items: center; 
-            justify-content: center; 
-            z-index: 9999;
-            overflow: hidden; 
+            position: fixed; inset: 0; background: #000;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 10000; transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .logo-wrapper {
-            position: relative;
-            width: 100%; 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+        .logo-container { position: relative; text-align: center; }
 
         .logo-text {
             font-family: 'Big Shoulders Display', sans-serif;
-            font-size: 1.6rem; /* Уменьшили до элегантного минимума */
-            font-weight: 100;
-            letter-spacing: 10px; /* Утонченный разлет */
-            color: #fff;
-            text-transform: uppercase;
-            white-space: nowrap; 
-            
-            /* Эффект бесконечной высоты */
-            display: inline-block;
-            transform: scaleY(2.2); /* Еще больше вытянули! Теперь это "Иглы" */
-            
-            /* Платиновый блик */
-            background: linear-gradient(90deg, #222 0%, #fff 50%, #222 100%);
+            font-size: 3.5rem; font-weight: 900; letter-spacing: 15px;
+            color: #fff; text-transform: uppercase;
+            display: inline-block; transform: scaleY(1.5);
+            background: linear-gradient(90deg, #111 0%, #fff 50%, #111 100%);
             background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: silverFlow 4s linear infinite;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: shine 3s linear infinite;
         }
 
-        @keyframes silverFlow {
-            0% { background-position: 200% center; }
-            100% { background-position: -200% center; }
+        @keyframes shine { 0% { background-position: 200% center; } 100% { background-position: -200% center; } }
+
+        .laser {
+            position: absolute; top: 50%; left: -50%; width: 200%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), #fff, var(--accent), transparent);
+            box-shadow: 0 0 20px 2px var(--accent);
+            animation: scan 4s infinite ease-in-out;
+            opacity: 0.7;
         }
 
-        /* Лазер-ниточка на весь экран */
-        .laser-scanner {
-            position: absolute;
-            left: 0;
-            width: 100vw; 
-            height: 1px;
-            background: linear-gradient(
-                90deg, 
-                transparent 0%, 
-                rgba(225, 152, 177, 0.8) 20%, 
-                #fff 50%, 
-                rgba(225, 152, 177, 0.8) 80%, 
-                transparent 100%
-            );
-            box-shadow: 0 0 10px 1px var(--accent);
-            z-index: 10;
-            animation: laserMove 5s infinite ease-in-out;
+        @keyframes scan { 
+            0% { transform: translateY(-60px) rotate(-5deg); opacity: 0; } 
+            50% { transform: translateY(60px) rotate(5deg); opacity: 1; } 
+            100% { transform: translateY(-60px) rotate(-5deg); opacity: 0; } 
         }
 
-        @keyframes laserMove {
-            0% { top: -150%; opacity: 0; }
-            30% { opacity: 1; }
-            50% { top: 150%; opacity: 1; } 
-            70% { opacity: 1; }
-            100% { top: -150%; opacity: 0; }
-        }
-
-        /* --- ОСНОВНОЙ ИНТЕРФЕЙС --- */
-        .container {
-            padding: 20px;
-            max-width: 500px;
-            margin: 0 auto;
-            display: none;
-            opacity: 0;
-            transition: opacity 1s ease-in;
+        /* --- ОСНОВНОЙ КОНТЕЙНЕР --- */
+        .app-wrapper {
+            max-width: 500px; margin: 0 auto; padding: 20px;
+            display: none; opacity: 0; transform: translateY(20px);
+            transition: all 0.8s ease-out;
         }
 
         header {
-            position: sticky;
-            top: 10px;
-            z-index: 1000;
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 18px;
-            text-align: center;
-            margin-bottom: 25px;
+            position: sticky; top: 15px; z-index: 100;
+            background: var(--glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border); border-radius: 24px;
+            padding: 20px; text-align: center; margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         header h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            letter-spacing: 4px;
-            background: linear-gradient(to bottom, #fff, #aaa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-family: 'Playfair Display', serif; font-size: 1.6rem; 
+            letter-spacing: 3px; font-weight: 700;
+            background: linear-gradient(to bottom, #fff 0%, #999 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        .glass-card {
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border);
-            border-radius: 26px;
-            padding: 22px;
-            margin-bottom: 20px;
-            position: relative;
-            overflow: hidden;
+        /* --- КАРТОЧКИ --- */
+        .card {
+            background: var(--glass); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border); border-radius: 30px;
+            padding: 25px; margin-bottom: 25px; position: relative; overflow: hidden;
         }
 
-        /* Кнопки и инпуты */
-        .btn-row { display: flex; gap: 10px; margin-bottom: 12px; }
-        .btn-glass {
-            flex: 1;
-            padding: 16px;
-            border-radius: 16px;
-            border: 1px solid var(--glass-border);
-            background: var(--glass);
-            color: #fff;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .btn-glass.active {
-            background: var(--accent);
-            color: #000;
-            border-color: var(--accent);
-            box-shadow: 0 0 20px rgba(225, 152, 177, 0.3);
+        .card::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle at 30% 30%, rgba(225,152,177,0.05), transparent 70%);
+            pointer-events: none;
         }
 
-        .input-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 15px; }
-        .input-group { text-align: center; }
-        .input-group label { display: block; font-size: 0.65rem; opacity: 0.5; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
-        .input-group input {
-            width: 100%;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            padding: 12px;
-            color: #fff;
-            text-align: center;
-            font-size: 1.1rem;
-            font-weight: 600;
+        .section-title {
+            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px;
+            color: var(--accent); margin-bottom: 20px; font-weight: 800;
+            display: flex; align-items: center; gap: 10px;
         }
 
-        /* Результаты калькулятора */
-        .bio-results {
-            display: flex;
-            justify-content: space-around;
-            margin: 25px 0 15px;
-            padding-top: 20px;
-            border-top: 1px solid var(--glass-border);
-        }
-        .bio-item { text-align: center; }
-        .bio-val { display: block; font-size: 1.3rem; font-weight: 700; color: var(--accent); }
-        .bio-label { font-size: 0.65rem; opacity: 0.5; margin-top: 4px; }
+        .section-title::after { content: ''; flex: 1; height: 1px; background: var(--glass-border); }
 
-        .expert-verdict {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            background: rgba(255,255,255,0.03);
-            border-radius: 15px;
-            margin-top: 15px;
+        /* --- ВВОД ДАННЫХ --- */
+        .gender-selector { display: flex; gap: 12px; margin-bottom: 20px; }
+        .btn-choice {
+            flex: 1; padding: 18px; border-radius: 18px; border: 1px solid var(--glass-border);
+            background: rgba(255,255,255,0.03); color: #fff; font-weight: 700;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer;
         }
-        .status-line {
-            width: 4px;
-            height: 40px;
-            background: var(--safe);
-            border-radius: 10px;
-            margin-right: 15px;
-            transition: 0.5s;
+        .btn-choice.active {
+            background: var(--accent); color: #000; border-color: var(--accent);
+            box-shadow: 0 0 20px var(--accent-glow); transform: scale(1.02);
         }
-        .verdict-text { font-size: 0.85rem; line-height: 1.4; color: #ccc; }
 
-        /* Сетка тренировок */
-        .training-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
-        .train-card {
-            padding: 16px;
-            border-radius: 18px;
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            color: #fff;
-            text-align: left;
-            transition: 0.3s;
+        .input-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .input-box { text-align: center; }
+        .input-box label { display: block; font-size: 0.65rem; opacity: 0.5; margin-bottom: 8px; text-transform: uppercase; }
+        .input-box input {
+            width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border);
+            border-radius: 15px; padding: 15px 5px; color: #fff; font-size: 1.3rem; 
+            font-weight: 800; text-align: center; outline: none; transition: 0.3s;
         }
-        .train-card:active { transform: scale(0.97); background: rgba(255,255,255,0.1); }
-        .train-card b { display: block; font-size: 0.9rem; color: var(--accent); margin-bottom: 5px; }
-        .train-card span { font-size: 0.65rem; opacity: 0.5; }
+        .input-box input:focus { border-color: var(--accent); background: rgba(225,152,177,0.05); }
 
-        /* Модальные окна */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.9);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 5000;
-            padding: 20px;
+        /* --- БИОМЕТРИЯ --- */
+        .stats-display {
+            display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;
+            margin: 25px 0; padding-top: 25px; border-top: 1px solid var(--glass-border);
         }
-        .modal-body {
-            background: linear-gradient(135deg, #1a1a1c, #050505);
-            border: 1px solid var(--glass-border);
-            padding: 30px;
-            border-radius: 30px;
-            width: 100%;
-            max-width: 400px;
-            position: relative;
-            text-align: center;
+        .stat-card { text-align: center; }
+        .stat-val { font-size: 1.6rem; font-weight: 900; color: #fff; display: block; line-height: 1; }
+        .stat-label { font-size: 0.6rem; opacity: 0.4; text-transform: uppercase; margin-top: 5px; letter-spacing: 1px; }
+        .stat-unit { font-size: 0.7rem; color: var(--accent); margin-left: 2px; }
+
+        /* --- ВЕРДИКТ ЭКСПЕРТА --- */
+        .verdict-box {
+            background: rgba(255,255,255,0.03); border-radius: 20px; padding: 20px;
+            display: flex; gap: 15px; align-items: flex-start; margin-top: 10px;
         }
-        .modal-body h2 { font-family: 'Playfair Display', serif; margin-bottom: 15px; color: var(--accent); }
+        .status-indicator { width: 6px; height: 50px; border-radius: 10px; flex-shrink: 0; }
+        .verdict-content b { color: var(--accent); font-size: 0.9rem; display: block; margin-bottom: 5px; }
+        .verdict-content p { font-size: 0.85rem; line-height: 1.5; color: #bbb; }
 
-        /* Графики */
-        .chart-container { height: 120px; width: 100%; margin-top: 15px; position: relative; }
-        .chart-svg { width: 100%; height: 100%; overflow: visible; }
-        
-        /* Кнопка сброса */
-        .danger-zone { margin-top: 30px; text-align: center; }
-        .btn-reset { background: none; border: none; color: #444; font-size: 0.75rem; text-decoration: underline; cursor: pointer; }
+        /* --- ТРЕНИРОВКИ --- */
+        .resource-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+        .tab {
+            flex: 1; padding: 12px 5px; border-radius: 12px; font-size: 0.7rem;
+            font-weight: 700; border: 1px solid var(--glass-border); background: none;
+            color: #666; cursor: pointer; text-transform: uppercase;
+        }
+        .tab.active { background: #fff; color: #000; border-color: #fff; }
 
+        .training-list { display: flex; flex-direction: column; gap: 12px; }
+        .training-item {
+            background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border);
+            border-radius: 20px; padding: 18px; transition: 0.3s; cursor: pointer;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .training-item:active { transform: scale(0.98); background: rgba(255,255,255,0.06); }
+        .train-info h4 { font-size: 1rem; margin-bottom: 4px; letter-spacing: 0.5px; }
+        .train-info p { font-size: 0.75rem; opacity: 0.5; }
+        .train-arrow { color: var(--accent); font-size: 1.2rem; }
+
+        /* --- МОДАЛЬНЫЕ ОКНА --- */
+        .modal {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            z-index: 2000; display: none; align-items: center; justify-content: center; padding: 25px;
+        }
+        .modal-content {
+            background: var(--glass-heavy); border: 1px solid var(--glass-border);
+            border-radius: 35px; width: 100%; max-width: 400px; padding: 35px;
+            position: relative; box-shadow: 0 20px 50px rgba(0,0,0,1);
+        }
+        .modal-close {
+            position: absolute; top: 20px; right: 20px; width: 30px; height: 30px;
+            background: var(--glass); border-radius: 50%; display: flex; 
+            align-items: center; justify-content: center; cursor: pointer;
+        }
+        .modal-h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 15px; color: var(--accent); }
+        .modal-desc { font-size: 0.95rem; line-height: 1.6; color: #ccc; margin-bottom: 25px; }
+        .expert-note {
+            background: rgba(225,152,177,0.1); border-left: 4px solid var(--accent);
+            padding: 15px; border-radius: 0 15px 15px 0; text-align: left; margin-bottom: 25px;
+        }
+        .expert-note i { font-size: 0.8rem; color: var(--accent); display: block; margin-bottom: 5px; font-weight: 800; }
+        .expert-note p { font-style: italic; font-size: 0.9rem; }
+
+        /* --- ПРОГРЕСС И ПРИЗЫ --- */
+        .level-badge {
+            width: 100px; height: 100px; margin: 0 auto 20px;
+            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 3rem; border-radius: 50%; position: relative;
+        }
+        .level-badge::after {
+            content: ''; position: absolute; inset: -5px; border: 2px dashed var(--accent);
+            border-radius: 50%; animation: rotate 10s linear infinite;
+        }
+        @keyframes rotate { 100% { transform: rotate(360deg); } }
+
+        .progress-container { height: 8px; background: rgba(255,255,255,0.1); border-radius: 10px; margin: 15px 0; overflow: hidden; }
+        .progress-bar { height: 100%; background: var(--accent); width: 0%; transition: 1s ease-out; }
+
+        /* --- КНОПКИ ДЕЙСТВИЯ --- */
+        .btn-main {
+            width: 100%; padding: 20px; border-radius: 20px; border: none;
+            background: linear-gradient(135deg, var(--accent) 0%, #c07b94 100%);
+            color: #000; font-weight: 800; font-size: 1rem; cursor: pointer;
+            box-shadow: 0 10px 20px rgba(225,152,177,0.3); transition: 0.3s;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .btn-main:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(225,152,177,0.5); }
+        .btn-outline {
+            width: 100%; padding: 15px; border-radius: 15px; border: 1px solid var(--glass-border);
+            background: none; color: #fff; font-size: 0.8rem; cursor: pointer; margin-top: 15px;
+        }
+
+        /* --- ГРАФИК --- */
+        .chart-svg { width: 100%; height: 80px; margin-top: 20px; filter: drop-shadow(0 0 5px var(--accent)); }
+
+        /* --- КУРСЫ --- */
+        .course-card {
+            background: linear-gradient(135deg, #1a1a1c 0%, #0a0a0a 100%);
+            border: 1px solid var(--gold); border-radius: 20px; padding: 20px; margin-top: 15px;
+        }
+        .course-tag { background: var(--gold); color: #000; font-size: 0.6rem; padding: 3px 8px; border-radius: 5px; font-weight: 800; }
     </style>
 </head>
 <body>
 
     <div id="splash">
-        <div class="logo-wrapper">
-            <div class="laser-scanner"></div>
+        <div class="logo-container">
+            <div class="laser"></div>
             <div class="logo-text">Lady Stretch</div>
         </div>
-        <p style="letter-spacing: 5px; font-size: 0.7rem; opacity: 0.5; margin-top: 20px; color: #fff;">BIOHACKING SYSTEM v6.2</p>
+        <p style="margin-top: 40px; letter-spacing: 8px; font-size: 0.7rem; opacity: 0.4; font-weight: 300;">BIOHACKING SYSTEM v6.2</p>
     </div>
 
-    <div class="container" id="app">
+    <div class="app-wrapper" id="app">
         <header>
             <h1>LADY STRETCH</h1>
         </header>
 
-        <div class="glass-card">
-            <div class="btn-row">
-                <button class="btn-glass active" id="btn-female" onclick="updateGender('female')">ЖЕНЩИНА</button>
-                <button class="btn-glass" id="btn-male" onclick="updateGender('male')">МУЖЧИНА</button>
+        <div class="card">
+            <div class="section-title">Анализ параметров тела</div>
+            
+            <div class="gender-selector">
+                <button class="btn-choice active" id="g-female" onclick="setGender('female')">ЖЕНЩИНА</button>
+                <button class="btn-choice" id="g-male" onclick="setGender('male')">МУЖЧИНА</button>
             </div>
-            <button class="btn-glass" style="width: 100%; margin-bottom: 15px;" onclick="toggleModal('activityModal', true)">
-                АКТИВНОСТЬ: <span id="display-activity">Средняя</span>
-            </button>
 
-            <div class="input-row">
-                <div class="input-group">
+            <div class="input-grid">
+                <div class="input-box">
                     <label>Вес (кг)</label>
-                    <input type="number" id="in-weight" value="60" oninput="runBiohacking()">
+                    <input type="number" id="w-val" value="62" oninput="calculate()">
                 </div>
-                <div class="input-group">
+                <div class="input-box">
                     <label>Рост (см)</label>
-                    <input type="number" id="in-height" value="170" oninput="runBiohacking()">
+                    <input type="number" id="h-val" value="168" oninput="calculate()">
                 </div>
-                <div class="input-group">
+                <div class="input-box">
                     <label>Возраст</label>
-                    <input type="number" id="in-age" value="28" oninput="runBiohacking()">
+                    <input type="number" id="a-val" value="30" oninput="calculate()">
                 </div>
             </div>
 
-            <div class="bio-results">
-                <div class="bio-item">
-                    <span class="bio-val" id="res-bmi">20.8</span>
-                    <span class="bio-label">ИМТ</span>
+            <div class="stats-display">
+                <div class="stat-card">
+                    <span class="stat-val" id="bmi-res">0.0</span>
+                    <span class="stat-label">ИМТ</span>
                 </div>
-                <div class="bio-item">
-                    <span class="bio-val" id="res-water">2.1л</span>
-                    <span class="bio-label">ВОДА</span>
+                <div class="stat-card">
+                    <span class="stat-val" id="water-res">0.0<span class="stat-unit">л</span></span>
+                    <span class="stat-label">H2O / день</span>
                 </div>
-                <div class="bio-item">
-                    <span class="bio-val" id="res-kcal">1850</span>
-                    <span class="bio-label">ККАЛ</span>
+                <div class="stat-card">
+                    <span class="stat-val" id="kcal-res">0</span>
+                    <span class="stat-label">Ккал / база</span>
                 </div>
             </div>
 
-            <div class="expert-verdict">
-                <div class="status-line" id="status-color"></div>
-                <div class="verdict-text" id="expert-text">Инициализация биометрии...</div>
+            <div class="verdict-box">
+                <div class="status-indicator" id="v-line" style="background: var(--safe);"></div>
+                <div class="verdict-content">
+                    <b>АНАЛИЗ СОСТОЯНИЯ:</b>
+                    <p id="v-text">Введите данные для получения экспертного заключения...</p>
+                </div>
             </div>
 
-            <div style="margin-top: 15px; display: flex; justify-content: space-between; font-size: 0.7rem; opacity: 0.6; padding: 0 10px;">
-                <span>Белки: <b id="res-p" style="color:var(--accent)">--</b></span>
-                <span>Жиры: <b id="res-f" style="color:var(--accent)">--</b></span>
-                <span>Углеводы: <b id="res-c" style="color:var(--accent)">--</b></span>
+            <div style="display: flex; justify-content: space-between; margin-top: 20px; font-size: 0.7rem; opacity: 0.6;">
+                <span>Белки: <b id="p-val">--</b>г</span>
+                <span>Жиры: <b id="f-val">--</b>г</span>
+                <span>Углеводы: <b id="c-val">--</b>г</span>
             </div>
         </div>
 
-        <div class="glass-card">
-            <h3 style="font-size: 0.8rem; margin-bottom: 15px; opacity: 0.7; letter-spacing: 1px;">ВАШ ТЕКУЩИЙ РЕСУРС</h3>
-            <div class="btn-row">
-                <button class="btn-glass" id="res-low" onclick="updateResource('low')">СПАД</button>
-                <button class="btn-glass active" id="res-norm" onclick="updateResource('norm')">НОРМА</button>
-                <button class="btn-glass" id="res-peak" onclick="updateResource('peak')">ПИК</button>
+        <div class="card">
+            <div class="section-title">Смарт-подбор занятий</div>
+            <p style="font-size: 0.75rem; opacity: 0.5; margin-bottom: 15px;">Как вы чувствуете себя сейчас?</p>
+            <div class="resource-tabs">
+                <button class="tab" id="res-low" onclick="setResource('low')">Усталость</button>
+                <button class="tab active" id="res-norm" onclick="setResource('norm')">В тонусе</button>
+                <button class="tab" id="res-peak" onclick="setResource('peak')">Заряжена</button>
             </div>
 
-            <div class="training-grid" id="training-list">
+            <div class="training-list" id="train-container">
                 </div>
         </div>
 
-        <div class="glass-card">
-            <h3 style="font-size: 0.8rem; margin-bottom: 10px; opacity: 0.7;">ВАШ УРОВЕНЬ: <span id="user-level-name" style="color:var(--accent)">Новичок</span></h3>
-            <p id="session-count" style="font-size: 0.7rem; opacity: 0.5;">Пройдено занятий: 0</p>
+        <div class="card">
+            <div class="section-title">Твоя трансформация</div>
+            <div style="text-align: center;">
+                <div class="level-badge" id="lvl-icon">🌱</div>
+                <h2 id="lvl-name" style="font-family: 'Playfair Display'; margin-bottom: 5px;">Новичок</h2>
+                <p id="lvl-count" style="font-size: 0.8rem; opacity: 0.5;">Пройдено: 0 занятий</p>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-line"></div>
+            </div>
             
-            <div style="margin-top: 20px;">
-                <p style="font-size: 0.75rem; opacity: 0.8;">Динамика веса (год)</p>
-                <div class="chart-container">
-                    <svg class="chart-svg" viewBox="0 0 200 60">
-                        <path id="weight-path" d="" fill="none" stroke="var(--accent)" stroke-width="2" />
-                    </svg>
-                </div>
-            </div>
+            <svg class="chart-svg" viewBox="0 0 200 50">
+                <path id="chart-path" d="M0 40 Q 50 40, 100 40 T 200 40" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/>
+            </svg>
 
-            <div style="margin-top: 10px;">
-                <p style="font-size: 0.75rem; opacity: 0.8;">Активность (неделя)</p>
-                <div id="activity-chart" class="chart-container" style="display:flex; align-items:flex-end; gap:8px; padding-bottom:5px;">
-                    </div>
-            </div>
-
-           <button class="btn-glass active" style="width: 100%; margin-top: 25px;" onclick="window.open('https://checkout.tochka.com/c4d58065-16a3-4f41-ad8d-744657f1f69b', '_blank')">ОБНОВИТЬ АБОНЕМЕНТ</button>
+            <button class="btn-main" style="margin-top: 20px;" onclick="window.open('https://checkout.tochka.com/c4d58065-16a3-4f41-ad8d-744657f1f69b', '_blank')">Купить абонемент</button>
             
-            <div class="danger-zone">
-                <button class="btn-reset" onclick="resetAllData()">Сбросить прогресс и данные</button>
+            <div class="course-card">
+                <span class="course-tag">BESTSELLER</span>
+                <h4 style="margin: 8px 0 5px;">Онлайн-курс «ДЕТОКС»</h4>
+                <p style="font-size: 0.75rem; opacity: 0.7; margin-bottom: 12px;">Очищение организма и минус 3-5 кг за 21 день под контролем экспертов.</p>
+                <button class="btn-outline" style="margin:0; border-color: var(--gold); color: var(--gold);" onclick="alert('Переход к оплате курса Детокс (999₽)')">УЗНАТЬ ПОДРОБНЕЕ</button>
             </div>
+
+            <center><button class="btn-outline" style="opacity: 0.3; border: none;" onclick="resetData()">Сбросить всё</button></center>
         </div>
     </div>
 
-    <div id="activityModal" class="modal-overlay" onclick="toggleModal('activityModal', false)">
-        <div class="modal-body" onclick="event.stopPropagation()">
-            <h2>Активность</h2>
-            <button class="btn-glass" style="width:100%; margin-bottom:10px;" onclick="setActivity(1.2, 'Низкая')">Низкая (Сидячая)</button>
-            <button class="btn-glass active" style="width:100%; margin-bottom:10px;" onclick="setActivity(1.5, 'Средняя')">Средняя (Тренировки)</button>
-            <button class="btn-glass" style="width:100%; margin-bottom:10px;" onclick="setActivity(1.9, 'Высокая')">Высокая (Профи)</button>
-        </div>
-    </div>
-
-    <div id="trainModal" class="modal-overlay" onclick="toggleModal('trainModal', false)">
-        <div class="modal-body" onclick="event.stopPropagation()">
-            <h2 id="m-train-title">Заголовок</h2>
-            <p id="m-train-desc" style="font-size: 0.9rem; color: #ccc; line-height: 1.5; margin-bottom: 20px;"></p>
-            <div style="background: rgba(225,152,177,0.1); border-left: 3px solid var(--accent); padding: 15px; text-align: left;">
-                <b style="font-size: 0.75rem; color: var(--accent); display: block; margin-bottom: 5px;">ЭКСПЕРТНОЕ МНЕНИЕ:</b>
-                <p id="m-train-expert" style="font-size: 0.85rem; font-style: italic;"></p>
+    <div class="modal" id="trainModal">
+        <div class="modal-content">
+            <div class="modal-close" onclick="closeModal()">✕</div>
+            <h2 class="modal-h2" id="m-title">Название</h2>
+            <p class="modal-desc" id="m-desc">Описание</p>
+            <div class="expert-note">
+                <i>LADY STRETCH ЭКСПЕРТ:</i>
+                <p id="m-expert">Мнение</p>
             </div>
-            <button class="btn-glass active" style="width:100%; margin-top:20px;" onclick="logTraining()">Я БЫЛА НА ТРЕНИРОВКЕ</button>
+            <button class="btn-main" onclick="confirmWorkout()">Я посетила занятие</button>
         </div>
     </div>
 
-    <div id="levelModal" class="modal-overlay" onclick="toggleModal('levelModal', false)">
-        <div class="modal-body">
-            <div style="font-size: 4rem; margin-bottom: 15px;">🏆</div>
-            <h2 id="m-level-name">Уровень повышен!</h2>
-            <p id="m-level-desc" style="font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px;"></p>
-            <button class="btn-glass active" style="width:100%;" onclick="toggleModal('levelModal', false)">ПРИНЯТЬ</button>
+    <div class="modal" id="levelModal">
+        <div class="modal-content" style="text-align: center;">
+            <div style="font-size: 4rem; margin-bottom: 20px;">🎉</div>
+            <h2 class="modal-h2" id="ml-title">Новый статус!</h2>
+            <p class="modal-desc" id="ml-desc">Текст</p>
+            <button class="btn-main" onclick="closeModal()">ГОРЖУСЬ СОБОЙ</button>
         </div>
     </div>
 
     <script>
-        // ДАННЫЕ ПРИЛОЖЕНИЯ
-        // 1. Расширяем объект состояния
-let state = {
-    gender: 'female',
-    activity: 1.5,
-    actName: 'Средняя',
-    resource: 'norm',
-    sessions: 0,
-    level: 0,
-    // Добавляем новые поля для сохранения
-    lastWeight: 60,
-    lastHeight: 170,
-    lastAge: 28,
-    weightHistory: [62, 61.5, 61, 60.5, 60] // Для работы графика
-};
+        // --- ДАННЫЕ И БИБЛИОТЕКА ---
+        let state = {
+            gender: 'female', weight: 62, height: 168, age: 30,
+            resource: 'norm', sessions: 0, level: 0,
+            history: [62, 62, 62, 62, 62]
+        };
 
-// 2. Модифицируем сохранение
-function saveData() {
-    state.lastWeight = document.getElementById('in-weight').value;
-    state.lastHeight = document.getElementById('in-height').value; // Теперь сохраняем рост
-    state.lastAge = document.getElementById('in-age').value;       // Теперь сохраняем возраст
-    localStorage.setItem('ls_bio_state', JSON.stringify(state));
-}
+        const trainingLibrary = {
+            "Пилатес": {
+                d: "Система упражнений для укрепления глубокого мышечного корсета, улучшения осанки и координации. Без ударных нагрузок.",
+                e: "Идеально при болях в спине. Формирует плоский живот не за счет закачки пресса, а за счет вытяжения и работы внутренних мышц.",
+                tags: ["Спина", "Корсет"]
+            },
+            "Стретчинг": {
+                d: "Классическая растяжка всех групп мышц. Улучшает кровоток, снимает мышечное напряжение и делает тело податливым.",
+                e: "Убирает 'забитость' после фитнеса или сидячей работы. После занятия вы почувствуете, что стали выше на пару сантиметров.",
+                tags: ["Гибкость", "Релакс"]
+            },
+            "Аэростретчинг": {
+                d: "Растяжка в специальных гамаках. Позволяет выполнять упражнения в воздухе, снимая нагрузку с позвоночника.",
+                e: "Это лучшая декомпрессия позвоночных дисков. Состояние невесомости дает глубокое расслабление нервной системы.",
+                tags: ["Гамаки", "Позвоночник"]
+            },
+            "Йога релакс": {
+                d: "Мягкая практика с акцентом на дыхание и глубокое расслабление. Минимум усилий, максимум ментального спокойствия.",
+                e: "Рекомендую при высоком уровне стресса. Мы работаем с блуждающим нервом, что мгновенно снижает уровень кортизола.",
+                tags: ["Дыхание", "Антистресс"]
+            },
+            "Здоровая спина": {
+                d: "Специализированный комплекс для укрепления мышц спины, шеи и исправления сутулости.",
+                e: "Фундамент здоровья. Избавляет от головных болей, вызванных зажимами в шейном отделе. Обязательно всем офисным работникам.",
+                tags: ["Осанка", "Здоровье"]
+            },
+            "МФР": {
+                d: "Миофасциальный релиз. Самомассаж с помощью роликов и мячей. Работа с фасциями (оболочками мышц).",
+                e: "Это замена полноценному сеансу массажа. Убирает отеки, разбивает триггерные точки и ускоряет лимфодренаж.",
+                tags: ["Массаж", "Лимфодренаж"]
+            },
+            "Ягодицы + Пресс": {
+                d: "Функциональный тренинг с акцентом на самые востребованные зоны. Формируем округлые формы и стальной центр.",
+                e: "Здесь горит жир. Интенсивная работа мышц таза улучшает кровоснабжение, что важно для женского здоровья.",
+                tags: ["Тонус", "Формы"]
+            },
+            "Круговая тренировка": {
+                d: "Высокоинтенсивный тренинг (HIIT) с быстрой сменой станций. Работа на пределе возможностей.",
+                e: "Максимальный жиросжигающий эффект. Метаболизм остается ускоренным еще 24-48 часов после выхода из зала.",
+                tags: ["Жиросжигание", "Выносливость"]
+            },
+            "Подкачка с растяжкой": {
+                d: "Микс силовых упражнений со своим весом и финальной глубокой растяжки.",
+                e: "Золотая середина. Мышцы получают нагрузку, но не становятся 'короткими', сохраняя эластичность и женственность.",
+                tags: ["Сила", "Гибкость"]
+            },
+            "Body sculpt": {
+                d: "Силовой урок, направленный на развитие всех крупных мышечных групп с использованием оборудования.",
+                e: "Создаем атлетичный, но изящный силуэт. Укрепляем костную ткань и связки.",
+                tags: ["Рельеф", "Мышцы"]
+            },
+            "Табата": {
+                d: "20 секунд работы, 10 секунд отдыха. Протокол, взрывающий метаболизм за считанные минуты.",
+                e: "Для тех, кто хочет быстрых результатов. Тренирует сердце и сжигает калории как ни одна другая программа.",
+                tags: ["Интенсив", "Сердце"]
+            },
+            "Функциональный тренинг": {
+                d: "Упражнения, имитирующие естественные движения человека. Развивает баланс, ловкость и силу.",
+                e: "Подготавливает тело к жизни. Вы будете легче переносить любые нагрузки, от прогулок до подъема сумок.",
+                tags: ["Движение", "Баланс"]
+            }
+        };
 
-// 3. Модифицируем загрузку, чтобы данные вставали в инпуты
-function loadData() {
-    const saved = localStorage.getItem('ls_bio_state');
-    if(saved) {
-        state = JSON.parse(saved);
-        document.getElementById('in-weight').value = state.lastWeight || 60;
-        document.getElementById('in-height').value = state.lastHeight || 170; // Возвращаем рост
-        document.getElementById('in-age').value = state.lastAge || 28;       // Возвращаем возраст
-        document.getElementById('display-activity').innerText = state.actName;
-        updateLevelDisplay();
-    }
-}
+        const resources = {
+            low: ["МФР", "Йога релакс", "Здоровая спина", "Стретчинг", "Аэростретчинг"],
+            norm: ["Пилатес", "Подкачка с растяжкой", "Body sculpt", "Функциональный тренинг", "Стретчинг"],
+            peak: ["Круговая тренировка", "Табата", "Ягодицы + Пресс", "Body sculpt", "Функциональный тренинг"]
+        };
 
         const levels = [
-            { count: 0, name: 'Новичок', desc: 'Добро пожаловать в мир Lady Stretch! Ваша трансформация начинается сегодня.' },
-            { count: 8, name: 'Адепт', desc: '8 занятий позади! Мышечная эластичность выросла на 15%, улучшилось кровообращение и лимфодренаж.' },
-            { count: 30, name: 'Трансформация', desc: '30 занятий! Ваша осанка стабилизировалась, уровень кортизола снижен. Тело меняет структуру.' },
-            { count: 50, name: 'Мастер', desc: '50 занятий! Метаболизм ускорился, выносливость на пике. Вы выглядите потрясающе.' },
-            { count: 100, name: 'Эксперт', desc: '100 занятий! Новое качество жизни. Глубокий мышечный корсет полностью сформирован.' },
-            { count: 150, name: 'Легенда', desc: '150 занятий! Вы — икона Lady Stretch. Полный контроль над телом и состоянием.' }
+            { n: 0, name: "Новичок", icon: "🌱", desc: "Добро пожаловать в Lady Stretch! Твое тело только начинает просыпаться." },
+            { n: 8, name: "Адепт", icon: "🌸", desc: "8 тренировок за плечами. Гибкость улучшилась на 15%, а сон стал заметно крепче." },
+            { n: 24, name: "Трансформация", icon: "🦋", desc: "24 занятия. Окружающие замечают твою осанку. Твой метаболизм теперь работает на тебя." },
+            { n: 48, name: "Мастер", icon: "💎", desc: "48 занятий. Ты в идеальной форме. Мышечный корсет надежно держит позвоночник." },
+            { n: 100, name: "Легенда", icon: "👑", desc: "100 тренировок! Ты — эталон Lady Stretch. Твое состояние вдохновляет миллионы." }
         ];
 
-        const trainingLib = {
-            "Пилатес": { d: "Проработка глубокого корсета и вытяжение позвоночника.", e: "Через 2 месяца боли в спине уйдут, живот станет подтянутым." },
-            "Стретчинг": { d: "Классическая работа над гибкостью и снятие зажимов.", e: "Мышцы приобретут красивый удлиненный рельеф и легкость." },
-            "Классическая растяжка": { d: "Глубокая работа над шпагатами и спиной.", e: "Убирает психосоматические блоки и делает суставы молодыми." },
-            "МФР": { d: "Самомассаж роллами для расслабления фасций.", e: "Ускоряет восстановление в 2 раза и убирает отеки." },
-            "Скай стретчинг": { d: "Растяжка в гамаках в состоянии невесомости.", e: "Максимальная декомпрессия позвоночника и чувство полета." },
-            "Йога релакс": { d: "Мягкие асаны и дыхание для снятия стресса.", e: "Полная перезагрузка нервной системы и здоровый сон." },
-            "Здоровая спина": { d: "Укрепление мышечного корсета и коррекция осанки.", e: "Фундамент здоровья. Вы расправите плечи и забудете о сутулости." },
-            "Подкачка с растяжкой": { d: "Силовой блок + гибкость для идеального тонуса.", e: "Тело станет упругим, уйдет дряблость, кожа подтянется." },
-            "Круговая тренировка": { d: "Интенсив на все группы мышц для жиросжигания.", e: "Разгон метаболизма. Жир сгорает еще 48 часов после тренировки." },
-            "Бодискульпт": { d: "Скульптурирование идеальных пропорций тела.", e: "Прорисовка рельефа. Каждая мышца станет точеной." },
-            "Ягодицы + Пресс": { d: "Акцент на самые важные зоны.", e: "Мощный лимфодренаж низа и плоский, железный живот." },
-            "Табата": { d: "Интервальный тренинг для выносливости.", e: "Максимальный расход калорий за минимальное время." },
-            "Функционал": { d: "Развитие силы и ловкости через естественные движения.", e: "Вы станете энергичнее, уйдет бытовая усталость." }
-        };
-
-        const resourceMap = {
-            low: ["Пилатес", "Стретчинг", "МФР", "Йога релакс", "Здоровая спина"],
-            norm: ["Пилатес", "Классическая растяжка", "Скай стретчинг", "Подкачка с растяжкой", "Бодискульпт"],
-            peak: ["Круговая тренировка", "Ягодицы + Пресс", "Табата", "Функционал", "Бодискульпт"]
-        };
-
-        // ЛОГИКА
+        // --- ЛОГИКА ---
         window.onload = () => {
-            loadData();
+            load();
             setTimeout(() => {
-                const splash = document.getElementById('splash');
-                splash.style.opacity = '0';
+                document.getElementById('splash').style.opacity = '0';
                 setTimeout(() => {
-                    splash.style.display = 'none';
+                    document.getElementById('splash').style.display = 'none';
                     const app = document.getElementById('app');
                     app.style.display = 'block';
-                    setTimeout(() => app.style.opacity = '1', 50);
-                    runBiohacking();
-                    renderTrainings();
-                    renderWeightChart();
-                    renderActivityChart();
-                }, 1500);
-            }, 3500);
+                    setTimeout(() => { app.style.opacity = '1'; app.style.transform = 'translateY(0)'; }, 50);
+                    calculate();
+                }, 1000);
+            }, 3000);
         };
 
-        function runBiohacking() {
-            const w = parseFloat(document.getElementById('in-weight').value) || 0;
-            const h = parseFloat(document.getElementById('in-height').value) || 0;
-            const a = parseFloat(document.getElementById('in-age').value) || 0;
+        function calculate() {
+            state.weight = parseFloat(document.getElementById('w-val').value) || 0;
+            state.height = parseFloat(document.getElementById('h-val').value) || 0;
+            state.age = parseFloat(document.getElementById('a-val').value) || 0;
 
-            // 1. Расчет ИМТ
-            const bmi = (w / ((h/100)**2)).toFixed(1);
-            document.getElementById('res-bmi').innerText = bmi;
+            if (state.weight > 0 && state.height > 100) {
+                const bmi = (state.weight / ((state.height / 100) ** 2)).toFixed(1);
+                document.getElementById('bmi-res').innerText = bmi;
 
-            // 2. Расчет Воды
-            const water = (w * 0.035).toFixed(1);
-            document.getElementById('res-water').innerText = water + 'л';
+                const water = (state.weight * 0.035).toFixed(1);
+                document.getElementById('water-res').innerHTML = `${water}<span class="stat-unit">л</span>`;
 
-            // 3. Расчет Калорий (Миффлин-Сан Жеор)
-            let bmr = (10 * w) + (6.25 * h) - (5 * a);
-            bmr = state.gender === 'female' ? bmr - 161 : bmr + 5;
-            const kcal = Math.round(bmr * state.activity);
-            document.getElementById('res-kcal').innerText = kcal;
+                let bmr = (10 * state.weight) + (6.25 * state.height) - (5 * state.age);
+                bmr = state.gender === 'female' ? bmr - 161 : bmr + 5;
+                document.getElementById('kcal-res').innerText = Math.round(bmr);
 
-            // 4. Расчет БЖУ
-            document.getElementById('res-p').innerText = Math.round(w * 1.6) + 'г';
-            document.getElementById('res-f').innerText = Math.round(w * 0.9) + 'г';
-            document.getElementById('res-c').innerText = Math.round((kcal - (w*1.6*4) - (w*0.9*9)) / 4) + 'г';
+                // БЖУ
+                const p = Math.round(state.weight * 1.5);
+                const f = Math.round(state.weight * 0.9);
+                const c = Math.round((bmr - (p*4 + f*9)) / 4);
+                document.getElementById('p-val').innerText = p;
+                document.getElementById('f-val').innerText = f;
+                document.getElementById('c-val').innerText = c;
 
-            // 5. ЭКСПЕРТНОЕ ЗАКЛЮЧЕНИЕ (Умная логика Lady Stretch)
-            const text = document.getElementById('expert-text');
-            const line = document.getElementById('status-color');
-
-            // Сценарий А: Возраст 40+ и лишний вес при низкой активности (Твой случай)
-            if (a >= 40 && bmi > 26 && state.activity <= 1.25) {
-                text.innerHTML = `<span style="color:var(--accent); font-weight:bold;">ЭКСПЕРТНЫЙ ПЛАН:</span> В вашем возрасте при ИМТ ${bmi} важно беречь суставы. Начинаем с <b>МФР</b> и <b>Здоровой спины</b>. Интенсивные нагрузки пока исключаем.`;
-                line.style.background = 'var(--warning)';
-                line.style.boxShadow = '0 0 15px var(--warning)';
-            } 
-            // Сценарий Б: Дефицит массы
-            else if (bmi < 18.5) {
-                text.innerText = "Дефицит массы. Рекомендуем Подкачку и профицит калорий для построения мышечного корсета.";
-                line.style.background = 'var(--warning)';
-            } 
-            // Сценарий В: Ожирение или высокий ИМТ у молодых/активных
-            else if (bmi > 25) {
-                text.innerText = "Превышение ИМТ. Рекомендуем жиросжигающий протокол: Круговые тренировки и Табата при отсутствии противопоказаний.";
-                line.style.background = 'var(--danger)';
-            } 
-            // Сценарий Г: Норма
-            else {
-                text.innerText = "Ваши показатели в идеальной норме. Сохраняйте биобаланс через растяжку и пилатес.";
-                line.style.background = 'var(--safe)';
+                updateVerdict(bmi);
+                updateChart();
             }
+            save();
+        }
 
-            // Автоматическое обновление списка тренировок под новые условия
-            renderTrainings(); 
-            saveData();
-            renderWeightChart();
+        function updateVerdict(bmi) {
+            const vText = document.getElementById('v-text');
+            const vLine = document.getElementById('v-line');
+            
+            if (bmi < 18.5) {
+                vText.innerHTML = "<b>ДЕФИЦИТ МАССЫ:</b> Твоему телу не хватает ресурса. Рекомендуем <i>Body Sculpt</i> и увеличение калорийности.";
+                vLine.style.background = 'var(--warning)';
+            } else if (bmi >= 18.5 && bmi <= 24.9) {
+                vText.innerHTML = "<b>ИДЕАЛЬНЫЙ БАЛАНС:</b> Ты в отличной форме! Поддерживай гибкость и тонус через <i>Аэростретчинг</i>.";
+                vLine.style.background = 'var(--safe)';
+            } else {
+                vText.innerHTML = "<b>АКЦЕНТ НА МЕТАБОЛИЗМ:</b> Есть потенциал для снижения веса. Лучший выбор сейчас — <i>Табата</i> и <i>МФР</i>.";
+                vLine.style.background = 'var(--danger)';
+            }
+        }
+
+        function setResource(res) {
+            state.resource = res;
+            ['low', 'norm', 'peak'].forEach(r => {
+                document.getElementById('res-'+r).classList.toggle('active', r === res);
+            });
+            renderTrainings();
+            save();
         }
 
         function renderTrainings() {
-            const list = document.getElementById('training-list');
-            list.innerHTML = '';
-            const items = resourceMap[state.resource];
-            items.forEach(name => {
-                const card = document.createElement('div');
-                card.className = 'train-card';
-                card.innerHTML = `<b>${name}</b><span>Подробнее о пользе...</span>`;
-                card.onclick = () => openTrainDetails(name);
-                list.appendChild(card);
+            const container = document.getElementById('train-container');
+            container.innerHTML = '';
+            resources[state.resource].forEach(name => {
+                const data = trainingLibrary[name];
+                const item = document.createElement('div');
+                item.className = 'training-item';
+                item.innerHTML = `
+                    <div class="train-info">
+                        <h4>${name}</h4>
+                        <p>${data.tags.join(' • ')}</p>
+                    </div>
+                    <div class="train-arrow">→</div>
+                `;
+                item.onclick = () => openTrainModal(name);
+                container.appendChild(item);
             });
         }
 
-        let selectedTraining = "";
-        function openTrainDetails(name) {
-            selectedTraining = name;
-            const data = trainingLib[name];
-            document.getElementById('m-train-title').innerText = name;
-            document.getElementById('m-train-desc').innerText = data.d;
-            document.getElementById('m-train-expert').innerText = data.e;
-            toggleModal('trainModal', true);
+        let selectedWorkout = "";
+        function openTrainModal(name) {
+            selectedWorkout = name;
+            const data = trainingLibrary[name];
+            document.getElementById('m-title').innerText = name;
+            document.getElementById('m-desc').innerText = data.d;
+            document.getElementById('m-expert').innerText = data.e;
+            document.getElementById('trainModal').style.display = 'flex';
         }
 
-        function logTraining() {
+        function confirmWorkout() {
             state.sessions++;
-            toggleModal('trainModal', false);
-            updateLevelDisplay();
+            state.history.push(state.weight);
+            if(state.history.length > 10) state.history.shift();
+            
+            closeModal();
+            updateProgress();
             checkLevelUp();
-            renderActivityChart();
-            saveData();
+            save();
+        }
+
+        function updateProgress() {
+            document.getElementById('lvl-count').innerText = `Пройдено: ${state.sessions} занятий`;
+            const currentLevel = levels[state.level];
+            const nextLevel = levels[state.level + 1] || currentLevel;
+            const target = nextLevel.n || 150;
+            const percent = Math.min((state.sessions / target) * 100, 100);
+            document.getElementById('progress-line').style.width = percent + '%';
         }
 
         function checkLevelUp() {
-            const currentLevel = levels.filter(l => state.sessions >= l.count).pop();
-            const levelIdx = levels.indexOf(currentLevel);
-            if(levelIdx > state.level) {
-                state.level = levelIdx;
-                document.getElementById('m-level-name').innerText = currentLevel.name;
-                document.getElementById('m-level-desc').innerText = currentLevel.desc;
-                toggleModal('levelModal', true);
+            const nextLevelIdx = levels.findIndex((l, i) => i > state.level && state.sessions >= l.n);
+            if (nextLevelIdx !== -1) {
+                state.level = nextLevelIdx;
+                const lvl = levels[state.level];
+                document.getElementById('lvl-name').innerText = lvl.name;
+                document.getElementById('lvl-icon').innerText = lvl.icon;
+                
+                document.getElementById('ml-title').innerText = `Статус: ${lvl.name}`;
+                document.getElementById('ml-desc').innerText = lvl.desc;
+                document.getElementById('levelModal').style.display = 'flex';
             }
         }
 
-        function updateLevelDisplay() {
-            const currentLevel = levels[state.level] || levels[0];
-            document.getElementById('user-level-name').innerText = currentLevel.name;
-            document.getElementById('session-count').innerText = `Пройдено занятий: ${state.sessions}`;
-        }
-
-        // Вспомогательные функции
-        function updateGender(g) {
-            state.gender = g;
-            document.getElementById('btn-female').classList.toggle('active', g === 'female');
-            document.getElementById('btn-male').classList.toggle('active', g === 'male');
-            runBiohacking();
-        }
-
-        function updateResource(r) {
-            state.resource = r;
-            ['low', 'norm', 'peak'].forEach(key => {
-                document.getElementById('res-' + key).classList.toggle('active', r === key);
-            });
-            renderTrainings();
-            saveData();
-        }
-
-        function setActivity(val, name) {
-            state.activity = val;
-            state.actName = name;
-            document.getElementById('display-activity').innerText = name;
-            toggleModal('activityModal', false);
-            runBiohacking();
-        }
-
-        function toggleModal(id, show) {
-            document.getElementById(id).style.display = show ? 'flex' : 'none';
-        }
-
-        function saveData() {
-            state.lastWeight = document.getElementById('in-weight').value;
-            localStorage.setItem('ls_bio_state', JSON.stringify(state));
-        }
-
-        function loadData() {
-            const saved = localStorage.getItem('ls_bio_state');
-            if(saved) {
-                state = JSON.parse(saved);
-                document.getElementById('in-weight').value = state.lastWeight || 60;
-                document.getElementById('display-activity').innerText = state.actName;
-                updateLevelDisplay();
-            }
-        }
-
-        function resetAllData() {
-            if(confirm('Вы уверены, что хотите обнулить весь прогресс?')) {
-                localStorage.removeItem('ls_bio_state');
-                location.reload();
-            }
-        }
-
-        // ФУНКЦИИ ГРАФИКОВ
-        function renderWeightChart() {
-            const path = document.getElementById('weight-path');
-            if(!path) return;
-            const w = parseFloat(document.getElementById('in-weight').value) || 60;
-            
-            // Имитация данных за 6 месяцев для наглядности
-            const points = [w+2, w+1.5, w+1, w+0.5, w+0.2, w]; 
-            let d = "M 0 40";
-            points.forEach((p, i) => {
-                const x = i * 40;
-                const y = 60 - (p - (w-5)) * 4; // Масштабирование
+        function updateChart() {
+            const path = document.getElementById('chart-path');
+            let d = "M0 40";
+            state.history.forEach((w, i) => {
+                const x = (i * 200) / (state.history.length - 1);
+                const y = 40 - (w - 50) * 0.5; // Масштабирование
                 d += ` L ${x} ${y}`;
             });
             path.setAttribute('d', d);
         }
 
-        function renderActivityChart() {
-            const container = document.getElementById('activity-chart');
-            if(!container) return;
-            container.innerHTML = '';
-            
-            // Генерируем 7 баров
-            for(let i=0; i<7; i++) {
-                const bar = document.createElement('div');
-                bar.style.flex = "1";
-                // Случайная высота + акцент на текущий прогресс
-                const height = Math.floor(Math.random() * 40) + (state.sessions > 0 ? 30 : 10);
-                bar.style.height = height + '%';
-                bar.style.background = i === 6 ? 'var(--accent)' : 'var(--glass-border)';
-                bar.style.borderRadius = "4px";
-                bar.style.transition = "height 1s ease";
-                container.appendChild(bar);
+        function setGender(g) {
+            state.gender = g;
+            document.getElementById('g-female').classList.toggle('active', g === 'female');
+            document.getElementById('g-male').classList.toggle('active', g === 'male');
+            calculate();
+        }
+
+        function closeModal() {
+            document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+        }
+
+        function save() { localStorage.setItem('lady_monolith_62', JSON.stringify(state)); }
+        function load() {
+            const saved = localStorage.getItem('lady_monolith_62');
+            if(saved) {
+                state = JSON.parse(saved);
+                document.getElementById('w-val').value = state.weight;
+                document.getElementById('h-val').value = state.height;
+                document.getElementById('a-val').value = state.age;
+                setGender(state.gender);
+                setResource(state.resource);
+                updateProgress();
+                const lvl = levels[state.level];
+                document.getElementById('lvl-name').innerText = lvl.name;
+                document.getElementById('lvl-icon').innerText = lvl.icon;
+            } else {
+                setResource('norm');
+            }
+        }
+
+        function resetData() {
+            if(confirm("Удалить все данные прогресса?")) {
+                localStorage.removeItem('lady_monolith_62');
+                location.reload();
             }
         }
     </script>
