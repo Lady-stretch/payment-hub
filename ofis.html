@@ -403,15 +403,41 @@
 
     <script>
         // ДАННЫЕ ПРИЛОЖЕНИЯ
-        let state = {
-            gender: 'female',
-            activity: 1.5,
-            actName: 'Средняя',
-            resource: 'norm',
-            sessions: 0,
-            level: 0,
-            lastWeight: 60
-        };
+        // 1. Расширяем объект состояния
+let state = {
+    gender: 'female',
+    activity: 1.5,
+    actName: 'Средняя',
+    resource: 'norm',
+    sessions: 0,
+    level: 0,
+    // Добавляем новые поля для сохранения
+    lastWeight: 60,
+    lastHeight: 170,
+    lastAge: 28,
+    weightHistory: [62, 61.5, 61, 60.5, 60] // Для работы графика
+};
+
+// 2. Модифицируем сохранение
+function saveData() {
+    state.lastWeight = document.getElementById('in-weight').value;
+    state.lastHeight = document.getElementById('in-height').value; // Теперь сохраняем рост
+    state.lastAge = document.getElementById('in-age').value;       // Теперь сохраняем возраст
+    localStorage.setItem('ls_bio_state', JSON.stringify(state));
+}
+
+// 3. Модифицируем загрузку, чтобы данные вставали в инпуты
+function loadData() {
+    const saved = localStorage.getItem('ls_bio_state');
+    if(saved) {
+        state = JSON.parse(saved);
+        document.getElementById('in-weight').value = state.lastWeight || 60;
+        document.getElementById('in-height').value = state.lastHeight || 170; // Возвращаем рост
+        document.getElementById('in-age').value = state.lastAge || 28;       // Возвращаем возраст
+        document.getElementById('display-activity').innerText = state.actName;
+        updateLevelDisplay();
+    }
+}
 
         const levels = [
             { count: 0, name: 'Новичок', desc: 'Добро пожаловать в мир Lady Stretch! Ваша трансформация начинается сегодня.' },
